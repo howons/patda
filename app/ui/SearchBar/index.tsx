@@ -1,9 +1,15 @@
+import { Platform } from "@/types/property";
+
 import SearchBarCore from "./SearchBarCore";
 import SearchBarWrapper from "./SearchBarWrapper";
 
-function SearchBar() {
+interface SearchBarProps {
+  platform: Platform;
+}
+
+function SearchBar({ platform }: SearchBarProps) {
   return (
-    <SearchBarWrapper>
+    <SearchBarWrapper platform={platform}>
       <SearchBarCore />
     </SearchBarWrapper>
   );
