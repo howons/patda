@@ -17,7 +17,7 @@ function SearchBarWrapper({
     etc: "bg-zinc-400",
   };
 
-  const defaultStyle = "border h-8";
+  const defaultStyle = "border h-8 rounded-full";
 
   return (
     <div className={`${platformStyle[platform]} ${defaultStyle}`}>
