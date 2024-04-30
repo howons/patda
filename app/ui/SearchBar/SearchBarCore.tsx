@@ -13,16 +13,18 @@ function SearchBarCore() {
   const [query, setQuery] = useState("");
 
   return (
-    <Combobox>
-      <Combobox.Input />
-      <Combobox.Options>
-        {tempList.map(({ id, name }) => (
-          <Combobox.Option key={id} value={name}>
-            <li>{name}</li>
-          </Combobox.Option>
-        ))}
-      </Combobox.Options>
-    </Combobox>
+    <div className="h-full grow">
+      <Combobox>
+        <Combobox.Input className="h-full rounded-r-full bg-transparent px-4" />
+        <Combobox.Options>
+          {tempList.map(({ id, name }) => (
+            <Combobox.Option key={id} value={name}>
+              {name}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+      </Combobox>
+    </div>
   );
 }
 

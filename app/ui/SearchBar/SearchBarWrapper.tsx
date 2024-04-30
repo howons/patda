@@ -11,13 +11,13 @@ function SearchBarWrapper({
   children,
 }: PropsWithChildren<SearchBarWrapperProps>) {
   const platformStyle: { [key in Platform]: string } = {
-    daangn: "bg-orange-400",
-    bunjang: "bg-red-400",
-    joongna: "bg-green-400",
-    etc: "bg-zinc-400",
+    daangn: "border-orange-400",
+    bunjang: "border-red-400",
+    joongna: "border-green-400",
+    etc: "border-zinc-400",
   };
 
-  const defaultStyle = "border h-8 rounded-full";
+  const defaultStyle = "border h-8 rounded-full flex items-center";
 
   return (
     <div className={`${platformStyle[platform]} ${defaultStyle}`}>
