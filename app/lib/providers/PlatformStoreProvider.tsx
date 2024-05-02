@@ -8,19 +8,23 @@ import {
 import { createContext, type ReactNode, useContext, useRef } from "react";
 import { type StoreApi, useStore } from "zustand";
 
+import { Platform } from "@/types/property";
+
 export const PlatformStoreContext =
   createContext<StoreApi<PlatformStore> | null>(null);
 
 export interface PlatformStoreProviderProps {
+  defaultState?: Platform;
   children: ReactNode;
 }
 
 export const PlatformStoreProvider = ({
+  defaultState,
   children,
 }: PlatformStoreProviderProps) => {
   const storeRef = useRef<StoreApi<PlatformStore>>();
   if (!storeRef.current) {
-    storeRef.current = createPlatformStore(initPlatformStore());
+    storeRef.current = createPlatformStore(initPlatformStore(defaultState));
   }
 
   return (

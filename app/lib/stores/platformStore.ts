@@ -12,8 +12,10 @@ export type PlatformActions = {
 
 export type PlatformStore = PlatformState & PlatformActions;
 
-export const initPlatformStore = (): PlatformState => {
-  return { platform: "daangn" };
+export const initPlatformStore = (
+  platform: Platform = "daangn"
+): PlatformState => {
+  return { platform };
 };
 
 export const defaultInitState: PlatformState = {
