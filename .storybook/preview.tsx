@@ -4,6 +4,8 @@ import "../app/globals.css";
 import { Nanum_Gothic } from "next/font/google";
 import React from "react";
 
+import { PlatformStoreProvider } from "../app/lib/providers/PlatformStoreProvider";
+
 const nanumGoth = Nanum_Gothic({ weight: ["400", "700"], subsets: ["latin"] });
 
 const preview: Preview = {
@@ -18,7 +20,9 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <main className={nanumGoth.className}>
-        <Story />
+        <PlatformStoreProvider>
+          <Story />
+        </PlatformStoreProvider>
       </main>
     ),
   ],

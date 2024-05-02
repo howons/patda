@@ -1,15 +1,11 @@
+import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { PropsWithChildren } from "react";
 
 import { Platform } from "@/types/property";
 
-interface SearchBarWrapperProps {
-  platform: Platform;
-}
+function SearchBarWrapper({ children }: PropsWithChildren) {
+  const platform = usePlatformStore((state) => state.platform);
 
-function SearchBarWrapper({
-  platform,
-  children,
-}: PropsWithChildren<SearchBarWrapperProps>) {
   const platformStyle: { [key in Platform]: string } = {
     daangn: "border-orange-500",
     bunjang: "border-red-500",

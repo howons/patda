@@ -1,18 +1,12 @@
 import Category from "@ui/SearchBar/Category";
 import Divider from "@ui/SearchBar/Divider";
 
-import { Platform } from "@/types/property";
-
 import SearchBarCore from "./SearchBarCore";
 import SearchBarWrapper from "./SearchBarWrapper";
 
-interface SearchBarProps {
-  platform: Platform;
-}
-
-function SearchBar({ platform }: SearchBarProps) {
+function SearchBar() {
   return (
-    <SearchBarWrapper platform={platform}>
+    <SearchBarWrapper>
       <Category />
       <Divider />
       <SearchBarCore />
