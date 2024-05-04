@@ -21,32 +21,89 @@ function CategorySelector() {
     }, ROTATE_DURATION);
   };
 
-  const containerDefaultStyle = "absolute top-1/2 h-1/2 transition-transform";
+  const selectorDefaultStyle = "absolute top-1/2 transition-transform";
 
-  const containerStyle = [
+  const selectorStyle = [
     "rotate-0 duration-0",
     "-rotate-90 duration-300",
     "rotate-0 duration-0",
     "rotate-90 duration-300",
   ];
 
-  const itemContainerStyle = [
+  const containerDefaultStyle = "absolute origin-top-left transition-transform";
+
+  const containerRotateStyle = [
     "-rotate-45",
-    "rotate-45 scale-50",
-    "rotate-[135deg] scale-[.35]",
-    "-rotate-[135deg] scale-50",
+    "rotate-45",
+    "rotate-[135deg]",
+    "-rotate-[135deg]",
   ];
 
-  const itemRotateStyle = ["", "-rotate-90", "rotate-180", "rotate-90"];
+  const containerScaleStyle = [
+    [
+      "duration-0",
+      "scale-50 duration-300",
+      "scale-[.35] duration-300",
+      "scale-50 duration-300",
+    ],
+    [
+      "scale-50 duration-0",
+      "duration-300",
+      "scale-50 duration-0",
+      "scale-[.35] duration-300",
+    ],
+    [
+      "scale-[.35] duration-0",
+      "scale-50 duration-300",
+      "duration-300",
+      "scale-50 duration-300",
+    ],
+    [
+      "scale-50 duration-0",
+      "scale-[.35] duration-300",
+      "scale-50 duration-0",
+      "duration-300",
+    ],
+  ];
+
+  const itemRotateStyle = [
+    [
+      "duration-0",
+      "rotate-90 duration-300",
+      "duration-0",
+      "-rotate-90 duration-300",
+    ],
+    [
+      "-rotate-90 duration-0",
+      "duration-300",
+      "-rotate-90 duration-0",
+      "-rotate-180 duration-300",
+    ],
+    [
+      "rotate-180 duration-0",
+      "rotate-[270deg] duration-300",
+      "rotate-180 duration-0",
+      "rotate-90 duration-300",
+    ],
+    [
+      "rotate-90 duration-0",
+      "rotate-180 duration-300",
+      "rotate-90 duration-0",
+      "duration-300",
+    ],
+  ];
 
   return (
-    <div className={`${containerDefaultStyle} ${containerStyle[selectedItem]}`}>
+    <div className={`${selectorDefaultStyle} ${selectorStyle[selectedItem]}`}>
       {itemList.current.map((item, idx) => (
         <div
           key={item}
-          className={`absolute origin-top-left ${itemContainerStyle[idx]}`}
+          className={`${containerDefaultStyle} ${containerRotateStyle[idx]} ${containerScaleStyle[idx][selectedItem]}`}
           onClick={handleItemClick(idx)}>
-          <CategoryItem platform={item} className={`${itemRotateStyle[idx]}`} />
+          <CategoryItem
+            platform={item}
+            className={`transition-transform ${itemRotateStyle[idx][selectedItem]}`}
+          />
         </div>
       ))}
     </div>
