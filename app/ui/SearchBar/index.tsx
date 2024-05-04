@@ -7,12 +7,14 @@ import SearchBarWrapper from "./SearchBarWrapper";
 
 function SearchBar() {
   return (
-    <SearchBarWrapper>
+    <div className="relative">
       <CategorySelector />
-      <Category />
-      <Divider />
-      <SearchBarCore />
-    </SearchBarWrapper>
+      <SearchBarWrapper>
+        <Category />
+        <Divider />
+        <SearchBarCore />
+      </SearchBarWrapper>
+    </div>
   );
 }
 

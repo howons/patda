@@ -21,7 +21,8 @@ function Category() {
     etc: "text-zinc-700",
   };
 
-  const defualtStyle = "w-24 pl-1 text-center";
+  const defualtStyle =
+    "w-24 h-full pl-1 flex justify-center items-center bg-white rounded-l-full";
 
   return (
     <label className={`${defualtStyle} ${platformStyle[platform]}`}>
