@@ -47,7 +47,7 @@ function CategorySelector() {
     [
       "duration-0",
       "scale-50 duration-300",
-      "scale-[.35] duration-300",
+      "scale-[.35] -translate-x-10 trans duration-300",
       "scale-50 duration-300",
     ],
     [
@@ -59,7 +59,7 @@ function CategorySelector() {
     [
       "scale-[.35] duration-0",
       "scale-50 duration-300",
-      "duration-300",
+      "translate-x-28 duration-300",
       "scale-50 duration-300",
     ],
     [
