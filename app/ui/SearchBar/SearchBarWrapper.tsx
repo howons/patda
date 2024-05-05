@@ -16,7 +16,7 @@ function SearchBarWrapper({ children }: PropsWithChildren) {
   };
 
   const defaultStyle =
-    "relative border h-8 border-orange-500 rounded-full flex items-center shadow-md";
+    "relative border h-8 border-orange-500 rounded-full flex items-center shadow-md transition-colors duration-300";
 
   return (
     <div className={`${platformStyle[platform]} ${defaultStyle}`}>

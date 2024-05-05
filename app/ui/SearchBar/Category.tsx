@@ -22,7 +22,7 @@ function Category() {
   };
 
   const defualtStyle =
-    "w-24 h-full pl-1 flex justify-center items-center bg-white rounded-l-full";
+    "w-24 h-full pl-1 flex justify-center items-center bg-white rounded-l-full select-none";
 
   return (
     <label className={`${defualtStyle} ${platformStyle[platform]}`}>

@@ -1,5 +1,6 @@
 "use client";
 
+import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import CategoryItem from "@ui/SearchBar/CategoryItem";
 import { useRef, useState } from "react";
 
@@ -10,11 +11,14 @@ const ROTATE_DURATION = 300;
 function CategorySelector() {
   const [selectedItem, setSelectedItem] = useState(0);
   const itemList = useRef<Platform[]>(["daangn", "bunjang", "etc", "joongna"]);
+  const updatePlatform = usePlatformStore((store) => store.updatePlatform);
 
-  const handleItemClick = (idx: number) => () => {
+  const handleItemClick = (item: Platform, idx: number) => () => {
     if (selectedItem !== 0) return;
 
     setSelectedItem(idx);
+    updatePlatform(item);
+
     setTimeout(() => {
       reorderItemList(idx, itemList.current);
       setSelectedItem(0);
@@ -99,7 +103,7 @@ function CategorySelector() {
         <div
           key={item}
           className={`${containerDefaultStyle} ${containerRotateStyle[idx]} ${containerScaleStyle[idx][selectedItem]}`}
-          onClick={handleItemClick(idx)}>
+          onClick={handleItemClick(item, idx)}>
           <CategoryItem
             platform={item}
             className={`transition-transform ${itemRotateStyle[idx][selectedItem]}`}
