@@ -1,8 +1,7 @@
 "use client";
 
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-
-import { Platform } from "@/types/property";
+import { Platform } from "@lib/types/property";
 
 function Divider() {
   const platform = usePlatformStore((state) => state.platform);

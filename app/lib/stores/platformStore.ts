@@ -1,13 +1,14 @@
+import { CategoryDirection, Platform } from "@lib/types/property";
 import { createStore } from "zustand/vanilla";
-
-import { Platform } from "@/types/property";
 
 export type PlatformState = {
   platform: Platform;
+  direction: CategoryDirection;
 };
 
 export type PlatformActions = {
   updatePlatform: (platform: Platform) => void;
+  updateDirection: (direction: CategoryDirection) => void;
 };
 
 export type PlatformStore = PlatformState & PlatformActions;
@@ -15,11 +16,12 @@ export type PlatformStore = PlatformState & PlatformActions;
 export const initPlatformStore = (
   platform: Platform = "daangn"
 ): PlatformState => {
-  return { platform };
+  return { platform, direction: "up" };
 };
 
 export const defaultInitState: PlatformState = {
   platform: "daangn",
+  direction: "up",
 };
 
 export const createPlatformStore = (
@@ -27,6 +29,7 @@ export const createPlatformStore = (
 ) => {
   return createStore<PlatformStore>()((set) => ({
     ...initState,
-    updatePlatform: (platform) => set((state) => ({ platform: platform })),
+    updatePlatform: (platform) => set((state) => ({ platform })),
+    updateDirection: (direction) => set((state) => ({ direction })),
   }));
 };

@@ -1,18 +1,18 @@
 "use client";
 
+import { PLATFORM_NAME } from "@lib/constants/platform";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-
-import { Platform } from "@/types/property";
+import { Platform } from "@lib/types/property";
+import { useRef } from "react";
 
 function Category() {
-  const platform = usePlatformStore((state) => state.platform);
+  const lastPlatform = useRef<Platform>("daangn");
+  const { platform, direction } = usePlatformStore((state) => state);
 
-  const platformName: { [key in Platform]: string } = {
-    daangn: "당근",
-    bunjang: "번개장터",
-    joongna: "중고나라",
-    etc: "기타",
-  };
+  const defualtStyle =
+    "relative w-24 h-full pl-1 bg-white rounded-l-full overflow-hidden select-none cursor-pointer";
+
+  const labelDefaultStyle = "absolute";
 
   const platformStyle: { [key in Platform]: string } = {
     daangn: "text-orange-700",
@@ -21,13 +21,12 @@ function Category() {
     etc: "text-zinc-700",
   };
 
-  const defualtStyle =
-    "w-24 h-full pl-1 flex justify-center items-center bg-white rounded-l-full select-none";
-
   return (
-    <label className={`${defualtStyle} ${platformStyle[platform]}`}>
-      {platformName[platform]}
-    </label>
+    <div className={`${defualtStyle}`}>
+      <label className={`${platformStyle[platform]}`}>
+        {PLATFORM_NAME[platform]}
+      </label>
+    </div>
   );
 }
 

@@ -2,9 +2,8 @@
 
 import { Combobox } from "@headlessui/react";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
+import { Platform } from "@lib/types/property";
 import { useState } from "react";
-
-import { Platform } from "@/types/property";
 
 const tempList = [
   { id: 1, name: "time" },

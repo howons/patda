@@ -1,22 +1,26 @@
 "use client";
 
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
+import { CategoryDirection, Platform } from "@lib/types/property";
 import CategoryItem from "@ui/SearchBar/CategoryItem";
 import { useRef, useState } from "react";
-
-import { Platform } from "@/types/property";
 
 const ROTATE_DURATION = 300;
 
 function CategorySelector() {
   const [selectedItem, setSelectedItem] = useState(0);
   const itemList = useRef<Platform[]>(["daangn", "bunjang", "etc", "joongna"]);
-  const updatePlatform = usePlatformStore((store) => store.updatePlatform);
+  const { updatePlatform, updateDirection } = usePlatformStore(
+    (store) => store
+  );
 
   const handleItemClick = (item: Platform, idx: number) => () => {
     if (selectedItem !== 0) return;
 
     setSelectedItem(idx);
+
+    const directions: CategoryDirection[] = ["up", "down", "left", "up"];
+    updateDirection(directions[selectedItem]);
     updatePlatform(item);
 
     setTimeout(() => {
@@ -106,7 +110,7 @@ function CategorySelector() {
           onClick={handleItemClick(item, idx)}>
           <CategoryItem
             platform={item}
-            className={`transition-transform ${itemRotateStyle[idx][selectedItem]}`}
+            className={`transition-transform ${idx > 0 ? "cursor-pointer" : ""} ${itemRotateStyle[idx][selectedItem]}`}
           />
         </div>
       ))}
