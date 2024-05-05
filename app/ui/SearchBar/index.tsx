@@ -10,8 +10,8 @@ function SearchBar() {
     <div className="relative">
       <CategorySelector />
       <SearchBarWrapper>
-        <Category />
         <Divider />
+        <Category />
         <SearchBarCore />
       </SearchBarWrapper>
     </div>

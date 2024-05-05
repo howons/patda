@@ -1,11 +1,10 @@
 "use client";
 
+import { TRANS_DURATION } from "@lib/constants/platform";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { CategoryDirection, Platform } from "@lib/types/property";
 import CategoryItem from "@ui/SearchBar/CategoryItem";
 import { useRef, useState } from "react";
-
-const ROTATE_DURATION = 300;
 
 function CategorySelector() {
   const [selectedItem, setSelectedItem] = useState(0);
@@ -20,13 +19,13 @@ function CategorySelector() {
     setSelectedItem(idx);
 
     const directions: CategoryDirection[] = ["up", "down", "left", "up"];
-    updateDirection(directions[selectedItem]);
+    updateDirection(directions[idx]);
     updatePlatform(item);
 
     setTimeout(() => {
       reorderItemList(idx, itemList.current);
       setSelectedItem(0);
-    }, ROTATE_DURATION);
+    }, TRANS_DURATION);
   };
 
   const selectorDefaultStyle = "absolute top-1/2 transition-transform";

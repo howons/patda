@@ -6,3 +6,5 @@ export const PLATFORM_NAME: { [key in Platform]: string } = {
   joongna: "중고나라",
   etc: "기타",
 };
+
+export const TRANS_DURATION = 300;
