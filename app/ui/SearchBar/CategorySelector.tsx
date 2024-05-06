@@ -1,6 +1,7 @@
 "use client";
 
 import { TRANS_DURATION } from "@lib/constants/platform";
+import { useCategoryStore } from "@lib/providers/CategoryStoreProvider";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { CategoryDirection, Platform } from "@lib/types/property";
 import CategoryItem from "@ui/SearchBar/CategoryItem";
@@ -9,9 +10,8 @@ import { useRef, useState } from "react";
 function CategorySelector() {
   const [selectedItem, setSelectedItem] = useState(0);
   const itemList = useRef<Platform[]>(["daangn", "bunjang", "etc", "joongna"]);
-  const { updatePlatform, updateDirection } = usePlatformStore(
-    (store) => store
-  );
+  const updatePlatform = usePlatformStore((state) => state.updatePlatform);
+  const updateDirection = useCategoryStore((state) => state.updateDirection);
 
   const handleItemClick = (item: Platform, idx: number) => () => {
     if (selectedItem !== 0) return;

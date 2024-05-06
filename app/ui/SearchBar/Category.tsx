@@ -1,6 +1,7 @@
 "use client";
 
 import { PLATFORM_NAME, TRANS_DURATION } from "@lib/constants/platform";
+import { useCategoryStore } from "@lib/providers/CategoryStoreProvider";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { CategoryDirection, Platform } from "@lib/types/property";
 import {
@@ -14,7 +15,8 @@ import {
 function Category() {
   const [lastPlatform, setLastPlatform] = useState<Platform>("daangn");
   const transitionTimer = useRef<NodeJS.Timeout | null>(null);
-  const { platform, direction } = usePlatformStore((state) => state);
+  const platform = usePlatformStore((state) => state.platform);
+  const direction = useCategoryStore((state) => state.direction);
 
   const shouldChange = platform !== lastPlatform;
   setTransitionTimer(shouldChange, transitionTimer, setLastPlatform, platform);
