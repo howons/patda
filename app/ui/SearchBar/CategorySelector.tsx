@@ -10,8 +10,12 @@ import { useRef, useState } from "react";
 function CategorySelector() {
   const [selectedItem, setSelectedItem] = useState(0);
   const itemList = useRef<Platform[]>(["daangn", "bunjang", "etc", "joongna"]);
-  const updatePlatform = usePlatformStore((state) => state.updatePlatform);
-  const updateDirection = useCategoryStore((state) => state.updateDirection);
+  const { platform, updatePlatform } = usePlatformStore((state) => state);
+  const { updateDirection, isActive, toggleActive } = useCategoryStore(
+    (state) => state
+  );
+
+  selectedItem === 0 && initItemList(platform, itemList.current);
 
   const handleItemClick = (item: Platform, idx: number) => () => {
     if (selectedItem !== 0) return;
@@ -21,6 +25,8 @@ function CategorySelector() {
     const directions: CategoryDirection[] = ["up", "down", "left", "up"];
     updateDirection(directions[idx]);
     updatePlatform(item);
+
+    isActive && toggleActive();
 
     setTimeout(() => {
       reorderItemList(idx, itemList.current);
@@ -50,13 +56,13 @@ function CategorySelector() {
     [
       "duration-0",
       "scale-50 duration-300",
-      "scale-[.35] -translate-x-10 trans duration-300",
+      "scale-[.35] -translate-x-10 duration-300",
       "scale-50 duration-300",
     ],
     [
       "scale-50 duration-0",
       "duration-300",
-      "scale-50 duration-0",
+      "scale-50 duration-300",
       "scale-[.35] duration-300",
     ],
     [
@@ -68,7 +74,7 @@ function CategorySelector() {
     [
       "scale-50 duration-0",
       "scale-[.35] duration-300",
-      "scale-50 duration-0",
+      "scale-50 duration-300",
       "duration-300",
     ],
   ];
@@ -127,6 +133,13 @@ function reorderItemList(clickedItem: number, itemList: Platform[]) {
       break;
     case 3:
       itemList.unshift(itemList.pop()!);
+  }
+}
+
+function initItemList(initItem: Platform, itemList: Platform[]) {
+  if (itemList[0] !== initItem) {
+    const itemIdx = itemList.findIndex((item) => item === initItem);
+    [itemList[0], itemList[itemIdx]] = [itemList[itemIdx], itemList[0]];
   }
 }
 

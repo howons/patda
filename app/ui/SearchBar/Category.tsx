@@ -16,7 +16,7 @@ function Category() {
   const [lastPlatform, setLastPlatform] = useState<Platform>("daangn");
   const transitionTimer = useRef<NodeJS.Timeout | null>(null);
   const platform = usePlatformStore((state) => state.platform);
-  const direction = useCategoryStore((state) => state.direction);
+  const { direction, toggleActive } = useCategoryStore((state) => state);
 
   const shouldChange = platform !== lastPlatform;
   setTransitionTimer(shouldChange, transitionTimer, setLastPlatform, platform);
@@ -58,7 +58,7 @@ function Category() {
   };
 
   return (
-    <div className={`${defualtStyle}`}>
+    <div className={`${defualtStyle}`} onClick={() => toggleActive()}>
       <label
         className={`${labelDefaultStyle} ${platformStyle[lastPlatform]} ${lastTransitionStyle[direction]}`}>
         {PLATFORM_NAME[lastPlatform]}
