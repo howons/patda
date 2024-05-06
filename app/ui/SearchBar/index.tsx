@@ -1,17 +1,23 @@
-import { Platform } from "@/types/property";
+import { CategoryStoreProvider } from "@lib/providers/CategoryStoreProvider";
+import Category from "@ui/SearchBar/Category";
+import CategorySelector from "@ui/SearchBar/CategorySelector";
+import Divider from "@ui/SearchBar/Divider";
 
 import SearchBarCore from "./SearchBarCore";
 import SearchBarWrapper from "./SearchBarWrapper";
 
-interface SearchBarProps {
-  platform: Platform;
-}
-
-function SearchBar({ platform }: SearchBarProps) {
+function SearchBar() {
   return (
-    <SearchBarWrapper platform={platform}>
-      <SearchBarCore />
-    </SearchBarWrapper>
+    <div className="relative">
+      <CategoryStoreProvider>
+        <CategorySelector />
+        <SearchBarWrapper>
+          <Divider />
+          <Category />
+          <SearchBarCore />
+        </SearchBarWrapper>
+      </CategoryStoreProvider>
+    </div>
   );
 }
 
