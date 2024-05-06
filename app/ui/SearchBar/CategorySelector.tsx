@@ -5,11 +5,12 @@ import { useCategoryStore } from "@lib/providers/CategoryStoreProvider";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { CategoryDirection, Platform } from "@lib/types/property";
 import CategoryItem from "@ui/SearchBar/CategoryItem";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function CategorySelector() {
   const [selectedItem, setSelectedItem] = useState(0);
   const itemList = useRef<Platform[]>(["daangn", "bunjang", "etc", "joongna"]);
+  const selectorRef = useRef<HTMLDivElement | null>(null);
   const { platform, updatePlatform } = usePlatformStore((state) => state);
   const { updateDirection, isActive, toggleActive } = useCategoryStore(
     (state) => state
@@ -34,16 +35,25 @@ function CategorySelector() {
     }, TRANS_DURATION);
   };
 
-  const selectorDefaultStyle = "absolute top-1/2 transition-transform";
+  useEffect(() => {
+    const containerActiveDuration = "cs:duration-300";
+    const toggleDuration = () => {
+      Array.from(selectorRef.current?.children ?? []).forEach((container) => {
+        container.classList.toggle(containerActiveDuration, true);
+      });
+    };
 
-  const selectorStyle = [
-    "rotate-0 duration-0",
-    "-rotate-90 duration-300",
-    "rotate-0 duration-0",
-    "rotate-90 duration-300",
-  ];
+    toggleDuration();
+    setTimeout(() => {
+      toggleDuration();
+    });
+  }, [isActive]);
 
-  const containerDefaultStyle = "absolute origin-top-left transition-transform";
+  const selectorDefaultStyle = `absolute top-1/2 transition-transform ${selectedItem % 2 ? "duration-300" : "duration-0"}`;
+
+  const selectorStyle = ["rotate-0", "-rotate-90", "rotate-0", "rotate-90"];
+
+  const containerDefaultStyle = `absolute origin-top-left transition-transform ${selectedItem ? "duration-300" : "duration-0"}`;
 
   const containerRotateStyle = [
     "-rotate-45",
@@ -53,69 +63,36 @@ function CategorySelector() {
   ];
 
   const containerScaleStyle = [
-    [
-      "duration-0",
-      "scale-50 duration-300",
-      "scale-[.35] -translate-x-10 duration-300",
-      "scale-50 duration-300",
-    ],
-    [
-      "scale-50 duration-0",
-      "duration-300",
-      "scale-50 duration-300",
-      "scale-[.35] duration-300",
-    ],
-    [
-      "scale-[.35] duration-0",
-      "scale-50 duration-300",
-      "translate-x-28 duration-300",
-      "scale-50 duration-300",
-    ],
-    [
-      "scale-50 duration-0",
-      "scale-[.35] duration-300",
-      "scale-50 duration-300",
-      "duration-300",
-    ],
+    ["", "scale-50 ", "scale-[.35] -translate-x-10 ", "scale-50 "],
+    ["scale-50 ", "", "scale-50 ", "scale-[.35] "],
+    ["scale-[.35] ", "scale-50 ", "translate-x-28 ", "scale-50 "],
+    ["scale-50 ", "scale-[.35] ", "scale-50 ", ""],
   ];
 
+  const containerActiveStyle = ["", "scale-90 ", "scale-75 ", "scale-90 "];
+
+  const itemDefaultStyle = `transition-transform ${selectedItem % 2 ? "duration-300" : "duration-0"}`;
+
   const itemRotateStyle = [
-    [
-      "duration-0",
-      "rotate-90 duration-300",
-      "duration-0",
-      "-rotate-90 duration-300",
-    ],
-    [
-      "-rotate-90 duration-0",
-      "duration-300",
-      "-rotate-90 duration-0",
-      "-rotate-180 duration-300",
-    ],
-    [
-      "rotate-180 duration-0",
-      "rotate-[270deg] duration-300",
-      "rotate-180 duration-0",
-      "rotate-90 duration-300",
-    ],
-    [
-      "rotate-90 duration-0",
-      "rotate-180 duration-300",
-      "rotate-90 duration-0",
-      "duration-300",
-    ],
+    ["", "rotate-90 ", "", "-rotate-90 "],
+    ["-rotate-90 ", "", "-rotate-90 ", "-rotate-180 "],
+    ["rotate-180 ", "rotate-[270deg] ", "rotate-180 ", "rotate-90 "],
+    ["rotate-90 ", "rotate-180 ", "rotate-90 ", ""],
   ];
 
   return (
-    <div className={`${selectorDefaultStyle} ${selectorStyle[selectedItem]}`}>
+    <div
+      ref={selectorRef}
+      className={`${selectorDefaultStyle} ${selectorStyle[selectedItem]}`}>
       {itemList.current.map((item, idx) => (
         <div
           key={item}
-          className={`${containerDefaultStyle} ${containerRotateStyle[idx]} ${containerScaleStyle[idx][selectedItem]}`}
+          className={`${containerDefaultStyle} ${containerRotateStyle[idx]} ${containerScaleStyle[idx][selectedItem]} ${isActive ? containerActiveStyle[idx] : ""}`}
           onClick={handleItemClick(item, idx)}>
           <CategoryItem
             platform={item}
-            className={`transition-transform ${idx > 0 ? "cursor-pointer" : ""} ${itemRotateStyle[idx][selectedItem]}`}
+            isActive={isActive}
+            className={`${itemDefaultStyle} ${idx > 0 ? "cursor-pointer" : ""} ${itemRotateStyle[idx][selectedItem]}`}
           />
         </div>
       ))}

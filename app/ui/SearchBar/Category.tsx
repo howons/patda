@@ -25,7 +25,7 @@ function Category() {
     "relative w-24 h-full bg-white rounded-l-full overflow-hidden";
 
   const labelDefaultStyle =
-    "absolute w-full h-full ml-1 flex justify-center items-center select-none cursor-pointer transition-transform";
+    "absolute w-full h-full ml-1 flex justify-center items-center select-none cursor-pointer transition-transform font-bold";
 
   const platformStyle: { [key in Platform]: string } = {
     daangn: "text-orange-700",
