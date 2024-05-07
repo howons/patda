@@ -1,25 +1,14 @@
 "use client";
 
 import { PLATFORM_NAME, TRANS_DURATION } from "@lib/constants/platform";
+import useLastPlatform from "@lib/hooks/useLastPlatform";
 import { useCategoryStore } from "@lib/providers/CategoryStoreProvider";
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { CategoryDirection, Platform } from "@lib/types/property";
-import {
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useRef,
-  useState,
-} from "react";
 
 function Category() {
-  const [lastPlatform, setLastPlatform] = useState<Platform>("daangn");
-  const transitionTimer = useRef<NodeJS.Timeout | null>(null);
-  const platform = usePlatformStore((state) => state.platform);
+  const { lastPlatform, platform, isChanging } =
+    useLastPlatform(TRANS_DURATION);
   const { direction, toggleActive } = useCategoryStore((state) => state);
-
-  const shouldChange = platform !== lastPlatform;
-  setTransitionTimer(shouldChange, transitionTimer, setLastPlatform, platform);
 
   const defualtStyle =
     "relative w-24 h-full bg-white rounded-l-full overflow-hidden";
@@ -35,54 +24,30 @@ function Category() {
   };
 
   const lastTransitionStyle: { [key in CategoryDirection]: string } = {
-    up: shouldChange
-      ? "top-0 translate-y-full duration-300"
-      : "top-full cs:duration-0",
-    left: shouldChange
-      ? "left-0 -translate-x-full duration-300"
-      : "-left-full cs:duration-0",
-    down: shouldChange
-      ? "bottom-0 -translate-y-full duration-300"
-      : "bottom-full cs:duration-0",
+    up: isChanging ? "top-0 translate-y-full" : "top-full",
+    left: isChanging ? "left-0 -translate-x-full" : "-left-full",
+    down: isChanging ? "bottom-0 -translate-y-full" : "bottom-full",
   };
   const transitionStyle: { [key in CategoryDirection]: string } = {
-    up: shouldChange
-      ? "-top-full translate-y-full duration-300"
-      : "top-0 cs:duration-0",
-    left: shouldChange
-      ? "-left-full translate-x-full duration-300"
-      : "left-0 cs:duration-0",
-    down: shouldChange
-      ? "-bottom-full -translate-y-full duration-300"
-      : "bottom-0 cs:duration-0",
+    up: isChanging ? "-top-full translate-y-full" : "top-0",
+    left: isChanging ? "-left-full translate-x-full" : "left-0",
+    down: isChanging ? "-bottom-full -translate-y-full" : "bottom-0",
   };
+
+  const durationStyle = isChanging ? "duration-300" : "duration-0";
 
   return (
     <div className={`${defualtStyle}`} onClick={() => toggleActive()}>
       <label
-        className={`${labelDefaultStyle} ${platformStyle[lastPlatform]} ${lastTransitionStyle[direction]}`}>
+        className={`${labelDefaultStyle} ${platformStyle[lastPlatform]} ${lastTransitionStyle[direction]} ${durationStyle}`}>
         {PLATFORM_NAME[lastPlatform]}
       </label>
       <label
-        className={`${labelDefaultStyle} ${platformStyle[platform]} ${transitionStyle[direction]}`}>
+        className={`${labelDefaultStyle} ${platformStyle[platform]} ${transitionStyle[direction]} ${durationStyle}`}>
         {PLATFORM_NAME[platform]}
       </label>
     </div>
   );
-}
-
-function setTransitionTimer(
-  shouldChange: Boolean,
-  transitionTimer: MutableRefObject<NodeJS.Timeout | null>,
-  setLastPlatform: Dispatch<SetStateAction<Platform>>,
-  curPlatform: Platform
-) {
-  if (shouldChange && !transitionTimer.current) {
-    transitionTimer.current = setTimeout(() => {
-      setLastPlatform(curPlatform);
-      transitionTimer.current = null;
-    }, TRANS_DURATION);
-  }
 }
 
 export default Category;
