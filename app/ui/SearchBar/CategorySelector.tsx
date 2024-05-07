@@ -2,28 +2,20 @@
 
 import { TRANS_DURATION } from "@lib/constants/platform";
 import useCategoryItemList from "@lib/hooks/useCategoryItemList";
+import useToggleChildrenStyle from "@lib/hooks/useToggleChildrenStyle";
 import { useCategoryStore } from "@lib/providers/CategoryStoreProvider";
 import CategoryItem from "@ui/SearchBar/CategoryItem";
-import { useEffect, useRef } from "react";
 
 function CategorySelector() {
-  const selectorRef = useRef<HTMLDivElement | null>(null);
   const isActive = useCategoryStore((state) => state.isActive);
   const { itemList, selectedItemIdx, handleItemClick } = useCategoryItemList();
 
-  useEffect(() => {
-    const containerActiveDuration = "cs:duration-300";
-    const toggleDuration = (force?: boolean) => {
-      Array.from(selectorRef.current?.children ?? []).forEach((container) => {
-        container.classList.toggle(containerActiveDuration, force);
-      });
-    };
-
-    toggleDuration(true);
-    setTimeout(() => {
-      toggleDuration(false);
-    }, TRANS_DURATION);
-  }, [isActive]);
+  const { parentRef } = useToggleChildrenStyle<HTMLDivElement>(
+    "cs:duration-300",
+    isActive,
+    TRANS_DURATION,
+    true
+  );
 
   const selectorDefaultStyle = `absolute top-1/2 transition-transform ${selectedItemIdx % 2 ? "duration-300" : "duration-0"}`;
 
@@ -61,7 +53,7 @@ function CategorySelector() {
 
   return (
     <div
-      ref={selectorRef}
+      ref={parentRef}
       className={`${selectorDefaultStyle} ${selectorStyle[selectedItemIdx]}`}>
       {itemList.current.map((item, idx) => (
         <div
