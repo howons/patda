@@ -37,16 +37,16 @@ function CategorySelector() {
 
   useEffect(() => {
     const containerActiveDuration = "cs:duration-300";
-    const toggleDuration = () => {
+    const toggleDuration = (force?: boolean) => {
       Array.from(selectorRef.current?.children ?? []).forEach((container) => {
-        container.classList.toggle(containerActiveDuration, true);
+        container.classList.toggle(containerActiveDuration, force);
       });
     };
 
-    toggleDuration();
+    toggleDuration(true);
     setTimeout(() => {
-      toggleDuration();
-    });
+      toggleDuration(false);
+    }, TRANS_DURATION);
   }, [isActive]);
 
   const selectorDefaultStyle = `absolute top-1/2 transition-transform ${selectedItem % 2 ? "duration-300" : "duration-0"}`;
@@ -63,21 +63,24 @@ function CategorySelector() {
   ];
 
   const containerScaleStyle = [
-    ["", "scale-50 ", "scale-[.35] -translate-x-10 ", "scale-50 "],
-    ["scale-50 ", "", "scale-50 ", "scale-[.35] "],
-    ["scale-[.35] ", "scale-50 ", "translate-x-28 ", "scale-50 "],
-    ["scale-50 ", "scale-[.35] ", "scale-50 ", ""],
+    ["", "scale-50", "scale-[.35] -translate-x-10", "scale-50"],
+    [isActive ? "scale-90" : "scale-50", "", "scale-50", "scale-[.35]"],
+    [
+      isActive ? "scale-75" : "scale-[.35]",
+      "scale-50",
+      "translate-x-28",
+      "scale-50",
+    ],
+    [isActive ? "scale-90" : "scale-50", "scale-[.35]", "scale-50", ""],
   ];
-
-  const containerActiveStyle = ["", "scale-90 ", "scale-75 ", "scale-90 "];
 
   const itemDefaultStyle = `transition-transform ${selectedItem % 2 ? "duration-300" : "duration-0"}`;
 
   const itemRotateStyle = [
-    ["", "rotate-90 ", "", "-rotate-90 "],
-    ["-rotate-90 ", "", "-rotate-90 ", "-rotate-180 "],
-    ["rotate-180 ", "rotate-[270deg] ", "rotate-180 ", "rotate-90 "],
-    ["rotate-90 ", "rotate-180 ", "rotate-90 ", ""],
+    ["", "rotate-90", "", "-rotate-90"],
+    ["-rotate-90", "", "-rotate-90", "-rotate-180"],
+    ["rotate-180", "rotate-[270deg]", "rotate-180", "rotate-90"],
+    ["rotate-90", "rotate-180", "rotate-90", ""],
   ];
 
   return (
@@ -87,7 +90,7 @@ function CategorySelector() {
       {itemList.current.map((item, idx) => (
         <div
           key={item}
-          className={`${containerDefaultStyle} ${containerRotateStyle[idx]} ${containerScaleStyle[idx][selectedItem]} ${isActive ? containerActiveStyle[idx] : ""}`}
+          className={`${containerDefaultStyle} ${containerRotateStyle[idx]} ${containerScaleStyle[idx][selectedItem]}`}
           onClick={handleItemClick(item, idx)}>
           <CategoryItem
             platform={item}
