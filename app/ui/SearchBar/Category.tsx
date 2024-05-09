@@ -25,28 +25,32 @@ function Category() {
 
   const lastTransitionStyle: { [key in CategoryDirection]: string } = {
     up: isChanging ? "top-0 translate-y-full" : "top-full",
-    left: isChanging ? "left-0 -translate-x-full" : "-left-full",
+    left: isChanging ? "left-0 top-0 -translate-x-full" : "-left-full top-0",
     down: isChanging ? "bottom-0 -translate-y-full" : "bottom-full",
   };
   const transitionStyle: { [key in CategoryDirection]: string } = {
     up: isChanging ? "-top-full translate-y-full" : "top-0",
-    left: isChanging ? "-left-full translate-x-full" : "left-0",
+    left: isChanging ? "-left-full top-0 translate-x-full" : "left-0 top-0",
     down: isChanging ? "-bottom-full -translate-y-full" : "bottom-0",
   };
 
   const durationStyle = isChanging ? "duration-300" : "duration-0";
 
   return (
-    <div className={`${defualtStyle}`} onClick={() => toggleActive()}>
+    <button
+      className={`${defualtStyle}`}
+      aria-label="검색할 카테고리 이름"
+      onClick={() => toggleActive()}>
       <label
-        className={`${labelDefaultStyle} ${platformStyle[lastPlatform]} ${lastTransitionStyle[direction]} ${durationStyle}`}>
+        className={`${labelDefaultStyle} ${platformStyle[lastPlatform]} ${lastTransitionStyle[direction]} ${durationStyle}`}
+        aria-hidden>
         {PLATFORM_NAME[lastPlatform]}
       </label>
       <label
         className={`${labelDefaultStyle} ${platformStyle[platform]} ${transitionStyle[direction]} ${durationStyle}`}>
         {PLATFORM_NAME[platform]}
       </label>
-    </div>
+    </button>
   );
 }
 
