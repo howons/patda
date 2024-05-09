@@ -1,6 +1,6 @@
 "use client";
 
-import { TRANS_DURATION } from "@lib/constants/platform";
+import { PLATFORM_NAME, TRANS_DURATION } from "@lib/constants/platform";
 import useCategoryItemList from "@lib/hooks/useCategoryItemList";
 import useToggleChildrenStyle from "@lib/hooks/useToggleChildrenStyle";
 import { useCategoryStore } from "@lib/providers/CategoryStoreProvider";
@@ -54,18 +54,22 @@ function CategorySelector() {
   return (
     <div
       ref={parentRef}
-      className={`${selectorDefaultStyle} ${selectorStyle[selectedItemIdx]}`}>
+      className={`${selectorDefaultStyle} ${selectorStyle[selectedItemIdx]}`}
+      role="group"
+      aria-label="검색할 카테고리 로고">
       {itemList.current.map((item, idx) => (
-        <div
+        <button
           key={item}
-          className={`${containerDefaultStyle} ${containerRotateStyle[idx]} ${containerScaleStyle[idx][selectedItemIdx]}`}
+          name={PLATFORM_NAME[item]}
+          className={`${containerDefaultStyle} ${containerRotateStyle[idx]} ${containerScaleStyle[idx][selectedItemIdx]} ${idx === 0 ? "cursor-default" : ""}`}
+          tabIndex={idx === 0 ? -1 : undefined}
           onClick={handleItemClick(item, idx)}>
           <CategoryItem
             platform={item}
             isActive={isActive}
-            className={`${itemDefaultStyle} ${idx > 0 ? "cursor-pointer" : ""} ${itemRotateStyle[idx][selectedItemIdx]}`}
+            className={`${itemDefaultStyle} ${itemRotateStyle[idx][selectedItemIdx]}`}
           />
-        </div>
+        </button>
       ))}
     </div>
   );
