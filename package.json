@@ -14,7 +14,7 @@
     "seed": "node -r dotenv/config ./scripts/seed.js"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.19",
+    "@headlessui/react": "^2.0.3",
     "@react-icons/all-files": "^4.1.0",
     "@vercel/postgres": "^0.8.0",
     "bcrypt": "^5.1.1",

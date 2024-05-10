@@ -1,6 +1,11 @@
 "use client";
 
-import { Combobox } from "@headlessui/react";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+} from "@headlessui/react";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { Platform } from "@lib/types/property";
 import { useState } from "react";
@@ -27,16 +32,16 @@ function SearchBarCore() {
   return (
     <div className="h-full grow">
       <Combobox>
-        <Combobox.Input
+        <ComboboxInput
           className={`${inputDefaultStyle} ${platformStyle[platform]}`}
         />
-        <Combobox.Options>
+        <ComboboxOptions>
           {tempList.map(({ id, name }) => (
-            <Combobox.Option key={id} value={name}>
+            <ComboboxOption key={id} value={name}>
               {name}
-            </Combobox.Option>
+            </ComboboxOption>
           ))}
-        </Combobox.Options>
+        </ComboboxOptions>
       </Combobox>
     </div>
   );
