@@ -1,19 +1,13 @@
 "use client";
 
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxOption,
-  ComboboxOptions,
-} from "@headlessui/react";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { Platform } from "@lib/types/property";
 import { useState } from "react";
 
 const tempList = [
-  { id: 1, name: "time" },
-  { id: 2, name: "device" },
-  { id: 3, name: "horizon" },
+  { id: 1, name: "time", description: "dd" },
+  { id: 2, name: "device", description: "dd" },
+  { id: 3, name: "horizon", description: "dd" },
 ];
 
 function SearchBarCore() {
@@ -27,23 +21,10 @@ function SearchBarCore() {
     etc: "focus:outline-zinc-400",
   };
 
-  const inputDefaultStyle = "h-full rounded-r-full bg-transparent px-5";
+  const inputDefaultStyle = "h-full grow rounded-r-full bg-transparent px-5";
 
   return (
-    <div className="h-full grow">
-      <Combobox>
-        <ComboboxInput
-          className={`${inputDefaultStyle} ${platformStyle[platform]}`}
-        />
-        <ComboboxOptions>
-          {tempList.map(({ id, name }) => (
-            <ComboboxOption key={id} value={name}>
-              {name}
-            </ComboboxOption>
-          ))}
-        </ComboboxOptions>
-      </Combobox>
-    </div>
+    <input className={`${inputDefaultStyle} ${platformStyle[platform]}`} />
   );
 }
 
