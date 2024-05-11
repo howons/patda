@@ -1,4 +1,5 @@
 import { PlatformStoreProvider } from "@lib/providers/PlatformStoreProvider";
+import { SearchStoreProvider } from "@lib/providers/SearchStoreProvider";
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
 import SearchBar from "@ui/SearchBar";
@@ -10,6 +11,7 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
+  decorators: [(Story) => <SearchStoreProvider>{Story()}</SearchStoreProvider>],
 } satisfies Meta<typeof SearchBar>;
 
 export default meta;
