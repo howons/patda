@@ -1,15 +1,12 @@
-import { Platform } from "@lib/types/property";
 import { TroublemakerInfo } from "@lib/types/response";
 import Thumbnail from "@ui/Thumbnail";
 
 interface SearchListItemProps {
   itemInfo: TroublemakerInfo;
-  platform: Platform;
 }
 
 function SearchListItem({
-  itemInfo: { nickname, image },
-  platform,
+  itemInfo: { nickname, platform, image },
 }: SearchListItemProps) {
   const defaultStyle = "w-full flex";
 

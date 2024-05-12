@@ -31,7 +31,7 @@ function Thumbnail({
     ) : platform === "joongna" ? (
       <JoongnaLogo width={width} height={height} />
     ) : (
-      <FiMoreHorizontal width={width} height={height} />
+      <FiMoreHorizontal size={width} />
     );
 
   return !isError && src ? (
