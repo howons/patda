@@ -21,7 +21,7 @@ function SearchListItem({
         height={100}
         className="shrink-0 rounded-full"
       />
-      <div className="ml-3 flex grow flex-col justify-between">
+      <div className="ml-4 flex grow flex-col justify-between">
         <label className="text-xl font-bold">{nickname}</label>
         <p className="text-sm">{additionalUserInfo}</p>
         <div className="h-2" />

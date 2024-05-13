@@ -1,10 +1,13 @@
 import { SearchStoreProvider } from "@lib/providers/SearchStoreProvider";
 import SearchBar from "@ui/SearchBar";
 import SearchList from "@ui/SearchList";
+import { HTMLAttributes } from "react";
 
-function Search() {
+interface SearchProps extends HTMLAttributes<HTMLDivElement> {}
+
+function Search({ className, ...props }: SearchProps) {
   return (
-    <div>
+    <div className={`flex flex-col items-center ${className}`} {...props}>
       <SearchStoreProvider>
         <SearchBar />
         <SearchList className="mt-16" />

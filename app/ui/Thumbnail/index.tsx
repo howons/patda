@@ -19,20 +19,12 @@ function Thumbnail({
   alt,
   width,
   height,
+  className,
   ...props
 }: ThumbnailProps) {
   const [isError, setIsError] = useState(false);
 
-  const SubImage =
-    platform === "daangn" ? (
-      <DaangnLogo width={width} height={height} />
-    ) : platform === "bunjang" ? (
-      <BunjangLogo width={width} height={height} />
-    ) : platform === "joongna" ? (
-      <JoongnaLogo width={width} height={height} />
-    ) : (
-      <FiMoreHorizontal size={width} />
-    );
+  const defaultStyle = "border border-zinc-100 shadow-inner";
 
   return !isError && src ? (
     <Image
@@ -41,10 +33,29 @@ function Thumbnail({
       onError={(e) => {
         setIsError(true);
       }}
+      className={`${defaultStyle} ${className}`}
       {...props}
     />
+  ) : platform === "daangn" ? (
+    <DaangnLogo
+      width={width}
+      height={height}
+      className={`${defaultStyle} ${className}`}
+    />
+  ) : platform === "bunjang" ? (
+    <BunjangLogo
+      width={width}
+      height={height}
+      className={`${defaultStyle} ${className}`}
+    />
+  ) : platform === "joongna" ? (
+    <JoongnaLogo
+      width={width}
+      height={height}
+      className={`${defaultStyle} ${className}`}
+    />
   ) : (
-    SubImage
+    <FiMoreHorizontal size={width} className={`${defaultStyle} ${className}`} />
   );
 }
 
