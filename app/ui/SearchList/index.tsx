@@ -2,27 +2,34 @@
 
 import { useSearchStore } from "@lib/providers/SearchStoreProvider";
 import { TroublemakerInfo } from "@lib/types/response";
+import Divider from "@ui/Divider";
 import SearchListItem from "@ui/SearchList/SearchListItem";
-import { HTMLAttributes } from "react";
+import { Fragment, HTMLAttributes } from "react";
 
 const tempList: TroublemakerInfo[] = [
   {
     id: 1,
     nickname: "qwer",
     platform: "daangn",
+    additionalUserInfo: "당근동",
     image: "",
+    postCount: 2,
   },
   {
     id: 2,
     nickname: "asdf",
     platform: "bunjang",
+    additionalUserInfo: "김*공",
     image: "",
+    postCount: 1,
   },
   {
     id: 3,
     nickname: "zxcv",
     platform: "joongna",
+    additionalUserInfo: "wer123",
     image: "",
+    postCount: 3,
   },
 ];
 
@@ -34,9 +41,13 @@ function SearchList({ className, ...props }: SearchListProps) {
   const troubleMakerList = searchList.length > 0 ? searchList : tempList;
 
   return (
-    <ul className={`flex w-full flex-col gap-4 ${className}`} {...props}>
+    <ul className={`flex w-full flex-col ${className}`} {...props}>
+      <Divider direction="horizon" />
       {troubleMakerList.map((troublemaker) => (
-        <SearchListItem key={troublemaker.id} itemInfo={troublemaker} />
+        <Fragment key={troublemaker.id}>
+          <SearchListItem itemInfo={troublemaker} />
+          <Divider direction="horizon" />
+        </Fragment>
       ))}
     </ul>
   );

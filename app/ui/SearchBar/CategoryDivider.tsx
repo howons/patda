@@ -3,7 +3,7 @@
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { Platform } from "@lib/types/property";
 
-function Divider() {
+function CategoryDivider() {
   const platform = usePlatformStore((state) => state.platform);
 
   const platformStyle: { [key in Platform]: string } = {
@@ -24,4 +24,4 @@ function Divider() {
   );
 }
 
-export default Divider;
+export default CategoryDivider;

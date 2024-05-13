@@ -1,7 +1,7 @@
 import { CategoryStoreProvider } from "@lib/providers/CategoryStoreProvider";
 import Category from "@ui/SearchBar/Category";
+import CategoryDivider from "@ui/SearchBar/CategoryDivider";
 import CategorySelector from "@ui/SearchBar/CategorySelector";
-import Divider from "@ui/SearchBar/Divider";
 import SearchBarCore from "@ui/SearchBar/SearchBarCore";
 import SearchBarWrapper from "@ui/SearchBar/SearchBarWrapper";
 
@@ -11,7 +11,7 @@ function SearchBar() {
       <CategoryStoreProvider>
         <CategorySelector />
         <SearchBarWrapper>
-          <Divider />
+          <CategoryDivider />
           <Category />
           <SearchBarCore />
         </SearchBarWrapper>

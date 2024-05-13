@@ -6,9 +6,10 @@ interface SearchListItemProps {
 }
 
 function SearchListItem({
-  itemInfo: { nickname, platform, image },
+  itemInfo: { nickname, platform, image, additionalUserInfo, postCount },
 }: SearchListItemProps) {
-  const defaultStyle = "w-full flex";
+  const defaultStyle =
+    "relative w-full flex rounded-lg p-3 text-zinc-700 cursor-pointer";
 
   return (
     <li className={`${defaultStyle}`}>
@@ -18,8 +19,14 @@ function SearchListItem({
         alt="프로필 사진"
         width={100}
         height={100}
+        className="shrink-0 rounded-full"
       />
-      {nickname}
+      <div className="ml-3 flex grow flex-col justify-between">
+        <label className="text-xl font-bold">{nickname}</label>
+        <p className="text-sm">{additionalUserInfo}</p>
+        <div className="h-2" />
+        <p className="text-right text-sm">{postCount}</p>
+      </div>
     </li>
   );
 }
