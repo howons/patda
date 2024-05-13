@@ -7,7 +7,7 @@ import SearchBarWrapper from "@ui/SearchBar/SearchBarWrapper";
 
 function SearchBar() {
   return (
-    <div className="relative m-3 w-5/6 max-w-96">
+    <div className="relative m-3 ml-9 w-3/5 min-w-64 max-w-[50rem]">
       <CategoryStoreProvider>
         <CategorySelector />
         <SearchBarWrapper>

@@ -11,7 +11,7 @@ function Category() {
   const { direction, toggleActive } = useCategoryStore((state) => state);
 
   const defualtStyle =
-    "relative w-24 h-full bg-white rounded-l-full overflow-hidden";
+    "relative w-24 h-full bg-white rounded-l-full overflow-hidden shrink-0";
 
   const labelDefaultStyle =
     "absolute w-full h-full ml-1 flex justify-center items-center select-none cursor-pointer transition-transform font-bold";
