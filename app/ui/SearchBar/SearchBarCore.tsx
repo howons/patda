@@ -1,18 +1,11 @@
 "use client";
 
-import { Combobox } from "@headlessui/react";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
+import { useSearchStore } from "@lib/providers/SearchStoreProvider";
 import { Platform } from "@lib/types/property";
-import { useState } from "react";
-
-const tempList = [
-  { id: 1, name: "time" },
-  { id: 2, name: "device" },
-  { id: 3, name: "horizon" },
-];
 
 function SearchBarCore() {
-  const [query, setQuery] = useState("");
+  const { query, updateQuery } = useSearchStore((state) => state);
   const platform = usePlatformStore((state) => state.platform);
 
   const platformStyle: { [key in Platform]: string } = {
@@ -22,23 +15,15 @@ function SearchBarCore() {
     etc: "focus:outline-zinc-400",
   };
 
-  const inputDefaultStyle = "h-full rounded-r-full bg-transparent px-5";
+  const inputDefaultStyle =
+    "h-full grow rounded-r-full bg-transparent px-5 min-w-0";
 
   return (
-    <div className="h-full grow">
-      <Combobox>
-        <Combobox.Input
-          className={`${inputDefaultStyle} ${platformStyle[platform]}`}
-        />
-        <Combobox.Options>
-          {tempList.map(({ id, name }) => (
-            <Combobox.Option key={id} value={name}>
-              {name}
-            </Combobox.Option>
-          ))}
-        </Combobox.Options>
-      </Combobox>
-    </div>
+    <input
+      className={`${inputDefaultStyle} ${platformStyle[platform]}`}
+      value={query}
+      onChange={(e) => updateQuery(e.target.value)}
+    />
   );
 }
 

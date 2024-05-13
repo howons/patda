@@ -1,18 +1,17 @@
 import { CategoryStoreProvider } from "@lib/providers/CategoryStoreProvider";
 import Category from "@ui/SearchBar/Category";
+import CategoryDivider from "@ui/SearchBar/CategoryDivider";
 import CategorySelector from "@ui/SearchBar/CategorySelector";
-import Divider from "@ui/SearchBar/Divider";
-
-import SearchBarCore from "./SearchBarCore";
-import SearchBarWrapper from "./SearchBarWrapper";
+import SearchBarCore from "@ui/SearchBar/SearchBarCore";
+import SearchBarWrapper from "@ui/SearchBar/SearchBarWrapper";
 
 function SearchBar() {
   return (
-    <div className="relative">
+    <div className="relative m-3 ml-9 w-3/5 min-w-64 max-w-[50rem]">
       <CategoryStoreProvider>
         <CategorySelector />
         <SearchBarWrapper>
-          <Divider />
+          <CategoryDivider />
           <Category />
           <SearchBarCore />
         </SearchBarWrapper>
