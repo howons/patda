@@ -32,6 +32,14 @@ const tempList: TroublemakerInfo[] = [
     image: "",
     postCount: 3,
   },
+  {
+    id: 4,
+    nickname: "1234",
+    platform: "etc",
+    additionalUserInfo: "짭고나라",
+    image: "",
+    postCount: 4,
+  },
 ];
 
 interface SearchListProps extends HTMLAttributes<HTMLUListElement> {}

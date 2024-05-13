@@ -5,11 +5,11 @@ interface DividerProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function Divider({ direction, ...props }: DividerProps) {
-  const defaultStyle = "border-zinc-200 m-2";
+  const defaultStyle = "border-zinc-200";
 
   const directionStyle = {
-    horizon: "border-t w-full",
-    vertical: "border-l h-full",
+    horizon: "border-t w-11/12 mx-auto",
+    vertical: "border-l h-11/12 my-auto",
   };
 
   return (
