@@ -3,6 +3,7 @@
 import { useSearchStore } from "@lib/providers/SearchStoreProvider";
 import { TroublemakerInfo } from "@lib/types/response";
 import Divider from "@ui/Divider";
+import NoResults from "@ui/SearchList/NoResults";
 import SearchListItem from "@ui/SearchList/SearchListItem";
 import { Fragment, HTMLAttributes } from "react";
 
@@ -36,9 +37,9 @@ const tempList: TroublemakerInfo[] = [
 interface SearchListProps extends HTMLAttributes<HTMLUListElement> {}
 
 function SearchList({ className, ...props }: SearchListProps) {
-  const searchList = useSearchStore((state) => state.searchResults);
+  const { query, searchResults } = useSearchStore((state) => state);
 
-  const troubleMakerList = searchList.length > 0 ? searchList : tempList;
+  const troubleMakerList = query.length > 0 ? searchResults : tempList;
 
   return (
     <ul className={`flex w-full flex-col ${className}`} {...props}>
@@ -49,6 +50,12 @@ function SearchList({ className, ...props }: SearchListProps) {
           <Divider direction="horizon" />
         </Fragment>
       ))}
+      {troubleMakerList.length <= 0 && (
+        <>
+          <NoResults />
+          <Divider direction="horizon" />
+        </>
+      )}
     </ul>
   );
 }
