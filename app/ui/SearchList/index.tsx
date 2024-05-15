@@ -45,9 +45,11 @@ const tempList: TroublemakerInfo[] = [
 interface SearchListProps extends HTMLAttributes<HTMLUListElement> {}
 
 function SearchList({ className, ...props }: SearchListProps) {
-  const { query, searchResults } = useSearchStore((state) => state);
+  const { query, searchResults, isActive } = useSearchStore((state) => state);
 
   const troubleMakerList = query.length > 0 ? searchResults : tempList;
+
+  if (!isActive) return null;
 
   return (
     <ul className={`flex w-full flex-col ${className}`} {...props}>
