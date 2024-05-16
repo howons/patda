@@ -10,11 +10,15 @@ import {
 import { SearchStoreProvider } from "@lib/providers/SearchStoreProvider";
 import SearchBar from "@ui/SearchBar";
 import SearchList from "@ui/SearchList";
+import { usePathname } from "next/navigation";
 import { MouseEventHandler } from "react";
 
 interface HeaderSearchProps extends PopoverProps {}
 
 function HeaderSearch({ className = "", ...props }: HeaderSearchProps) {
+  const pathname = usePathname();
+  if (pathname === "/") return null;
+
   const handlePopoverButtonClick: (
     open: boolean
   ) => MouseEventHandler<HTMLDivElement> = (open) => (e) => {
