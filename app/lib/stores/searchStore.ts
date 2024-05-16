@@ -4,7 +4,6 @@ import { createStore } from "zustand/vanilla";
 export type SearchState = {
   query: string;
   searchResults: TroublemakerInfo[];
-  isActive: boolean;
 };
 
 export type SearchActions = {
@@ -14,13 +13,12 @@ export type SearchActions = {
 export type SearchStore = SearchState & SearchActions;
 
 export const initSearchStore = (query: string = ""): SearchState => {
-  return { query, searchResults: [], isActive: false };
+  return { query, searchResults: [] };
 };
 
 export const defaultInitState: SearchState = {
   query: "",
   searchResults: [],
-  isActive: false,
 };
 
 export const createSearchStore = (

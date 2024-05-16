@@ -1,10 +1,12 @@
-import Search from "@ui/Search";
+import HeaderSearch from "@ui/Header/HeaderSearch";
 
 function Header() {
   return (
-    <div className="fixed left-0 top-0 flex h-14 w-full items-center justify-between overflow-hidden border-b border-zinc-300">
+    <div className="fixed left-0 top-0 flex h-14 w-full items-center justify-between border-b border-zinc-300">
       <div>로고</div>
-      <Search />
+      <div className="relative h-full grow">
+        <HeaderSearch />
+      </div>
       <div>계정</div>
     </div>
   );
