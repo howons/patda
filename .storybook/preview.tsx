@@ -17,7 +17,7 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <main className={nanumGoth.className}>
+      <main className={nanumGoth.className} data-testid="screen">
         <Story />
       </main>
     ),

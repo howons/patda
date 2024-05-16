@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import { PlatformStoreProvider } from "@lib/providers/PlatformStoreProvider";
+import Header from "@ui/Header";
 import type { Metadata } from "next";
 import { Nanum_Gothic } from "next/font/google";
 
@@ -19,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={nanumGoth.className}>
-        <PlatformStoreProvider>{children}</PlatformStoreProvider>
+        <PlatformStoreProvider>
+          <Header />
+          {children}
+        </PlatformStoreProvider>
       </body>
     </html>
   );

@@ -15,14 +15,14 @@ function SearchBarCore() {
     etc: "focus:outline-zinc-400",
   };
 
-  const inputDefaultStyle =
-    "h-full grow rounded-r-full bg-transparent px-5 min-w-0";
+  const inputDefaultStyle = "h-full grow rounded-r-full bg-white px-5 min-w-0";
 
   return (
     <input
       className={`${inputDefaultStyle} ${platformStyle[platform]}`}
       value={query}
       onChange={(e) => updateQuery(e.target.value)}
+      aria-label="검색바"
     />
   );
 }
