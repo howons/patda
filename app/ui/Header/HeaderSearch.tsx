@@ -45,6 +45,8 @@ function HeaderSearch({ className = "", ...props }: HeaderSearchProps) {
         <SearchStoreProvider>
           <PopoverButton
             as={SearchBar}
+            role="button"
+            aria-label="헤더 검색바"
             className={`shrink-0 transition-transform duration-300 focus:outline-none ${open ? "translate-y-7" : ""}`}
             onClick={handlePopoverButtonClick(open)}
           />

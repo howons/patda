@@ -50,7 +50,10 @@ function SearchList({ className, ...props }: SearchListProps) {
   const troubleMakerList = query.length > 0 ? searchResults : tempList;
 
   return (
-    <ul className={`flex w-full flex-col ${className}`} {...props}>
+    <ul
+      className={`flex w-full flex-col ${className}`}
+      aria-label="검색목록"
+      {...props}>
       <Divider direction="horizon" />
       {troubleMakerList.map((troublemaker) => (
         <Fragment key={troublemaker.id}>

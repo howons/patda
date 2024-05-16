@@ -22,6 +22,7 @@ function SearchBarCore() {
       className={`${inputDefaultStyle} ${platformStyle[platform]}`}
       value={query}
       onChange={(e) => updateQuery(e.target.value)}
+      aria-label="검색바"
     />
   );
 }
