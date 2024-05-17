@@ -3,9 +3,9 @@
 import { BANNER_IMAGES } from "@lib/constants/ banner";
 import ImageContainer from "@ui/Banner/ImageContainer";
 import SliderButton from "@ui/Banner/SliderButton";
-import { useEffect, useRef, useState } from "react";
+import { HTMLAttributes, useEffect, useRef, useState } from "react";
 
-function Banner() {
+function Banner({ className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   const [curImage, setCurImage] = useState(0);
   const [isReturning, setIsReturning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -43,7 +43,9 @@ function Banner() {
   ];
 
   return (
-    <div className="relative flex h-64 w-full overflow-hidden">
+    <div
+      className={`relative flex h-64 w-full overflow-hidden ${className}`}
+      {...props}>
       <ImageContainer
         className={`${imageTransitionStyle} ${imageTranslateStyle[curImage]}`}
       />
