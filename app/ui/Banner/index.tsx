@@ -2,38 +2,60 @@
 
 import { BANNER_IMAGES } from "@lib/constants/ banner";
 import ImageContainer from "@ui/Banner/ImageContainer";
-import { useEffect, useState } from "react";
+import SliderButton from "@ui/Banner/SliderButton";
+import { useEffect, useRef, useState } from "react";
 
 function Banner() {
   const [curImage, setCurImage] = useState(0);
+  const [isReturning, setIsReturning] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setCurImage((prev) => prev + 1);
     }, 3000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(intervalRef.current!);
   }, []);
 
   useEffect(() => {
     if (curImage >= BANNER_IMAGES.length) {
       setTimeout(() => {
+        setIsReturning(true);
         setCurImage(0);
+
+        setTimeout(() => {
+          setIsReturning(false);
+        }, 100);
       }, 500);
     }
   }, [curImage]);
 
-  const imagesTransitionStyle = [
+  const imageTransitionStyle = isReturning
+    ? ""
+    : "transition-transform duration-500";
+
+  const imageTranslateStyle = [
     "",
-    "transition-transform duration-500 -translate-x-[100vw]",
-    "transition-transform duration-500 -translate-x-[200vw]",
-    "transition-transform duration-500 -translate-x-[300vw]",
+    "-translate-x-[100vw]",
+    "-translate-x-[200vw]",
+    "-translate-x-[300vw]",
   ];
 
   return (
-    <div className="flex h-64 w-full overflow-hidden">
-      <ImageContainer className={imagesTransitionStyle[curImage]} />
-      <ImageContainer className={imagesTransitionStyle[curImage]} />
+    <div className="relative flex h-64 w-full overflow-hidden">
+      <ImageContainer
+        className={`${imageTransitionStyle} ${imageTranslateStyle[curImage]}`}
+      />
+      <ImageContainer
+        className={`${imageTransitionStyle} ${imageTranslateStyle[curImage]}`}
+      />
+      <SliderButton
+        curImage={curImage}
+        setCurImage={setCurImage}
+        intervalRef={intervalRef}
+        className="absolute bottom-0 left-0 w-full"
+      />
     </div>
   );
 }
