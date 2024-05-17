@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
-import { HTMLAttributes, useEffect, useState } from "react";
-
-const tempImages = ["/당근.svg", "/번개장터.svg", "/중고나라.svg"];
+import { BANNER_IMAGES } from "@lib/constants/ banner";
+import ImageContainer from "@ui/Banner/ImageContainer";
+import { useEffect, useState } from "react";
 
 function Banner() {
   const [curImage, setCurImage] = useState(0);
@@ -17,7 +16,7 @@ function Banner() {
   }, []);
 
   useEffect(() => {
-    if (curImage >= tempImages.length) {
+    if (curImage >= BANNER_IMAGES.length) {
       setTimeout(() => {
         setCurImage(0);
       }, 500);
@@ -35,26 +34,6 @@ function Banner() {
     <div className="flex h-64 w-full overflow-hidden">
       <ImageContainer className={imagesTransitionStyle[curImage]} />
       <ImageContainer className={imagesTransitionStyle[curImage]} />
-    </div>
-  );
-}
-
-function ImageContainer({
-  className = "",
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div className={`flex shrink-0 ${className}`} {...props}>
-      {tempImages.map((image) => (
-        <Image
-          key={image}
-          src={image}
-          alt="banner"
-          width={360}
-          height={256}
-          className="h-full w-screen bg-stone-300 object-contain"
-        />
-      ))}
     </div>
   );
 }
