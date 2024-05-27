@@ -1,65 +1,105 @@
-const { db } = require("@vercel/postgres");
-const bcrypt = require("bcrypt");
+import { db, sql } from "../app/lib/database/db.ts";
 
-const users = [
-  {
-    id: "410544b2-4001-4271-9855-fec4b6a6442a",
-    name: "User",
-    email: "user@nextmail.com",
-    password: "123456",
-  },
-];
+export async function up() {
+  await db.schema
+    .createTable("User")
+    .addColumn("id", "uuid", (col) =>
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
+    )
+    .addColumn("name", "text")
+    .addColumn("email", "text", (col) => col.unique().notNull())
+    .addColumn("emailVerified", "timestamptz")
+    .addColumn("image", "text")
+    .execute();
 
-async function seedUsers(client) {
-  try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-    // Create the "users" table if it doesn't exist
-    const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS users (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
-      );
-    `;
+  await db.schema
+    .createTable("Account")
+    .addColumn("id", "uuid", (col) =>
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
+    )
+    .addColumn("userId", "uuid", (col) =>
+      col.references("User.id").onDelete("cascade").notNull()
+    )
+    .addColumn("type", "text", (col) => col.notNull())
+    .addColumn("provider", "text", (col) => col.notNull())
+    .addColumn("providerAccountId", "text", (col) => col.notNull())
+    .addColumn("refresh_token", "text")
+    .addColumn("access_token", "text")
+    .addColumn("expires_at", "bigint")
+    .addColumn("token_type", "text")
+    .addColumn("scope", "text")
+    .addColumn("id_token", "text")
+    .addColumn("session_state", "text")
+    .execute();
 
-    console.log(`Created "users" table`);
+  await db.schema
+    .createIndex("Account_userId_index")
+    .on("Account")
+    .column("userId")
+    .execute();
 
-    // Insert data into the "users" table
-    const insertedUsers = await Promise.all(
-      users.map(async (user) => {
-        const hashedPassword = await bcrypt.hash(user.password, 10);
-        return client.sql`
-        INSERT INTO users (id, name, email, password)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
-        ON CONFLICT (id) DO NOTHING;
-      `;
-      })
-    );
+  await db.schema
+    .createTable("Post")
+    .addColumn("id", "uuid", (col) =>
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
+    )
+    .addColumn("userId", "uuid", (col) =>
+      col.references("User.id").onDelete("set null")
+    )
+    .addColumn("platform", "text", (col) => col.notNull())
+    .addColumn("targetNickname", "text", (col) => col.notNull())
+    .addColumn("tags", "text[]", (col) => col.notNull())
+    .addColumn("imageUrls", "text[]", (col) => col.notNull())
+    .addColumn("content", "text", (col) => col.notNull())
+    .addColumn("status", "text", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.notNull())
+    .addColumn("updatedAt", "timestamptz", (col) => col.notNull())
+    .addColumn("anonymousUserNickname", "text")
+    .addColumn("etcPlatformName", "text")
+    .execute();
 
-    console.log(`Seeded ${insertedUsers.length} users`);
+  await db.schema
+    .createIndex("Post_userId_index")
+    .on("Post")
+    .column("userId")
+    .execute();
 
-    return {
-      createTable,
-      users: insertedUsers,
-    };
-  } catch (error) {
-    console.error("Error seeding users:", error);
-    throw error;
-  }
+  await db.schema
+    .createTable("Comment")
+    .addColumn("id", "uuid", (col) =>
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
+    )
+    .addColumn("userId", "uuid", (col) =>
+      col.references("User.id").onDelete("cascade").notNull()
+    )
+    .addColumn("postId", "uuid", (col) =>
+      col.references("Post.id").onDelete("cascade").notNull()
+    )
+    .addColumn("imageUrls", "text[]", (col) => col.notNull())
+    .addColumn("content", "text", (col) => col.notNull())
+    .addColumn("status", "text", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.notNull())
+    .addColumn("updatedAt", "timestamptz", (col) => col.notNull())
+    .execute();
+
+  await db.schema
+    .createIndex("Comment_userId_index")
+    .on("Comment")
+    .column("userId")
+    .execute();
+
+  await db.schema
+    .createIndex("Comment_postId_index")
+    .on("Comment")
+    .column("postId")
+    .execute();
 }
 
-async function main() {
-  const client = await db.connect();
-
-  await seedUsers(client);
-
-  await client.end();
+export async function down() {
+  await db.schema.dropTable("Account").ifExists().execute();
+  await db.schema.dropTable("User").ifExists().execute();
+  await db.schema.dropTable("Post").ifExists().execute();
+  await db.schema.dropTable("Comment").ifExists().execute();
 }
 
-main().catch((err) => {
-  console.error(
-    "An error occurred while attempting to seed the database:",
-    err
-  );
-});
+process.argv[2] === "down" ? down() : up();

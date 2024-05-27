@@ -30,7 +30,7 @@ interface Database {
   };
   Post: {
     id: GeneratedAlways<string>;
-    userId: string;
+    userId: string | null;
     platform: Platform;
     targetNickname: string;
     tags: string[];
@@ -39,6 +39,7 @@ interface Database {
     status: PostCommentStatus;
     createdAt: Date;
     updatedAt: Date;
+    anonymousUserNickname: string | null;
     etcPlatformName: string | null;
   };
   Comment: {
