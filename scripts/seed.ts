@@ -1,6 +1,6 @@
-import { db, sql } from "../app/lib/database/db.ts";
+import { db, sql } from "../app/lib/database/db.js";
 
-export async function up() {
+export async function create() {
   await db.schema
     .createTable("User")
     .addColumn("id", "uuid", (col) =>
@@ -48,8 +48,8 @@ export async function up() {
     )
     .addColumn("platform", "text", (col) => col.notNull())
     .addColumn("targetNickname", "text", (col) => col.notNull())
-    .addColumn("tags", "text[]", (col) => col.notNull())
-    .addColumn("imageUrls", "text[]", (col) => col.notNull())
+    .addColumn("tags", sql`text[]`, (col) => col.notNull())
+    .addColumn("imageUrls", sql`text[]`, (col) => col.notNull())
     .addColumn("content", "text", (col) => col.notNull())
     .addColumn("status", "text", (col) => col.notNull())
     .addColumn("createdAt", "timestamptz", (col) => col.notNull())
@@ -75,7 +75,7 @@ export async function up() {
     .addColumn("postId", "uuid", (col) =>
       col.references("Post.id").onDelete("cascade").notNull()
     )
-    .addColumn("imageUrls", "text[]", (col) => col.notNull())
+    .addColumn("imageUrls", sql`text[]`, (col) => col.notNull())
     .addColumn("content", "text", (col) => col.notNull())
     .addColumn("status", "text", (col) => col.notNull())
     .addColumn("createdAt", "timestamptz", (col) => col.notNull())
@@ -93,13 +93,17 @@ export async function up() {
     .on("Comment")
     .column("postId")
     .execute();
+
+  console.log("Migration completed");
 }
 
-export async function down() {
+export async function drop() {
   await db.schema.dropTable("Account").ifExists().execute();
   await db.schema.dropTable("User").ifExists().execute();
   await db.schema.dropTable("Post").ifExists().execute();
   await db.schema.dropTable("Comment").ifExists().execute();
+
+  console.log("Rollback completed");
 }
 
-process.argv[2] === "down" ? down() : up();
+process.argv[2] === "drop" ? drop() : create();

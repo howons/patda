@@ -2,6 +2,7 @@
   "name": "patda",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,7 +12,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
-    "seed": "node -r dotenv/config ./scripts/seed.js"
+    "seed": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm -r dotenv/config ./scripts/seed.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.0.3",
@@ -48,10 +49,12 @@
     "eslint-plugin-tailwindcss": "^3.15.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "nodemon": "^3.1.1",
     "postcss": "^8",
     "prettier": "^3.2.5",
     "storybook": "^8.1.0",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   },
   "lint-staged": {
