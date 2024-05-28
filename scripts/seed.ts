@@ -98,12 +98,18 @@ export async function create() {
 }
 
 export async function drop() {
+  await db.schema.dropTable("Comment").ifExists().execute();
+  await db.schema.dropTable("Post").ifExists().execute();
   await db.schema.dropTable("Account").ifExists().execute();
   await db.schema.dropTable("User").ifExists().execute();
-  await db.schema.dropTable("Post").ifExists().execute();
-  await db.schema.dropTable("Comment").ifExists().execute();
 
   console.log("Rollback completed");
 }
 
-process.argv[2] === "drop" ? drop() : create();
+async function main() {
+  await (process.argv[2] === "drop" ? drop() : create());
+
+  process.exit();
+}
+
+main();

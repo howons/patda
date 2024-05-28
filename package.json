@@ -12,14 +12,13 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
-    "seed": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm -r dotenv/config ./scripts/seed.ts"
+    "seed": "node --no-warnings=ExperimentalWarning --loader ts-node/esm -r dotenv/config ./scripts/seed.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.0.3",
     "@react-icons/all-files": "^4.1.0",
     "@vercel/postgres": "^0.8.0",
     "@vercel/postgres-kysely": "^0.8.0",
-    "bcrypt": "^5.1.1",
     "kysely": "^0.27.3",
     "next": "14.2.2",
     "react": "^18",
@@ -49,7 +48,6 @@
     "eslint-plugin-tailwindcss": "^3.15.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "nodemon": "^3.1.1",
     "postcss": "^8",
     "prettier": "^3.2.5",
     "storybook": "^8.1.0",
