@@ -1,7 +1,3 @@
-// This adapter exports a wrapper of the original `Kysely` class called `KyselyAuth`,
-// that can be used to provide additional type-safety.
-// While using it isn't required, it is recommended as it will verify
-// that the database interface has all the fields that Auth.js expects.
 import { Platform, PostCommentStatus } from "@lib/types/property";
 import { createKysely } from "@vercel/postgres-kysely";
 import type { GeneratedAlways } from "kysely";
