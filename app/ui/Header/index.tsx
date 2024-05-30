@@ -1,4 +1,5 @@
 import HeaderSearch from "@ui/Header/HeaderSearch";
+import Link from "next/link";
 
 function Header() {
   return (
@@ -7,7 +8,7 @@ function Header() {
       <div className="relative h-full grow">
         <HeaderSearch />
       </div>
-      <div>계정</div>
+      <Link href="/login">계정</Link>
     </div>
   );
 }
