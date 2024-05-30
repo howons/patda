@@ -24,6 +24,17 @@ interface Database {
     id_token: string | null;
     session_state: string | null;
   };
+  Session: {
+    id: GeneratedAlways<string>;
+    userId: string;
+    sessionToken: string;
+    expires: Date;
+  };
+  VerificationToken: {
+    identifier: string;
+    token: string;
+    expires: Date;
+  };
   Post: {
     id: GeneratedAlways<string>;
     userId: string | null;
