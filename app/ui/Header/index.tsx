@@ -8,7 +8,7 @@ function Header() {
       <div className="relative h-full grow">
         <HeaderSearch />
       </div>
-      <Link href="/login">계정</Link>
+      <Link href="/signin">계정</Link>
     </div>
   );
 }
