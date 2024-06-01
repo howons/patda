@@ -44,7 +44,7 @@ function Banner({ className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
 
   return (
     <div
-      className={`relative flex h-64 w-full overflow-hidden ${className}`}
+      className={`relative flex h-64 w-screen overflow-hidden ${className}`}
       {...props}>
       <ImageContainer
         className={`${imageTransitionStyle} ${imageTranslateStyle[curImage]}`}

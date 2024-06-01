@@ -23,7 +23,4 @@ export const providerMap = providers.map((provider) => {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: KyselyAdapter(db as KyselyAuth<KyselyDatabase>),
   providers,
-  pages: {
-    signIn: "/signin",
-  },
 });
