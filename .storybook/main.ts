@@ -46,5 +46,9 @@ const config: StorybookConfig = {
   typescript: {
     reactDocgen: "react-docgen-typescript",
   },
+
+  features: {
+    experimentalRSC: true,
+  },
 };
 export default config;

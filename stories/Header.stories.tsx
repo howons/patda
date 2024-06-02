@@ -29,6 +29,11 @@ export const MainHeader: Story = {
 
     await step("처음에는 목록 숨겨진 상태", async () => {
       {
+        await waitFor(() => {
+          expect(
+            canvas.getByRole("button", { name: "헤더 검색바" })
+          ).toBeInTheDocument();
+        });
         expect(
           canvas.queryByRole("list", { name: "검색목록" })
         ).not.toBeInTheDocument();

@@ -5,7 +5,12 @@ import ProfileDropdown from "@ui/Header/ProfileDropdown";
 import { auth } from "@/auth";
 
 async function ProfileMenu() {
-  const session = await auth();
+  /**@note storybook 과의 호환성을 위해 에러처리 함 (storybook 단독으로 auth()시 에러) */
+  try {
+    var session = await auth();
+  } catch {
+    session = null;
+  }
 
   return (
     <Menu>
