@@ -39,6 +39,31 @@ export async function create() {
     .execute();
 
   await db.schema
+    .createTable("Session")
+    .addColumn("id", "uuid", (col) =>
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
+    )
+    .addColumn("userId", "uuid", (col) =>
+      col.references("User.id").onDelete("cascade").notNull()
+    )
+    .addColumn("sessionToken", "text", (col) => col.notNull().unique())
+    .addColumn("expires", "timestamptz", (col) => col.notNull())
+    .execute();
+
+  await db.schema
+    .createTable("VerificationToken")
+    .addColumn("identifier", "text", (col) => col.notNull())
+    .addColumn("token", "text", (col) => col.notNull().unique())
+    .addColumn("expires", "timestamptz", (col) => col.notNull())
+    .execute();
+
+  await db.schema
+    .createIndex("Session_userId_index")
+    .on("Session")
+    .column("userId")
+    .execute();
+
+  await db.schema
     .createTable("Post")
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
@@ -100,6 +125,8 @@ export async function create() {
 export async function drop() {
   await db.schema.dropTable("Comment").ifExists().execute();
   await db.schema.dropTable("Post").ifExists().execute();
+  await db.schema.dropTable("Session").ifExists().execute();
+  await db.schema.dropTable("VerificationToken").ifExists().execute();
   await db.schema.dropTable("Account").ifExists().execute();
   await db.schema.dropTable("User").ifExists().execute();
 

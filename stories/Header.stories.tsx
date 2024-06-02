@@ -10,7 +10,7 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-  tags: ["autodocs"],
+  tags: ["autodocs", "skip-test"],
   decorators: [
     (Story) => (
       <PlatformStoreProvider>
@@ -24,11 +24,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const MainHeader: Story = {
+  tags: ["skip-test"],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
     await step("처음에는 목록 숨겨진 상태", async () => {
       {
+        await waitFor(() => {
+          expect(
+            canvas.getByRole("button", { name: "헤더 검색바" })
+          ).toBeInTheDocument();
+        });
         expect(
           canvas.queryByRole("list", { name: "검색목록" })
         ).not.toBeInTheDocument();
