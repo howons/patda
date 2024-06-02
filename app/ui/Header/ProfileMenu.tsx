@@ -2,7 +2,11 @@ import { Menu, MenuButton, Transition } from "@headlessui/react";
 import { IoPersonCircleOutline } from "@react-icons/all-files/io5/IoPersonCircleOutline";
 import ProfileDropdown from "@ui/Header/ProfileDropdown";
 
-function ProfileMenu() {
+import { auth } from "@/auth";
+
+async function ProfileMenu() {
+  const session = await auth();
+
   return (
     <Menu>
       <MenuButton className="size-12 rounded-full">
@@ -15,7 +19,7 @@ function ProfileMenu() {
         leave="duration-300 ease-out"
         leaveFrom="scale-100 opacity-100"
         leaveTo="scale-95 opacity-0">
-        <ProfileDropdown />
+        <ProfileDropdown session={session} />
       </Transition>
     </Menu>
   );
