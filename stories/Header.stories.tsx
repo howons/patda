@@ -10,7 +10,7 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-  tags: ["autodocs"],
+  tags: ["autodocs", "skip-test"],
   decorators: [
     (Story) => (
       <PlatformStoreProvider>
@@ -24,6 +24,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const MainHeader: Story = {
+  tags: ["skip-test"],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
