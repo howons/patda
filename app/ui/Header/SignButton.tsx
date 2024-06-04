@@ -1,5 +1,5 @@
-import { MenuItem } from "@headlessui/react";
 import { IoLogOutOutline } from "@react-icons/all-files/io5/IoLogOutOutline";
+import MenuItemButton from "@ui/Header/MenuItemButton";
 
 import { signIn, signOut } from "@/auth";
 import GoogleLogo from "@/public/google.svg";
@@ -41,27 +41,24 @@ function SignButton({
 
   return (
     <form action={submitAction.bind(null, id)}>
-      <MenuItem>
-        <button
-          type="submit"
-          className="flex h-8 w-full items-center rounded-lg p-6 data-[focus]:bg-gray-400/30">
-          {isSignout ? (
+      <MenuItemButton type="submit">
+        {isSignout ? (
+          <>
             <IoLogOutOutline className={`fill-gray-700 ${svgStyle}`} />
-          ) : (
-            ProviderLogo[id]
-          )}
-          {isSignout ? (
             <span>로그아웃</span>
-          ) : (
+          </>
+        ) : (
+          <>
+            {ProviderLogo[id]}
             <span>
               <b className={`${providerColorStyle[id] ?? ""}`}>
                 {providerNameKR[id] ?? name}
               </b>
               로 로그인하기
             </span>
-          )}
-        </button>
-      </MenuItem>
+          </>
+        )}
+      </MenuItemButton>
     </form>
   );
 }

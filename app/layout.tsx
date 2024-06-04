@@ -21,7 +21,9 @@ export default function RootLayout({
     <html lang="en" className="overflow-x-hidden">
       <body className={nanumGoth.className}>
         <PlatformStoreProvider>
-          {children}
+          <main className="flex min-h-screen w-screen max-w-full flex-col items-center pb-28 pt-14">
+            {children}
+          </main>
           <Header />
         </PlatformStoreProvider>
       </body>
