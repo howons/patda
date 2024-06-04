@@ -1,7 +1,7 @@
 import { MenuHeading, MenuItems, MenuSection } from "@headlessui/react";
 import { BiDoorOpen } from "@react-icons/all-files/bi/BiDoorOpen";
-import MenuItemButton from "@ui/Header/MenuItemButton";
-import SignButton from "@ui/Header/SignButton";
+import MenuItemButton from "@ui/Header/Profile/MenuItemButton";
+import SignButton from "@ui/Header/Profile/SignButton";
 import Link from "next/link";
 import { Session } from "next-auth";
 import { forwardRef } from "react";

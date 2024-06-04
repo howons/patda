@@ -1,11 +1,11 @@
-import { Menu, MenuButton, Transition } from "@headlessui/react";
-import { IoPersonCircleOutline } from "@react-icons/all-files/io5/IoPersonCircleOutline";
-import ProfileDropdown from "@ui/Header/ProfileDropdown";
+import { Menu, Transition } from "@headlessui/react";
+import ProfileDropdown from "@ui/Header/Profile/ProfileDropdown";
+import ProfileMenuButton from "@ui/Header/Profile/ProfileMenuButton";
 
 import { auth } from "@/auth";
 
 async function ProfileMenu() {
-  /**@note storybook 과의 호환성을 위해 에러처리 함 (storybook 단독으로 auth()시 에러) */
+  /**@note storybook 과의 호환성을 위해 에러처리 함 (storybook 단독으로 await auth()시 에러) */
   try {
     var session = await auth();
   } catch {
@@ -14,9 +14,7 @@ async function ProfileMenu() {
 
   return (
     <Menu>
-      <MenuButton className="size-12 rounded-full">
-        <IoPersonCircleOutline className="size-full" />
-      </MenuButton>
+      <ProfileMenuButton session={session} />
       <Transition
         enter="duration-200 ease-out"
         enterFrom="scale-95 opacity-0"

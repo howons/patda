@@ -1,5 +1,5 @@
 import { IoLogOutOutline } from "@react-icons/all-files/io5/IoLogOutOutline";
-import MenuItemButton from "@ui/Header/MenuItemButton";
+import MenuItemButton from "@ui/Header/Profile/MenuItemButton";
 
 import { signIn, signOut } from "@/auth";
 import GoogleLogo from "@/public/google.svg";
