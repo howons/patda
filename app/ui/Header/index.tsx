@@ -12,9 +12,7 @@ function Header() {
         <Logo className="size-12 shrink-0" />
         <LogoText />
       </Link>
-      <div className="relative h-full grow">
-        <HeaderSearch />
-      </div>
+      <HeaderSearch className="relative h-full grow" />
       <ProfileMenu />
     </div>
   );
