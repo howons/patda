@@ -1,11 +1,13 @@
 import { MenuItem } from "@headlessui/react";
-import { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import { ButtonHTMLAttributes, ElementType, PropsWithChildren } from "react";
+
+interface MenuItemButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
 function MenuItemButton({
   children,
   className,
   ...props
-}: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>) {
+}: PropsWithChildren<MenuItemButtonProps>) {
   return (
     <MenuItem>
       <button

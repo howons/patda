@@ -1,5 +1,8 @@
 import { MenuHeading, MenuItems, MenuSection } from "@headlessui/react";
+import { BiDoorOpen } from "@react-icons/all-files/bi/BiDoorOpen";
+import MenuItemButton from "@ui/Header/MenuItemButton";
 import SignButton from "@ui/Header/SignButton";
+import Link from "next/link";
 import { Session } from "next-auth";
 import { forwardRef } from "react";
 
@@ -22,6 +25,12 @@ const ProfileDropdown = forwardRef<HTMLDivElement, ProfileDropdownProps>(
             <MenuHeading className="mb-2 text-sm opacity-50">
               {session.user.name} 님
             </MenuHeading>
+            <Link href="/profile">
+              <MenuItemButton>
+                <BiDoorOpen className={`mr-3 size-6 fill-gray-700`} />
+                <span>마이페이지</span>
+              </MenuItemButton>
+            </Link>
             <SignButton isSignout />
           </MenuSection>
         ) : (
