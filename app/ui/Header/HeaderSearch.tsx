@@ -32,13 +32,15 @@ function HeaderSearch({ className = "", ...props }: HeaderSearchProps) {
     };
 
   const popoverDefaultStyle =
-    "flex h-14 flex-col items-center overflow-hidden transition-all duration-300";
+    "flex w-full h-14 flex-col items-center overflow-hidden transition-all duration-300";
   const popoverOpenStyle =
     "data-[open]:h-[70vh] data-[open]:pb-16 data-[open]:shadow-2xl data-[open]:rounded-b-2xl";
+  const popOverLgOpenStyle =
+    "max-sm:data-[open]:-translate-x-12 max-sm:data-[open]:w-full-plus-6rem";
 
   return (
     <Popover
-      className={`${popoverDefaultStyle} ${popoverOpenStyle} ${className}`}
+      className={`${popoverDefaultStyle} ${popoverOpenStyle} ${popOverLgOpenStyle} ${className}`}
       {...props}>
       {({ open }) => (
         <SearchStoreProvider>
@@ -56,7 +58,7 @@ function HeaderSearch({ className = "", ...props }: HeaderSearchProps) {
             leave="duration-200 ease-out"
             leaveFrom="scale-100 opacity-100 translate-y-16"
             leaveTo="scale-75 opacity-0 translate-y-0">
-            <PopoverPanel className="w-full min-w-64 max-w-[40rem] shrink grow origin-top overflow-scroll">
+            <PopoverPanel className="w-full min-w-64 max-w-[40rem] shrink grow origin-top overflow-y-scroll">
               <SearchList />
             </PopoverPanel>
           </Transition>

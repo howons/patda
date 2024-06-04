@@ -16,6 +16,9 @@ const config: Config = {
       screens: {
         cs: "0px",
       },
+      width: {
+        "full-plus-6rem": "calc(100% + 6rem)",
+      },
     },
   },
   plugins: [],
