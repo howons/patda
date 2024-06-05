@@ -31,7 +31,7 @@ function SearchListItem({
   };
 
   return (
-    <li className={platformStyle[platform]}>
+    <li className={`shrink-0 ${platformStyle[platform]}`}>
       <Link href={""} className={defaultStyle}>
         <Thumbnail
           platform={platform}
