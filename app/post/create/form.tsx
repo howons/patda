@@ -8,10 +8,16 @@ import {
   Legend,
   Textarea,
 } from "@headlessui/react";
+import { createPost, type FormValues } from "@lib/actions/postCreateAction";
+import { useActionState } from "react";
+import { useForm } from "react-hook-form";
 
 function PostCreateForm() {
+  const [state, formAction] = useActionState(createPost, null);
+  const { register } = useForm<FormValues>();
+
   return (
-    <form>
+    <form action={formAction}>
       <Fieldset>
         <Legend>중고거래 진상 박제</Legend>
         <div>
@@ -20,12 +26,12 @@ function PostCreateForm() {
           </Field>
           <Field>
             <Label>상대 닉네임</Label>
-            <Input type="text" name="targetNickname" />
+            <Input type="text" {...register("targetNickname")} />
           </Field>
         </div>
         <Field>
           <Label>사유</Label>
-          <Input type="hidden" name="tags" />
+          <Input type="hidden" {...register("tags")} />
         </Field>
         <Field>
           <Label>스크린샷</Label>
@@ -33,7 +39,7 @@ function PostCreateForm() {
         </Field>
         <Field>
           <Label>상세 설명</Label>
-          <Textarea name="content" />
+          <Textarea {...register("content")} />
         </Field>
       </Fieldset>
       <button>임시 저장</button>
