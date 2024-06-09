@@ -1,8 +1,8 @@
 "use client";
 
-import { Field, Fieldset, Label, Legend, Textarea } from "@headlessui/react";
+import { Field, Fieldset, Textarea } from "@headlessui/react";
 import { createPost, type FormValues } from "@lib/actions/postCreateAction";
-import Input from "@ui/formItems/Input";
+import { Input, Label, Legend } from "@ui/formItems";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 
