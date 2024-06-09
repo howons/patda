@@ -1,19 +1,13 @@
 "use client";
 
-import {
-  Field,
-  Fieldset,
-  Input,
-  Label,
-  Legend,
-  Textarea,
-} from "@headlessui/react";
+import { Field, Fieldset, Label, Legend, Textarea } from "@headlessui/react";
 import { createPost, type FormValues } from "@lib/actions/postCreateAction";
-import { useActionState } from "react";
+import Input from "@ui/formItems/Input";
+import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 
 function PostCreateForm() {
-  const [state, formAction] = useActionState(createPost, null);
+  const [state, formAction] = useFormState(createPost, null);
   const { register } = useForm<FormValues>();
 
   return (
