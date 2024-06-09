@@ -15,10 +15,10 @@ function Legend({
   const platform = usePlatformStore((store) => store.platform);
 
   const platformStyles: { [key in Platform]: string } = {
-    daangn: "text-orange-700",
-    bunjang: "text-red-700",
-    joongna: "text-green-700",
-    etc: "text-zinc-700",
+    daangn: "text-orange-600",
+    bunjang: "text-red-600",
+    joongna: "text-green-600",
+    etc: "text-zinc-600",
   };
 
   const defaultStyle = "font-bold text-2xl";

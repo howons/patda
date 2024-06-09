@@ -27,10 +27,10 @@ function Label({
   };
 
   const platformStyles: { [key in Platform]: string } = {
-    daangn: "text-orange-600",
-    bunjang: "text-red-600",
-    joongna: "text-green-600",
-    etc: "text-zinc-600",
+    daangn: "text-orange-500",
+    bunjang: "text-red-500",
+    joongna: "text-green-500",
+    etc: "text-zinc-500",
   };
 
   const defaultStyle = "font-bold";
