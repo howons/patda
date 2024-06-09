@@ -1,8 +1,9 @@
 "use client";
 
-import { Field, Fieldset, Textarea } from "@headlessui/react";
+import { Field, Fieldset } from "@headlessui/react";
 import { createPost, type FormValues } from "@lib/actions/postCreateAction";
-import { Input, Label, Legend } from "@ui/formItems";
+import { Input, Label, Legend, Textarea } from "@ui/formItems";
+import FormButton from "@ui/formItems/FormButton";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 
@@ -11,18 +12,20 @@ function PostCreateForm() {
   const { register } = useForm<FormValues>();
 
   return (
-    <form action={formAction}>
-      <Fieldset className="space-y-3">
-        <Legend className="mt-8">중고거래 진상 박제하기</Legend>
-        <div>
-          <Field>
+    <form
+      action={formAction}
+      className="flex w-3/5 min-w-96 max-w-3xl grow flex-col justify-between">
+      <Fieldset className="space-y-6">
+        <Legend className="mt-8">중고거래 진상 박제글 작성</Legend>
+        <div className="flex justify-between gap-3">
+          <Field className="flex-1">
             <Label>거래 플랫폼</Label>
           </Field>
-          <Field>
+          <Field className="flex-1">
             <Label>상대 닉네임</Label>
             <Input
               type="text"
-              className="block"
+              className="block w-full"
               {...register("targetNickname")}
             />
           </Field>
@@ -37,11 +40,18 @@ function PostCreateForm() {
         </Field>
         <Field>
           <Label>상세 설명</Label>
-          <Textarea {...register("content")} />
+          <Textarea
+            className="block w-full resize-y"
+            {...register("content")}
+          />
         </Field>
       </Fieldset>
-      <button>임시 저장</button>
-      <button type="submit">작성</button>
+      <div className="mt-6 flex justify-end gap-6">
+        <FormButton>임시 저장</FormButton>
+        <FormButton type="submit" theme="primary">
+          작성
+        </FormButton>
+      </div>
     </form>
   );
 }
