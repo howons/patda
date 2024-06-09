@@ -19,6 +19,21 @@ const config: Config = {
       width: {
         "full-plus-6rem": "calc(100% + 6rem)",
       },
+      animation: {
+        swing: "swing 1s infinite",
+      },
+      keyframes: {
+        swing: {
+          "0%, 100%": {
+            transform: "rotate(0deg)",
+            "animation-timing-function": "cubic-bezier(0.8, 0, 1, 1)",
+          },
+          "25%": {
+            transform: "rotate(70deg)",
+            "animation-timing-function": "cubic-bezier(0, 0, 0.2, 1)",
+          },
+        },
+      },
     },
   },
   plugins: [],

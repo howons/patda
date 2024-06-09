@@ -7,6 +7,8 @@ import FormButton from "@ui/formItems/FormButton";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 
+import Logo from "@/public/당근빳다.svg";
+
 function PostCreateForm() {
   const [state, formAction] = useFormState(createPost, null);
   const { register } = useForm<FormValues>();
@@ -16,7 +18,10 @@ function PostCreateForm() {
       action={formAction}
       className="flex w-3/5 min-w-96 max-w-3xl grow flex-col justify-between">
       <Fieldset className="space-y-6">
-        <Legend className="mt-8">중고거래 진상 박제글 작성</Legend>
+        <Legend className="group mt-8 flex">
+          중고거래 진상 박제글 작성
+          <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
+        </Legend>
         <div className="flex justify-between gap-3">
           <Field className="flex-1">
             <Label>거래 플랫폼</Label>
