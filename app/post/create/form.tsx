@@ -12,15 +12,19 @@ function PostCreateForm() {
 
   return (
     <form action={formAction}>
-      <Fieldset>
-        <Legend>중고거래 진상 박제</Legend>
+      <Fieldset className="space-y-3">
+        <Legend className="mt-8">중고거래 진상 박제하기</Legend>
         <div>
           <Field>
             <Label>거래 플랫폼</Label>
           </Field>
           <Field>
             <Label>상대 닉네임</Label>
-            <Input type="text" {...register("targetNickname")} />
+            <Input
+              type="text"
+              className="block"
+              {...register("targetNickname")}
+            />
           </Field>
         </div>
         <Field>
