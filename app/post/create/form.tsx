@@ -2,16 +2,47 @@
 
 import { Field, Fieldset } from "@headlessui/react";
 import { createPost, type FormValues } from "@lib/actions/postCreateAction";
+import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
+import { Platform } from "@lib/types/property";
 import { Input, Label, Legend, Textarea } from "@ui/formItems";
 import FormButton from "@ui/formItems/FormButton";
+import Select from "@ui/formItems/Select";
+import { ChangeEvent, useCallback } from "react";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 
 import Logo from "@/public/당근빳다.svg";
 
+const platformOptions: { name: string; value: Platform }[] = [
+  {
+    name: "당근",
+    value: "daangn",
+  },
+  {
+    name: "번개장터",
+    value: "bunjang",
+  },
+  {
+    name: "중고나라",
+    value: "joongna",
+  },
+  {
+    name: "기타",
+    value: "etc",
+  },
+];
+
 function PostCreateForm() {
   const [state, formAction] = useFormState(createPost, null);
   const { register } = useForm<FormValues>();
+  const updatePlatform = usePlatformStore((store) => store.updatePlatform);
+
+  const handleSelectChange = useCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      updatePlatform(e.target.value as Platform);
+    },
+    [updatePlatform]
+  );
 
   return (
     <form
@@ -25,6 +56,11 @@ function PostCreateForm() {
         <div className="flex justify-between gap-3">
           <Field className="flex-1">
             <Label>거래 플랫폼</Label>
+            <Select
+              options={platformOptions}
+              className="block"
+              {...register("platform", { onChange: handleSelectChange })}
+            />
           </Field>
           <Field className="flex-1">
             <Label>상대 닉네임</Label>
