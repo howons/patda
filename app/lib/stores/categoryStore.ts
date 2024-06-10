@@ -3,7 +3,7 @@ import { createStore } from "zustand/vanilla";
 
 export type CategoryState = {
   direction: CategoryDirection;
-  isActive: Boolean;
+  isActive: boolean;
 };
 
 export type CategoryActions = {
