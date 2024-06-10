@@ -1,6 +1,6 @@
 "use client";
 
-import { BANNER_IMAGES } from "@lib/constants/ banner";
+import { BANNER_IMAGES } from "@lib/constants/banner";
 import { Dispatch, HTMLAttributes, MouseEvent, SetStateAction } from "react";
 
 interface SliderButtonProps extends HTMLAttributes<HTMLDivElement> {
