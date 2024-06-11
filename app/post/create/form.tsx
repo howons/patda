@@ -2,10 +2,13 @@
 
 import { Field, Fieldset } from "@headlessui/react";
 import { createPost, type FormValues } from "@lib/actions/postCreateAction";
+import { PLATFORM_NAME } from "@lib/constants/platform";
+import { TAG_DESC, TAG_NAMES } from "@lib/constants/tag";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
+import { Platform, TagId } from "@lib/types/property";
 import { Input, Label, Legend, Textarea } from "@ui/formItems";
 import FormButton from "@ui/formItems/FormButton";
+import RadioTabs from "@ui/formItems/RadioTabs";
 import Select from "@ui/formItems/Select";
 import { ChangeEvent, useCallback } from "react";
 import { useFormState } from "react-dom";
@@ -13,24 +16,15 @@ import { useForm } from "react-hook-form";
 
 import Logo from "@/public/당근빳다.svg";
 
-const platformOptions: { name: string; value: Platform }[] = [
-  {
-    name: "당근",
-    value: "daangn",
-  },
-  {
-    name: "번개장터",
-    value: "bunjang",
-  },
-  {
-    name: "중고나라",
-    value: "joongna",
-  },
-  {
-    name: "기타",
-    value: "etc",
-  },
-];
+const platformOptions = Object.entries(PLATFORM_NAME).map(([id, name]) => ({
+  name,
+  value: id as Platform,
+}));
+const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
+  id: id as TagId,
+  name,
+  description: TAG_DESC[id as TagId],
+}));
 
 function PostCreateForm() {
   const [state, formAction] = useFormState(createPost, null);
@@ -73,7 +67,11 @@ function PostCreateForm() {
         </div>
         <Field>
           <Label>사유</Label>
-          <Input type="hidden" {...register("tags")} />
+          <RadioTabs<TagId>
+            name="tags"
+            defaultValue="others"
+            items={tagOptions}
+          />
         </Field>
         <Field>
           <Label>스크린샷</Label>
