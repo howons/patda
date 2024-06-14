@@ -28,7 +28,7 @@ function RadioTabs<ItemType extends string>({
     "grid grid-cols-autofit-48 gap-3 box-border cursor-pointer";
   const itemDefaultStyle = "rounded-md border";
   const labelDefaultStyle =
-    "rounded-tl-md rounded-br-md py-1 px-2 border inline-block";
+    "rounded-tl-md rounded-br-md py-1 px-2 border inline-block cursor-pointer";
 
   const platformStyles: { [key in Platform]: string } = {
     daangn: "border-orange-400",

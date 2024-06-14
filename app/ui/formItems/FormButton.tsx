@@ -46,6 +46,12 @@ function FormButton({
 
   const logoDefaultStyle =
     "absolute -bottom-2 -left-4 size-8 origin-[25%_75%] -rotate-45 opacity-70";
+  const logoPlatformStyles: { [key in Platform]: string } = {
+    daangn: isPrimary ? "fill-orange-100" : "fill-orange-400",
+    bunjang: isPrimary ? "fill-red-100" : "fill-red-400",
+    joongna: isPrimary ? "fill-green-100" : "fill-green-400",
+    etc: isPrimary ? "fill-zinc-100" : "fill-zinc-400",
+  };
 
   return (
     <Button
@@ -53,7 +59,7 @@ function FormButton({
       className={`${defaultStyle} ${platformStyles[platform]} ${className}`}
       {...props}>
       <Logo
-        className={`${logoDefaultStyle} ${isPrimary ? "fill-orange-100" : ""} ${isLoading ? "animate-swing-vert" : ""}`}
+        className={`${logoDefaultStyle} ${logoPlatformStyles[platform]} ${isLoading ? "animate-swing-vert" : ""}`}
       />
       {children}
     </Button>
