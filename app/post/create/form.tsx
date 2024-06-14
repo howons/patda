@@ -41,7 +41,7 @@ function PostCreateForm() {
   return (
     <form
       action={formAction}
-      className="flex w-3/5 min-w-96 max-w-3xl grow flex-col justify-between">
+      className="flex w-5/6 min-w-[22rem] max-w-3xl grow flex-col justify-between md:w-4/6">
       <Fieldset className="space-y-6">
         <Legend className="group mt-8 flex">
           중고거래 진상 박제글 작성

@@ -19,6 +19,9 @@ const config: Config = {
       width: {
         "full-plus-6rem": "calc(100% + 6rem)",
       },
+      gridTemplateColumns: {
+        "autofit-48": "repeat(auto-fit, minmax(12rem, auto))",
+      },
       animation: {
         swing: "swing 1s infinite",
       },
