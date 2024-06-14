@@ -24,6 +24,7 @@ const config: Config = {
       },
       animation: {
         swing: "swing 1s infinite",
+        "swing-vert": "swing-vert 1s infinite",
       },
       keyframes: {
         swing: {
@@ -33,6 +34,16 @@ const config: Config = {
           },
           "25%": {
             transform: "rotate(70deg)",
+            "animation-timing-function": "cubic-bezier(0, 0, 0.2, 1)",
+          },
+        },
+        "swing-vert": {
+          "0%, 100%": {
+            transform: "rotate(-45deg)",
+            "animation-timing-function": "cubic-bezier(0.8, 0, 1, 1)",
+          },
+          "25%": {
+            transform: "rotate(35deg)",
             "animation-timing-function": "cubic-bezier(0, 0, 0.2, 1)",
           },
         },

@@ -10,7 +10,7 @@ import { Input, Label, Legend, Textarea } from "@ui/formItems";
 import FormButton from "@ui/formItems/FormButton";
 import RadioTabs from "@ui/formItems/RadioTabs";
 import Select from "@ui/formItems/Select";
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 
@@ -27,9 +27,11 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
 }));
 
 function PostCreateForm() {
-  const [state, formAction] = useFormState(createPost, null);
-  const { register } = useForm<FormValues>();
+  const [saveLoading, setSaveLoading] = useState(false);
   const updatePlatform = usePlatformStore((store) => store.updatePlatform);
+
+  const { register } = useForm<FormValues>();
+  const [state, formAction] = useFormState(createPost, null);
 
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
@@ -86,7 +88,14 @@ function PostCreateForm() {
         </Field>
       </Fieldset>
       <div className="mt-6 flex justify-end gap-6">
-        <FormButton>임시 저장</FormButton>
+        <FormButton
+          loading={saveLoading}
+          onClick={() => {
+            setSaveLoading(true);
+            setTimeout(() => setSaveLoading(false), 3000);
+          }}>
+          임시 저장
+        </FormButton>
         <FormButton type="submit" theme="primary">
           작성
         </FormButton>

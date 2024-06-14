@@ -4,21 +4,31 @@ import { Button } from "@headlessui/react";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { Platform } from "@lib/types/property";
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import { useFormStatus } from "react-dom";
+
+import Logo from "@/public/당근빳다.svg";
 
 interface FormButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   theme?: "primary" | "sub";
+  loading?: boolean;
 }
 
 function FormButton({
   theme = "sub",
+  loading,
   className = "",
   children,
   ...props
 }: PropsWithChildren<FormButtonProps>) {
-  const isPrimary = theme === "primary";
-
   const platform = usePlatformStore((store) => store.platform);
+  const { pending } = useFormStatus();
 
+  const isLoading = loading || (props.type === "submit" && pending);
+
+  const defaultStyle =
+    "relative rounded-lg h-12 min-w-28 text-lg text-center font-bold overflow-hidden";
+
+  const isPrimary = theme === "primary";
   const platformStyles: { [key in Platform]: string } = {
     daangn: isPrimary
       ? "bg-orange-400 data-[hover]:bg-orange-300 text-white"
@@ -34,13 +44,17 @@ function FormButton({
       : "bg-zinc-50 data-[hover]:bg-zinc-100 border border-zinc-400 text-zinc-400",
   };
 
-  const defaultStyle =
-    "relative rounded-lg h-12 min-w-28 text-lg text-center font-bold";
+  const logoDefaultStyle =
+    "absolute -bottom-2 -left-4 size-8 origin-[25%_75%] -rotate-45 opacity-70";
 
   return (
     <Button
+      disabled={pending}
       className={`${defaultStyle} ${platformStyles[platform]} ${className}`}
       {...props}>
+      <Logo
+        className={`${logoDefaultStyle} ${isPrimary ? "fill-orange-100" : ""} ${isLoading ? "animate-swing-vert" : ""}`}
+      />
       {children}
     </Button>
   );
