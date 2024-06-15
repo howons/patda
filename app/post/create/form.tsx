@@ -7,6 +7,7 @@ import { TAG_DESC, TAG_NAMES } from "@lib/constants/tag";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { Platform, TagId } from "@lib/types/property";
 import Button from "@ui/Button/Button";
+import CancelButton from "@ui/Button/CancelButton";
 import { Input, Label, Legend, Textarea } from "@ui/formItems";
 import RadioTabs from "@ui/formItems/RadioTabs";
 import Select from "@ui/formItems/Select";
@@ -46,10 +47,13 @@ function PostCreateForm() {
       action={formAction}
       className="flex w-5/6 min-w-[22rem] max-w-3xl grow flex-col justify-between md:w-4/6">
       <Fieldset className="space-y-6">
-        <Legend className="group mt-8 flex">
-          중고거래 진상 박제글 작성
-          <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
-        </Legend>
+        <div className="mt-8 flex items-center justify-between">
+          <Legend className="group flex">
+            중고거래 진상 박제글 작성
+            <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
+          </Legend>
+          <CancelButton />
+        </div>
         <div className="flex justify-between gap-3">
           <Field className="flex-1">
             <Label>거래 플랫폼</Label>
