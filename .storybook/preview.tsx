@@ -15,6 +15,7 @@ const preview: Preview = {
       },
     },
   },
+
   decorators: [
     (Story) => (
       <main className={nanumGoth.className} data-testid="screen">
@@ -22,6 +23,8 @@ const preview: Preview = {
       </main>
     ),
   ],
+
+  tags: ["autodocs"],
 };
 
 export default preview;

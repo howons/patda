@@ -1,4 +1,4 @@
-import { BANNER_IMAGES } from "@lib/constants/ banner";
+import { BANNER_IMAGES } from "@lib/constants/banner";
 import Image from "next/image";
 import { HTMLAttributes } from "react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { BANNER_IMAGES } from "@lib/constants/ banner";
+import { BANNER_IMAGES } from "@lib/constants/banner";
 import ImageContainer from "@ui/Banner/ImageContainer";
 import SliderButton from "@ui/Banner/SliderButton";
 import { HTMLAttributes, useEffect, useRef, useState } from "react";

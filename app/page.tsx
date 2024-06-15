@@ -1,4 +1,5 @@
 import Banner from "@ui/Banner";
+import CreateButton from "@ui/Button/CreateButton";
 import Search from "@ui/Search";
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
     <>
       <Banner className="mb-8" />
       <Search className="mt-6 w-full px-4" />
+      <CreateButton classname="fixed bottom-5 right-5" />
     </>
   );
 }
