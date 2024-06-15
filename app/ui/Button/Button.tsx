@@ -1,29 +1,25 @@
 "use client";
 
-import { Button } from "@headlessui/react";
+import { Button as HeadlessButton } from "@headlessui/react";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { Platform } from "@lib/types/property";
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
-import { useFormStatus } from "react-dom";
 
 import Logo from "@/public/당근빳다.svg";
 
-interface FormButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   theme?: "primary" | "sub";
   loading?: boolean;
 }
 
-function FormButton({
+function Button({
   theme = "sub",
   loading,
   className = "",
   children,
   ...props
-}: PropsWithChildren<FormButtonProps>) {
+}: PropsWithChildren<ButtonProps>) {
   const platform = usePlatformStore((store) => store.platform);
-  const { pending } = useFormStatus();
-
-  const isLoading = loading || (props.type === "submit" && pending);
 
   const defaultStyle =
     "relative rounded-lg h-12 min-w-28 text-lg text-center font-bold overflow-hidden";
@@ -54,16 +50,16 @@ function FormButton({
   };
 
   return (
-    <Button
-      disabled={pending}
+    <HeadlessButton
+      disabled={loading}
       className={`${defaultStyle} ${platformStyles[platform]} ${className}`}
       {...props}>
       <Logo
-        className={`${logoDefaultStyle} ${logoPlatformStyles[platform]} ${isLoading ? "animate-swing-vert" : ""}`}
+        className={`${logoDefaultStyle} ${logoPlatformStyles[platform]} ${loading ? "animate-swing-vert" : ""}`}
       />
       {children}
-    </Button>
+    </HeadlessButton>
   );
 }
 
-export default FormButton;
+export default Button;

@@ -6,10 +6,11 @@ import { PLATFORM_NAME } from "@lib/constants/platform";
 import { TAG_DESC, TAG_NAMES } from "@lib/constants/tag";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { Platform, TagId } from "@lib/types/property";
+import Button from "@ui/Button/Button";
 import { Input, Label, Legend, Textarea } from "@ui/formItems";
-import FormButton from "@ui/formItems/FormButton";
 import RadioTabs from "@ui/formItems/RadioTabs";
 import Select from "@ui/formItems/Select";
+import SubmitButton from "@ui/formItems/SubmitButton";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -88,17 +89,15 @@ function PostCreateForm() {
         </Field>
       </Fieldset>
       <div className="mt-6 flex justify-end gap-6">
-        <FormButton
+        <Button
           loading={saveLoading}
           onClick={() => {
             setSaveLoading(true);
             setTimeout(() => setSaveLoading(false), 3000);
           }}>
           임시 저장
-        </FormButton>
-        <FormButton type="submit" theme="primary">
-          작성
-        </FormButton>
+        </Button>
+        <SubmitButton>작성</SubmitButton>
       </div>
     </form>
   );
