@@ -1,5 +1,5 @@
 import Banner from "@ui/Banner";
-import CreateButton from "@ui/CreateButton/CreateButton";
+import CreateButton from "@ui/Button/CreateButton";
 import Search from "@ui/Search";
 
 export default function Home() {
