@@ -1,5 +1,6 @@
 import HeaderSearch from "@ui/Header/HeaderSearch";
 import LogoText from "@ui/Header/LogoText";
+import PostCreateButton from "@ui/Header/PostCreateButton";
 import ProfileMenu from "@ui/Header/Profile/ProfileMenu";
 import Link from "next/link";
 
@@ -13,7 +14,10 @@ function Header() {
         <LogoText />
       </Link>
       <HeaderSearch className="relative h-full min-w-0 grow" />
-      <ProfileMenu />
+      <div className="flex items-center gap-4">
+        <PostCreateButton />
+        <ProfileMenu />
+      </div>
     </div>
   );
 }
