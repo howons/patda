@@ -73,7 +73,7 @@ export async function create() {
     )
     .addColumn("platform", "text", (col) => col.notNull())
     .addColumn("targetNickname", "text", (col) => col.notNull())
-    .addColumn("tags", sql`text[]`, (col) => col.notNull())
+    .addColumn("tag", "text", (col) => col.notNull())
     .addColumn("imageUrls", sql`text[]`, (col) => col.notNull())
     .addColumn("content", "text", (col) => col.notNull())
     .addColumn("status", "text", (col) => col.notNull())

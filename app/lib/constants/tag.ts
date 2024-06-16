@@ -1,5 +1,16 @@
 import { TagId } from "@lib/types/property";
 
+export const TAG_ID: { [key: number]: TagId } = [
+  "abuse",
+  "cancel",
+  "attempt",
+  "noShow",
+  "lier",
+  "nego",
+  "noManner",
+  "others",
+] as const;
+
 export const TAG_NAMES: { [key in TagId]: string } = {
   abuse: "안전결제 악용",
   cancel: "일방적 거래 파기",
@@ -9,7 +20,7 @@ export const TAG_NAMES: { [key in TagId]: string } = {
   nego: "과한 네고 요청",
   noManner: "비매너",
   others: "기타",
-};
+} as const;
 
 export const TAG_DESC: { [key in TagId]: string } = {
   abuse:
@@ -22,4 +33,4 @@ export const TAG_DESC: { [key in TagId]: string } = {
   nego: "과한 수준으로 가격을 깎아달라고 요청하는 경우. 직거래 중 네고 요청을 거부하자 거래를 파기한 경우",
   noManner: "비매너스러운 언행을 한 경우",
   others: "기타 거래에 지장을 유발한 경우",
-};
+} as const;

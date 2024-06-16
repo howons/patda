@@ -1,11 +1,13 @@
 "use server";
 
+import { PLATFORM_ID } from "@lib/constants/platform";
+import { TAG_ID } from "@lib/constants/tag";
 import { z } from "zod";
 
 const formSchema = z.object({
-  platform: z.enum(["daangn", "bunjang", "joongna", "etc"]),
+  platform: z.nativeEnum(PLATFORM_ID),
   targetNickname: z.string(),
-  tags: z.array(z.string()),
+  tags: z.nativeEnum(TAG_ID),
   imageUrls: z.array(z.string()),
   content: z.string(),
   anonymousUserNickname: z.string().nullable(),
@@ -23,7 +25,10 @@ export async function createPost(
   prevState: State,
   formData: FormData
 ): Promise<State> {
-  console.log("server action", formData);
+  const input = formSchema.safeParse({
+    platform: formData.get("platform"),
+    targetNickname: formData.get("targetNickname"),
+  });
 
   return {
     status: "success",

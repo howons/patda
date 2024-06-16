@@ -40,7 +40,7 @@ interface Database {
     userId: string | null;
     platform: Platform;
     targetNickname: string;
-    tags: string[];
+    tag: string;
     imageUrls: string[];
     content: string;
     status: PostCommentStatus;
