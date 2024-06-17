@@ -14,7 +14,7 @@ import Select from "@ui/formItems/Select";
 import SubmitButton from "@ui/formItems/SubmitButton";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import Logo from "@/public/당근빳다.svg";
 
@@ -32,7 +32,7 @@ function PostCreateForm() {
   const [saveLoading, setSaveLoading] = useState(false);
   const updatePlatform = usePlatformStore((store) => store.updatePlatform);
 
-  const { register } = useForm<FormValues>();
+  const { register, control } = useForm<FormValues>();
   const [state, formAction] = useFormState(createPost, { status: null });
 
   useEffect(() => {
@@ -78,10 +78,17 @@ function PostCreateForm() {
         </div>
         <Field>
           <Label>사유</Label>
-          <RadioTabs<TagId>
-            name="tags"
-            defaultValue="others"
-            items={tagOptions}
+          <Controller
+            control={control}
+            name="tag"
+            render={({ field }) => (
+              <RadioTabs<TagId>
+                name="tag"
+                defaultValue="others"
+                onChange={field.onChange}
+                items={tagOptions}
+              />
+            )}
           />
         </Field>
         <Field>

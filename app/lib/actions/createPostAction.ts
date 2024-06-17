@@ -25,7 +25,7 @@ export async function createPost(
     platform: formData.get("platform"),
     targetNickname: formData.get("targetNickname"),
     tag: formData.get("tag"),
-    imageUrls: formData.get("imageUrls"),
+    imageUrls: /*formData.get("imageUrls"),*/ [""],
     content: formData.get("content"),
     anonymousUserNickname: formData.get("anonymousUserNickname"),
     etcPlatformName: formData.get("etcPlatformName"),
@@ -38,6 +38,8 @@ export async function createPost(
       fieldErrors,
     };
   }
+
+  console.log(input.data);
 
   return {
     status: "SUCCESS",
