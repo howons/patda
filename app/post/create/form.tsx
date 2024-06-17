@@ -1,7 +1,7 @@
 "use client";
 
 import { Field, Fieldset } from "@headlessui/react";
-import { createPost, type FormValues } from "@lib/actions/postCreateAction";
+import { createPost, type FormValues } from "@lib/actions/createPostAction";
 import { PLATFORM_NAME } from "@lib/constants/platform";
 import { TAG_DESC, TAG_NAMES } from "@lib/constants/tag";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
@@ -12,7 +12,7 @@ import { Input, Label, Legend, Textarea } from "@ui/formItems";
 import RadioTabs from "@ui/formItems/RadioTabs";
 import Select from "@ui/formItems/Select";
 import SubmitButton from "@ui/formItems/SubmitButton";
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 
@@ -34,6 +34,10 @@ function PostCreateForm() {
 
   const { register } = useForm<FormValues>();
   const [state, formAction] = useFormState(createPost, null);
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
 
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
