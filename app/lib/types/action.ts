@@ -9,4 +9,6 @@ export type ActionState =
         [field: string]: string[];
       };
     }
-  | null;
+  | {
+      status: null;
+    };

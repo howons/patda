@@ -33,7 +33,7 @@ function PostCreateForm() {
   const updatePlatform = usePlatformStore((store) => store.updatePlatform);
 
   const { register } = useForm<FormValues>();
-  const [state, formAction] = useFormState(createPost, null);
+  const [state, formAction] = useFormState(createPost, { status: null });
 
   useEffect(() => {
     console.log(state);
