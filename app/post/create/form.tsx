@@ -60,7 +60,7 @@ function PostCreateForm() {
         </div>
         <div className="flex justify-between gap-3">
           <Field className="flex-1">
-            <Label>거래 플랫폼</Label>
+            <Label>거래 사이트</Label>
             <Select
               options={platformOptions}
               className="block"

@@ -5,22 +5,49 @@ import { TAG_ID } from "@lib/constants/tag";
 import { ActionState } from "@lib/types/action";
 import { z } from "zod";
 
-const formSchema = z.object({
-  platform: z.nativeEnum(PLATFORM_ID),
-  targetNickname: z.string(),
-  tag: z.nativeEnum(TAG_ID),
-  imageUrls: z.array(z.string()),
-  content: z.string(),
-  anonymousUserNickname: z.string().nullable(),
-  etcPlatformName: z.string().nullable(),
-});
+import { auth } from "@/auth";
 
-export type FormValues = z.infer<typeof formSchema>;
+const baseSchema = z
+  .object({
+    platform: z.nativeEnum(PLATFORM_ID),
+    targetNickname: z.string().min(1, "상대 닉네임을 적어주세요."),
+    tag: z.nativeEnum(TAG_ID),
+    imageUrls: z.array(z.string()),
+    content: z.string().min(30, "내용은 최소 30자 이상 적어주세요."),
+    anonymousUserNickname: z.string().nullable(),
+    etcPlatformName: z.string().nullable(),
+  })
+  .refine(
+    (data) => {
+      if (data.platform === "etc") {
+        return data.etcPlatformName != null;
+      }
+      return true;
+    },
+    { path: ["etcPlatformName"], message: "거래 사이트의 이름을 적어주세요." }
+  );
+
+export type FormValues = z.infer<typeof baseSchema>;
 
 export async function createPost(
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
+  const session = await auth();
+
+  const formSchema = baseSchema.refine(
+    (data) => {
+      if (!session) {
+        return data.anonymousUserNickname != null;
+      }
+      return true;
+    },
+    {
+      path: ["anonymousUserNickname"],
+      message: "거래 사이트에서 사용하는 본인 닉네임을 적어주세요.",
+    }
+  );
+
   const input = formSchema.safeParse({
     platform: formData.get("platform"),
     targetNickname: formData.get("targetNickname"),
@@ -38,8 +65,6 @@ export async function createPost(
       fieldErrors,
     };
   }
-
-  console.log(input.data);
 
   return {
     status: "SUCCESS",
