@@ -12,6 +12,7 @@ import { Input, Label, Legend, Textarea } from "@ui/formItems";
 import RadioTabs from "@ui/formItems/RadioTabs";
 import Select from "@ui/formItems/Select";
 import SubmitButton from "@ui/formItems/SubmitButton";
+import { Session } from "next-auth";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { Controller, useForm } from "react-hook-form";
@@ -28,7 +29,11 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
   description: TAG_DESC[id as TagId],
 }));
 
-function PostCreateForm() {
+interface PostCreateFormProps {
+  session: Session | null;
+}
+
+function PostCreateForm({ session }: PostCreateFormProps) {
   const [saveLoading, setSaveLoading] = useState(false);
   const { platform, updatePlatform } = usePlatformStore((store) => store);
 
@@ -78,14 +83,26 @@ function PostCreateForm() {
               </Field>
             )}
           </div>
-          <Field className="flex-1">
-            <Label>상대 닉네임</Label>
-            <Input
-              type="text"
-              className="block w-full"
-              {...register("targetNickname")}
-            />
-          </Field>
+          <div className="flex-1">
+            <Field className="flex flex-col">
+              <Label>상대 닉네임</Label>
+              <Input
+                type="text"
+                className="block w-full"
+                {...register("targetNickname")}
+              />
+            </Field>
+            {!session && (
+              <Field className="mt-2 flex flex-col">
+                <Label>본인 닉네임</Label>
+                <Input
+                  type="text"
+                  className="block w-full"
+                  {...register("anonymousUserNickname")}
+                />
+              </Field>
+            )}
+          </div>
         </div>
         <Field>
           <Label>사유</Label>

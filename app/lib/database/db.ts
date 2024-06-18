@@ -43,7 +43,7 @@ export interface Database {
     tag: string;
     imageUrls: string[];
     content: string;
-    status: PostCommentStatus;
+    status: Generated<PostCommentStatus>;
     createdAt: GeneratedAlways<Date>;
     updatedAt: Generated<Date>;
     anonymousUserNickname: string | null;
@@ -55,7 +55,7 @@ export interface Database {
     postId: string;
     imageUrls: string[];
     content: string;
-    status: PostCommentStatus;
+    status: Generated<PostCommentStatus>;
     createdAt: GeneratedAlways<Date>;
     updatedAt: Generated<Date>;
   };

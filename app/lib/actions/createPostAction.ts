@@ -68,12 +68,13 @@ export async function createPost(
     };
   }
 
-  const newPostData: Omit<Database["Post"], "id" | "createdAt" | "updatedAt"> =
-    {
-      userId: session?.user?.id ?? null,
-      status: "normal",
-      ...input.data,
-    };
+  const newPostData: Omit<
+    Database["Post"],
+    "id" | "status" | "createdAt" | "updatedAt"
+  > = {
+    userId: session?.user?.id ?? null,
+    ...input.data,
+  };
 
   try {
     var result = await db
@@ -82,6 +83,7 @@ export async function createPost(
       .returning("id")
       .executeTakeFirstOrThrow();
   } catch (error) {
+    console.error(error);
     if (error instanceof NoResultError) {
       return {
         status: "ERROR_DATABASE",
@@ -90,7 +92,7 @@ export async function createPost(
     } else {
       return {
         status: "ERROR_INTERNAL",
-        error,
+        error: "error",
       };
     }
   }
