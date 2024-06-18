@@ -30,7 +30,7 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
 
 function PostCreateForm() {
   const [saveLoading, setSaveLoading] = useState(false);
-  const updatePlatform = usePlatformStore((store) => store.updatePlatform);
+  const { platform, updatePlatform } = usePlatformStore((store) => store);
 
   const { register, control } = useForm<FormValues>();
   const [state, formAction] = useFormState(createPost, { status: null });
@@ -58,15 +58,26 @@ function PostCreateForm() {
           </Legend>
           <CancelButton />
         </div>
-        <div className="flex justify-between gap-3">
-          <Field className="flex-1">
-            <Label>거래 사이트</Label>
-            <Select
-              options={platformOptions}
-              className="block"
-              {...register("platform", { onChange: handleSelectChange })}
-            />
-          </Field>
+        <div className="flex justify-between gap-7">
+          <div className="flex-1">
+            <Field className="flex flex-col">
+              <Label>거래 사이트</Label>
+              <Select
+                options={platformOptions}
+                className="block"
+                {...register("platform", {
+                  onChange: handleSelectChange,
+                  value: platform,
+                })}
+              />
+            </Field>
+            {platform === "etc" && (
+              <Field className="mt-2 flex flex-col">
+                <Label>사이트 이름</Label>
+                <Input type="text" {...register("etcPlatformName")} />
+              </Field>
+            )}
+          </div>
           <Field className="flex-1">
             <Label>상대 닉네임</Label>
             <Input

@@ -58,6 +58,8 @@ export async function createPost(
     etcPlatformName: formData.get("etcPlatformName"),
   });
 
+  console.log(input.data);
+
   if (!input.success) {
     const { fieldErrors } = input.error.flatten();
     return {
