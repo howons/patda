@@ -2,7 +2,9 @@
 
 import { PLATFORM_ID } from "@lib/constants/platform";
 import { TAG_ID } from "@lib/constants/tag";
+import { Database, db } from "@lib/database/db";
 import { ActionState } from "@lib/types/action";
+import { NoResultError } from "kysely";
 import { z } from "zod";
 
 import { auth } from "@/auth";
@@ -58,8 +60,6 @@ export async function createPost(
     etcPlatformName: formData.get("etcPlatformName"),
   });
 
-  console.log(input.data);
-
   if (!input.success) {
     const { fieldErrors } = input.error.flatten();
     return {
@@ -68,8 +68,36 @@ export async function createPost(
     };
   }
 
+  const newPostData: Omit<Database["Post"], "id" | "createdAt" | "updatedAt"> =
+    {
+      userId: session?.user?.id ?? null,
+      status: "normal",
+      ...input.data,
+    };
+
+  try {
+    var result = await db
+      .insertInto("Post")
+      .values(newPostData)
+      .returning("id")
+      .executeTakeFirstOrThrow();
+  } catch (error) {
+    if (error instanceof NoResultError) {
+      return {
+        status: "ERROR_DATABASE",
+        message: "포스트 생성 오류",
+      };
+    } else {
+      return {
+        status: "ERROR_INTERNAL",
+        error,
+      };
+    }
+  }
+
   return {
     status: "SUCCESS",
     message: "포스트 생성 완료",
+    resultId: result.id,
   };
 }
