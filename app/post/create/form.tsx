@@ -1,20 +1,28 @@
 "use client";
 
 import { Field, Fieldset } from "@headlessui/react";
-import { createPost, type FormValues } from "@lib/actions/postCreateAction";
+import { ErrorMessage } from "@hookform/error-message";
+import { createPost, type FormValues } from "@lib/actions/createPostAction";
 import { PLATFORM_NAME } from "@lib/constants/platform";
 import { TAG_DESC, TAG_NAMES } from "@lib/constants/tag";
 import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { Platform, TagId } from "@lib/types/property";
 import Button from "@ui/Button/Button";
 import CancelButton from "@ui/Button/CancelButton";
-import { Input, Label, Legend, Textarea } from "@ui/formItems";
-import RadioTabs from "@ui/formItems/RadioTabs";
-import Select from "@ui/formItems/Select";
-import SubmitButton from "@ui/formItems/SubmitButton";
-import { ChangeEvent, useCallback, useState } from "react";
+import {
+  ErrorText,
+  Input,
+  Label,
+  Legend,
+  RadioTabs,
+  Select,
+  SubmitButton,
+  Textarea,
+} from "@ui/formItems";
+import { Session } from "next-auth";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import Logo from "@/public/당근빳다.svg";
 
@@ -28,12 +36,47 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
   description: TAG_DESC[id as TagId],
 }));
 
-function PostCreateForm() {
-  const [saveLoading, setSaveLoading] = useState(false);
-  const updatePlatform = usePlatformStore((store) => store.updatePlatform);
+interface PostCreateFormProps {
+  session: Session | null;
+}
 
-  const { register } = useForm<FormValues>();
-  const [state, formAction] = useFormState(createPost, null);
+function PostCreateForm({ session }: PostCreateFormProps) {
+  const [saveLoading, setSaveLoading] = useState(false);
+  const { platform, updatePlatform } = usePlatformStore((store) => store);
+
+  const {
+    register,
+    control,
+    formState: { errors },
+    setError,
+    clearErrors,
+    setFocus,
+  } = useForm<FormValues>();
+  const [state, formAction] = useFormState(createPost, { status: null });
+
+  useEffect(() => {
+    if (!state) return;
+
+    if (state.status === "ERROR_VALIDATE") {
+      clearErrors();
+
+      let lastErrorField: keyof FormValues | undefined;
+      Object.entries(state.fieldErrors).forEach(([field, errorMessage]) => {
+        setError(field as keyof FormValues, {
+          message: errorMessage.join(", "),
+        });
+        lastErrorField = field as keyof FormValues;
+      });
+
+      if (lastErrorField) {
+        setFocus(lastErrorField);
+      }
+    }
+
+    if (state.status === "SUCCESS") {
+      alert("post" + state.resultId);
+    }
+  }, [clearErrors, setError, setFocus, state]);
 
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
@@ -54,30 +97,75 @@ function PostCreateForm() {
           </Legend>
           <CancelButton />
         </div>
-        <div className="flex justify-between gap-3">
-          <Field className="flex-1">
-            <Label>거래 플랫폼</Label>
-            <Select
-              options={platformOptions}
-              className="block"
-              {...register("platform", { onChange: handleSelectChange })}
-            />
-          </Field>
-          <Field className="flex-1">
-            <Label>상대 닉네임</Label>
-            <Input
-              type="text"
-              className="block w-full"
-              {...register("targetNickname")}
-            />
-          </Field>
+        <div className="flex justify-between gap-7">
+          <div className="flex-1">
+            <Field className="flex flex-col">
+              <Label>거래 사이트</Label>
+              <Select
+                options={platformOptions}
+                className="block"
+                {...register("platform", {
+                  onChange: handleSelectChange,
+                  value: platform,
+                })}
+              />
+            </Field>
+            {platform === "etc" && (
+              <Field className="mt-2 flex flex-col">
+                <Label>사이트 이름</Label>
+                <Input type="text" {...register("etcPlatformName")} />
+                <ErrorMessage
+                  name="etcPlatformName"
+                  errors={errors}
+                  render={({ message }) => <ErrorText>{message}</ErrorText>}
+                />
+              </Field>
+            )}
+          </div>
+          <div className="flex-1">
+            <Field className="flex flex-col">
+              <Label>상대 닉네임</Label>
+              <Input
+                type="text"
+                className="block w-full"
+                {...register("targetNickname")}
+              />
+              <ErrorMessage
+                name="targetNickname"
+                errors={errors}
+                render={({ message }) => <ErrorText>{message}</ErrorText>}
+              />
+            </Field>
+            {!session && (
+              <Field className="mt-2 flex flex-col">
+                <Label>본인 닉네임</Label>
+                <Input
+                  type="text"
+                  className="block w-full"
+                  {...register("anonymousUserNickname")}
+                />
+                <ErrorMessage
+                  name="anonymousUserNickname"
+                  errors={errors}
+                  render={({ message }) => <ErrorText>{message}</ErrorText>}
+                />
+              </Field>
+            )}
+          </div>
         </div>
         <Field>
           <Label>사유</Label>
-          <RadioTabs<TagId>
-            name="tags"
-            defaultValue="others"
-            items={tagOptions}
+          <Controller
+            control={control}
+            name="tag"
+            render={({ field }) => (
+              <RadioTabs<TagId>
+                name="tag"
+                defaultValue="others"
+                onChange={field.onChange}
+                items={tagOptions}
+              />
+            )}
           />
         </Field>
         <Field>
@@ -88,7 +176,15 @@ function PostCreateForm() {
           <Label>상세 설명</Label>
           <Textarea
             className="block w-full resize-y"
+            required
+            minLength={30}
+            maxLength={1000}
             {...register("content")}
+          />
+          <ErrorMessage
+            name="content"
+            errors={errors}
+            render={({ message }) => <ErrorText>{message}</ErrorText>}
           />
         </Field>
       </Fieldset>

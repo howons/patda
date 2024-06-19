@@ -73,12 +73,16 @@ export async function create() {
     )
     .addColumn("platform", "text", (col) => col.notNull())
     .addColumn("targetNickname", "text", (col) => col.notNull())
-    .addColumn("tags", sql`text[]`, (col) => col.notNull())
+    .addColumn("tag", "text", (col) => col.notNull())
     .addColumn("imageUrls", sql`text[]`, (col) => col.notNull())
     .addColumn("content", "text", (col) => col.notNull())
-    .addColumn("status", "text", (col) => col.notNull())
-    .addColumn("createdAt", "timestamptz", (col) => col.notNull())
-    .addColumn("updatedAt", "timestamptz", (col) => col.notNull())
+    .addColumn("status", "text", (col) => col.defaultTo("normal").notNull())
+    .addColumn("createdAt", "timestamptz", (col) =>
+      col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
+    )
+    .addColumn("updatedAt", "timestamptz", (col) =>
+      col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
+    )
     .addColumn("anonymousUserNickname", "text")
     .addColumn("etcPlatformName", "text")
     .execute();
@@ -103,8 +107,12 @@ export async function create() {
     .addColumn("imageUrls", sql`text[]`, (col) => col.notNull())
     .addColumn("content", "text", (col) => col.notNull())
     .addColumn("status", "text", (col) => col.notNull())
-    .addColumn("createdAt", "timestamptz", (col) => col.notNull())
-    .addColumn("updatedAt", "timestamptz", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) =>
+      col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
+    )
+    .addColumn("updatedAt", "timestamptz", (col) =>
+      col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
+    )
     .execute();
 
   await db.schema

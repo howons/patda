@@ -1,8 +1,8 @@
 import { Platform, PostCommentStatus } from "@lib/types/property";
 import { createKysely } from "@vercel/postgres-kysely";
-import type { GeneratedAlways } from "kysely";
+import type { Generated, GeneratedAlways } from "kysely";
 
-interface Database {
+export interface Database {
   User: {
     id: GeneratedAlways<string>;
     name: string | null;
@@ -40,12 +40,12 @@ interface Database {
     userId: string | null;
     platform: Platform;
     targetNickname: string;
-    tags: string[];
+    tag: string;
     imageUrls: string[];
     content: string;
-    status: PostCommentStatus;
-    createdAt: Date;
-    updatedAt: Date;
+    status: Generated<PostCommentStatus>;
+    createdAt: GeneratedAlways<Date>;
+    updatedAt: Generated<Date>;
     anonymousUserNickname: string | null;
     etcPlatformName: string | null;
   };
@@ -55,9 +55,9 @@ interface Database {
     postId: string;
     imageUrls: string[];
     content: string;
-    status: PostCommentStatus;
-    createdAt: Date;
-    updatedAt: Date;
+    status: Generated<PostCommentStatus>;
+    createdAt: GeneratedAlways<Date>;
+    updatedAt: Generated<Date>;
   };
 }
 
