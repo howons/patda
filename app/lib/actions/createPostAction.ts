@@ -22,7 +22,7 @@ const baseSchema = z
   .refine(
     (data) => {
       if (data.platform === "etc") {
-        return data.etcPlatformName != null;
+        return data.etcPlatformName != null && data.etcPlatformName.length > 0;
       }
       return true;
     },
@@ -40,7 +40,10 @@ export async function createPost(
   const formSchema = baseSchema.refine(
     (data) => {
       if (!session) {
-        return data.anonymousUserNickname != null;
+        return (
+          data.anonymousUserNickname != null &&
+          data.anonymousUserNickname.length > 0
+        );
       }
       return true;
     },

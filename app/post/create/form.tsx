@@ -13,7 +13,7 @@ import RadioTabs from "@ui/formItems/RadioTabs";
 import Select from "@ui/formItems/Select";
 import SubmitButton from "@ui/formItems/SubmitButton";
 import { Session } from "next-auth";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useFormState } from "react-dom";
 import { Controller, useForm } from "react-hook-form";
 
@@ -39,10 +39,6 @@ function PostCreateForm({ session }: PostCreateFormProps) {
 
   const { register, control } = useForm<FormValues>();
   const [state, formAction] = useFormState(createPost, { status: null });
-
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
 
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
@@ -79,7 +75,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
             {platform === "etc" && (
               <Field className="mt-2 flex flex-col">
                 <Label>사이트 이름</Label>
-                <Input type="text" {...register("etcPlatformName")} />
+                <Input type="text" required {...register("etcPlatformName")} />
               </Field>
             )}
           </div>
@@ -89,6 +85,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
               <Input
                 type="text"
                 className="block w-full"
+                required
                 {...register("targetNickname")}
               />
             </Field>
@@ -98,6 +95,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
                 <Input
                   type="text"
                   className="block w-full"
+                  required
                   {...register("anonymousUserNickname")}
                 />
               </Field>
@@ -127,6 +125,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
           <Label>상세 설명</Label>
           <Textarea
             className="block w-full resize-y"
+            required
             {...register("content")}
           />
         </Field>
