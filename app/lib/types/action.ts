@@ -1,3 +1,5 @@
+import { FormValues } from "@lib/actions/createPostAction";
+
 export type ActionState =
   | {
       status: "SUCCESS";
@@ -7,7 +9,7 @@ export type ActionState =
   | {
       status: "ERROR_VALIDATE";
       fieldErrors: {
-        [field: string]: string[];
+        [field in keyof FormValues]?: string[];
       };
     }
   | {

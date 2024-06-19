@@ -1,5 +1,6 @@
 "use server";
 
+import { ERROR } from "@lib/constants/messages";
 import { PLATFORM_ID } from "@lib/constants/platform";
 import { TAG_ID } from "@lib/constants/tag";
 import { Database, db } from "@lib/database/db";
@@ -12,10 +13,10 @@ import { auth } from "@/auth";
 const baseSchema = z
   .object({
     platform: z.nativeEnum(PLATFORM_ID),
-    targetNickname: z.string().min(1, "상대 닉네임을 적어주세요."),
+    targetNickname: z.string().min(1, ERROR.NO_TARGET_NICKNAME),
     tag: z.nativeEnum(TAG_ID),
     imageUrls: z.array(z.string()),
-    content: z.string().min(30, "내용은 최소 30자 이상 적어주세요."),
+    content: z.string().min(30, ERROR.SHORT_CONTENT),
     anonymousUserNickname: z.string().nullable(),
     etcPlatformName: z.string().nullable(),
   })
@@ -26,7 +27,7 @@ const baseSchema = z
       }
       return true;
     },
-    { path: ["etcPlatformName"], message: "거래 사이트의 이름을 적어주세요." }
+    { path: ["etcPlatformName"], message: ERROR.NO_ETC_PLATFORM_NAME }
   );
 
 export type FormValues = z.infer<typeof baseSchema>;
@@ -49,7 +50,7 @@ export async function createPost(
     },
     {
       path: ["anonymousUserNickname"],
-      message: "거래 사이트에서 사용하는 본인 닉네임을 적어주세요.",
+      message: ERROR.NO_USER_NICKNAME,
     }
   );
 
@@ -90,12 +91,12 @@ export async function createPost(
     if (error instanceof NoResultError) {
       return {
         status: "ERROR_DATABASE",
-        message: "포스트 생성 오류",
+        message: ERROR.NO_RESULT_DB,
       };
     } else {
       return {
         status: "ERROR_INTERNAL",
-        error: "error",
+        error: (error as { message: string })?.message ?? "",
       };
     }
   }

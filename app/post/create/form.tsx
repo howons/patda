@@ -1,6 +1,7 @@
 "use client";
 
 import { Field, Fieldset } from "@headlessui/react";
+import { ErrorMessage } from "@hookform/error-message";
 import { createPost, type FormValues } from "@lib/actions/createPostAction";
 import { PLATFORM_NAME } from "@lib/constants/platform";
 import { TAG_DESC, TAG_NAMES } from "@lib/constants/tag";
@@ -8,12 +9,18 @@ import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
 import { Platform, TagId } from "@lib/types/property";
 import Button from "@ui/Button/Button";
 import CancelButton from "@ui/Button/CancelButton";
-import { Input, Label, Legend, Textarea } from "@ui/formItems";
-import RadioTabs from "@ui/formItems/RadioTabs";
-import Select from "@ui/formItems/Select";
-import SubmitButton from "@ui/formItems/SubmitButton";
+import {
+  ErrorText,
+  Input,
+  Label,
+  Legend,
+  RadioTabs,
+  Select,
+  SubmitButton,
+  Textarea,
+} from "@ui/formItems";
 import { Session } from "next-auth";
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { Controller, useForm } from "react-hook-form";
 
@@ -37,8 +44,39 @@ function PostCreateForm({ session }: PostCreateFormProps) {
   const [saveLoading, setSaveLoading] = useState(false);
   const { platform, updatePlatform } = usePlatformStore((store) => store);
 
-  const { register, control } = useForm<FormValues>();
+  const {
+    register,
+    control,
+    formState: { errors },
+    setError,
+    clearErrors,
+    setFocus,
+  } = useForm<FormValues>();
   const [state, formAction] = useFormState(createPost, { status: null });
+
+  useEffect(() => {
+    if (!state) return;
+
+    if (state.status === "ERROR_VALIDATE") {
+      clearErrors();
+
+      let lastErrorField: keyof FormValues | undefined;
+      Object.entries(state.fieldErrors).forEach(([field, errorMessage]) => {
+        setError(field as keyof FormValues, {
+          message: errorMessage.join(", "),
+        });
+        lastErrorField = field as keyof FormValues;
+      });
+
+      if (lastErrorField) {
+        setFocus(lastErrorField);
+      }
+    }
+
+    if (state.status === "SUCCESS") {
+      alert("post" + state.resultId);
+    }
+  }, [clearErrors, setError, setFocus, state]);
 
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
@@ -75,7 +113,12 @@ function PostCreateForm({ session }: PostCreateFormProps) {
             {platform === "etc" && (
               <Field className="mt-2 flex flex-col">
                 <Label>사이트 이름</Label>
-                <Input type="text" required {...register("etcPlatformName")} />
+                <Input type="text" {...register("etcPlatformName")} />
+                <ErrorMessage
+                  name="etcPlatformName"
+                  errors={errors}
+                  render={({ message }) => <ErrorText>{message}</ErrorText>}
+                />
               </Field>
             )}
           </div>
@@ -85,8 +128,12 @@ function PostCreateForm({ session }: PostCreateFormProps) {
               <Input
                 type="text"
                 className="block w-full"
-                required
                 {...register("targetNickname")}
+              />
+              <ErrorMessage
+                name="targetNickname"
+                errors={errors}
+                render={({ message }) => <ErrorText>{message}</ErrorText>}
               />
             </Field>
             {!session && (
@@ -95,8 +142,12 @@ function PostCreateForm({ session }: PostCreateFormProps) {
                 <Input
                   type="text"
                   className="block w-full"
-                  required
                   {...register("anonymousUserNickname")}
+                />
+                <ErrorMessage
+                  name="anonymousUserNickname"
+                  errors={errors}
+                  render={({ message }) => <ErrorText>{message}</ErrorText>}
                 />
               </Field>
             )}
@@ -126,7 +177,14 @@ function PostCreateForm({ session }: PostCreateFormProps) {
           <Textarea
             className="block w-full resize-y"
             required
+            minLength={30}
+            maxLength={1000}
             {...register("content")}
+          />
+          <ErrorMessage
+            name="content"
+            errors={errors}
+            render={({ message }) => <ErrorText>{message}</ErrorText>}
           />
         </Field>
       </Fieldset>
