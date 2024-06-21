@@ -74,6 +74,10 @@
       "storybook": "./app/lib/database/db.mock.ts",
       "default": "./app/lib/database/db.ts"
     },
+    "#auth": {
+      "storybook": "./auth.mock.ts",
+      "default": "./auth.ts"
+    },
     "#lib/*": [
       "./app/lib/*",
       "./app/lib/*.ts",

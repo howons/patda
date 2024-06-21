@@ -3,7 +3,9 @@ import { expect, userEvent, waitFor, within } from "@storybook/test";
 import { Kysely } from "kysely";
 
 import PostCreateForm from "#app/post/create/form";
+import { auth } from "#auth.mock";
 import { FormValues } from "#lib/actions/createPostAction";
+import { ERROR } from "#lib/constants/messages";
 import { Database } from "#lib/database/db";
 import { getDB } from "#lib/database/db.mock";
 import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider";
@@ -36,10 +38,18 @@ export const NonSessionForm: Story = {
   args: {
     session: null,
   },
-  play: async ({ canvasElement, step }) => {
+  async beforeEach() {
+    const mockAuth = () =>
+      new Promise((resolve) => {
+        resolve(null);
+      });
+    auth.mockReturnValue(mockAuth as () => Promise<Response>);
+  },
+  async play({ canvasElement, step }) {
     const canvas = within(canvasElement);
     const form = canvas.getByTestId("post-create-form");
     const platformSelect = canvas.getByLabelText("거래 사이트");
+    const targetNicknameInput = canvas.getByLabelText("상대 닉네임");
     const contentTextarea = canvas.getByLabelText("상세 설명");
     const submitButton = canvas.getByRole("button", { name: "작성" });
 
@@ -58,6 +68,19 @@ export const NonSessionForm: Story = {
       await userEvent.click(submitButton);
       await waitFor(() => {
         expect(contentTextarea).toHaveFocus();
+        expect(getDB).not.toBeCalled();
+      });
+    });
+
+    await step("내용만 30자 작성 후 제출 시 서버 검증", async () => {
+      await userEvent.type(
+        contentTextarea,
+        "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ"
+      );
+      await userEvent.click(submitButton);
+      await waitFor(() => {
+        expect(canvas.getByText(ERROR.NO_TARGET_NICKNAME)).toBeInTheDocument();
+        expect(targetNicknameInput).toHaveFocus();
         expect(getDB).not.toBeCalled();
       });
     });
