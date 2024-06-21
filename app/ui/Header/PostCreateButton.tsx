@@ -1,8 +1,9 @@
 "use client";
 
-import Button from "@ui/Button/Button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import Button from "#ui/Button/Button";
 
 function PostCreateButton() {
   const pathname = usePathname();

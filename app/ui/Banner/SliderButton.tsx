@@ -1,7 +1,8 @@
 "use client";
 
-import { BANNER_IMAGES } from "@lib/constants/banner";
 import { Dispatch, HTMLAttributes, MouseEvent, SetStateAction } from "react";
+
+import { BANNER_IMAGES } from "#lib/constants/banner";
 
 interface SliderButtonProps extends HTMLAttributes<HTMLDivElement> {
   curImage: number;

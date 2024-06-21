@@ -1,8 +1,9 @@
 "use client";
 
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
 import { PropsWithChildren } from "react";
+
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { Platform } from "#lib/types/property";
 
 function SearchBarWrapper({ children }: PropsWithChildren) {
   const platform = usePlatformStore((state) => state.platform);

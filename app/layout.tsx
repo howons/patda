@@ -1,9 +1,10 @@
 import "./globals.css";
 
-import { PlatformStoreProvider } from "@lib/providers/PlatformStoreProvider";
-import Header from "@ui/Header";
 import type { Metadata } from "next";
 import { Nanum_Gothic } from "next/font/google";
+
+import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider";
+import Header from "#ui/Header/Header";
 
 const nanumGoth = Nanum_Gothic({ weight: ["400", "700"], subsets: ["latin"] });
 

@@ -1,10 +1,10 @@
 import { IoLogOutOutline } from "@react-icons/all-files/io5/IoLogOutOutline";
-import MenuItemButton from "@ui/Header/Profile/MenuItemButton";
 
-import { signIn, signOut } from "@/auth";
-import GoogleLogo from "@/public/google.svg";
-import KakaoLogo from "@/public/kakao.svg";
-import NaverLogo from "@/public/naver.svg";
+import { signIn, signOut } from "#auth";
+import GoogleLogo from "#public/google.svg";
+import KakaoLogo from "#public/kakao.svg";
+import NaverLogo from "#public/naver.svg";
+import MenuItemButton from "#ui/Header/Profile/MenuItemButton";
 
 interface SignButtonProps {
   providerData?: { id: string; name: string };

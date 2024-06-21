@@ -1,9 +1,9 @@
-import { FormValues } from "@lib/actions/createPostAction";
-import { PlatformStoreProvider } from "@lib/providers/PlatformStoreProvider";
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
 
-import PostCreateForm from "@/app/post/create/form";
+import PostCreateForm from "#app/post/create/form";
+import { FormValues } from "#lib/actions/createPostAction";
+import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider";
 
 const meta = {
   title: "form/PostCreate",

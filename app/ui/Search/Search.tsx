@@ -1,7 +1,8 @@
-import { SearchStoreProvider } from "@lib/providers/SearchStoreProvider";
-import SearchBar from "@ui/SearchBar";
-import SearchList from "@ui/SearchList";
 import { HTMLAttributes } from "react";
+
+import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider";
+import SearchBar from "#ui/SearchBar/SearchBar";
+import SearchList from "#ui/SearchList/SearchList";
 
 interface SearchProps extends HTMLAttributes<HTMLDivElement> {}
 

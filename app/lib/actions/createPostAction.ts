@@ -1,14 +1,14 @@
 "use server";
 
-import { ERROR } from "@lib/constants/messages";
-import { PLATFORM_ID } from "@lib/constants/platform";
-import { TAG_ID } from "@lib/constants/tag";
-import { Database, db } from "@lib/database/db";
-import { ActionState } from "@lib/types/action";
 import { NoResultError } from "kysely";
 import { z } from "zod";
 
-import { auth } from "@/auth";
+import { auth } from "#auth";
+import { ERROR } from "#lib/constants/messages";
+import { PLATFORM_ID } from "#lib/constants/platform";
+import { TAG_ID } from "#lib/constants/tag";
+import { Database, db } from "#lib/database/db";
+import { ActionState } from "#lib/types/action";
 
 const baseSchema = z
   .object({

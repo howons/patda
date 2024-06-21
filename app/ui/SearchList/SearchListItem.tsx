@@ -1,7 +1,8 @@
-import { Platform } from "@lib/types/property";
-import { TroublemakerInfo } from "@lib/types/response";
-import Thumbnail from "@ui/Thumbnail";
 import Link from "next/link";
+
+import { Platform } from "#lib/types/property";
+import { TroublemakerInfo } from "#lib/types/response";
+import Thumbnail from "#ui/Thumbnail/Thumbnail";
 
 interface SearchListItemProps {
   itemInfo: TroublemakerInfo;

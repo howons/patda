@@ -7,10 +7,11 @@ import {
   RadioGroup,
   RadioGroupProps,
 } from "@headlessui/react";
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
-import Label from "@ui/formItems/Label";
 import React from "react";
+
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { Platform } from "#lib/types/property";
+import Label from "#ui/formItems/Label";
 
 interface RadioTabsProps<ItemType extends string>
   extends RadioGroupProps<"div", ItemType> {

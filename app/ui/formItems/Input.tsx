@@ -1,9 +1,10 @@
 "use client";
 
 import { Input as HeadlessInput } from "@headlessui/react";
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
 import React from "react";
+
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { Platform } from "#lib/types/property";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 

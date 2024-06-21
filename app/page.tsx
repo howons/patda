@@ -1,6 +1,6 @@
-import Banner from "@ui/Banner";
-import CreateButton from "@ui/Button/CreateButton";
-import Search from "@ui/Search";
+import Banner from "#ui/Banner/Banner";
+import CreateButton from "#ui/Button/CreateButton";
+import Search from "#ui/Search/Search";
 
 export default function Home() {
   return (

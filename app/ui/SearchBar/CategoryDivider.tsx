@@ -1,7 +1,7 @@
 "use client";
 
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { Platform } from "#lib/types/property";
 
 function CategoryDivider() {
   const platform = usePlatformStore((state) => state.platform);

@@ -8,11 +8,12 @@ import {
   PopoverProps,
   Transition,
 } from "@headlessui/react";
-import { SearchStoreProvider } from "@lib/providers/SearchStoreProvider";
-import SearchBar from "@ui/SearchBar";
-import SearchList from "@ui/SearchList";
 import { usePathname } from "next/navigation";
 import { MouseEvent } from "react";
+
+import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider";
+import SearchBar from "#ui/SearchBar/SearchBar";
+import SearchList from "#ui/SearchList/SearchList";
 
 interface HeaderSearchProps extends PopoverProps {}
 

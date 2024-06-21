@@ -1,9 +1,9 @@
 "use client";
 
-import { PLATFORM_NAME, TRANS_DURATION } from "@lib/constants/platform";
-import useLastPlatform from "@lib/hooks/useLastPlatform";
-import { useCategoryStore } from "@lib/providers/CategoryStoreProvider";
-import { CategoryDirection, Platform } from "@lib/types/property";
+import { PLATFORM_NAME, TRANS_DURATION } from "#lib/constants/platform";
+import useLastPlatform from "#lib/hooks/useLastPlatform";
+import { useCategoryStore } from "#lib/providers/CategoryStoreProvider";
+import { CategoryDirection, Platform } from "#lib/types/property";
 
 function Category() {
   const { lastPlatform, platform, isChanging } =

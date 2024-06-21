@@ -1,8 +1,9 @@
-import { PlatformStoreProvider } from "@lib/providers/PlatformStoreProvider";
-import { SearchStoreProvider } from "@lib/providers/SearchStoreProvider";
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
-import Header from "@ui/Header";
+
+import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider";
+import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider";
+import Header from "#ui/Header/Header";
 
 const meta = {
   title: "ui/Header",

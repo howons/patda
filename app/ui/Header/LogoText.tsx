@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-import PatdaLogoText from "@/public/당근빳다텍스트.svg";
+import PatdaLogoText from "#public/당근빳다텍스트.svg";
 
 function LogoText() {
   const pathname = usePathname();

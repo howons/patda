@@ -1,11 +1,12 @@
 "use client";
 
-import { useSearchStore } from "@lib/providers/SearchStoreProvider";
-import { TroublemakerInfo } from "@lib/types/response";
-import Divider from "@ui/Divider";
-import NoResults from "@ui/SearchList/NoResults";
-import SearchListItem from "@ui/SearchList/SearchListItem";
 import { Fragment, HTMLAttributes } from "react";
+
+import { useSearchStore } from "#lib/providers/SearchStoreProvider";
+import { TroublemakerInfo } from "#lib/types/response";
+import Divider from "#ui/Divider/Divider";
+import NoResults from "#ui/SearchList/NoResults";
+import SearchListItem from "#ui/SearchList/SearchListItem";
 
 const tempList: TroublemakerInfo[] = [
   {

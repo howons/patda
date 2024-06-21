@@ -1,9 +1,10 @@
 "use client";
 
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
 import { BiPlus } from "@react-icons/all-files/bi/BiPlus";
 import Link from "next/link";
+
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { Platform } from "#lib/types/property";
 
 interface CreateButtonProps {
   classname?: string;

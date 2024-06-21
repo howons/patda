@@ -1,12 +1,13 @@
 "use client";
 
+import { createContext, type ReactNode, useContext, useRef } from "react";
+import { type StoreApi, useStore } from "zustand";
+
 import {
   createSearchStore,
   initSearchStore,
   type SearchStore,
-} from "@lib/stores/searchStore";
-import { createContext, type ReactNode, useContext, useRef } from "react";
-import { type StoreApi, useStore } from "zustand";
+} from "#lib/stores/searchStore";
 
 export const SearchStoreContext = createContext<StoreApi<SearchStore> | null>(
   null

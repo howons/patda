@@ -68,5 +68,30 @@
   },
   "overrides": {
     "oauth4webapi": "npm:@jacobkim/oauth4webapi@^2.10.4"
+  },
+  "imports": {
+    "#lib/database/db": {
+      "storybook": "./app/lib/database/db.mock.ts",
+      "default": "./app/lib/database/db.ts"
+    },
+    "#lib/*": [
+      "./app/lib/*",
+      "./app/lib/*.ts",
+      "./app/lib/*.tsx"
+    ],
+    "#ui/*": [
+      "./app/ui/*",
+      "./app/ui/*.ts",
+      "./app/ui/*.tsx"
+    ],
+    "#public/*": [
+      "./public/*",
+      "./public/*.svg"
+    ],
+    "#*": [
+      "./*",
+      "./*.ts",
+      "./*.tsx"
+    ]
   }
 }

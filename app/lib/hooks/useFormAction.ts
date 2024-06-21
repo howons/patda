@@ -1,7 +1,8 @@
-import { ActionState } from "@lib/types/action";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { FieldValues, Path, useForm } from "react-hook-form";
+
+import { ActionState } from "#lib/types/action";
 
 export type OnSuccess = (
   state: Extract<ActionState, { status: "SUCCESS" }>
