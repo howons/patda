@@ -14,6 +14,9 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    nextjs: {
+      appDirectory: true,
+    },
   },
 
   decorators: [
@@ -24,7 +27,7 @@ const preview: Preview = {
     ),
   ],
 
-  tags: ["autodocs"],
+  tags: ["autodocs", "autodocs"],
 };
 
 export default preview;
