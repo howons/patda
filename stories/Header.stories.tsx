@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
 
+import { auth } from "#auth.mock";
 import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider";
 import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider";
 import Header from "#ui/Header/Header";
@@ -10,6 +11,11 @@ const meta = {
   component: Header,
   parameters: {
     layout: "centered",
+    nextjs: {
+      navigation: {
+        pathname: "/not-homepage",
+      },
+    },
   },
   tags: ["autodocs", "skip-test"],
   decorators: [
@@ -24,9 +30,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const MainHeader: Story = {
+export const NonSessionHeader: Story = {
   tags: ["skip-test"],
-  play: async ({ canvasElement, step }) => {
+  async beforeEach() {
+    const mockAuth = () =>
+      new Promise((resolve) => {
+        resolve(null);
+      });
+    auth.mockReturnValue(mockAuth as () => Promise<Response>);
+  },
+  async play({ canvasElement, step }) {
     const canvas = within(canvasElement);
 
     await step("처음에는 목록 숨겨진 상태", async () => {

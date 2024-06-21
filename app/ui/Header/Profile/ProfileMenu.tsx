@@ -5,12 +5,7 @@ import ProfileDropdown from "#ui/Header/Profile/ProfileDropdown";
 import ProfileMenuButton from "#ui/Header/Profile/ProfileMenuButton";
 
 async function ProfileMenu() {
-  /**@note storybook 과의 호환성을 위해 에러처리 함 (storybook 단독으로 await auth()시 에러) */
-  try {
-    var session = await auth();
-  } catch {
-    session = null;
-  }
+  const session = await auth();
 
   return (
     <Menu>
