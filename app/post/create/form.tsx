@@ -2,7 +2,7 @@
 
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
-import { createPost } from "@lib/actions/createPostAction";
+import { createPost, FormValues } from "@lib/actions/createPostAction";
 import { PLATFORM_NAME } from "@lib/constants/platform";
 import { TAG_DESC, TAG_NAMES } from "@lib/constants/tag";
 import { OnSuccess, useFormAction } from "@lib/hooks/useFormAction";
@@ -22,7 +22,7 @@ import {
 } from "@ui/formItems";
 import { Session } from "next-auth";
 import { ChangeEvent, useCallback, useState } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useFieldArray } from "react-hook-form";
 
 import Logo from "@/public/당근빳다.svg";
 
@@ -52,7 +52,11 @@ function PostCreateForm({ session }: PostCreateFormProps) {
     control,
     formState: { errors },
     formAction,
-  } = useFormAction({ action: createPost, onSuccess });
+  } = useFormAction<FormValues>({ action: createPost, onSuccess });
+  const { fields, append, remove } = useFieldArray<FormValues>({
+    control,
+    name: "images",
+  });
 
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
@@ -64,7 +68,8 @@ function PostCreateForm({ session }: PostCreateFormProps) {
   return (
     <form
       action={formAction}
-      className="flex w-5/6 min-w-[22rem] max-w-3xl grow flex-col justify-between md:w-4/6">
+      className="flex w-5/6 min-w-[22rem] max-w-3xl grow flex-col justify-between md:w-4/6"
+      data-testid="post-create-form">
       <Fieldset className="space-y-6">
         <div className="mt-8 flex items-center justify-between">
           <Legend className="group flex">
@@ -146,7 +151,14 @@ function PostCreateForm({ session }: PostCreateFormProps) {
         </Field>
         <Field>
           <Label>스크린샷</Label>
-          <Input type="file" name="imageUrls" />
+          <ul>
+            {fields.map((item, index) => (
+              <li key={item.id}>
+                <Input type="hidden" {...register(`images.${index}.name`)} />
+                <Input type="hidden" {...register(`images.${index}.url`)} />
+              </li>
+            ))}
+          </ul>
         </Field>
         <Field>
           <Label>상세 설명</Label>

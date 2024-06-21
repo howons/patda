@@ -41,7 +41,12 @@ export interface Database {
     platform: Platform;
     targetNickname: string;
     tag: string;
-    imageUrls: string[];
+    images:
+      | {
+          name: string;
+          url: string;
+        }[]
+      | null;
     content: string;
     status: Generated<PostCommentStatus>;
     createdAt: GeneratedAlways<Date>;

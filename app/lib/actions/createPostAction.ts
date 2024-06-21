@@ -15,10 +15,10 @@ const baseSchema = z
     platform: z.nativeEnum(PLATFORM_ID),
     targetNickname: z.string().min(1, ERROR.NO_TARGET_NICKNAME),
     tag: z.nativeEnum(TAG_ID),
-    imageUrls: z.array(z.string()),
     content: z.string().min(30, ERROR.SHORT_CONTENT),
-    anonymousUserNickname: z.string().nullable(),
-    etcPlatformName: z.string().nullable(),
+    images: z.array(z.object({ url: z.string(), name: z.string() })).nullish(),
+    anonymousUserNickname: z.string().nullish(),
+    etcPlatformName: z.string().nullish(),
   })
   .refine(
     (data) => {
@@ -77,6 +77,9 @@ export async function createPost(
     "id" | "status" | "createdAt" | "updatedAt"
   > = {
     userId: session?.user?.id ?? null,
+    images: input.data.images ?? null,
+    anonymousUserNickname: input.data.anonymousUserNickname ?? null,
+    etcPlatformName: input.data.etcPlatformName ?? null,
     ...input.data,
   };
 
