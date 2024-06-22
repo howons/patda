@@ -110,3 +110,30 @@ export const NonSessionForm: Story = {
     });
   },
 };
+
+export const SessionForm: Story = {
+  args: {
+    session: {
+      user: { id: "id", name: "name" },
+      expires: "",
+    },
+  },
+  async beforeEach() {
+    const mockAuth = () =>
+      new Promise((resolve) => {
+        resolve({
+          user: { id: "id", name: "name" },
+          expires: "",
+        });
+      });
+    auth.mockReturnValue(mockAuth as () => Promise<Response>);
+  },
+  async play({ canvasElement, step }) {
+    const canvas = within(canvasElement);
+    const form = canvas.getByTestId("post-create-form");
+
+    await step("본인 닉네임 칸 미표시", async () => {
+      expect(canvas.queryByLabelText("본인 닉네임")).not.toBeInTheDocument();
+    });
+  },
+};
