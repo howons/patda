@@ -11,7 +11,7 @@ import { getDB } from "#lib/database/db.mock";
 import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider";
 
 const meta = {
-  title: "form/PostCreate",
+  title: "form/PostCreateForm",
   component: PostCreateForm,
   parameters: {
     layout: "centered",
@@ -35,7 +35,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const NonSessionForm: Story = {
+export const NonSession: Story = {
   args: {
     session: null,
   },
@@ -111,7 +111,7 @@ export const NonSessionForm: Story = {
   },
 };
 
-export const SessionForm: Story = {
+export const Session: Story = {
   args: {
     session: {
       user: { id: "id", name: "name" },
