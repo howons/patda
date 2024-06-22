@@ -39,14 +39,14 @@ export const NonSessionForm: Story = {
   args: {
     session: null,
   },
-  async beforeEach() {
+  beforeEach: async () => {
     const mockAuth = () =>
       new Promise((resolve) => {
         resolve(null);
       });
     auth.mockReturnValue(mockAuth as () => Promise<Response>);
   },
-  async play({ canvasElement, step }) {
+  play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     const form = canvas.getByTestId("post-create-form");
     const platformSelect = canvas.getByLabelText("거래 사이트");
@@ -118,7 +118,7 @@ export const SessionForm: Story = {
       expires: "",
     },
   },
-  async beforeEach() {
+  beforeEach: async () => {
     const mockAuth = () =>
       new Promise((resolve) => {
         resolve({
@@ -128,7 +128,7 @@ export const SessionForm: Story = {
       });
     auth.mockReturnValue(mockAuth as () => Promise<Response>);
   },
-  async play({ canvasElement, step }) {
+  play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     const form = canvas.getByTestId("post-create-form");
 

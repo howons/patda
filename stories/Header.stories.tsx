@@ -32,14 +32,14 @@ type Story = StoryObj<typeof meta>;
 
 export const NonSessionHeader: Story = {
   tags: ["skip-test"],
-  async beforeEach() {
+  beforeEach: async () => {
     const mockAuth = () =>
       new Promise((resolve) => {
         resolve(null);
       });
     auth.mockReturnValue(mockAuth as () => Promise<Response>);
   },
-  async play({ canvasElement, step }) {
+  play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
     await step("처음에는 목록 숨겨진 상태", async () => {
