@@ -26,6 +26,7 @@ const meta = {
       values: () => mockInsertBuilder,
       returning: () => mockInsertBuilder,
       executeTakeFirstOrThrow: () => mockInsertBuilder,
+      id: "postId",
     };
     getDB.mockReturnValue(mockInsertBuilder as unknown as Kysely<Database>);
   },
@@ -82,6 +83,29 @@ export const NonSessionForm: Story = {
         expect(canvas.getByText(ERROR.NO_TARGET_NICKNAME)).toBeInTheDocument();
         expect(targetNicknameInput).toHaveFocus();
         expect(getDB).not.toBeCalled();
+      });
+    });
+
+    await step("폼 작성 후 연결 확인", async () => {
+      await userEvent.selectOptions(platformSelect, "etc");
+      await userEvent.type(canvas.getByLabelText("사이트 이름"), "짭고나라");
+      await userEvent.type(targetNicknameInput, "target");
+      await userEvent.type(canvas.getByLabelText("본인 닉네임"), "myNickname");
+      await userEvent.click(canvas.getByLabelText("안전결제 악용"));
+
+      const sucessFormValues: FormValues = {
+        platform: "etc",
+        targetNickname: "target",
+        tag: "abuse",
+        content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
+        anonymousUserNickname: "myNickname",
+        etcPlatformName: "짭고나라",
+      };
+      expect(form).toHaveFormValues(sucessFormValues);
+
+      await userEvent.click(submitButton);
+      await waitFor(() => {
+        expect(getDB).toBeCalled();
       });
     });
   },

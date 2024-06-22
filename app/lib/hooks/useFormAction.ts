@@ -42,6 +42,7 @@ export function useFormAction<FormValues extends FieldValues>({
     }
 
     if (state.status === "SUCCESS") {
+      clearErrors();
       onSuccess?.(state);
     }
   }, [clearErrors, onSuccess, setError, setFocus, state]);
