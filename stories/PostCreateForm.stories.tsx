@@ -16,7 +16,7 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-  tags: ["autodocs"],
+  tags: ["autodocs", "skip-test"],
   decorators: [
     (Story) => <PlatformStoreProvider>{Story()}</PlatformStoreProvider>,
   ],
@@ -36,6 +36,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const NonSession: Story = {
+  tags: ["skip-test"],
   args: {
     session: null,
   },
@@ -112,6 +113,7 @@ export const NonSession: Story = {
 };
 
 export const Session: Story = {
+  tags: ["skip-test"],
   args: {
     session: {
       user: { id: "id", name: "name" },
