@@ -1,12 +1,13 @@
 "use client";
 
+import { createContext, type ReactNode, useContext, useRef } from "react";
+import { type StoreApi, useStore } from "zustand";
+
 import {
   type CategoryStore,
   createCategoryStore,
   initCategoryStore,
-} from "@lib/stores/categoryStore";
-import { createContext, type ReactNode, useContext, useRef } from "react";
-import { type StoreApi, useStore } from "zustand";
+} from "#lib/stores/categoryStore";
 
 export const CategoryStoreContext =
   createContext<StoreApi<CategoryStore> | null>(null);

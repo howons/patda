@@ -1,9 +1,10 @@
 "use client";
 
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { useSearchStore } from "@lib/providers/SearchStoreProvider";
-import { Platform } from "@lib/types/property";
 import { IoSearchOutline } from "@react-icons/all-files/io5/IoSearchOutline";
+
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { useSearchStore } from "#lib/providers/SearchStoreProvider";
+import { Platform } from "#lib/types/property";
 
 function SearchBarCore() {
   const { query, updateQuery } = useSearchStore((state) => state);

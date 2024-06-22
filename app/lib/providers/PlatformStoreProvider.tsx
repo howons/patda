@@ -1,13 +1,14 @@
 "use client";
 
+import { createContext, type ReactNode, useContext, useRef } from "react";
+import { type StoreApi, useStore } from "zustand";
+
 import {
   createPlatformStore,
   initPlatformStore,
   type PlatformStore,
-} from "@lib/stores/platformStore";
-import { Platform } from "@lib/types/property";
-import { createContext, type ReactNode, useContext, useRef } from "react";
-import { type StoreApi, useStore } from "zustand";
+} from "#lib/stores/platformStore";
+import { Platform } from "#lib/types/property";
 
 export const PlatformStoreContext =
   createContext<StoreApi<PlatformStore> | null>(null);

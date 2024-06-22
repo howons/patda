@@ -1,14 +1,21 @@
-import { PlatformStoreProvider } from "@lib/providers/PlatformStoreProvider";
-import { SearchStoreProvider } from "@lib/providers/SearchStoreProvider";
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
-import Header from "@ui/Header";
+
+import { auth } from "#auth.mock";
+import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider";
+import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider";
+import Header from "#ui/Header/Header";
 
 const meta = {
   title: "ui/Header",
   component: Header,
   parameters: {
     layout: "centered",
+    nextjs: {
+      navigation: {
+        pathname: "/not-homepage",
+      },
+    },
   },
   tags: ["autodocs", "skip-test"],
   decorators: [
@@ -23,8 +30,15 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const MainHeader: Story = {
+export const NonSessionHeader: Story = {
   tags: ["skip-test"],
+  beforeEach: async () => {
+    const mockAuth = () =>
+      new Promise((resolve) => {
+        resolve(null);
+      });
+    auth.mockReturnValue(mockAuth as () => Promise<Response>);
+  },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 

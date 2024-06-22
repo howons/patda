@@ -1,10 +1,10 @@
-import HeaderSearch from "@ui/Header/HeaderSearch";
-import LogoText from "@ui/Header/LogoText";
-import PostCreateButton from "@ui/Header/PostCreateButton";
-import ProfileMenu from "@ui/Header/Profile/ProfileMenu";
 import Link from "next/link";
 
-import Logo from "@/public/당근빳다.svg";
+import Logo from "#public/당근빳다.svg";
+import HeaderSearch from "#ui/Header/HeaderSearch";
+import LogoText from "#ui/Header/LogoText";
+import PostCreateButton from "#ui/Header/PostCreateButton";
+import ProfileMenu from "#ui/Header/Profile/ProfileMenu";
 
 function Header() {
   return (

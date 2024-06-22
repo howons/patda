@@ -1,5 +1,6 @@
-import { Platform } from "@lib/types/property";
 import { createStore } from "zustand/vanilla";
+
+import { Platform } from "#lib/types/property";
 
 export type PlatformState = {
   platform: Platform;

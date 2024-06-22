@@ -1,9 +1,10 @@
 "use client";
 
 import { Legend as HeadlessLegend } from "@headlessui/react";
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
 import { HTMLAttributes, PropsWithChildren } from "react";
+
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { Platform } from "#lib/types/property";
 
 interface LegendProps extends HTMLAttributes<HTMLLegendElement> {}
 

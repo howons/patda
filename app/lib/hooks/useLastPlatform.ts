@@ -1,8 +1,9 @@
 "use client";
 
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
 import { useRef, useState } from "react";
+
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { Platform } from "#lib/types/property";
 
 function useLastPlatform(delay: number) {
   const [lastPlatform, setLastPlatform] = useState<Platform>("daangn");

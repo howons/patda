@@ -1,4 +1,4 @@
-import { Platform } from "@lib/types/property";
+import { Platform } from "#lib/types/property";
 
 export type TroublemakerInfo = {
   id: number;

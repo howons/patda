@@ -1,8 +1,9 @@
-import { TRANS_DURATION } from "@lib/constants/platform";
-import { useCategoryStore } from "@lib/providers/CategoryStoreProvider";
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { CategoryDirection, Platform } from "@lib/types/property";
 import { useEffect, useRef, useState } from "react";
+
+import { TRANS_DURATION } from "#lib/constants/platform";
+import { useCategoryStore } from "#lib/providers/CategoryStoreProvider";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { CategoryDirection, Platform } from "#lib/types/property";
 
 const directions: CategoryDirection[] = ["up", "down", "left", "up"];
 

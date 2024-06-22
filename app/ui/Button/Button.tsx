@@ -1,11 +1,11 @@
 "use client";
 
 import { Button as HeadlessButton } from "@headlessui/react";
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 
-import Logo from "@/public/당근빳다.svg";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { Platform } from "#lib/types/property";
+import Logo from "#public/당근빳다.svg";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   theme?: "primary" | "sub";

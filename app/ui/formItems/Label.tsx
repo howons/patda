@@ -1,9 +1,10 @@
 "use client";
 
 import { Label as HeadlessLabel } from "@headlessui/react";
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
 import { LabelHTMLAttributes, PropsWithChildren } from "react";
+
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { Platform } from "#lib/types/property";
 
 interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
   size?: "xl" | "lg" | "md" | "sm";

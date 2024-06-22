@@ -1,9 +1,10 @@
 "use client";
 
 import { Select as HeadlessSelect } from "@headlessui/react";
-import { usePlatformStore } from "@lib/providers/PlatformStoreProvider";
-import { Platform } from "@lib/types/property";
 import React, { SelectHTMLAttributes } from "react";
+
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
+import { Platform } from "#lib/types/property";
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: { value: string; name: string }[];

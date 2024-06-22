@@ -1,10 +1,10 @@
-import { PLATFORM_NAME } from "@lib/constants/platform";
-import { Platform } from "@lib/types/property";
 import { FiMoreHorizontal } from "@react-icons/all-files/fi/FiMoreHorizontal";
 
-import DaangnLogo from "@/public/당근.svg";
-import BunjangLogo from "@/public/번개장터.svg";
-import JoongnaLogo from "@/public/중고나라.svg";
+import { PLATFORM_NAME } from "#lib/constants/platform";
+import { Platform } from "#lib/types/property";
+import DaangnLogo from "#public/당근.svg";
+import BunjangLogo from "#public/번개장터.svg";
+import JoongnaLogo from "#public/중고나라.svg";
 
 interface CategoryItemProps {
   platform: Platform;

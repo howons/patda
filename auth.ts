@@ -3,12 +3,13 @@ import {
   KyselyAdapter,
   KyselyAuth,
 } from "@auth/kysely-adapter";
-import { db } from "@lib/database/db";
 import NextAuth from "next-auth";
 import { Provider } from "next-auth/providers";
 import Google from "next-auth/providers/google";
 import kakao from "next-auth/providers/kakao";
 import naver from "next-auth/providers/naver";
+
+import { db } from "#lib/database/db";
 
 const providers: Provider[] = [Google, naver, kakao];
 

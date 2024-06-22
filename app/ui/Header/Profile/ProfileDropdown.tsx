@@ -1,12 +1,12 @@
 import { MenuHeading, MenuItems, MenuSection } from "@headlessui/react";
 import { BiDoorOpen } from "@react-icons/all-files/bi/BiDoorOpen";
-import MenuItemButton from "@ui/Header/Profile/MenuItemButton";
-import SignButton from "@ui/Header/Profile/SignButton";
 import Link from "next/link";
 import { Session } from "next-auth";
 import { forwardRef } from "react";
 
-import { providerMap } from "@/auth";
+import { providerMap } from "#auth";
+import MenuItemButton from "#ui/Header/Profile/MenuItemButton";
+import SignButton from "#ui/Header/Profile/SignButton";
 
 interface ProfileDropdownProps {
   session: Session | null;

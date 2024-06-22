@@ -1,5 +1,5 @@
-import PostCreateForm from "@/app/post/create/form";
-import { auth } from "@/auth";
+import PostCreateForm from "#app/post/create/form";
+import { auth } from "#auth";
 
 async function PostCreatePage() {
   const session = await auth();

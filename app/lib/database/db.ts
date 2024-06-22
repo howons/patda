@@ -1,6 +1,7 @@
-import { Platform, PostCommentStatus } from "@lib/types/property";
 import { createKysely } from "@vercel/postgres-kysely";
 import type { Generated, GeneratedAlways } from "kysely";
+
+import { Platform, PostCommentStatus } from "#lib/types/property";
 
 export interface Database {
   User: {
@@ -41,7 +42,12 @@ export interface Database {
     platform: Platform;
     targetNickname: string;
     tag: string;
-    imageUrls: string[];
+    images:
+      | {
+          name: string;
+          url: string;
+        }[]
+      | null;
     content: string;
     status: Generated<PostCommentStatus>;
     createdAt: GeneratedAlways<Date>;
@@ -62,4 +68,5 @@ export interface Database {
 }
 
 export const db = createKysely<Database>();
+export const getDB = () => db;
 export { sql } from "kysely";

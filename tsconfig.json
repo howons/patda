@@ -17,12 +17,7 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
-    "paths": {
-      "@lib/*": ["./app/lib/*"],
-      "@ui/*": ["./app/ui/*"],
-      "@/*": ["./*"]
-    }
+    "baseUrl": "."
   },
   "include": [
     "global.d.ts",

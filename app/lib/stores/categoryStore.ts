@@ -1,5 +1,6 @@
-import { CategoryDirection } from "@lib/types/property";
 import { createStore } from "zustand/vanilla";
+
+import { CategoryDirection } from "#lib/types/property";
 
 export type CategoryState = {
   direction: CategoryDirection;
