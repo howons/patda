@@ -6,7 +6,7 @@ import { Session } from "next-auth";
 import { ChangeEvent, useCallback, useState } from "react";
 import { Controller, useFieldArray } from "react-hook-form";
 
-import { createPost, FormValues } from "#lib/actions/createPostAction";
+import { createPostAction, FormValues } from "#lib/actions/createPostAction";
 import { PLATFORM_NAME } from "#lib/constants/platform";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag";
 import { OnSuccess, useFormAction } from "#lib/hooks/useFormAction";
@@ -52,7 +52,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
     control,
     formState: { errors },
     formAction,
-  } = useFormAction<FormValues>({ action: createPost, onSuccess });
+  } = useFormAction<FormValues>({ action: createPostAction, onSuccess });
   const { fields, append, remove } = useFieldArray<FormValues>({
     control,
     name: "images",

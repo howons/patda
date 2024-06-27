@@ -7,7 +7,7 @@ import { auth } from "#auth";
 import { ERROR } from "#lib/constants/messages";
 import { PLATFORM_ID } from "#lib/constants/platform";
 import { TAG_ID } from "#lib/constants/tag";
-import { Database, getDB } from "#lib/database/db";
+import { createPost, type NewPostData } from "#lib/database/posts";
 import { ActionState } from "#lib/types/action";
 
 const baseSchema = z
@@ -32,7 +32,7 @@ const baseSchema = z
 
 export type FormValues = z.infer<typeof baseSchema>;
 
-export async function createPost(
+export async function createPostAction(
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
@@ -72,10 +72,7 @@ export async function createPost(
     };
   }
 
-  const newPostData: Omit<
-    Database["Post"],
-    "id" | "status" | "createdAt" | "updatedAt"
-  > = {
+  const newPostData: NewPostData = {
     userId: session?.user?.id ?? null,
     images: input.data.images ?? null,
     anonymousUserNickname: input.data.anonymousUserNickname ?? null,
@@ -84,12 +81,7 @@ export async function createPost(
   };
 
   try {
-    const db = getDB();
-    var result = await db
-      .insertInto("Post")
-      .values(newPostData)
-      .returning("id")
-      .executeTakeFirstOrThrow();
+    var result = await createPost(newPostData);
   } catch (error) {
     console.error(error);
     if (error instanceof NoResultError) {
