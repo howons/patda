@@ -7,7 +7,7 @@ import { auth } from "#auth";
 import { ERROR } from "#lib/constants/messages";
 import { PLATFORM_ID } from "#lib/constants/platform";
 import { TAG_ID } from "#lib/constants/tag";
-import { createPost, type NewPostData } from "#lib/database/posts";
+import { createPost, type NewPostData } from "#lib/database/posts.js";
 import { ActionState } from "#lib/types/action";
 
 const baseSchema = z
@@ -16,7 +16,7 @@ const baseSchema = z
     targetNickname: z.string().min(1, ERROR.NO_TARGET_NICKNAME),
     tag: z.nativeEnum(TAG_ID),
     content: z.string().min(30, ERROR.SHORT_CONTENT),
-    images: z.array(z.object({ url: z.string(), name: z.string() })).nullish(),
+    images: z.array(z.object({ id: z.string() })).nullish(),
     anonymousUserNickname: z.string().nullish(),
     etcPlatformName: z.string().nullish(),
   })
@@ -58,7 +58,7 @@ export async function createPostAction(
     platform: formData.get("platform"),
     targetNickname: formData.get("targetNickname"),
     tag: formData.get("tag"),
-    imageUrls: /*formData.get("imageUrls"),*/ [""],
+    images: formData.get("images"),
     content: formData.get("content"),
     anonymousUserNickname: formData.get("anonymousUserNickname"),
     etcPlatformName: formData.get("etcPlatformName"),
@@ -72,12 +72,15 @@ export async function createPostAction(
     };
   }
 
+  const { images, anonymousUserNickname, etcPlatformName, ...restData } =
+    input.data;
+
   const newPostData: NewPostData = {
     userId: session?.user?.id ?? null,
-    images: input.data.images ?? null,
-    anonymousUserNickname: input.data.anonymousUserNickname ?? null,
-    etcPlatformName: input.data.etcPlatformName ?? null,
-    ...input.data,
+    images: images?.map(({ id }) => id) ?? null,
+    anonymousUserNickname: anonymousUserNickname ?? null,
+    etcPlatformName: etcPlatformName ?? null,
+    ...restData,
   };
 
   try {

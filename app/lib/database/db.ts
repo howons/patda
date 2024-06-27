@@ -42,12 +42,7 @@ export interface Database {
     platform: Platform;
     targetNickname: string;
     tag: string;
-    images:
-      | {
-          name: string;
-          url: string;
-        }[]
-      | null;
+    images: string[] | null;
     content: string;
     status: Generated<PostCommentStatus>;
     createdAt: GeneratedAlways<Date>;
@@ -59,11 +54,15 @@ export interface Database {
     id: GeneratedAlways<string>;
     userId: string;
     postId: string;
-    imageUrls: string[];
+    images: string[] | null;
     content: string;
     status: Generated<PostCommentStatus>;
     createdAt: GeneratedAlways<Date>;
     updatedAt: Generated<Date>;
+  };
+  Image: {
+    id: GeneratedAlways<string>;
+    url: string;
   };
 }
 

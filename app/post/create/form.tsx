@@ -154,8 +154,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
           <ul>
             {fields.map((item, index) => (
               <li key={item.id}>
-                <Input type="hidden" {...register(`images.${index}.name`)} />
-                <Input type="hidden" {...register(`images.${index}.url`)} />
+                <Input type="hidden" {...register(`images.${index}.id`)} />
               </li>
             ))}
           </ul>
