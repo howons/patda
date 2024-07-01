@@ -9,7 +9,7 @@ import Google from "next-auth/providers/google";
 import kakao from "next-auth/providers/kakao";
 import naver from "next-auth/providers/naver";
 
-import { db } from "#lib/database/db";
+import { db } from "#lib/database/db.js";
 
 const providers: Provider[] = [Google, naver, kakao];
 

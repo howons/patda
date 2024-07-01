@@ -4,11 +4,11 @@ import { NoResultError } from "kysely";
 import { z } from "zod";
 
 import { auth } from "#auth";
-import { ERROR } from "#lib/constants/messages";
-import { PLATFORM_ID } from "#lib/constants/platform";
-import { TAG_ID } from "#lib/constants/tag";
-import { Database, getDB } from "#lib/database/db";
-import { ActionState } from "#lib/types/action";
+import { ERROR } from "#lib/constants/messages.js";
+import { PLATFORM_ID } from "#lib/constants/platform.js";
+import { TAG_ID } from "#lib/constants/tag.js";
+import { createPost, type NewPostData } from "#lib/database/posts";
+import type { ActionState } from "#lib/types/action.js";
 
 const baseSchema = z
   .object({
@@ -16,7 +16,7 @@ const baseSchema = z
     targetNickname: z.string().min(1, ERROR.NO_TARGET_NICKNAME),
     tag: z.nativeEnum(TAG_ID),
     content: z.string().min(30, ERROR.SHORT_CONTENT),
-    images: z.array(z.object({ url: z.string(), name: z.string() })).nullish(),
+    images: z.array(z.object({ id: z.string() })).nullish(),
     anonymousUserNickname: z.string().nullish(),
     etcPlatformName: z.string().nullish(),
   })
@@ -32,7 +32,7 @@ const baseSchema = z
 
 export type FormValues = z.infer<typeof baseSchema>;
 
-export async function createPost(
+export async function createPostAction(
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
@@ -58,7 +58,7 @@ export async function createPost(
     platform: formData.get("platform"),
     targetNickname: formData.get("targetNickname"),
     tag: formData.get("tag"),
-    imageUrls: /*formData.get("imageUrls"),*/ [""],
+    images: formData.get("images"),
     content: formData.get("content"),
     anonymousUserNickname: formData.get("anonymousUserNickname"),
     etcPlatformName: formData.get("etcPlatformName"),
@@ -72,24 +72,19 @@ export async function createPost(
     };
   }
 
-  const newPostData: Omit<
-    Database["Post"],
-    "id" | "status" | "createdAt" | "updatedAt"
-  > = {
+  const { images, anonymousUserNickname, etcPlatformName, ...restData } =
+    input.data;
+
+  const newPostData: NewPostData = {
     userId: session?.user?.id ?? null,
-    images: input.data.images ?? null,
-    anonymousUserNickname: input.data.anonymousUserNickname ?? null,
-    etcPlatformName: input.data.etcPlatformName ?? null,
-    ...input.data,
+    images: images?.map(({ id }) => id) ?? null,
+    anonymousUserNickname: anonymousUserNickname ?? null,
+    etcPlatformName: etcPlatformName ?? null,
+    ...restData,
   };
 
   try {
-    const db = getDB();
-    var result = await db
-      .insertInto("Post")
-      .values(newPostData)
-      .returning("id")
-      .executeTakeFirstOrThrow();
+    var result = await createPost(newPostData);
   } catch (error) {
     console.error(error);
     if (error instanceof NoResultError) {

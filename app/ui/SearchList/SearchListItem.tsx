@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-import { Platform } from "#lib/types/property";
-import { TroublemakerInfo } from "#lib/types/response";
-import Thumbnail from "#ui/Thumbnail/Thumbnail";
+import type { Platform } from "#lib/types/property.js";
+import type { TroublemakerInfo } from "#lib/types/response.js";
+import Thumbnail from "#ui/Thumbnail/Thumbnail.jsx";
 
 interface SearchListItemProps {
   itemInfo: TroublemakerInfo;

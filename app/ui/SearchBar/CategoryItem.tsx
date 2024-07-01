@@ -1,7 +1,7 @@
 import { FiMoreHorizontal } from "@react-icons/all-files/fi/FiMoreHorizontal";
 
-import { PLATFORM_NAME } from "#lib/constants/platform";
-import { Platform } from "#lib/types/property";
+import { PLATFORM_NAME } from "#lib/constants/platform.js";
+import type { Platform } from "#lib/types/property.js";
 import DaangnLogo from "#public/당근.svg";
 import BunjangLogo from "#public/번개장터.svg";
 import JoongnaLogo from "#public/중고나라.svg";

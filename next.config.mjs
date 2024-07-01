@@ -5,6 +5,10 @@ const nextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
+    config.resolve.extensionAlias = {
+      ".js": [".ts", ".js"],
+      ".jsx": [".tsx", ".jsx"],
+    };
     return config;
   },
 };

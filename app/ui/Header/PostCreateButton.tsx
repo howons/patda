@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import Button from "#ui/Button/Button";
+import Button from "#ui/Button/Button.jsx";
 
 function PostCreateButton() {
   const pathname = usePathname();

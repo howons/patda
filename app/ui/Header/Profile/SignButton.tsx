@@ -4,7 +4,7 @@ import { signIn, signOut } from "#auth";
 import GoogleLogo from "#public/google.svg";
 import KakaoLogo from "#public/kakao.svg";
 import NaverLogo from "#public/naver.svg";
-import MenuItemButton from "#ui/Header/Profile/MenuItemButton";
+import MenuItemButton from "#ui/Header/Profile/MenuItemButton.jsx";
 
 interface SignButtonProps {
   providerData?: { id: string; name: string };

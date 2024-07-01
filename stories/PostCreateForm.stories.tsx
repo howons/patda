@@ -1,14 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
-import { Kysely } from "kysely";
 
-import PostCreateForm from "#app/post/create/form";
-import { auth } from "#auth.mock";
-import { FormValues } from "#lib/actions/createPostAction";
-import { ERROR } from "#lib/constants/messages";
-import { Database } from "#lib/database/db";
-import { getDB } from "#lib/database/db.mock";
-import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider";
+import PostCreateForm from "#app/post/create/form.jsx";
+import { auth } from "#auth.mock.js";
+import type { FormValues } from "#lib/actions/createPostAction.js";
+import { ERROR } from "#lib/constants/messages.js";
+import { createPost } from "#lib/database/posts.mock.js";
+import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
 
 const meta = {
   title: "form/PostCreateForm",
@@ -21,14 +19,10 @@ const meta = {
     (Story) => <PlatformStoreProvider>{Story()}</PlatformStoreProvider>,
   ],
   async beforeEach() {
-    const mockInsertBuilder = {
-      insertInto: () => mockInsertBuilder,
-      values: () => mockInsertBuilder,
-      returning: () => mockInsertBuilder,
-      executeTakeFirstOrThrow: () => mockInsertBuilder,
-      id: "postId",
-    };
-    getDB.mockReturnValue(mockInsertBuilder as unknown as Kysely<Database>);
+    const mockResult = new Promise<{ id: string }>((resolve) => {
+      resolve({ id: "postId" });
+    });
+    createPost.mockReturnValue(mockResult);
   },
 } satisfies Meta<typeof PostCreateForm>;
 
@@ -70,7 +64,7 @@ export const NonSession: Story = {
       await userEvent.click(submitButton);
       await waitFor(() => {
         expect(contentTextarea).toHaveFocus();
-        expect(getDB).not.toBeCalled();
+        expect(createPost).not.toBeCalled();
       });
     });
 
@@ -83,7 +77,7 @@ export const NonSession: Story = {
       await waitFor(() => {
         expect(canvas.getByText(ERROR.NO_TARGET_NICKNAME)).toBeInTheDocument();
         expect(targetNicknameInput).toHaveFocus();
-        expect(getDB).not.toBeCalled();
+        expect(createPost).not.toBeCalled();
       });
     });
 
@@ -106,7 +100,7 @@ export const NonSession: Story = {
 
       await userEvent.click(submitButton);
       await waitFor(() => {
-        expect(getDB).toBeCalled();
+        expect(createPost).toBeCalled();
       });
     });
   },

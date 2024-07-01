@@ -1,8 +1,8 @@
 import { Menu, Transition } from "@headlessui/react";
 
 import { auth } from "#auth";
-import ProfileDropdown from "#ui/Header/Profile/ProfileDropdown";
-import ProfileMenuButton from "#ui/Header/Profile/ProfileMenuButton";
+import ProfileDropdown from "#ui/Header/Profile/ProfileDropdown.jsx";
+import ProfileMenuButton from "#ui/Header/Profile/ProfileMenuButton.jsx";
 
 async function ProfileMenu() {
   const session = await auth();

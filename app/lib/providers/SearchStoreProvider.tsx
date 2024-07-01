@@ -7,7 +7,7 @@ import {
   createSearchStore,
   initSearchStore,
   type SearchStore,
-} from "#lib/stores/searchStore";
+} from "#lib/stores/searchStore.js";
 
 export const SearchStoreContext = createContext<StoreApi<SearchStore> | null>(
   null

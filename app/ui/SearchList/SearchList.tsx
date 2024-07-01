@@ -2,11 +2,11 @@
 
 import { Fragment, HTMLAttributes } from "react";
 
-import { useSearchStore } from "#lib/providers/SearchStoreProvider";
-import { TroublemakerInfo } from "#lib/types/response";
-import Divider from "#ui/Divider/Divider";
-import NoResults from "#ui/SearchList/NoResults";
-import SearchListItem from "#ui/SearchList/SearchListItem";
+import { useSearchStore } from "#lib/providers/SearchStoreProvider.jsx";
+import type { TroublemakerInfo } from "#lib/types/response.js";
+import Divider from "#ui/Divider/Divider.jsx";
+import NoResults from "#ui/SearchList/NoResults.jsx";
+import SearchListItem from "#ui/SearchList/SearchListItem.jsx";
 
 const tempList: TroublemakerInfo[] = [
   {

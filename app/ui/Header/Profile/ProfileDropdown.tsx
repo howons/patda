@@ -5,8 +5,8 @@ import { Session } from "next-auth";
 import { forwardRef } from "react";
 
 import { providerMap } from "#auth";
-import MenuItemButton from "#ui/Header/Profile/MenuItemButton";
-import SignButton from "#ui/Header/Profile/SignButton";
+import MenuItemButton from "#ui/Header/Profile/MenuItemButton.jsx";
+import SignButton from "#ui/Header/Profile/SignButton.jsx";
 
 interface ProfileDropdownProps {
   session: Session | null;

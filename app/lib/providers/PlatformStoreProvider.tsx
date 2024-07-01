@@ -7,8 +7,8 @@ import {
   createPlatformStore,
   initPlatformStore,
   type PlatformStore,
-} from "#lib/stores/platformStore";
-import { Platform } from "#lib/types/property";
+} from "#lib/stores/platformStore.js";
+import type { Platform } from "#lib/types/property.js";
 
 export const PlatformStoreContext =
   createContext<StoreApi<PlatformStore> | null>(null);

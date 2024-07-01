@@ -6,15 +6,18 @@ import { Session } from "next-auth";
 import { ChangeEvent, useCallback, useState } from "react";
 import { Controller, useFieldArray } from "react-hook-form";
 
-import { createPost, FormValues } from "#lib/actions/createPostAction";
-import { PLATFORM_NAME } from "#lib/constants/platform";
-import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag";
-import { OnSuccess, useFormAction } from "#lib/hooks/useFormAction";
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
-import { Platform, TagId } from "#lib/types/property";
+import {
+  createPostAction,
+  type FormValues,
+} from "#lib/actions/createPostAction.js";
+import { PLATFORM_NAME } from "#lib/constants/platform.js";
+import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
+import { type OnSuccess, useFormAction } from "#lib/hooks/useFormAction.js";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
+import type { Platform, TagId } from "#lib/types/property.js";
 import Logo from "#public/당근빳다.svg";
-import Button from "#ui/Button/Button";
-import CancelButton from "#ui/Button/CancelButton";
+import Button from "#ui/Button/Button.jsx";
+import CancelButton from "#ui/Button/CancelButton.jsx";
 import {
   ErrorText,
   Input,
@@ -23,8 +26,8 @@ import {
   RadioTabs,
   Select,
   SubmitButton,
-  Textarea,
-} from "#ui/formItems/index";
+} from "#ui/formItems/index.jsx";
+import Textarea from "#ui/formItems/Textarea.jsx";
 
 const platformOptions = Object.entries(PLATFORM_NAME).map(([id, name]) => ({
   name,
@@ -52,7 +55,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
     control,
     formState: { errors },
     formAction,
-  } = useFormAction<FormValues>({ action: createPost, onSuccess });
+  } = useFormAction<FormValues>({ action: createPostAction, onSuccess });
   const { fields, append, remove } = useFieldArray<FormValues>({
     control,
     name: "images",
@@ -154,8 +157,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
           <ul>
             {fields.map((item, index) => (
               <li key={item.id}>
-                <Input type="hidden" {...register(`images.${index}.name`)} />
-                <Input type="hidden" {...register(`images.${index}.url`)} />
+                <Input type="hidden" {...register(`images.${index}.id`)} />
               </li>
             ))}
           </ul>

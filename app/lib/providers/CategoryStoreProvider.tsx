@@ -7,7 +7,7 @@ import {
   type CategoryStore,
   createCategoryStore,
   initCategoryStore,
-} from "#lib/stores/categoryStore";
+} from "#lib/stores/categoryStore.js";
 
 export const CategoryStoreContext =
   createContext<StoreApi<CategoryStore> | null>(null);
