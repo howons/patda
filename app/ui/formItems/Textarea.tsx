@@ -3,8 +3,8 @@
 import { Textarea as HeadlessTextarea } from "@headlessui/react";
 import React from "react";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
-import { Platform } from "#lib/types/property";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
+import type { Platform } from "#lib/types/property.js";
 
 interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}

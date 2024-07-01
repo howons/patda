@@ -1,4 +1,4 @@
-import { Platform } from "#lib/types/property";
+import type { Platform } from "#lib/types/property.js";
 
 export type TroublemakerInfo = {
   id: number;

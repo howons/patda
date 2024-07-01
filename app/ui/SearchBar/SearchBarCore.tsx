@@ -2,9 +2,9 @@
 
 import { IoSearchOutline } from "@react-icons/all-files/io5/IoSearchOutline";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
-import { useSearchStore } from "#lib/providers/SearchStoreProvider";
-import { Platform } from "#lib/types/property";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
+import { useSearchStore } from "#lib/providers/SearchStoreProvider.jsx";
+import type { Platform } from "#lib/types/property.js";
 
 function SearchBarCore() {
   const { query, updateQuery } = useSearchStore((state) => state);

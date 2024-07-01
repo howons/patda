@@ -1,7 +1,7 @@
 import { createKysely } from "@vercel/postgres-kysely";
 import type { Generated, GeneratedAlways } from "kysely";
 
-import { Platform, PostCommentStatus } from "#lib/types/property";
+import type { Platform, PostCommentStatus } from "#lib/types/property.js";
 
 export interface Database {
   User: {

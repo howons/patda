@@ -3,8 +3,8 @@
 import { Legend as HeadlessLegend } from "@headlessui/react";
 import { HTMLAttributes, PropsWithChildren } from "react";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
-import { Platform } from "#lib/types/property";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
+import type { Platform } from "#lib/types/property.js";
 
 interface LegendProps extends HTMLAttributes<HTMLLegendElement> {}
 

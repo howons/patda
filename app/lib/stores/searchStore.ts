@@ -1,6 +1,6 @@
 import { createStore } from "zustand/vanilla";
 
-import { TroublemakerInfo } from "#lib/types/response";
+import type { TroublemakerInfo } from "#lib/types/response.js";
 
 export type SearchState = {
   query: string;

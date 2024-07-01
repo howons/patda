@@ -3,7 +3,7 @@
 import { PropsWithChildren } from "react";
 import { useFormStatus } from "react-dom";
 
-import Button from "#ui/Button/Button";
+import Button from "#ui/Button/Button.jsx";
 
 function SubmitButton({ children }: PropsWithChildren<{}>) {
   const { pending } = useFormStatus();

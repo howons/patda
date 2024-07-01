@@ -1,4 +1,4 @@
-import { Database, db } from "#lib/database/db";
+import { type Database, db } from "#lib/database/db.js";
 
 export type NewPostData = Omit<
   Database["Post"],

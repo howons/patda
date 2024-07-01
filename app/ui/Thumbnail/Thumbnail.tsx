@@ -4,7 +4,7 @@ import { FiMoreHorizontal } from "@react-icons/all-files/fi/FiMoreHorizontal";
 import Image, { ImageProps } from "next/image";
 import { useState } from "react";
 
-import { Platform } from "#lib/types/property";
+import type { Platform } from "#lib/types/property.js";
 import DaangnLogo from "#public/당근.svg";
 import BunjangLogo from "#public/번개장터.svg";
 import JoongnaLogo from "#public/중고나라.svg";

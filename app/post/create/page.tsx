@@ -1,4 +1,4 @@
-import PostCreateForm from "#app/post/create/form";
+import PostCreateForm from "#app/post/create/form.jsx";
 import { auth } from "#auth";
 
 async function PostCreatePage() {

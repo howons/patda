@@ -3,8 +3,8 @@
 import { BiPlus } from "@react-icons/all-files/bi/BiPlus";
 import Link from "next/link";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
-import { Platform } from "#lib/types/property";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
+import type { Platform } from "#lib/types/property.js";
 
 interface CreateButtonProps {
   classname?: string;

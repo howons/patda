@@ -1,4 +1,4 @@
-import { TagId } from "#lib/types/property";
+import { TagId } from "#lib/types/property.js";
 
 export const TAG_ID: { [key: number]: TagId } = [
   "abuse",

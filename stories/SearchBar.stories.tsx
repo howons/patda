@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
 
-import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider";
-import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider";
-import SearchBar from "#ui/SearchBar/SearchBar";
+import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
+import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider.jsx";
+import SearchBar from "#ui/SearchBar/SearchBar.jsx";
 
 const meta = {
   title: "ui/SearchBar",

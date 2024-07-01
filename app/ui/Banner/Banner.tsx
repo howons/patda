@@ -2,9 +2,9 @@
 
 import { HTMLAttributes, useEffect, useRef, useState } from "react";
 
-import { BANNER_IMAGES } from "#lib/constants/banner";
-import ImageContainer from "#ui/Banner/ImageContainer";
-import SliderButton from "#ui/Banner/SliderButton";
+import { BANNER_IMAGES } from "#lib/constants/banner.js";
+import ImageContainer from "#ui/Banner/ImageContainer.jsx";
+import SliderButton from "#ui/Banner/SliderButton.jsx";
 
 function Banner({ className = "", ...props }: HTMLAttributes<HTMLDivElement>) {
   const [curImage, setCurImage] = useState(0);

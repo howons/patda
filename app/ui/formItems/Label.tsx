@@ -3,8 +3,8 @@
 import { Label as HeadlessLabel } from "@headlessui/react";
 import { LabelHTMLAttributes, PropsWithChildren } from "react";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
-import { Platform } from "#lib/types/property";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
+import type { Platform } from "#lib/types/property.js";
 
 interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
   size?: "xl" | "lg" | "md" | "sm";

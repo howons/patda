@@ -1,11 +1,11 @@
 import { forwardRef, HTMLAttributes } from "react";
 
-import { CategoryStoreProvider } from "#lib/providers/CategoryStoreProvider";
-import Category from "#ui/SearchBar/Category";
-import CategoryDivider from "#ui/SearchBar/CategoryDivider";
-import CategorySelector from "#ui/SearchBar/CategorySelector";
-import SearchBarCore from "#ui/SearchBar/SearchBarCore";
-import SearchBarWrapper from "#ui/SearchBar/SearchBarWrapper";
+import { CategoryStoreProvider } from "#lib/providers/CategoryStoreProvider.jsx";
+import Category from "#ui/SearchBar/Category.jsx";
+import CategoryDivider from "#ui/SearchBar/CategoryDivider.jsx";
+import CategorySelector from "#ui/SearchBar/CategorySelector.jsx";
+import SearchBarCore from "#ui/SearchBar/SearchBarCore.jsx";
+import SearchBarWrapper from "#ui/SearchBar/SearchBarWrapper.jsx";
 
 interface SearchBarProps extends HTMLAttributes<HTMLDivElement> {}
 

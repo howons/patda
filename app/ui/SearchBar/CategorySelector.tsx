@@ -1,10 +1,10 @@
 "use client";
 
-import { PLATFORM_NAME, TRANS_DURATION } from "#lib/constants/platform";
-import useCategoryItemList from "#lib/hooks/useCategoryItemList";
-import useToggleChildrenStyle from "#lib/hooks/useToggleChildrenStyle";
-import { useCategoryStore } from "#lib/providers/CategoryStoreProvider";
-import CategoryItem from "#ui/SearchBar/CategoryItem";
+import { PLATFORM_NAME, TRANS_DURATION } from "#lib/constants/platform.js";
+import useCategoryItemList from "#lib/hooks/useCategoryItemList.js";
+import useToggleChildrenStyle from "#lib/hooks/useToggleChildrenStyle.js";
+import { useCategoryStore } from "#lib/providers/CategoryStoreProvider.jsx";
+import CategoryItem from "#ui/SearchBar/CategoryItem.jsx";
 
 function CategorySelector() {
   const isActive = useCategoryStore((state) => state.isActive);

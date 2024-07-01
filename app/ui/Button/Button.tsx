@@ -3,8 +3,8 @@
 import { Button as HeadlessButton } from "@headlessui/react";
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
-import { Platform } from "#lib/types/property";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
+import type { Platform } from "#lib/types/property.js";
 import Logo from "#public/당근빳다.svg";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

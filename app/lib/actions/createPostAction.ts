@@ -5,10 +5,10 @@ import { z } from "zod";
 
 import { auth } from "#auth";
 import { ERROR } from "#lib/constants/messages.js";
-import { PLATFORM_ID } from "#lib/constants/platform";
-import { TAG_ID } from "#lib/constants/tag";
+import { PLATFORM_ID } from "#lib/constants/platform.js";
+import { TAG_ID } from "#lib/constants/tag.js";
 import { createPost, type NewPostData } from "#lib/database/posts";
-import { ActionState } from "#lib/types/action";
+import type { ActionState } from "#lib/types/action.js";
 
 const baseSchema = z
   .object({

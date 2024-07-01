@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { HTMLAttributes } from "react";
 
-import { BANNER_IMAGES } from "#lib/constants/banner";
+import { BANNER_IMAGES } from "#lib/constants/banner.js";
 
 function ImageContainer({
   className = "",

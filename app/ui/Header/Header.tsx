@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 import Logo from "#public/당근빳다.svg";
-import HeaderSearch from "#ui/Header/HeaderSearch";
-import LogoText from "#ui/Header/LogoText";
-import PostCreateButton from "#ui/Header/PostCreateButton";
-import ProfileMenu from "#ui/Header/Profile/ProfileMenu";
+import HeaderSearch from "#ui/Header/HeaderSearch.jsx";
+import LogoText from "#ui/Header/LogoText.jsx";
+import PostCreateButton from "#ui/Header/PostCreateButton.jsx";
+import ProfileMenu from "#ui/Header/Profile/ProfileMenu.jsx";
 
 function Header() {
   return (

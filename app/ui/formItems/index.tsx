@@ -1,11 +1,11 @@
-import ErrorText from "#ui/formItems/ErrorText";
-import Input from "#ui/formItems/Input";
-import Label from "#ui/formItems/Label";
-import Legend from "#ui/formItems/Legend";
-import RadioTabs from "#ui/formItems/RadioTabs";
-import Select from "#ui/formItems/Select";
-import SubmitButton from "#ui/formItems/SubmitButton";
-import Textarea from "#ui/formItems/Textarea";
+import ErrorText from "#ui/formItems/ErrorText.jsx";
+import Input from "#ui/formItems/Input.jsx";
+import Label from "#ui/formItems/Label.jsx";
+import Legend from "#ui/formItems/Legend.jsx";
+import RadioTabs from "#ui/formItems/RadioTabs.jsx";
+import Select from "#ui/formItems/Select.jsx";
+import SubmitButton from "#ui/formItems/SubmitButton.jsx";
+import Textarea from "#ui/formItems/Textarea.jsx";
 
 export {
   ErrorText,

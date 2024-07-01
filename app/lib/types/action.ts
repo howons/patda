@@ -1,4 +1,4 @@
-import { FormValues } from "#lib/actions/createPostAction";
+import type { FormValues } from "#lib/actions/createPostAction.js";
 
 export type ActionState =
   | {

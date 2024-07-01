@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
 
-import PostCreateForm from "#app/post/create/form";
+import PostCreateForm from "#app/post/create/form.jsx";
 import { auth } from "#auth.mock.js";
-import { FormValues } from "#lib/actions/createPostAction";
-import { ERROR } from "#lib/constants/messages";
+import type { FormValues } from "#lib/actions/createPostAction.js";
+import { ERROR } from "#lib/constants/messages.js";
 import { createPost } from "#lib/database/posts.mock.js";
-import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider";
+import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
 
 const meta = {
   title: "form/PostCreateForm",
