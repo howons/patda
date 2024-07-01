@@ -6,7 +6,10 @@ import { Session } from "next-auth";
 import { ChangeEvent, useCallback, useState } from "react";
 import { Controller, useFieldArray } from "react-hook-form";
 
-import { createPostAction, FormValues } from "#lib/actions/createPostAction";
+import {
+  createPostAction,
+  type FormValues,
+} from "#lib/actions/createPostAction.js";
 import { PLATFORM_NAME } from "#lib/constants/platform";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag";
 import { OnSuccess, useFormAction } from "#lib/hooks/useFormAction";
@@ -14,7 +17,7 @@ import { usePlatformStore } from "#lib/providers/PlatformStoreProvider";
 import { Platform, TagId } from "#lib/types/property";
 import Logo from "#public/당근빳다.svg";
 import Button from "#ui/Button/Button";
-import CancelButton from "#ui/Button/CancelButton";
+import CancelButton from "#ui/Button/CancelButton.jsx";
 import {
   ErrorText,
   Input,

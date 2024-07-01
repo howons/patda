@@ -70,7 +70,7 @@
     "oauth4webapi": "npm:@jacobkim/oauth4webapi@^2.10.4"
   },
   "imports": {
-    "#lib/database/posts.js": {
+    "#lib/database/posts": {
       "storybook": "./app/lib/database/posts.mock.ts",
       "default": "./app/lib/database/posts.ts"
     },

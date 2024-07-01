@@ -35,10 +35,19 @@ const config: StorybookConfig = {
 
     imageRule.exclude = /\.svg$/;
 
-    config.module?.rules?.push({
-      test: /\.svg$/,
-      use: ["@svgr/webpack"],
-    });
+    if (config.module?.rules) {
+      config.module.rules.push({
+        test: /\.svg$/,
+        use: ["@svgr/webpack"],
+      });
+    }
+
+    if (config.resolve) {
+      config.resolve.extensionAlias = {
+        ".js": [".ts", ".js"],
+        ".jsx": [".tsx", ".jsx"],
+      };
+    }
 
     return config;
   },

@@ -67,5 +67,4 @@ export interface Database {
 }
 
 export const db = createKysely<Database>();
-export const getDB = () => db;
 export { sql } from "kysely";

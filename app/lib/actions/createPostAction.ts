@@ -4,10 +4,10 @@ import { NoResultError } from "kysely";
 import { z } from "zod";
 
 import { auth } from "#auth";
-import { ERROR } from "#lib/constants/messages";
+import { ERROR } from "#lib/constants/messages.js";
 import { PLATFORM_ID } from "#lib/constants/platform";
 import { TAG_ID } from "#lib/constants/tag";
-import { createPost, type NewPostData } from "#lib/database/posts.js";
+import { createPost, type NewPostData } from "#lib/database/posts";
 import { ActionState } from "#lib/types/action";
 
 const baseSchema = z
