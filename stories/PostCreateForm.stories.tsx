@@ -45,6 +45,7 @@ export const NonSession: Story = {
     const form = canvas.getByTestId("post-create-form");
     const platformSelect = canvas.getByLabelText("거래 사이트");
     const targetNicknameInput = canvas.getByLabelText("상대 닉네임");
+    const userNicknameInput = canvas.getByLabelText("본인 닉네임");
     const contentTextarea = canvas.getByLabelText("상세 설명");
     const submitButton = canvas.getByRole("button", { name: "작성" });
 
@@ -75,7 +76,7 @@ export const NonSession: Story = {
       await userEvent.click(submitButton);
       await waitFor(() => {
         expect(canvas.getByText(ERROR.NO_TARGET_NICKNAME)).toBeInTheDocument();
-        expect(targetNicknameInput).toHaveFocus();
+        expect(userNicknameInput).toHaveFocus();
         expect(createPost).not.toBeCalled();
       });
     });
@@ -84,7 +85,7 @@ export const NonSession: Story = {
       await userEvent.selectOptions(platformSelect, "etc");
       await userEvent.type(canvas.getByLabelText("사이트 이름"), "짭고나라");
       await userEvent.type(targetNicknameInput, "target");
-      await userEvent.type(canvas.getByLabelText("본인 닉네임"), "myNickname");
+      await userEvent.type(userNicknameInput, "myNickname");
       await userEvent.click(canvas.getByLabelText("안전결제 악용"));
 
       const sucessFormValues: FormValues = {
