@@ -35,11 +35,10 @@ export const NonSession: Story = {
     session: null,
   },
   beforeEach: async () => {
-    const mockAuth = () =>
-      new Promise((resolve) => {
-        resolve(null);
-      });
-    auth.mockReturnValue(mockAuth as () => Promise<Response>);
+    const mockAuth = new Promise<null>((resolve) => {
+      resolve(null);
+    });
+    auth.mockReturnValue(mockAuth);
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -115,14 +114,16 @@ export const Session: Story = {
     },
   },
   beforeEach: async () => {
-    const mockAuth = () =>
-      new Promise((resolve) => {
-        resolve({
-          user: { id: "id", name: "name" },
-          expires: "",
-        });
+    const mockAuth = new Promise<{
+      user: { id: string; name: string };
+      expires: string;
+    }>((resolve) => {
+      resolve({
+        user: { id: "id", name: "name" },
+        expires: "",
       });
-    auth.mockReturnValue(mockAuth as () => Promise<Response>);
+    });
+    auth.mockReturnValue(mockAuth);
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
