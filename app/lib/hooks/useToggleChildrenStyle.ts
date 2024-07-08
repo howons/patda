@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 /**
  * 어떤 컨테이너의 자식 엘레먼트들의 className을 trigger에 따라 toggle하는 훅.
@@ -14,20 +14,27 @@ function useToggleChildrenStyle<ChildElement extends HTMLElement>(
   shouldTriggerAtChange?: boolean
 ) {
   const parentRef = useRef<ChildElement | null>(null);
+  const initRef = useRef(false);
 
-  useEffect(() => {
-    const toggleDuration = (force?: boolean) => {
+  const toggleDuration = useCallback(
+    (force?: boolean) => {
       Array.from(parentRef.current?.children ?? []).forEach((container) => {
         container.classList.toggle(styleToToggle, force);
       });
-    };
+    },
+    [styleToToggle]
+  );
+
+  useEffect(() => {
+    if (!initRef.current) return;
+    initRef.current = true;
 
     toggleDuration(shouldTriggerAtChange || !!trigger);
     delay &&
       setTimeout(() => {
         toggleDuration(!shouldTriggerAtChange && !trigger);
       }, delay);
-  }, [styleToToggle, trigger, delay, shouldTriggerAtChange]);
+  }, [styleToToggle, trigger, delay, shouldTriggerAtChange, toggleDuration]);
 
   return { parentRef };
 }
