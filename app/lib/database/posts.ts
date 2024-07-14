@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 import { type Database, db } from "#lib/database/db.js";
 
 export type NewPostData = Omit<
@@ -12,3 +14,11 @@ export function createPost(newPostData: NewPostData) {
     .returning("id")
     .executeTakeFirstOrThrow();
 }
+
+export const getPost = cache((postId: string) =>
+  db
+    .selectFrom("Post")
+    .selectAll()
+    .where("id", "=", postId)
+    .executeTakeFirstOrThrow()
+);
