@@ -8,7 +8,7 @@ import JoongnaLogo from "#public/중고나라.svg";
 
 interface CategoryItemProps {
   platform: Platform;
-  isActive: Boolean;
+  isActive?: Boolean;
   className?: string;
 }
 
