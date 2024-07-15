@@ -1,7 +1,11 @@
 import { createKysely } from "@vercel/postgres-kysely";
 import type { Generated, GeneratedAlways } from "kysely";
 
-import type { Platform, PostCommentStatus } from "#lib/types/property.js";
+import type {
+  Platform,
+  PostCommentStatus,
+  TagId,
+} from "#lib/types/property.js";
 
 export interface Database {
   User: {
@@ -41,7 +45,7 @@ export interface Database {
     userId: string | null;
     platform: Platform;
     targetNickname: string;
-    tag: string;
+    tag: TagId;
     images: string[] | null;
     content: string;
     status: Generated<PostCommentStatus>;

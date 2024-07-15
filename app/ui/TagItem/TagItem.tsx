@@ -6,10 +6,12 @@ import { GiUmbrella } from "@react-icons/all-files/gi/GiUmbrella";
 import { MdMoneyOff } from "@react-icons/all-files/md/MdMoneyOff";
 import { RiSafariLine } from "@react-icons/all-files/ri/RiSafariLine";
 import { RiZzzLine } from "@react-icons/all-files/ri/RiZzzLine";
+import type { ComponentProps } from "react";
 
 import type { TagId } from "#lib/types/property.js";
+import type { PostInfo } from "#lib/types/response.js";
 
-const tagIcons: { [key in TagId]: React.JSX.Element } = {
+const TagIcons: { [key in TagId]: React.JSX.Element } = {
   abuse: <RiSafariLine />,
   cancel: <FaRunning />,
   attempt: <FaTheaterMasks />,
@@ -20,6 +22,16 @@ const tagIcons: { [key in TagId]: React.JSX.Element } = {
   others: <FiMoreHorizontal />,
 };
 
-export default function TagItem() {
-  return <div></div>;
+interface TagItemProps extends ComponentProps<"div">, Pick<PostInfo, "tag"> {}
+
+export default function TagItem({
+  tag,
+  className = "",
+  ...props
+}: TagItemProps) {
+  return (
+    <div className={`-rotate-45 ${className}`} {...props}>
+      {TagIcons[tag]}
+    </div>
+  );
 }
