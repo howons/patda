@@ -1,4 +1,4 @@
-import TitleBar from "#app/post/[id]/TitleBar.jsx";
+import TitleBar from "#app/post/[id]/_components/TitleBar/TitleBar.jsx";
 import { getPost } from "#lib/database/posts";
 
 export default async function PostDetailPage({
@@ -6,11 +6,18 @@ export default async function PostDetailPage({
 }: {
   params: { id: string };
 }) {
-  const { platform, targetNickname, tag } = await getPost(params.id);
+  const { platform, targetNickname, tag, etcPlatformName } = await getPost(
+    params.id
+  );
 
   return (
-    <article className="mt-8 w-4/5 max-w-3xl">
-      <TitleBar platform={platform} targetNickname={targetNickname} tag={tag} />
+    <article className="mt-20 w-full max-w-3xl sm:w-4/5">
+      <TitleBar
+        platform={platform}
+        targetNickname={targetNickname}
+        tag={tag}
+        etcPlatformName={etcPlatformName}
+      />
     </article>
   );
 }

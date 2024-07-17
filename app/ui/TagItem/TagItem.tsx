@@ -11,15 +11,17 @@ import type { ComponentProps } from "react";
 import type { TagId } from "#lib/types/property.js";
 import type { PostInfo } from "#lib/types/response.js";
 
+const iconStyle = "size-3/4 rotate-45 fill-neutral-600";
+
 const TagIcons: { [key in TagId]: React.JSX.Element } = {
-  abuse: <RiSafariLine />,
-  cancel: <FaRunning />,
-  attempt: <FaTheaterMasks />,
-  noShow: <RiZzzLine />,
-  lier: <GiBrokenPottery />,
-  nego: <MdMoneyOff />,
-  noManner: <GiUmbrella />,
-  others: <FiMoreHorizontal />,
+  abuse: <RiSafariLine className={iconStyle} />,
+  cancel: <FaRunning className={iconStyle} />,
+  attempt: <FaTheaterMasks className={iconStyle} />,
+  noShow: <RiZzzLine className={iconStyle} />,
+  lier: <GiBrokenPottery className={iconStyle} />,
+  nego: <MdMoneyOff className={iconStyle} />,
+  noManner: <GiUmbrella className={iconStyle} />,
+  others: <FiMoreHorizontal className={iconStyle} />,
 };
 
 interface TagItemProps extends ComponentProps<"div">, Pick<PostInfo, "tag"> {}
@@ -30,7 +32,9 @@ export default function TagItem({
   ...props
 }: TagItemProps) {
   return (
-    <div className={`-rotate-45 ${className}`} {...props}>
+    <div
+      className={`flex size-14 items-center justify-center border-[6px] border-double border-stone-400 bg-yellow-200 ${className}`}
+      {...props}>
       {TagIcons[tag]}
     </div>
   );
