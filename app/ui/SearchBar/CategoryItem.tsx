@@ -33,7 +33,7 @@ function CategoryItem({
     etc: "bg-zinc-100 text-zinc-700",
   };
 
-  const defaultStyle = "w-20 h-20 flex items-center justify-center";
+  const defaultStyle = "size-20 flex items-center justify-center";
 
   const nameDefaultStyle =
     "absolute rotate-45 p-1 font-bold transition-opacity duration-300 min-w-14 text-center";

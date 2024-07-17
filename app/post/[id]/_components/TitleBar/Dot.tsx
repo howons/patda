@@ -10,7 +10,7 @@ interface DotProps extends ComponentProps<"div"> {
 export default function Dot({
   platform,
   size = "sm",
-  className,
+  className = "",
   ...props
 }: DotProps) {
   const defaultStyle = "origin-center rotate-45 border bg-white shrink-0";

@@ -1,3 +1,4 @@
+import CommentIndicator from "#app/post/[id]/_components/TitleBar/CommentIndicator.jsx";
 import Dot from "#app/post/[id]/_components/TitleBar/Dot.jsx";
 import Title from "#app/post/[id]/_components/TitleBar/Title.jsx";
 import { PLATFORM_NAME } from "#lib/constants/platform.js";
@@ -31,6 +32,11 @@ export default function TitleBar({
       <div className="absolute -top-5 -rotate-45">
         <CategoryItem platform={platform} />
         <TagItem tag={tag} />
+        <CommentIndicator
+          postStatus="debate"
+          commentCount={0}
+          className="absolute right-20 top-20"
+        />
       </div>
       <div className="flex grow flex-col">
         <div className="ml-24 flex h-14 items-center">
