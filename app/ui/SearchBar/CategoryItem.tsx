@@ -6,6 +6,15 @@ import DaangnLogo from "#public/당근.svg";
 import BunjangLogo from "#public/번개장터.svg";
 import JoongnaLogo from "#public/중고나라.svg";
 
+const svgDefaultStyle = "rotate-45 w-3/4 h-3/4 opacity-75";
+
+const platformSvg: { [key in Platform]: React.JSX.Element } = {
+  daangn: <DaangnLogo className={`${svgDefaultStyle}`} />,
+  bunjang: <BunjangLogo className={`${svgDefaultStyle}`} />,
+  joongna: <JoongnaLogo className={`${svgDefaultStyle}`} />,
+  etc: <FiMoreHorizontal className={`${svgDefaultStyle}`} />,
+};
+
 interface CategoryItemProps {
   platform: Platform;
   isActive?: Boolean;
@@ -17,15 +26,6 @@ function CategoryItem({
   isActive,
   className = "",
 }: CategoryItemProps) {
-  const svgDefaultStyle = "rotate-45 w-3/4 h-3/4";
-
-  const platformSvg: { [key in Platform]: React.JSX.Element } = {
-    daangn: <DaangnLogo className={`${svgDefaultStyle}`} />,
-    bunjang: <BunjangLogo className={`${svgDefaultStyle}`} />,
-    joongna: <JoongnaLogo className={`${svgDefaultStyle}`} />,
-    etc: <FiMoreHorizontal className={`${svgDefaultStyle}`} />,
-  };
-
   const platformStyle: { [key in Platform]: string } = {
     daangn: "bg-orange-100 text-orange-700",
     bunjang: "bg-red-100 text-red-700",

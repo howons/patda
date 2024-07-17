@@ -26,8 +26,10 @@ function useToggleChildrenStyle<ChildElement extends HTMLElement>(
   );
 
   useEffect(() => {
-    if (!initRef.current) return;
-    initRef.current = true;
+    if (!initRef.current) {
+      initRef.current = true;
+      return;
+    }
 
     toggleDuration(shouldTriggerAtChange || !!trigger);
     delay &&
