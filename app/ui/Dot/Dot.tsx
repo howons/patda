@@ -3,7 +3,7 @@ import type { ComponentProps } from "react";
 import type { Platform } from "#lib/types/property.js";
 
 interface DotProps extends ComponentProps<"div"> {
-  platform: Platform;
+  platform?: Platform;
   size?: "sm" | "md";
 }
 
@@ -29,7 +29,7 @@ export default function Dot({
 
   return (
     <div
-      className={`${defaultStyle} ${platformStyle[platform]} ${sizeStyle[size]} ${className}`}
+      className={`${defaultStyle} ${platform && platformStyle[platform]} ${sizeStyle[size]} ${className}`}
       {...props}
     />
   );

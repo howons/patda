@@ -1,10 +1,10 @@
 import CommentIndicator from "#app/post/[id]/_components/TitleBar/CommentIndicator.jsx";
-import Dot from "#app/post/[id]/_components/TitleBar/Dot.jsx";
 import Title from "#app/post/[id]/_components/TitleBar/Title.jsx";
 import { PLATFORM_NAME } from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import type { Platform } from "#lib/types/property.js";
 import type { PostInfo } from "#lib/types/response.js";
+import Dot from "#ui/Dot/Dot.jsx";
 import CategoryItem from "#ui/SearchBar/CategoryItem.jsx";
 import TagItem from "#ui/TagItem/TagItem.jsx";
 
