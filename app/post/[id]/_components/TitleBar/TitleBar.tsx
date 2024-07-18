@@ -33,7 +33,7 @@ export default function TitleBar({
         <CategoryItem platform={platform} />
         <TagItem tag={tag} />
         <CommentIndicator
-          postStatus="debate"
+          postStatus="normal"
           commentCount={0}
           className="absolute right-20 top-20"
         />

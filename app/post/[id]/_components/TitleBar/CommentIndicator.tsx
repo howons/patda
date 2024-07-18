@@ -31,13 +31,15 @@ export default function CommentIndicator({
       className={`${defaultStyle} ${statusStyle[postStatus]} ${className}`}
       {...props}>
       {postStatus === "normal" ? (
-        <FaRegComment className={iconStyle} />
+        <>
+          <FaRegComment className={iconStyle} />
+          <p className="absolute rotate-45 rounded-md text-center text-sm font-bold text-stone-800">
+            {commentCount}
+          </p>
+        </>
       ) : (
         <RiScales3Line className={iconStyle} />
       )}
-      <p className="absolute rotate-45 rounded-md bg-stone-100/50 px-2 text-center text-lg font-bold text-stone-800">
-        {commentCount}
-      </p>
     </div>
   );
 }
