@@ -42,7 +42,7 @@ export default function TitleBar({
   };
 
   return (
-    <section className="relative flex items-center">
+    <div className="relative flex items-center">
       <div className="absolute -top-5 -rotate-45">
         <CategoryItem platform={platform} />
         <TagItem tag={tag} />
@@ -53,7 +53,7 @@ export default function TitleBar({
         />
       </div>
       <div className="flex grow flex-col">
-        <div className="ml-24 flex h-14 items-center">
+        <section className="ml-24 flex h-14 items-center">
           <div>
             <Title className={`${platformNameStyle[platform]}`}>
               {platform === "etc" ? etcPlatformName : PLATFORM_NAME[platform]}
@@ -76,15 +76,15 @@ export default function TitleBar({
               className="absolute -right-2 -top-2"
             />
           </div>
-        </div>
-        <div className="ml-28 mt-4 flex h-14 flex-col xs:flex-row">
+        </section>
+        <section className="ml-28 mt-4 flex h-14 flex-col xs:flex-row">
           <Title className="shrink-0 text-neutral-800">{TAG_NAMES[tag]}</Title>
           <Dot platform="etc" size="sm" className="mx-4 mt-2.5 max-xs:hidden" />
           <p className="mt-1 break-keep pr-2 text-sm text-neutral-500">
             {TAG_DESC[tag]}
           </p>
-        </div>
+        </section>
       </div>
-    </section>
+    </div>
   );
 }
