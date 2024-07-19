@@ -13,9 +13,9 @@ import type { ActionState } from "#lib/types/action.js";
 const baseSchema = z
   .object({
     platform: z.nativeEnum(PLATFORM_ID),
-    targetNickname: z.string().min(1, ERROR.NO_TARGET_NICKNAME),
+    targetNickname: z.string().min(1, ERROR.POST.NO_TARGET_NICKNAME),
     tag: z.nativeEnum(TAG_ID),
-    content: z.string().min(30, ERROR.SHORT_CONTENT),
+    content: z.string().min(30, ERROR.POST.SHORT_CONTENT),
     images: z.array(z.object({ id: z.string() })).nullish(),
     anonymousUserNickname: z.string().nullish(),
     etcPlatformName: z.string().nullish(),
@@ -27,7 +27,7 @@ const baseSchema = z
       }
       return true;
     },
-    { path: ["etcPlatformName"], message: ERROR.NO_ETC_PLATFORM_NAME }
+    { path: ["etcPlatformName"], message: ERROR.POST.NO_ETC_PLATFORM_NAME }
   );
 
 export type FormValues = z.infer<typeof baseSchema>;
@@ -50,7 +50,7 @@ export async function createPostAction(
     },
     {
       path: ["anonymousUserNickname"],
-      message: ERROR.NO_USER_NICKNAME,
+      message: ERROR.POST.NO_USER_NICKNAME,
     }
   );
 
@@ -90,7 +90,7 @@ export async function createPostAction(
     if (error instanceof NoResultError) {
       return {
         status: "ERROR_DATABASE",
-        message: ERROR.NO_RESULT_DB,
+        message: ERROR.POST.NO_RESULT_DB,
       };
     } else {
       return {
@@ -102,7 +102,7 @@ export async function createPostAction(
 
   return {
     status: "SUCCESS",
-    message: "포스트 생성 완료",
+    message: "게시글 생성 완료",
     resultId: result.id,
   };
 }

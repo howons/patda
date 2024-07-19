@@ -12,6 +12,7 @@ export type ActionState =
         [field in keyof FormValues]?: string[];
       };
     }
+  | { status: "ERROR_AUTH"; message: string }
   | {
       status: "ERROR_DATABASE";
       message: string;
