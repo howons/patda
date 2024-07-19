@@ -21,7 +21,7 @@ export default function ContentContainer({
       <div className="flex grow flex-col gap-4 sm:px-4">
         <section className="min-h-72">이미지</section>
         <Dot platform={platform} className="mx-auto" />
-        <Content content={content} className="min-h-80" />
+        <Content content={content} className="min-h-40" />
       </div>
     </div>
   );
