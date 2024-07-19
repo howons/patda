@@ -1,3 +1,4 @@
+import Content from "#app/post/[id]/_components/ContentContainer/Content.jsx";
 import type { PostInfo } from "#lib/types/response.js";
 import Dot from "#ui/Dot/Dot.jsx";
 
@@ -17,7 +18,11 @@ export default function ContentContainer({
         <div className="grow border-l border-lime-300" />
         <Dot size="md" className="border-lime-300" />
       </div>
-      <div className="flex grow"></div>
+      <div className="flex grow flex-col gap-4 sm:px-4">
+        <section className="min-h-72">이미지</section>
+        <Dot platform={platform} className="mx-auto" />
+        <Content content={content} className="min-h-80" />
+      </div>
     </div>
   );
 }
