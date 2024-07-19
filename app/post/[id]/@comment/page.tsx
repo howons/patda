@@ -3,5 +3,5 @@ export default async function CommentListPage({
 }: {
   params: { id: string };
 }) {
-  return <section></section>;
+  return <section>댓글</section>;
 }

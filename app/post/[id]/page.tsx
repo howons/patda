@@ -7,15 +7,8 @@ export default async function PostDetailPage({
 }: {
   params: { id: string };
 }) {
-  const {
-    platform,
-    targetNickname,
-    tag,
-    images,
-    content,
-    createdAt,
-    etcPlatformName,
-  } = await getPost(params.id);
+  const { platform, targetNickname, tag, images, content, etcPlatformName } =
+    await getPost(params.id);
 
   return (
     <>
@@ -25,12 +18,7 @@ export default async function PostDetailPage({
         tag={tag}
         etcPlatformName={etcPlatformName}
       />
-      <ContentContainer
-        platform={platform}
-        images={images}
-        content={content}
-        createdAt={createdAt}
-      />
+      <ContentContainer platform={platform} images={images} content={content} />
     </>
   );
 }
