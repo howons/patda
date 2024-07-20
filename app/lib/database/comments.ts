@@ -4,7 +4,7 @@ import { type Database, db } from "#lib/database/db.js";
 
 export type NewCommentData = Omit<
   Database["Comment"],
-  "id" | "status" | "createdAt" | "updatedAt"
+  "id" | "createdAt" | "updatedAt"
 >;
 
 export function createComment(newCommentData: NewCommentData) {

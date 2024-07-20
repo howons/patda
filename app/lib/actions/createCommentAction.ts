@@ -7,11 +7,18 @@ import { auth } from "#auth";
 import { ERROR } from "#lib/constants/messages.js";
 import { createComment, type NewCommentData } from "#lib/database/comments.js";
 import type { ActionState } from "#lib/types/action.js";
+import type { PostCommentStatus } from "#lib/types/property.js";
+
+const INPUT_STATUS: { [key: number]: PostCommentStatus } = [
+  "normal",
+  "debate",
+] as const;
 
 const formSchema = z.object({
   postId: z.string(),
-  content: z.string(),
+  content: z.string().min(2, ERROR.POST.SHORT_CONTENT),
   images: z.array(z.object({ id: z.string() })).nullish(),
+  status: z.nativeEnum(INPUT_STATUS).nullish(),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
@@ -33,6 +40,7 @@ export async function createPostAction(
     postId: formData.get("postId"),
     content: formData.get("content"),
     images: formData.get("images"),
+    status: formData.get("status"),
   });
 
   if (!input.success) {
@@ -43,11 +51,12 @@ export async function createPostAction(
     };
   }
 
-  const { images, ...restData } = input.data;
+  const { images, status, ...restData } = input.data;
 
   const newCommentData: NewCommentData = {
     userId: session.user.id,
     images: images?.map(({ id }) => id) ?? null,
+    status: status ?? "normal",
     ...restData,
   };
 

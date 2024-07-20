@@ -60,7 +60,7 @@ export interface Database {
     postId: string;
     images: string[] | null;
     content: string;
-    status: Generated<PostCommentStatus>;
+    status: PostCommentStatus;
     createdAt: GeneratedAlways<Date>;
     updatedAt: Generated<Date>;
   };
