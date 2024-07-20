@@ -21,9 +21,9 @@ const formSchema = z.object({
   status: z.nativeEnum(INPUT_STATUS).nullish(),
 });
 
-export type FormValues = z.infer<typeof formSchema>;
+export type CommentFormValues = z.infer<typeof formSchema>;
 
-export async function createPostAction(
+export async function createCommentAction(
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {

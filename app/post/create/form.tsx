@@ -26,8 +26,8 @@ import {
   RadioTabs,
   Select,
   SubmitButton,
+  Textarea,
 } from "#ui/formItems/index.jsx";
-import Textarea from "#ui/formItems/Textarea.jsx";
 
 const platformOptions = Object.entries(PLATFORM_NAME).map(([id, name]) => ({
   name,
