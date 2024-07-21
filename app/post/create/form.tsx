@@ -10,11 +10,11 @@ import {
   createPostAction,
   type FormValues,
 } from "#lib/actions/createPostAction.js";
-import { PLATFORM_NAME } from "#lib/constants/platform.js";
+import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import { type OnSuccess, useFormAction } from "#lib/hooks/useFormAction.js";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
-import type { Platform, TagId } from "#lib/types/property.js";
+import type { FormColor, Platform, TagId } from "#lib/types/property.js";
 import Logo from "#public/당근빳다.svg";
 import Button from "#ui/Button/Button.jsx";
 import CancelButton from "#ui/Button/CancelButton.jsx";
@@ -47,6 +47,8 @@ function PostCreateForm({ session }: PostCreateFormProps) {
   const [saveLoading, setSaveLoading] = useState(false);
   const { platform, updatePlatform } = usePlatformStore((store) => store);
 
+  const color = PLATFORM_COLOR[platform];
+
   const onSuccess: OnSuccess = useCallback((state) => {
     alert("post" + state.resultId);
   }, []);
@@ -75,7 +77,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
       data-testid="post-create-form">
       <Fieldset className="space-y-6">
         <div className="mt-8 flex items-center justify-between">
-          <Legend className="group flex">
+          <Legend color={color} className="group flex">
             중고거래 진상 박제글 작성
             <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
           </Legend>

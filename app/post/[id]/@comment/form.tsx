@@ -10,6 +10,7 @@ import {
   createCommentAction,
 } from "#lib/actions/createCommentAction.js";
 import { useFormAction } from "#lib/hooks/useFormAction.js";
+import Dot from "#ui/Dot/Dot.jsx";
 import {
   ErrorText,
   Label,
@@ -32,15 +33,31 @@ export default function CommentForm({ session }: CommentFormProps) {
     register,
     formState: { errors },
     formAction,
+    watch,
   } = useFormAction<CommentFormValues>({
     action: createCommentAction,
     onSuccess,
   });
 
+  const status = watch("status");
+  const isDebate = status === "debate";
+  const color = isDebate ? "rose" : "lime";
+
   return (
     <form action={formAction}>
       <Fieldset>
-        <Legend>댓글 • 반박 작성</Legend>
+        <Legend color={color} className="ml-10 text-xl">
+          <b
+            className={`transition-all duration-300 ${isDebate ? "text-sm font-normal text-rose-300" : ""}`}>
+            댓글
+          </b>
+          <Dot className="mx-2 inline-block border-lime-300" />
+          <b
+            className={`transition-all duration-300 ${isDebate ? "" : "text-sm font-normal text-lime-300"}`}>
+            반박
+          </b>{" "}
+          작성
+        </Legend>
       </Fieldset>
     </form>
   );
