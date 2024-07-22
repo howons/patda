@@ -18,6 +18,7 @@ import {
   SubmitButton,
   Textarea,
 } from "#ui/formItems/index.jsx";
+import Switch from "#ui/formItems/Switch.jsx";
 
 interface CommentFormProps {
   session: Session;
@@ -46,18 +47,21 @@ export default function CommentForm({ session }: CommentFormProps) {
   return (
     <form action={formAction}>
       <Fieldset>
-        <Legend color={color} className="ml-10 text-xl">
-          <b
-            className={`transition-all duration-300 ${isDebate ? "text-sm font-normal text-rose-300" : ""}`}>
-            댓글
-          </b>
-          <Dot className="mx-2 inline-block border-lime-300" />
-          <b
-            className={`transition-all duration-300 ${isDebate ? "" : "text-sm font-normal text-lime-300"}`}>
-            반박
-          </b>{" "}
-          작성
-        </Legend>
+        <div className="flex">
+          <Legend color={color} className="ml-1 text-xl">
+            <b
+              className={`transition-all duration-300 ${isDebate ? "text-sm font-normal text-rose-400" : ""}`}>
+              댓글
+            </b>
+            <Dot className="mx-3 inline-block border-lime-300" />
+            <b
+              className={`mr-1 transition-all duration-300 ${isDebate ? "" : "text-sm font-normal text-lime-400"}`}>
+              반박
+            </b>{" "}
+            작성
+          </Legend>
+          <Switch color="lime" checkedColor="rose" />
+        </div>
       </Fieldset>
     </form>
   );
