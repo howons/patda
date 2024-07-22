@@ -52,7 +52,8 @@ export default function CommentForm({ session }: CommentFormProps) {
               댓글
             </b>
             <Dot
-              className={`mx-3 inline-block transition-colors ${isDebate ? "border-rose-300" : "border-lime-300"}}`}
+              color={isDebate ? "rose" : "lime"}
+              className={`mx-3 inline-block transition-colors`}
             />
             <b
               className={`mr-1 transition-all ${isDebate ? "" : "text-sm font-normal text-lime-400"}`}>

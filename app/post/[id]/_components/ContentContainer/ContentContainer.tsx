@@ -1,4 +1,5 @@
 import Content from "#app/post/[id]/_components/ContentContainer/Content.jsx";
+import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import type { PostInfo } from "#lib/types/response.js";
 import Dot from "#ui/Dot/Dot.jsx";
 
@@ -13,13 +14,13 @@ export default function ContentContainer({
   return (
     <div className="mt-3 flex">
       <div className="ml-2.5 flex shrink-0 grow-0 basis-5 flex-col items-center justify-center pt-2">
-        <Dot className="border-lime-300" />
+        <Dot color="lime" />
         <div className="grow border-l border-lime-300" />
-        <Dot className="border-lime-300" />
+        <Dot color="lime" />
       </div>
       <div className="flex grow flex-col gap-4 sm:px-4">
         <section className="min-h-72">이미지</section>
-        <Dot platform={platform} className="mx-auto" />
+        <Dot color={PLATFORM_COLOR[platform]} className="mx-auto" />
         <Content content={content} className="min-h-40" />
       </div>
     </div>

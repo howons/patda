@@ -1,6 +1,6 @@
 import CommentIndicator from "#app/post/[id]/_components/TitleBar/CommentIndicator.jsx";
 import Title from "#app/post/[id]/_components/TitleBar/Title.jsx";
-import { PLATFORM_NAME } from "#lib/constants/platform.js";
+import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import type { Platform } from "#lib/types/property.js";
 import type { PostInfo } from "#lib/types/response.js";
@@ -62,16 +62,22 @@ export default function TitleBar({
               {targetNickname}
             </Title>
           </div>
-          <Dot platform={platform} className="mx-5 max-2xs:hidden" />
+          <Dot
+            color={PLATFORM_COLOR[platform]}
+            className="mx-5 max-2xs:hidden"
+          />
           <Title
             className={`max-2xs:hidden ${platformNicknameStyle[platform]}`}>
             {targetNickname}
           </Title>
           <div
             className={`relative ml-8 h-0 grow border-b ${platformLineStyle[platform]}`}>
-            <Dot platform={platform} className="absolute -left-1 -top-1" />
             <Dot
-              platform={platform}
+              color={PLATFORM_COLOR[platform]}
+              className="absolute -left-1 -top-1"
+            />
+            <Dot
+              color={PLATFORM_COLOR[platform]}
               size="md"
               className="absolute -right-2 -top-2"
             />
@@ -79,7 +85,7 @@ export default function TitleBar({
         </section>
         <section className="ml-28 mt-4 flex h-14 flex-col xs:flex-row">
           <Title className="shrink-0 text-neutral-800">{TAG_NAMES[tag]}</Title>
-          <Dot platform="etc" size="sm" className="mx-4 mt-2.5 max-xs:hidden" />
+          <Dot color="zinc" size="sm" className="mx-4 mt-2.5 max-xs:hidden" />
           <p className="mt-1 break-keep pr-2 text-sm text-neutral-500">
             {TAG_DESC[tag]}
           </p>
