@@ -1,7 +1,10 @@
+"use client";
+
 import { FaRegComment } from "@react-icons/all-files/fa/FaRegComment";
 import { RiScales3Line } from "@react-icons/all-files/ri/RiScales3Line";
 import type { ComponentProps } from "react";
 
+import { useCommentStatusStore } from "#lib/providers/CommentStatusStoreProvider.jsx";
 import type { PostCommentStatus } from "#lib/types/property.js";
 
 interface CommentIndicatorProps extends ComponentProps<"div"> {
@@ -15,8 +18,12 @@ export default function CommentIndicator({
   className = "",
   ...props
 }: CommentIndicatorProps) {
+  const commentStatus = useCommentStatusStore((store) => store.commentStatus);
+  const integratedStatus: PostCommentStatus =
+    commentStatus === "debate" ? "debate" : postStatus;
+
   const defaultStyle =
-    "flex size-11 cursor-pointer items-center justify-center";
+    "flex size-11 cursor-pointer items-center justify-center transition-colors";
 
   const statusStyle: { [key in PostCommentStatus]: string } = {
     normal: "bg-lime-200 hover:bg-lime-100",
@@ -28,9 +35,9 @@ export default function CommentIndicator({
 
   return (
     <div
-      className={`${defaultStyle} ${statusStyle[postStatus]} ${className}`}
+      className={`${defaultStyle} ${statusStyle[integratedStatus]} ${className}`}
       {...props}>
-      {postStatus === "normal" ? (
+      {integratedStatus === "normal" ? (
         <>
           <FaRegComment className={iconStyle} />
           <p className="absolute rotate-45 rounded-md text-center text-sm font-bold text-stone-800">

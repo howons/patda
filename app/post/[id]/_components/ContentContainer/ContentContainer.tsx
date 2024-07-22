@@ -1,3 +1,4 @@
+import CommentLine from "#app/post/[id]/_components/ContentContainer/CommentLine.jsx";
 import Content from "#app/post/[id]/_components/ContentContainer/Content.jsx";
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import type { PostInfo } from "#lib/types/response.js";
@@ -13,11 +14,7 @@ export default function ContentContainer({
 }: ContentContainerProps) {
   return (
     <div className="mt-3 flex">
-      <div className="ml-2.5 flex shrink-0 grow-0 basis-5 flex-col items-center justify-center pt-2">
-        <Dot color="lime" />
-        <div className="grow border-l border-lime-300" />
-        <Dot color="lime" />
-      </div>
+      <CommentLine />
       <div className="flex grow flex-col gap-4 sm:px-4">
         <section className="min-h-72">이미지</section>
         <Dot color={PLATFORM_COLOR[platform]} className="mx-auto" />
