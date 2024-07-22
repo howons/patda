@@ -3,7 +3,7 @@
 import { Fieldset } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import {
   type CommentFormValues,
@@ -25,6 +25,7 @@ interface CommentFormProps {
 }
 
 export default function CommentForm({ session }: CommentFormProps) {
+  const [isDebate, setIsDebate] = useState(false);
   const router = useRouter();
 
   const onSuccess = useCallback(() => {
@@ -34,33 +35,39 @@ export default function CommentForm({ session }: CommentFormProps) {
     register,
     formState: { errors },
     formAction,
-    watch,
   } = useFormAction<CommentFormValues>({
     action: createCommentAction,
     onSuccess,
   });
 
-  const status = watch("status");
-  const isDebate = status === "debate";
   const color = isDebate ? "rose" : "lime";
 
   return (
     <form action={formAction}>
       <Fieldset>
         <div className="flex">
-          <Legend color={color} className="ml-1 text-xl">
+          <Legend color={color} className="ml-1 text-xl transition-colors">
             <b
-              className={`transition-all duration-300 ${isDebate ? "text-sm font-normal text-rose-400" : ""}`}>
+              className={`transition-all ${isDebate ? "text-sm font-normal text-rose-400" : ""}`}>
               댓글
             </b>
-            <Dot className="mx-3 inline-block border-lime-300" />
+            <Dot
+              className={`mx-3 inline-block transition-colors ${isDebate ? "border-rose-300" : "border-lime-300"}}`}
+            />
             <b
-              className={`mr-1 transition-all duration-300 ${isDebate ? "" : "text-sm font-normal text-lime-400"}`}>
+              className={`mr-1 transition-all ${isDebate ? "" : "text-sm font-normal text-lime-400"}`}>
               반박
             </b>{" "}
             작성
           </Legend>
-          <Switch color="lime" checkedColor="rose" />
+          <Switch
+            color="lime"
+            checkedColor="rose"
+            name="status"
+            value="debate"
+            checked={isDebate}
+            onChange={setIsDebate}
+          />
         </div>
       </Fieldset>
     </form>
