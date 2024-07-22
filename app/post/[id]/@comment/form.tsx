@@ -3,13 +3,14 @@
 import { Fieldset } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import {
   type CommentFormValues,
   createCommentAction,
 } from "#lib/actions/createCommentAction.js";
 import { useFormAction } from "#lib/hooks/useFormAction.js";
+import { useCommentStatusStore } from "#lib/providers/CommentStatusStoreProvider.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
 import {
   ErrorText,
@@ -25,7 +26,9 @@ interface CommentFormProps {
 }
 
 export default function CommentForm({ session }: CommentFormProps) {
-  const [isDebate, setIsDebate] = useState(false);
+  const { commentStatus, updateCommentStatus } = useCommentStatusStore(
+    (store) => store
+  );
   const router = useRouter();
 
   const onSuccess = useCallback(() => {
@@ -40,7 +43,12 @@ export default function CommentForm({ session }: CommentFormProps) {
     onSuccess,
   });
 
+  const isDebate = commentStatus === "debate";
   const color = isDebate ? "rose" : "lime";
+
+  const handleSwitchChange = (checked: boolean) => {
+    updateCommentStatus(checked ? "debate" : "normal");
+  };
 
   return (
     <form action={formAction}>
@@ -67,7 +75,7 @@ export default function CommentForm({ session }: CommentFormProps) {
             name="status"
             value="debate"
             checked={isDebate}
-            onChange={setIsDebate}
+            onChange={handleSwitchChange}
           />
         </div>
       </Fieldset>
