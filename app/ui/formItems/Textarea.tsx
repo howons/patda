@@ -18,7 +18,8 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       rose: "border-rose-500 focus:outline-rose-400",
     };
 
-    const defaultStyle = "h-40 min-w-40 rounded border px-2 transition-colors";
+    const defaultStyle =
+      "h-40 min-w-40 rounded border px-2 py-1 transition-colors";
 
     return (
       <HeadlessTextarea
