@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react";
 
+import CommentItem from "#app/post/[id]/@comment/_component/CommentItem.jsx";
 import type { CommentInfo } from "#lib/types/response.js";
 import Dot from "#ui/Dot/Dot.jsx";
 
@@ -20,12 +21,16 @@ export default function CommentList({
 
   return (
     <section className={`${className}`} {...props}>
-      <div className="ml-2 flex items-center gap-3">
+      <div className="m-2 flex items-center gap-3">
         <p className="text-lg text-lime-700">{commentCount}개의 댓글</p>
         <Dot color={debateCount > 0 ? "rose" : "lime"} />
         <p className="text-lg text-rose-700">{debateCount}개의 반박</p>
       </div>
-      <ul>{comments.map((c) => c.content)}</ul>
+      <ul className="my-3">
+        {comments.map((comment) => (
+          <CommentItem key={comment.id} comment={comment} />
+        ))}
+      </ul>
     </section>
   );
 }

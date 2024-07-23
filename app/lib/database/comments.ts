@@ -16,5 +16,18 @@ export function createComment(newCommentData: NewCommentData) {
 }
 
 export const getComments = cache((postId: string) =>
-  db.selectFrom("Comment").selectAll().where("postId", "=", postId).execute()
+  db
+    .selectFrom("Comment")
+    .innerJoin("User", "User.id", "Comment.userId")
+    .select([
+      "Comment.id as id",
+      "User.name as userName",
+      "images",
+      "content",
+      "status",
+      "createdAt",
+      "updatedAt",
+    ])
+    .where("postId", "=", postId)
+    .execute()
 );
