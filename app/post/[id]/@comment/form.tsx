@@ -23,9 +23,10 @@ import {
 
 interface CommentFormProps {
   session: Session | null;
+  postId: string;
 }
 
-export default function CommentForm({ session }: CommentFormProps) {
+export default function CommentForm({ session, postId }: CommentFormProps) {
   const { commentStatus, updateCommentStatus } = useCommentStatusStore(
     (store) => store
   );
@@ -39,7 +40,7 @@ export default function CommentForm({ session }: CommentFormProps) {
     formState: { errors },
     formAction,
   } = useFormAction<CommentFormValues>({
-    action: createCommentAction,
+    action: createCommentAction.bind(null, postId),
     onSuccess,
   });
 

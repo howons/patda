@@ -113,7 +113,7 @@ export async function create() {
     .addColumn("postId", "integer", (col) =>
       col.references("Post.id").onDelete("cascade").notNull()
     )
-    .addColumn("imageUrls", sql`text[]`, (col) => col.notNull())
+    .addColumn("images", sql`text[]`)
     .addColumn("content", "text", (col) => col.notNull())
     .addColumn("status", "text", (col) => col.notNull())
     .addColumn("createdAt", "timestamptz", (col) =>

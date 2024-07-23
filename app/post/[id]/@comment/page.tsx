@@ -10,7 +10,7 @@ export default async function CommentListPage({
 
   return (
     <section className="mt-3">
-      <CommentForm session={session} />
+      <CommentForm session={session} postId={params.id} />
     </section>
   );
 }

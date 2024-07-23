@@ -24,6 +24,7 @@ const formSchema = z.object({
 export type CommentFormValues = z.infer<typeof formSchema>;
 
 export async function createCommentAction(
+  postId: string,
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
@@ -37,7 +38,7 @@ export async function createCommentAction(
   }
 
   const input = formSchema.safeParse({
-    postId: formData.get("postId"),
+    postId,
     content: formData.get("content"),
     images: formData.get("images"),
     status: formData.get("status"),
