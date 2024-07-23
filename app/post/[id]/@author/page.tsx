@@ -27,7 +27,7 @@ export default async function AuthorPage({
   return (
     <div className="flex">
       <CommentLine />
-      <section className="mr-3 flex h-16 grow items-center justify-end gap-4 text-sm text-neutral-500 sm:px-4">
+      <section className="mr-3 flex h-24 grow items-center justify-end gap-4 text-sm text-neutral-500 sm:px-4">
         <p>{userNickname || anonymousUserNickname}</p>
         <Dot color={PLATFORM_COLOR[platform]} />
         <p>{formattedCreatedAt}</p>
