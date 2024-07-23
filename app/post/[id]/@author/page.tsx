@@ -1,8 +1,8 @@
-import CommentLine from "#app/post/[id]/@author/_component/CommentLine.jsx";
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { getPost } from "#lib/database/posts";
 import { getUser } from "#lib/database/users.js";
 import Dot from "#ui/Dot/Dot.jsx";
+import CommentLine from "#ui/SIdeLine/CommentLine.jsx";
 
 export default async function AuthorPage({
   params,
@@ -26,7 +26,7 @@ export default async function AuthorPage({
 
   return (
     <div className="flex">
-      <CommentLine />
+      <CommentLine bottomDotSize="md" />
       <section className="mr-3 flex h-24 grow items-center justify-end gap-4 text-sm text-neutral-500 sm:px-4">
         <p>{userNickname || anonymousUserNickname}</p>
         <Dot color={PLATFORM_COLOR[platform]} />

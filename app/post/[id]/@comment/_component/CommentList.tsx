@@ -25,7 +25,7 @@ export default function CommentList({
         <Dot color={debateCount > 0 ? "rose" : "lime"} />
         <p className="text-lg text-rose-700">{debateCount}개의 반박</p>
       </div>
-      {comments.map((c) => c.content)}
+      <ul>{comments.map((c) => c.content)}</ul>
     </section>
   );
 }
