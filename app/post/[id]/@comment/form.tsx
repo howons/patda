@@ -95,6 +95,11 @@ export default function CommentForm({ session }: CommentFormProps) {
             {...register("content")}
           />
         </Field>
+        <div className="flex justify-end">
+          <SubmitButton color={color} classname="ml-auto">
+            작성
+          </SubmitButton>
+        </div>
       </Fieldset>
     </form>
   );

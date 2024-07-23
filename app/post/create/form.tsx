@@ -183,6 +183,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
       </Fieldset>
       <div className="mt-6 flex justify-end gap-6">
         <Button
+          color={PLATFORM_COLOR[platform]}
           loading={saveLoading}
           onClick={() => {
             setSaveLoading(true);
@@ -190,7 +191,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
           }}>
           임시 저장
         </Button>
-        <SubmitButton>작성</SubmitButton>
+        <SubmitButton color={PLATFORM_COLOR[platform]}>작성</SubmitButton>
       </div>
     </form>
   );
