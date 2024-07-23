@@ -50,6 +50,10 @@ export default function CommentForm({ session }: CommentFormProps) {
     updateCommentStatus(checked ? "debate" : "normal");
   };
 
+  const placeholder = session
+    ? ""
+    : `${isDebate ? "반박" : "댓글"}은 로그인 후 작성할 수 있습니다.`;
+
   return (
     <form action={formAction}>
       <Fieldset>
@@ -86,6 +90,8 @@ export default function CommentForm({ session }: CommentFormProps) {
             required
             minLength={2}
             maxLength={1000}
+            disabled={!session}
+            placeholder={placeholder}
             {...register("content")}
           />
         </Field>
