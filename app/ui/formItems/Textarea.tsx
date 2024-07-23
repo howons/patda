@@ -1,31 +1,29 @@
-"use client";
-
 import { Textarea as HeadlessTextarea } from "@headlessui/react";
-import React from "react";
+import React, { type ComponentPropsWithRef } from "react";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
-import type { Platform } from "#lib/types/property.js";
+import type { FormColor } from "#lib/types/property.js";
 
-interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+interface TextareaProps extends ComponentPropsWithRef<"textarea"> {
+  color: FormColor;
+}
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className = "", ...props }, ref) => {
-    const platform = usePlatformStore((store) => store.platform);
-
-    const platformStyles: { [key in Platform]: string } = {
-      daangn: "border-orange-500 focus:outline-orange-400",
-      bunjang: "border-red-500 focus:outline-red-400",
-      joongna: "border-green-500 focus:outline-green-400",
-      etc: "border-zinc-500 focus:outline-zinc-400",
+  ({ color, className = "", ...props }, ref) => {
+    const colorStyles: { [key in FormColor]: string } = {
+      orange: "border-orange-500 focus:outline-orange-400",
+      red: "border-red-500 focus:outline-red-400",
+      green: "border-green-500 focus:outline-green-400",
+      zinc: "border-zinc-500 focus:outline-zinc-400",
+      lime: "border-lime-500 focus:outline-lime-400",
+      rose: "border-rose-500 focus:outline-rose-400",
     };
 
-    const defaultStyle = "h-40 min-w-40 rounded border px-2";
+    const defaultStyle = "h-40 min-w-40 rounded border px-2 transition-colors";
 
     return (
       <HeadlessTextarea
         ref={ref}
-        className={`${defaultStyle} ${platformStyles[platform]} ${className}`}
+        className={`${defaultStyle} ${colorStyles[color]} ${className}`}
         {...props}
       />
     );

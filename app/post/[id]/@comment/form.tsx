@@ -1,6 +1,6 @@
 "use client";
 
-import { Fieldset } from "@headlessui/react";
+import { Field, Fieldset } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
 import { useCallback } from "react";
@@ -17,12 +17,12 @@ import {
   Label,
   Legend,
   SubmitButton,
+  Switch,
   Textarea,
 } from "#ui/formItems/index.jsx";
-import Switch from "#ui/formItems/Switch.jsx";
 
 interface CommentFormProps {
-  session: Session;
+  session: Session | null;
 }
 
 export default function CommentForm({ session }: CommentFormProps) {
@@ -53,8 +53,8 @@ export default function CommentForm({ session }: CommentFormProps) {
   return (
     <form action={formAction}>
       <Fieldset>
-        <div className="flex">
-          <Legend color={color} className="ml-1 text-xl transition-colors">
+        <Field className="flex items-center">
+          <Legend color={color} className="ml-1 mr-4 text-xl transition-colors">
             <b
               className={`transition-all ${isDebate ? "text-sm font-normal text-rose-400" : ""}`}>
               댓글
@@ -76,8 +76,19 @@ export default function CommentForm({ session }: CommentFormProps) {
             value="debate"
             checked={isDebate}
             onChange={handleSwitchChange}
+            className="mt-1"
           />
-        </div>
+        </Field>
+        <Field className="my-3">
+          <Textarea
+            color={color}
+            className="w-full"
+            required
+            minLength={2}
+            maxLength={1000}
+            {...register("content")}
+          />
+        </Field>
       </Fieldset>
     </form>
   );

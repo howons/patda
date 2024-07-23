@@ -167,6 +167,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
         <Field>
           <Label>상세 설명</Label>
           <Textarea
+            color={PLATFORM_COLOR[platform]}
             className="block w-full resize-y"
             required
             minLength={30}
