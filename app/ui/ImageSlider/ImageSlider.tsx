@@ -76,6 +76,7 @@ export default function ImageSlider({
         className={`${imageTransitionStyle} ${imageTranslateStyle[curImage]}`}
       />
       <SliderButton
+        imageLength={images.length}
         curImage={curImage}
         setCurImage={setCurImage}
         intervalRef={intervalRef}
