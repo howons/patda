@@ -84,7 +84,7 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
             className="mt-1"
           />
         </Field>
-        <Field className="my-3">
+        <Field className="my-3 max-sm:px-3">
           <Textarea
             color={color}
             className="w-full"
@@ -96,7 +96,7 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
             {...register("content")}
           />
         </Field>
-        <div className="flex justify-end">
+        <div className="flex justify-end max-sm:px-3">
           <SubmitButton color={color} classname="ml-auto transition-colors">
             작성
           </SubmitButton>
