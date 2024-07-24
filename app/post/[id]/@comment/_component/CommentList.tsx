@@ -27,8 +27,12 @@ export default function CommentList({
         <p className="text-lg text-rose-700">{debateCount}개의 반박</p>
       </div>
       <ul className="my-3">
-        {comments.map((comment) => (
-          <CommentItem key={comment.id} comment={comment} />
+        {comments.map((comment, idx) => (
+          <CommentItem
+            key={comment.id}
+            comment={comment}
+            isLast={idx === comments.length - 1}
+          />
         ))}
       </ul>
     </section>

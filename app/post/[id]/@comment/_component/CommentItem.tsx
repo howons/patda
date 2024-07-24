@@ -6,10 +6,12 @@ import SideLine from "#ui/SIdeLine/SideLine.jsx";
 
 interface CommentItemProps extends ComponentProps<"li"> {
   comment: CommentInfo;
+  isLast?: boolean;
 }
 
 export default function CommentItem({
   comment: { status, content, userName, createdAt },
+  isLast,
   className = "",
   ...props
 }: CommentItemProps) {
@@ -20,6 +22,7 @@ export default function CommentItem({
       <SideLine
         color={isDebate ? "rose" : "lime"}
         topDotSize={isDebate ? "md" : "sm"}
+        bottomDotSize={isLast ? "sm" : undefined}
       />
       <div className="mb-5 grow flex-col">
         <div className="flex justify-between">
