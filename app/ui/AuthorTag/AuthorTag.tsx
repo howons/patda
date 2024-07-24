@@ -24,7 +24,7 @@ export default function AuthorTag({
 
   return (
     <section
-      className={`flex items-center justify-end gap-4 text-sm text-neutral-500 sm:px-4 ${className}`}
+      className={`flex items-center justify-end gap-4 text-sm text-neutral-500 ${className}`}
       {...props}>
       <p>{name}</p>
       <Dot color={color} />

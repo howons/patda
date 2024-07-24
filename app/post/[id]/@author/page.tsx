@@ -25,7 +25,7 @@ export default async function AuthorPage({
         name={userNickname || anonymousUserNickname || ""}
         color={PLATFORM_COLOR[platform]}
         date={createdAt}
-        className="mr-3 h-24 grow"
+        className="mr-3 h-24 grow sm:px-4"
       />
     </div>
   );

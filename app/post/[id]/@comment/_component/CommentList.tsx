@@ -1,18 +1,22 @@
 import type { ComponentProps } from "react";
 
 import CommentItem from "#app/post/[id]/@comment/_component/CommentItem.jsx";
-import type { CommentInfo } from "#lib/types/response.js";
+import { auth } from "#auth";
+import { getComments } from "#lib/database/comments.js";
 import Dot from "#ui/Dot/Dot.jsx";
 
 interface CommentListProps extends ComponentProps<"section"> {
-  comments: CommentInfo[];
+  postId: string;
 }
 
-export default function CommentList({
-  comments,
+export default async function CommentList({
+  postId,
   className = "",
   ...props
 }: CommentListProps) {
+  const comments = await getComments(postId);
+  const session = await auth();
+
   const commentCount = comments.reduce(
     (acc, cur) => (cur.status === "normal" ? acc + 1 : acc),
     0
@@ -26,11 +30,12 @@ export default function CommentList({
         <Dot color={debateCount > 0 ? "rose" : "lime"} />
         <p className="text-lg text-rose-700">{debateCount}개의 반박</p>
       </div>
-      <ul className="my-3">
+      <ul className="my-3 mr-3">
         {comments.map((comment, idx) => (
           <CommentItem
             key={comment.id}
             comment={comment}
+            isMine={comment.userId === session?.user?.id}
             isLast={idx === comments.length - 1}
           />
         ))}

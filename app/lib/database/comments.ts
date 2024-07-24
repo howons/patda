@@ -21,6 +21,7 @@ export const getComments = cache((postId: string) =>
     .innerJoin("User", "User.id", "Comment.userId")
     .select([
       "Comment.id as id",
+      "User.id as userId",
       "User.name as userName",
       "images",
       "content",
