@@ -5,6 +5,7 @@ import { type ComponentProps, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 
 import MutationButtonGroup from "#app/post/[id]/@comment/_component/MutationButtonGroup.jsx";
+import UpdateForm from "#app/post/[id]/@comment/_component/UpdateForm.jsx";
 import { deleteCommentAction } from "#lib/actions/deleteCommentAction.js";
 import type { CommentInfo } from "#lib/types/response.js";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
@@ -17,7 +18,7 @@ interface CommentItemProps extends ComponentProps<"li"> {
 }
 
 export default function CommentItem({
-  comment: { id, status, content, userName, createdAt },
+  comment: { id, status, content, userName, images, createdAt },
   isMine,
   isLast,
   className = "",
@@ -70,7 +71,15 @@ export default function CommentItem({
             />
           </div>
         </div>
-        <p className="py-2">{content}</p>
+        {updateClicked ? (
+          <UpdateForm
+            comment={{ id, content, images }}
+            isDebate={isDebate}
+            setUpdateClicked={setUpdateClicked}
+          />
+        ) : (
+          <p className="py-2">{content}</p>
+        )}
       </div>
     </li>
   );

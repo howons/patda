@@ -7,18 +7,15 @@ export type NewCommentData = Omit<
   "id" | "createdAt" | "updatedAt"
 >;
 
+export type UpdateCommentData = Partial<
+  Pick<Database["Comment"], "content" | "images">
+>;
+
 export function createComment(newCommentData: NewCommentData) {
   return db
     .insertInto("Comment")
     .values(newCommentData)
     .returning("id")
-    .executeTakeFirstOrThrow();
-}
-
-export function deleteComment(id: string) {
-  return db
-    .deleteFrom("Comment")
-    .where("Comment.id", "=", id)
     .executeTakeFirstOrThrow();
 }
 
@@ -43,3 +40,21 @@ export const getComments = cache((postId: string) =>
 export const getComment = cache((id: string) =>
   db.selectFrom("Comment").selectAll().where("id", "=", id).executeTakeFirst()
 );
+
+export function updateComment(
+  id: string,
+  updateCommentData: UpdateCommentData
+) {
+  return db
+    .updateTable("Comment")
+    .set(updateCommentData)
+    .where("id", "=", id)
+    .executeTakeFirstOrThrow();
+}
+
+export function deleteComment(id: string) {
+  return db
+    .deleteFrom("Comment")
+    .where("Comment.id", "=", id)
+    .executeTakeFirstOrThrow();
+}

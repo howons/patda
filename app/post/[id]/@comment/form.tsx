@@ -13,8 +13,6 @@ import { useFormAction } from "#lib/hooks/useFormAction.js";
 import { useCommentStatusStore } from "#lib/providers/CommentStatusStoreProvider.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
 import {
-  ErrorText,
-  Label,
   Legend,
   SubmitButton,
   Switch,
