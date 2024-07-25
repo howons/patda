@@ -2,7 +2,12 @@
 
 import { Field, Fieldset } from "@headlessui/react";
 import { useRouter } from "next/navigation";
-import { type Dispatch, type SetStateAction, useCallback } from "react";
+import {
+  type ComponentProps,
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+} from "react";
 
 import {
   type CommentUpdateFormValues,
@@ -13,7 +18,7 @@ import type { CommentInfo } from "#lib/types/response.js";
 import Button from "#ui/Button/Button.jsx";
 import { SubmitButton, Textarea } from "#ui/formItems/index.jsx";
 
-interface UpdateFormProps {
+interface UpdateFormProps extends ComponentProps<"form"> {
   comment: Pick<CommentInfo, "id" | "content" | "images">;
   isDebate: boolean;
   setUpdateClicked: Dispatch<SetStateAction<boolean>>;
@@ -23,6 +28,8 @@ export default function UpdateForm({
   comment: { id, content, images },
   isDebate,
   setUpdateClicked,
+  className = "",
+  ...props
 }: UpdateFormProps) {
   const router = useRouter();
 
@@ -42,7 +49,7 @@ export default function UpdateForm({
   const color = isDebate ? "rose" : "lime";
 
   return (
-    <form action={formAction}>
+    <form action={formAction} className={className} {...props}>
       <Fieldset>
         <Field className="my-3 max-sm:px-3">
           <Textarea
