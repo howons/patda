@@ -1,7 +1,11 @@
 "use client";
 
-import type { ComponentProps } from "react";
+import { useRouter } from "next/navigation";
+import { type ComponentProps, useEffect, useState } from "react";
+import { useFormState } from "react-dom";
 
+import MutationButtonGroup from "#app/post/[id]/@comment/_component/MutationButtonGroup.jsx";
+import { deleteCommentAction } from "#lib/actions/deleteCommentAction.js";
 import type { CommentInfo } from "#lib/types/response.js";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import SideLine from "#ui/SIdeLine/SideLine.jsx";
@@ -13,12 +17,27 @@ interface CommentItemProps extends ComponentProps<"li"> {
 }
 
 export default function CommentItem({
-  comment: { status, content, userName, createdAt },
+  comment: { id, status, content, userName, createdAt },
   isMine,
   isLast,
   className = "",
   ...props
 }: CommentItemProps) {
+  const [updateClicked, setUpdateClicked] = useState(false);
+  const [deleteState, deleteFormAction] = useFormState(
+    deleteCommentAction.bind(null, id),
+    { status: null }
+  );
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!deleteState) return;
+
+    if (deleteState.status === "SUCCESS") {
+      router.refresh();
+    }
+  }, [deleteState, router]);
+
   const isDebate = status === "debate";
 
   return (
@@ -36,14 +55,11 @@ export default function CommentItem({
           </h3>
           <div className="flex">
             {isMine && (
-              <>
-                <button className="px-1.5 text-sm text-neutral-400 hover:text-neutral-600">
-                  수정
-                </button>
-                <button className="px-1.5 text-sm text-neutral-400 hover:text-neutral-600">
-                  삭제
-                </button>
-              </>
+              <MutationButtonGroup
+                updateClicked={updateClicked}
+                setUpdateClicked={setUpdateClicked}
+                deleteAction={deleteFormAction}
+              />
             )}
             <AuthorTag
               name={""}

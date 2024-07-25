@@ -15,6 +15,13 @@ export function createComment(newCommentData: NewCommentData) {
     .executeTakeFirstOrThrow();
 }
 
+export function deleteComment(id: string) {
+  return db
+    .deleteFrom("Comment")
+    .where("Comment.id", "=", id)
+    .executeTakeFirstOrThrow();
+}
+
 export const getComments = cache((postId: string) =>
   db
     .selectFrom("Comment")
@@ -31,4 +38,8 @@ export const getComments = cache((postId: string) =>
     ])
     .where("postId", "=", postId)
     .execute()
+);
+
+export const getComment = cache((id: string) =>
+  db.selectFrom("Comment").selectAll().where("id", "=", id).executeTakeFirst()
 );
