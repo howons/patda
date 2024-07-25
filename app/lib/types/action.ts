@@ -17,7 +17,7 @@ export type ActionState =
     }
   | {
       status: "ERROR_INTERNAL";
-      error: any;
+      message: string;
     }
   | {
       status: null;

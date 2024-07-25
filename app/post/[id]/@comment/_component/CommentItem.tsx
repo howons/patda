@@ -59,6 +59,7 @@ export default function CommentItem({
                 updateClicked={updateClicked}
                 setUpdateClicked={setUpdateClicked}
                 deleteAction={deleteFormAction}
+                deleteState={deleteState}
               />
             )}
             <AuthorTag

@@ -5,22 +5,42 @@ import {
   type Dispatch,
   type PropsWithChildren,
   type SetStateAction,
+  useEffect,
   useState,
 } from "react";
 import { useFormStatus } from "react-dom";
+
+import type { ActionState } from "#lib/types/action.js";
 
 interface MutationButtonGroupProps {
   updateClicked: boolean;
   setUpdateClicked: Dispatch<SetStateAction<boolean>>;
   deleteAction: (payload: FormData) => void;
+  deleteState: ActionState;
 }
 
 export default function MutationButtonGroup({
   updateClicked,
   setUpdateClicked,
   deleteAction,
+  deleteState,
 }: MutationButtonGroupProps) {
   const [deleteClicked, setDeleteClicked] = useState(false);
+  const [deleteErrorMessage, setDeleteErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (!deleteState || deleteState.status === "SUCCESS") return;
+
+    if (
+      deleteState.status === "ERROR_AUTH" ||
+      deleteState.status === "ERROR_DATABASE" ||
+      deleteState.status === "ERROR_INTERNAL"
+    ) {
+      setDeleteErrorMessage(deleteState.message);
+    }
+
+    setTimeout(() => setDeleteErrorMessage(""), 3000);
+  }, [deleteState]);
 
   if (updateClicked) {
     return (
@@ -31,13 +51,17 @@ export default function MutationButtonGroup({
   }
 
   if (deleteClicked) {
-    return (
+    return deleteErrorMessage === "" ? (
       <form action={deleteAction}>
         <MutationSubmitButton theme="alert">삭제 승인</MutationSubmitButton>
         <MutationButton theme="concern" onClick={() => setDeleteClicked(false)}>
           취소
         </MutationButton>
       </form>
+    ) : (
+      <MutationButton onClick={() => setDeleteErrorMessage("")}>
+        {deleteErrorMessage}
+      </MutationButton>
     );
   }
 

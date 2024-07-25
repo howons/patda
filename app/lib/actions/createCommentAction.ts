@@ -73,7 +73,7 @@ export async function createCommentAction(
     } else {
       return {
         status: "ERROR_INTERNAL",
-        error: (error as { message: string })?.message ?? "",
+        message: ERROR.COMMENT.NO_RESULT_DB,
       };
     }
   }

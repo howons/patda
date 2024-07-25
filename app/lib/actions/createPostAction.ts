@@ -95,7 +95,7 @@ export async function createPostAction(
     } else {
       return {
         status: "ERROR_INTERNAL",
-        error: (error as { message: string })?.message ?? "",
+        message: ERROR.POST.NO_RESULT_DB,
       };
     }
   }
