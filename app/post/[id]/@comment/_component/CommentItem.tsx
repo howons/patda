@@ -48,7 +48,7 @@ export default function CommentItem({
         topDotSize={isDebate ? "md" : "sm"}
         bottomDotSize={isLast ? "sm" : undefined}
       />
-      <div className="mb-5 grow flex-col">
+      <div className="mb-3 grow flex-col">
         <div className="flex justify-between">
           <h3
             className={`ml-1 font-bold ${isDebate ? "text-rose-600" : "text-lime-600"}`}>

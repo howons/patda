@@ -95,7 +95,7 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
           />
         </Field>
         <div className="flex justify-end max-sm:px-3">
-          <SubmitButton color={color} classname="ml-auto transition-colors">
+          <SubmitButton color={color} className="ml-auto transition-colors">
             작성
           </SubmitButton>
         </div>

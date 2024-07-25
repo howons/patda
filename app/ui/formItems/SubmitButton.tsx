@@ -8,12 +8,12 @@ import Button from "#ui/Button/Button.jsx";
 
 interface SubmitButtonProps {
   color: FormColor;
-  classname?: string;
+  className?: string;
 }
 
 function SubmitButton({
   color,
-  classname = "",
+  className = "",
   children,
 }: PropsWithChildren<SubmitButtonProps>) {
   const { pending } = useFormStatus();
@@ -24,7 +24,7 @@ function SubmitButton({
       loading={pending}
       type="submit"
       theme="primary"
-      className={classname}>
+      className={className}>
       {children}
     </Button>
   );

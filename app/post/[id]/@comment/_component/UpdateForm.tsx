@@ -10,6 +10,7 @@ import {
 } from "#lib/actions/updateCommentAction.js";
 import { useFormAction } from "#lib/hooks/useFormAction.js";
 import type { CommentInfo } from "#lib/types/response.js";
+import Button from "#ui/Button/Button.jsx";
 import { SubmitButton, Textarea } from "#ui/formItems/index.jsx";
 
 interface UpdateFormProps {
@@ -54,8 +55,15 @@ export default function UpdateForm({
             {...register("content")}
           />
         </Field>
-        <div className="flex justify-end max-sm:px-3">
-          <SubmitButton color={color} classname="ml-auto transition-colors">
+        <div className="flex justify-end gap-3 max-sm:px-3">
+          <Button
+            color={color}
+            theme="sub"
+            className="transition-colors"
+            onClick={() => setUpdateClicked(false)}>
+            취소
+          </Button>
+          <SubmitButton color={color} className="transition-colors">
             작성
           </SubmitButton>
         </div>

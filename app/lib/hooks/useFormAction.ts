@@ -20,7 +20,7 @@ export function useFormAction<FormValues extends FieldValues>({
   const form = useForm<FormValues>();
   const [state, formAction] = useFormState(action, { status: null });
 
-  const { setError, clearErrors, setFocus } = form;
+  const { setError, clearErrors, setFocus, reset } = form;
 
   useEffect(() => {
     if (!state) return;
@@ -43,9 +43,10 @@ export function useFormAction<FormValues extends FieldValues>({
 
     if (state.status === "SUCCESS") {
       clearErrors();
+      reset();
       onSuccess?.(state);
     }
-  }, [clearErrors, onSuccess, setError, setFocus, state]);
+  }, [clearErrors, onSuccess, setError, setFocus, state, reset]);
 
   return { ...form, state, formAction };
 }
