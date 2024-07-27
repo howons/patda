@@ -2,9 +2,7 @@
 
 import {
   type ComponentProps,
-  type Dispatch,
   type PropsWithChildren,
-  type SetStateAction,
   useEffect,
   useState,
 } from "react";
@@ -14,14 +12,14 @@ import type { ActionState } from "#lib/types/action.js";
 
 interface MutationButtonGroupProps {
   updateClicked: boolean;
-  setUpdateClicked: Dispatch<SetStateAction<boolean>>;
+  onUpdateClick: (value: boolean) => void;
   deleteAction: (payload: FormData) => void;
   deleteState: ActionState;
 }
 
 export default function MutationButtonGroup({
   updateClicked,
-  setUpdateClicked,
+  onUpdateClick,
   deleteAction,
   deleteState,
 }: MutationButtonGroupProps) {
@@ -44,7 +42,7 @@ export default function MutationButtonGroup({
 
   if (updateClicked) {
     return (
-      <MutationButton theme="concern" onClick={() => setUpdateClicked(false)}>
+      <MutationButton theme="concern" onClick={() => onUpdateClick(false)}>
         취소
       </MutationButton>
     );
@@ -67,9 +65,7 @@ export default function MutationButtonGroup({
 
   return (
     <>
-      <MutationButton onClick={() => setUpdateClicked(true)}>
-        수정
-      </MutationButton>
+      <MutationButton onClick={() => onUpdateClick(true)}>수정</MutationButton>
       <MutationButton onClick={() => setDeleteClicked(true)}>
         삭제
       </MutationButton>

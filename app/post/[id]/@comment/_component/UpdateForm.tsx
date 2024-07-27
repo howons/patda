@@ -21,13 +21,13 @@ import { SubmitButton, Textarea } from "#ui/formItems/index.jsx";
 interface UpdateFormProps extends ComponentProps<"form"> {
   comment: Pick<CommentInfo, "id" | "content" | "images">;
   isDebate: boolean;
-  setUpdateClicked: Dispatch<SetStateAction<boolean>>;
+  onUpdateClick: (value: boolean) => void;
 }
 
 export default function UpdateForm({
   comment: { id, content, images },
   isDebate,
-  setUpdateClicked,
+  onUpdateClick,
   className = "",
   ...props
 }: UpdateFormProps) {
@@ -35,8 +35,8 @@ export default function UpdateForm({
 
   const onSuccess = useCallback(() => {
     router.refresh();
-    setUpdateClicked(false);
-  }, [router, setUpdateClicked]);
+    onUpdateClick(false);
+  }, [router, onUpdateClick]);
   const {
     register,
     formState: { errors },
@@ -57,7 +57,7 @@ export default function UpdateForm({
             className="w-full"
             required
             minLength={2}
-            maxLength={1000}
+            maxLength={9999}
             defaultValue={content}
             {...register("content")}
           />
@@ -67,7 +67,7 @@ export default function UpdateForm({
             color={color}
             theme="sub"
             className="transition-colors"
-            onClick={() => setUpdateClicked(false)}>
+            onClick={() => onUpdateClick(false)}>
             취소
           </Button>
           <SubmitButton color={color} className="transition-colors">

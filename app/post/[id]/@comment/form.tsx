@@ -88,7 +88,7 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
             className="w-full"
             required
             minLength={2}
-            maxLength={1000}
+            maxLength={9999}
             disabled={!session}
             placeholder={placeholder}
             {...register("content")}

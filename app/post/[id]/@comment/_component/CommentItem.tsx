@@ -1,8 +1,13 @@
 "use client";
 
-import { Transition } from "@headlessui/react";
 import { useRouter } from "next/navigation";
-import { type ComponentProps, useEffect, useRef, useState } from "react";
+import {
+  type ComponentProps,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useFormState } from "react-dom";
 
 import MutationButtonGroup from "#app/post/[id]/@comment/_component/MutationButtonGroup.jsx";
@@ -11,6 +16,10 @@ import { deleteCommentAction } from "#lib/actions/deleteCommentAction.js";
 import type { CommentInfo } from "#lib/types/response.js";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import SideLine from "#ui/SIdeLine/SideLine.jsx";
+
+const CONTENT_HEIGHT_GAP = 40;
+const CONTENT_MAX_HEIGHT = 10 * CONTENT_HEIGHT_GAP;
+const TRANSTION_DELAY = 300;
 
 interface CommentItemProps extends ComponentProps<"li"> {
   comment: CommentInfo;
@@ -26,19 +35,23 @@ export default function CommentItem({
   ...props
 }: CommentItemProps) {
   const [updateClicked, setUpdateClicked] = useState(false);
+  const [moreClicked, setMoreClicked] = useState(false);
+  const [updateTransitioning, setUpdateTransitioning] = useState(false);
+  const router = useRouter();
+
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = useState(0);
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    setContentHeight(contentRef.current.scrollHeight);
+  }, []);
+
   const [deleteState, deleteFormAction] = useFormState(
     deleteCommentAction.bind(null, id),
     { status: null }
   );
-  const router = useRouter();
-  const contentRef = useRef<HTMLDivElement>(null);
-  const contentInitHeight = useRef(0);
-
-  useEffect(() => {
-    if (!contentRef.current) return;
-    contentInitHeight.current = contentRef.current.clientHeight;
-    console.log(contentInitHeight.current);
-  }, []);
 
   useEffect(() => {
     if (!deleteState) return;
@@ -48,7 +61,51 @@ export default function CommentItem({
     }
   }, [deleteState, router]);
 
+  const handleUpdateClick = useCallback(
+    (value: boolean) => {
+      const setUpdate = (value: boolean) => {
+        setUpdateClicked(value);
+
+        setUpdateTransitioning(true);
+        setTimeout(() => setUpdateTransitioning(false), TRANSTION_DELAY);
+      };
+
+      if (!value) {
+        setUpdate(false);
+        return;
+      }
+
+      if (!moreClicked) {
+        setUpdate(true);
+        return;
+      }
+
+      setMoreClicked(false);
+      setTimeout(() => setUpdate(true), TRANSTION_DELAY);
+    },
+    [moreClicked]
+  );
+
+  useEffect(() => {
+    if (!updateClicked || !contentRef.current?.parentElement) return;
+
+    contentRef.current.parentElement.scrollTo({ top: 0 });
+  }, [updateClicked]);
+
   const isDebate = status === "debate";
+
+  let contentHeightStyle = "";
+  if (updateClicked) {
+    contentHeightStyle = updateTransitioning ? "max-h-60" : "max-h-[50rem]";
+  } else {
+    contentHeightStyle = moreClicked
+      ? "max-h-[50rem]"
+      : getContentHeight(contentHeight);
+  }
+
+  const transitionEnabled =
+    (!updateClicked && !updateTransitioning) ||
+    (updateClicked && updateTransitioning);
 
   return (
     <li className={`flex min-h-20 ${className}`} {...props}>
@@ -57,7 +114,7 @@ export default function CommentItem({
         topDotSize={isDebate ? "md" : "sm"}
         bottomDotSize={isLast ? "sm" : undefined}
       />
-      <article className="mb-3 grow flex-col overflow-auto">
+      <article className="relative mb-3 grow flex-col">
         <section className="flex justify-between">
           <h3
             className={`ml-1 font-bold ${isDebate ? "text-rose-600" : "text-lime-600"}`}>
@@ -67,7 +124,7 @@ export default function CommentItem({
             {isMine && (
               <MutationButtonGroup
                 updateClicked={updateClicked}
-                setUpdateClicked={setUpdateClicked}
+                onUpdateClick={handleUpdateClick}
                 deleteAction={deleteFormAction}
                 deleteState={deleteState}
               />
@@ -81,35 +138,42 @@ export default function CommentItem({
           </div>
         </section>
         <section
-          ref={contentRef}
-          className={`transtion duration-500 ease-linear ${updateClicked ? "max-h-60" : getContentMaxHeight(contentInitHeight.current)}`}>
-          {updateClicked ? (
-            <UpdateForm
-              comment={{ id, content, images }}
-              isDebate={isDebate}
-              setUpdateClicked={setUpdateClicked}
-            />
-          ) : (
-            <p className={`py-2`}>{content}</p>
-          )}
+          className={`${updateTransitioning ? "overflow-hidden" : "overflow-auto"}`}>
+          <div
+            ref={contentRef}
+            className={`${transitionEnabled ? "transtion duration-300 ease-out" : ""} ${contentHeightStyle}`}>
+            {updateClicked ? (
+              <UpdateForm
+                comment={{ id, content, images }}
+                isDebate={isDebate}
+                onUpdateClick={handleUpdateClick}
+                className={`${updateTransitioning ? "pb-[35rem]" : "pb-0"}`}
+              />
+            ) : (
+              <p className={`py-2`}>{content}</p>
+            )}
+            {contentHeight >= CONTENT_MAX_HEIGHT && !updateClicked && (
+              <button
+                className="sticky bottom-0 left-0 h-12 w-full bg-gradient-to-t from-white to-white/0"
+                onClick={() => setMoreClicked((m) => !m)}></button>
+            )}
+          </div>
         </section>
       </article>
     </li>
   );
 }
 
-function getContentMaxHeight(initHeight: number) {
-  if (initHeight <= 40) return "max-h-10";
-  if (initHeight <= 80) return "max-h-20";
-  if (initHeight <= 120) return "max-h-[7.5rem]";
-  if (initHeight <= 160) return "max-h-40";
-  if (initHeight <= 200) return "max-h-[12.5rem]";
-  if (initHeight <= 240) return "max-h-60";
-  if (initHeight <= 280) return "max-h-[17.5rem]";
-  if (initHeight <= 320) return "max-h-80";
-  if (initHeight <= 360) return "max-h-[22.5rem]";
-  if (initHeight <= 400) return "max-h-[25rem]";
-  if (initHeight <= 440) return "max-h-[27.5rem]";
-  if (initHeight <= 480) return "max-h-[30rem]";
-  return "max-h-[60rem]";
+function getContentHeight(height: number) {
+  if (height <= 0) return "max-h-[50rem]";
+  if (height <= 1 * CONTENT_HEIGHT_GAP) return "max-h-10";
+  if (height <= 2 * CONTENT_HEIGHT_GAP) return "max-h-20";
+  if (height <= 3 * CONTENT_HEIGHT_GAP) return "max-h-[7.5rem]";
+  if (height <= 4 * CONTENT_HEIGHT_GAP) return "max-h-40";
+  if (height <= 5 * CONTENT_HEIGHT_GAP) return "max-h-[12.5rem]";
+  if (height <= 6 * CONTENT_HEIGHT_GAP) return "max-h-60";
+  if (height <= 7 * CONTENT_HEIGHT_GAP) return "max-h-[17.5rem]";
+  if (height <= 8 * CONTENT_HEIGHT_GAP) return "max-h-80";
+  if (height <= 9 * CONTENT_HEIGHT_GAP) return "max-h-[22.5rem]";
+  return "max-h-[25rem]";
 }
