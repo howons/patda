@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 
-import MutationButtonGroup from "#app/post/[id]/@comment/_component/MutationButtonGroup.jsx";
 import { deleteCommentAction } from "#lib/actions/deleteCommentAction.js";
 import type { CommentInfo } from "#lib/types/response.js";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
+import MutationButtonGroup from "#ui/MutationButtonGroup/MutationButtonGroup.jsx";
 
 interface CommentHeaderProps {
   isMine: boolean;
