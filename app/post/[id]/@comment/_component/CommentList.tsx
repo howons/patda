@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 
-import CommentItem from "#app/post/[id]/@comment/_component/CommentItem.jsx";
+import CommentItem from "#app/post/[id]/@comment/_component/CommentItem/CommentItem.jsx";
 import { auth } from "#auth";
 import { getComments } from "#lib/database/comments.js";
 import Dot from "#ui/Dot/Dot.jsx";
