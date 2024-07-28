@@ -1,5 +1,7 @@
 "use client";
 
+import { FaChevronDown } from "@react-icons/all-files/fa/FaChevronDown";
+import { FaChevronUp } from "@react-icons/all-files/fa/FaChevronUp";
 import { useRouter } from "next/navigation";
 import {
   type ComponentProps,
@@ -154,8 +156,14 @@ export default function CommentItem({
             )}
             {contentHeight >= CONTENT_MAX_HEIGHT && !updateClicked && (
               <button
-                className="sticky bottom-0 left-0 h-12 w-full bg-gradient-to-t from-white to-white/0"
-                onClick={() => setMoreClicked((m) => !m)}></button>
+                className={`sticky bottom-0 left-0 flex h-12 w-full items-center justify-center ${!moreClicked ? "bg-gradient-to-t from-white to-white/0" : ""}`}
+                onClick={() => setMoreClicked((m) => !m)}>
+                {moreClicked ? (
+                  <FaChevronUp className="size-4 fill-neutral-700" />
+                ) : (
+                  <FaChevronDown className="size-4 fill-neutral-700" />
+                )}
+              </button>
             )}
           </div>
         </section>
