@@ -45,7 +45,7 @@ export default function CommentHeader({
         className={`ml-1 font-bold ${isDebate ? "text-rose-600" : "text-lime-600"}`}>
         {userName}
       </h3>
-      <div className="flex">
+      <div className="flex max-2xs:flex-col-reverse max-2xs:gap-1">
         {isMine && (
           <MutationButtonGroup
             updateClicked={updateClicked}
