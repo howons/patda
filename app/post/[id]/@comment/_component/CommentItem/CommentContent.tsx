@@ -83,7 +83,7 @@ export default function CommentContent({
 }
 
 function getContentHeight(height: number) {
-  if (height <= 0) return "max-h-[50rem]";
+  if (height <= 0) return "max-h-[25rem]";
   if (height <= 1 * CONTENT_HEIGHT_GAP) return "max-h-10";
   if (height <= 2 * CONTENT_HEIGHT_GAP) return "max-h-20";
   if (height <= 3 * CONTENT_HEIGHT_GAP) return "max-h-[7.5rem]";
