@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
-import { FieldValues, Path, useForm } from "react-hook-form";
+import { FieldValues, Path, useForm, type UseFormProps } from "react-hook-form";
 
 import type { ActionState } from "#lib/types/action.js";
 
@@ -8,16 +8,18 @@ export type OnSuccess = (
   state: Extract<ActionState, { status: "SUCCESS" }>
 ) => void;
 
-interface UseFormActionProps {
+interface UseFormActionProps<FormValues extends FieldValues> {
   action: (prevState: ActionState, formData: FormData) => Promise<ActionState>;
   onSuccess?: OnSuccess;
+  useFormProps?: UseFormProps<FormValues>;
 }
 
 export function useFormAction<FormValues extends FieldValues>({
   action,
   onSuccess,
-}: UseFormActionProps) {
-  const form = useForm<FormValues>();
+  useFormProps,
+}: UseFormActionProps<FormValues>) {
+  const form = useForm<FormValues>(useFormProps);
   const [state, formAction] = useFormState(action, { status: null });
 
   const { setError, clearErrors, setFocus, reset } = form;

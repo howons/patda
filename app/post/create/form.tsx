@@ -5,17 +5,19 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 import { ChangeEvent, useCallback, useState } from "react";
-import { Controller, useFieldArray } from "react-hook-form";
+import { Controller, useFieldArray, type UseFormProps } from "react-hook-form";
 
 import {
   createPostAction,
   type FormValues,
 } from "#lib/actions/createPostAction.js";
+import { updatePostAction } from "#lib/actions/updatePostAction.js";
 import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import { type OnSuccess, useFormAction } from "#lib/hooks/useFormAction.js";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import type { Platform, TagId } from "#lib/types/property.js";
+import type { PostInfo } from "#lib/types/response.js";
 import Logo from "#public/당근빳다.svg";
 import Button from "#ui/Button/Button.jsx";
 import CancelButton from "#ui/Button/CancelButton.jsx";
@@ -40,11 +42,25 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
   description: TAG_DESC[id as TagId],
 }));
 
-interface PostFormProps {
+interface PostCreateFormProps {
   session: Session | null;
+  id?: never;
+  postData?: never;
 }
 
-export default function PostForm({ session }: PostFormProps) {
+interface PostUpdateFormProps {
+  session: Session | null;
+  id: string;
+  postData: PostInfo;
+}
+
+export default function PostForm({
+  session,
+  id,
+  postData,
+}: PostCreateFormProps | PostUpdateFormProps) {
+  const isUpdate = id !== undefined;
+
   const [saveLoading, setSaveLoading] = useState(false);
   const { platform, updatePlatform } = usePlatformStore((store) => store);
   const router = useRouter();
@@ -53,16 +69,47 @@ export default function PostForm({ session }: PostFormProps) {
 
   const onSuccess: OnSuccess = useCallback(
     (state) => {
-      router.push(`/post/${state.resultId}`);
+      const postId = isUpdate ? id : state.resultId;
+      router.push(`/post/${postId}`);
     },
-    [router]
+    [router, id, isUpdate]
   );
+
+  let useFormProps: UseFormProps<FormValues> | undefined;
+  if (postData) {
+    const {
+      anonymousUserNickname,
+      content,
+      etcPlatformName,
+      images,
+      platform,
+      tag,
+      targetNickname,
+    } = postData;
+
+    useFormProps = {
+      defaultValues: {
+        anonymousUserNickname,
+        content,
+        etcPlatformName,
+        images: images?.map((image) => ({ id: image })) ?? null,
+        platform,
+        tag,
+        targetNickname,
+      },
+    };
+  }
+
   const {
     register,
     control,
     formState: { errors },
     formAction,
-  } = useFormAction<FormValues>({ action: createPostAction, onSuccess });
+  } = useFormAction<FormValues>({
+    action: isUpdate ? updatePostAction.bind(null, id) : createPostAction,
+    onSuccess,
+    useFormProps,
+  });
   const { fields, append, remove } = useFieldArray<FormValues>({
     control,
     name: "images",
@@ -152,7 +199,7 @@ export default function PostForm({ session }: PostFormProps) {
             render={({ field }) => (
               <RadioTabs<TagId>
                 name="tag"
-                defaultValue="others"
+                defaultValue={isUpdate ? postData.tag : "others"}
                 onChange={field.onChange}
                 items={tagOptions}
               />

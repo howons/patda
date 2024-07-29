@@ -7,6 +7,11 @@ export type NewPostData = Omit<
   "id" | "status" | "createdAt" | "updatedAt"
 >;
 
+export type UpdatePostData = Omit<
+  Database["Post"],
+  "id" | "userId" | "status" | "createdAt" | "updatedAt"
+>;
+
 export function createPost(newPostData: NewPostData) {
   return db
     .insertInto("Post")
@@ -22,6 +27,14 @@ export const getPost = cache((postId: string) =>
     .where("id", "=", postId)
     .executeTakeFirstOrThrow()
 );
+
+export function updatePost(id: string, updatePostData: UpdatePostData) {
+  return db
+    .updateTable("Post")
+    .set(updatePostData)
+    .where("id", "=", id)
+    .executeTakeFirstOrThrow();
+}
 
 export function deletePost(id: string) {
   return db
