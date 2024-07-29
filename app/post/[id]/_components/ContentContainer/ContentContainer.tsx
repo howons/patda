@@ -21,7 +21,8 @@ export default function ContentContainer({
   postId,
 }: ContentContainerProps) {
   const [deleteState, deleteFormAction] = useDeleteAction(
-    deletePostAction.bind(null, postId)
+    deletePostAction.bind(null, postId),
+    "/"
   );
 
   return (

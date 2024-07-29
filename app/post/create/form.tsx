@@ -2,6 +2,7 @@
 
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
+import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 import { ChangeEvent, useCallback, useState } from "react";
 import { Controller, useFieldArray } from "react-hook-form";
@@ -46,12 +47,16 @@ interface PostFormProps {
 export default function PostForm({ session }: PostFormProps) {
   const [saveLoading, setSaveLoading] = useState(false);
   const { platform, updatePlatform } = usePlatformStore((store) => store);
+  const router = useRouter();
 
   const color = PLATFORM_COLOR[platform];
 
-  const onSuccess: OnSuccess = useCallback((state) => {
-    alert("post" + state.resultId);
-  }, []);
+  const onSuccess: OnSuccess = useCallback(
+    (state) => {
+      router.push(`/post/${state.resultId}`);
+    },
+    [router]
+  );
   const {
     register,
     control,

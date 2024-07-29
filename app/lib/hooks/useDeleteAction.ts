@@ -10,7 +10,8 @@ export default function useDeleteAction(
   deleteAction: (
     prevState: ActionState,
     formData: FormData
-  ) => Promise<ActionState>
+  ) => Promise<ActionState>,
+  href?: string
 ) {
   const router = useRouter();
 
@@ -22,9 +23,14 @@ export default function useDeleteAction(
     if (!deleteState) return;
 
     if (deleteState.status === "SUCCESS") {
+      if (href) {
+        router.push(href);
+        return;
+      }
+
       router.refresh();
     }
-  }, [deleteState, router]);
+  }, [deleteState, router, href]);
 
   return [deleteState, deleteFormAction] as const;
 }

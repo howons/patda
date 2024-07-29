@@ -61,7 +61,7 @@ export default function MutationButtonGroup(props: MutationButtonGroupProps) {
 
   if (deleteClicked) {
     return deleteErrorMessage === "" ? (
-      <form action={deleteAction} className="flex justify-end">
+      <form action={deleteAction} className="flex h-6 justify-end">
         <MutationSubmitButton theme="alert">삭제 승인</MutationSubmitButton>
         <MutationButton theme="concern" onClick={() => setDeleteClicked(false)}>
           취소
