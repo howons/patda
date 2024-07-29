@@ -22,3 +22,10 @@ export const getPost = cache((postId: string) =>
     .where("id", "=", postId)
     .executeTakeFirstOrThrow()
 );
+
+export function deletePost(id: string) {
+  return db
+    .deleteFrom("Post")
+    .where("Post.id", "=", id)
+    .executeTakeFirstOrThrow();
+}

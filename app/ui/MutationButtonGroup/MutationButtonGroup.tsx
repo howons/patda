@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   type ComponentProps,
   type PropsWithChildren,
@@ -10,19 +11,27 @@ import { useFormStatus } from "react-dom";
 
 import type { ActionState } from "#lib/types/action.js";
 
-interface MutationButtonGroupProps {
-  updateClicked: boolean;
-  onUpdateClick: (value: boolean) => void;
+interface CommonProps {
   deleteAction: (payload: FormData) => void;
   deleteState: ActionState;
 }
+type ConditionalUpdateProps =
+  | {
+      updateClicked: boolean;
+      onUpdateClick: (value: boolean) => void;
+      updateHref?: never;
+    }
+  | {
+      updateClicked?: never;
+      onUpdateClick?: never;
+      updateHref: string;
+    };
 
-export default function MutationButtonGroup({
-  updateClicked,
-  onUpdateClick,
-  deleteAction,
-  deleteState,
-}: MutationButtonGroupProps) {
+type MutationButtonGroupProps = CommonProps & ConditionalUpdateProps;
+
+export default function MutationButtonGroup(props: MutationButtonGroupProps) {
+  const { deleteState, deleteAction } = props;
+
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [deleteErrorMessage, setDeleteErrorMessage] = useState("");
 
@@ -40,9 +49,11 @@ export default function MutationButtonGroup({
     setTimeout(() => setDeleteErrorMessage(""), 3000);
   }, [deleteState]);
 
-  if (updateClicked) {
+  if (props.updateClicked) {
     return (
-      <MutationButton theme="concern" onClick={() => onUpdateClick(false)}>
+      <MutationButton
+        theme="concern"
+        onClick={() => props.onUpdateClick(false)}>
         취소
       </MutationButton>
     );
@@ -65,7 +76,15 @@ export default function MutationButtonGroup({
 
   return (
     <div className="flex justify-end">
-      <MutationButton onClick={() => onUpdateClick(true)}>수정</MutationButton>
+      {props.updateClicked ? (
+        <MutationButton onClick={() => props.onUpdateClick(true)}>
+          수정
+        </MutationButton>
+      ) : (
+        <Link href={props.updateHref ?? ""}>
+          <MutationButton>수정</MutationButton>
+        </Link>
+      )}
       <MutationButton onClick={() => setDeleteClicked(true)}>
         삭제
       </MutationButton>

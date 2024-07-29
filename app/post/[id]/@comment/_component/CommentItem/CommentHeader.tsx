@@ -1,10 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useFormState } from "react-dom";
-
 import { deleteCommentAction } from "#lib/actions/deleteCommentAction.js";
+import useDeleteAction from "#lib/hooks/useDeleteAction.js";
 import type { CommentInfo } from "#lib/types/response.js";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import MutationButtonGroup from "#ui/MutationButtonGroup/MutationButtonGroup.jsx";
@@ -22,20 +19,9 @@ export default function CommentHeader({
   updateClicked,
   onUpdateClick,
 }: CommentHeaderProps) {
-  const router = useRouter();
-
-  const [deleteState, deleteFormAction] = useFormState(
-    deleteCommentAction.bind(null, id),
-    { status: null }
+  const [deleteState, deleteFormAction] = useDeleteAction(
+    deleteCommentAction.bind(null, id)
   );
-
-  useEffect(() => {
-    if (!deleteState) return;
-
-    if (deleteState.status === "SUCCESS") {
-      router.refresh();
-    }
-  }, [deleteState, router]);
 
   const isDebate = status === "debate";
 

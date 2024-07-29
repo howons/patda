@@ -18,7 +18,12 @@ export default async function PostDetailPage({
         tag={tag}
         etcPlatformName={etcPlatformName}
       />
-      <ContentContainer platform={platform} images={images} content={content} />
+      <ContentContainer
+        platform={platform}
+        images={images}
+        content={content}
+        postId={params.id}
+      />
     </>
   );
 }

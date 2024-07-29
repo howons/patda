@@ -14,7 +14,7 @@ import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import { type OnSuccess, useFormAction } from "#lib/hooks/useFormAction.js";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
-import type { FormColor, Platform, TagId } from "#lib/types/property.js";
+import type { Platform, TagId } from "#lib/types/property.js";
 import Logo from "#public/당근빳다.svg";
 import Button from "#ui/Button/Button.jsx";
 import CancelButton from "#ui/Button/CancelButton.jsx";
@@ -39,11 +39,11 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
   description: TAG_DESC[id as TagId],
 }));
 
-interface PostCreateFormProps {
+interface PostFormProps {
   session: Session | null;
 }
 
-function PostCreateForm({ session }: PostCreateFormProps) {
+export default function PostForm({ session }: PostFormProps) {
   const [saveLoading, setSaveLoading] = useState(false);
   const { platform, updatePlatform } = usePlatformStore((store) => store);
 
@@ -196,5 +196,3 @@ function PostCreateForm({ session }: PostCreateFormProps) {
     </form>
   );
 }
-
-export default PostCreateForm;
