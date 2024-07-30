@@ -76,7 +76,7 @@ export default function MutationButtonGroup(props: MutationButtonGroupProps) {
 
   return (
     <div className="flex justify-end">
-      {props.updateClicked ? (
+      {props.onUpdateClick ? (
         <MutationButton onClick={() => props.onUpdateClick(true)}>
           수정
         </MutationButton>
