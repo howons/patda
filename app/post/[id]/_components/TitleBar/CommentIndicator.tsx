@@ -22,6 +22,20 @@ export default function CommentIndicator({
   const integratedStatus: PostCommentStatus =
     commentStatus === "debate" ? "debate" : postStatus;
 
+  let handleClick = () => {};
+  if (typeof window !== "undefined") {
+    const commentLineEndRef = document.querySelector(
+      "div[data-comment-line-end]"
+    );
+    handleClick = () => {
+      if (!commentLineEndRef) return;
+      window.scrollTo({
+        top: commentLineEndRef.getBoundingClientRect().top,
+        behavior: "smooth",
+      });
+    };
+  }
+
   const defaultStyle =
     "flex size-11 cursor-pointer items-center justify-center transition-colors";
 
@@ -36,6 +50,7 @@ export default function CommentIndicator({
   return (
     <div
       className={`${defaultStyle} ${statusStyle[integratedStatus]} ${className}`}
+      onClick={handleClick}
       {...props}>
       {integratedStatus === "normal" ? (
         <>

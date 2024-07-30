@@ -21,7 +21,7 @@ export default async function AuthorContainer({
 
   return (
     <div className="flex">
-      <CommentLine bottomDotSize="md" />
+      <CommentLine bottomDotSize="md" data-comment-line-end />
       <AuthorTag
         name={userNickname || anonymousUserNickname || ""}
         color={PLATFORM_COLOR[platform]}
