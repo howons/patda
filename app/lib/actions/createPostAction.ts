@@ -18,6 +18,7 @@ const baseSchema = z
     content: z.string().min(30, ERROR.POST.SHORT_CONTENT),
     images: z.array(z.object({ id: z.string() })).nullish(),
     anonymousUserNickname: z.string().nullish(),
+    anonymousPassword: z.string().nullish(),
     etcPlatformName: z.string().nullish(),
   })
   .refine(
@@ -38,21 +39,36 @@ export async function createPostAction(
 ): Promise<ActionState> {
   const session = await auth();
 
-  const formSchema = baseSchema.refine(
-    (data) => {
-      if (!session) {
-        return (
-          data.anonymousUserNickname != null &&
-          data.anonymousUserNickname.length > 0
-        );
+  const formSchema = baseSchema
+    .refine(
+      (data) => {
+        if (!session) {
+          return (
+            data.anonymousUserNickname != null &&
+            data.anonymousUserNickname.length > 0
+          );
+        }
+        return true;
+      },
+      {
+        path: ["anonymousUserNickname"],
+        message: ERROR.POST.NO_USER_NICKNAME,
       }
-      return true;
-    },
-    {
-      path: ["anonymousUserNickname"],
-      message: ERROR.POST.NO_USER_NICKNAME,
-    }
-  );
+    )
+    .refine(
+      (data) => {
+        if (!session) {
+          return (
+            data.anonymousPassword != null && data.anonymousPassword.length >= 4
+          );
+        }
+        return true;
+      },
+      {
+        path: ["anonymousPassword"],
+        message: ERROR.POST.NO_USER_PASSWORD,
+      }
+    );
 
   const input = formSchema.safeParse({
     platform: formData.get("platform"),
@@ -61,6 +77,7 @@ export async function createPostAction(
     images: formData.get("images"),
     content: formData.get("content"),
     anonymousUserNickname: formData.get("anonymousUserNickname"),
+    anonymousPassword: formData.get("anonymousPassword"),
     etcPlatformName: formData.get("etcPlatformName"),
   });
 
@@ -72,13 +89,19 @@ export async function createPostAction(
     };
   }
 
-  const { images, anonymousUserNickname, etcPlatformName, ...restData } =
-    input.data;
+  const {
+    images,
+    anonymousUserNickname,
+    anonymousPassword,
+    etcPlatformName,
+    ...restData
+  } = input.data;
 
   const newPostData: NewPostData = {
     userId: session?.user?.id ?? null,
     images: images?.map(({ id }) => id) ?? null,
     anonymousUserNickname: anonymousUserNickname ?? null,
+    anonymousPassword: anonymousPassword ?? null,
     etcPlatformName: etcPlatformName ?? null,
     ...restData,
   };

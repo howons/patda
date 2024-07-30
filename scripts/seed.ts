@@ -91,6 +91,7 @@ export async function create() {
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
     .addColumn("anonymousUserNickname", "text")
+    .addColumn("anonymousPassword", "text")
     .addColumn("etcPlatformName", "text")
     .execute();
 

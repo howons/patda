@@ -175,19 +175,34 @@ export default function PostForm({
               />
             </Field>
             {!session && (
-              <Field className="mt-2 flex flex-col">
-                <Label>본인 닉네임</Label>
-                <Input
-                  type="text"
-                  className="block w-full"
-                  {...register("anonymousUserNickname")}
-                />
-                <ErrorMessage
-                  name="anonymousUserNickname"
-                  errors={errors}
-                  render={({ message }) => <ErrorText>{message}</ErrorText>}
-                />
-              </Field>
+              <>
+                <Field className="mt-2 flex flex-col">
+                  <Label>본인 닉네임</Label>
+                  <Input
+                    type="text"
+                    className="block w-full"
+                    {...register("anonymousUserNickname")}
+                  />
+                  <ErrorMessage
+                    name="anonymousUserNickname"
+                    errors={errors}
+                    render={({ message }) => <ErrorText>{message}</ErrorText>}
+                  />
+                </Field>
+                <Field className="mt-2 flex flex-col">
+                  <Label>게시글 비밀번호</Label>
+                  <Input
+                    type="password"
+                    className="block w-full"
+                    {...register("anonymousPassword")}
+                  />
+                  <ErrorMessage
+                    name="anonymousPassword"
+                    errors={errors}
+                    render={({ message }) => <ErrorText>{message}</ErrorText>}
+                  />
+                </Field>
+              </>
             )}
           </div>
         </div>
