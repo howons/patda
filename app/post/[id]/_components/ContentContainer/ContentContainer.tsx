@@ -12,6 +12,7 @@ import CommentLine from "#ui/SIdeLine/CommentLine.jsx";
 interface ContentContainerProps
   extends Pick<PostInfo, "platform" | "images" | "content"> {
   postId: string;
+  isMine: boolean;
 }
 
 export default function ContentContainer({
@@ -19,6 +20,7 @@ export default function ContentContainer({
   images,
   content,
   postId,
+  isMine,
 }: ContentContainerProps) {
   const [deleteState, deleteFormAction] = useDeleteAction(
     deletePostAction.bind(null, postId),
@@ -29,12 +31,14 @@ export default function ContentContainer({
     <div className="mt-3 flex">
       <CommentLine topDotSize="sm" bottomDotSize="sm" className="pt-2" />
       <div className="flex grow flex-col gap-4 sm:px-4">
-        <section>
-          <MutationButtonGroup
-            deleteState={deleteState}
-            deleteAction={deleteFormAction}
-            updateHref={`/post/${postId}/update`}
-          />
+        <section className="h-6">
+          {isMine && (
+            <MutationButtonGroup
+              deleteState={deleteState}
+              deleteAction={deleteFormAction}
+              updateHref={`/post/update/${postId}`}
+            />
+          )}
         </section>
         <section className="min-h-72">이미지</section>
         <Dot color={PLATFORM_COLOR[platform]} className="mx-auto" />

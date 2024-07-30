@@ -2,6 +2,7 @@ import ContentContainer from "#app/post/[id]/_components/ContentContainer/Conten
 import TitleBar from "#app/post/[id]/_components/TitleBar/TitleBar.jsx";
 import AuthorContainer from "#app/post/[id]/(author)/AuthorContainer.jsx";
 import CommentContainer from "#app/post/[id]/(comment)/CommentContainer.jsx";
+import { auth } from "#auth";
 import { getPost } from "#lib/database/posts";
 
 export default async function PostDetailPage({
@@ -10,7 +11,10 @@ export default async function PostDetailPage({
   params: { id: string };
 }) {
   const id = params.id;
-  const { platform, images, content } = await getPost(id);
+  const { userId, platform, images, content } = await getPost(id);
+
+  const session = await auth();
+  const isMine = userId === session?.user?.id;
 
   return (
     <>
@@ -20,6 +24,7 @@ export default async function PostDetailPage({
         images={images}
         content={content}
         postId={id}
+        isMine={isMine}
       />
       <AuthorContainer postId={id} />
       <CommentContainer postId={id} />
