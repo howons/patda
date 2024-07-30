@@ -4,14 +4,15 @@ import { getUser } from "#lib/database/users.js";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import CommentLine from "#ui/SIdeLine/CommentLine.jsx";
 
-export default async function AuthorPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { userId, platform, createdAt, anonymousUserNickname } = await getPost(
-    params.id
-  );
+interface AuthorContainerProps {
+  postId: string;
+}
+
+export default async function AuthorContainer({
+  postId,
+}: AuthorContainerProps) {
+  const { userId, platform, createdAt, anonymousUserNickname } =
+    await getPost(postId);
 
   let userNickname = null;
   if (userId !== null) {

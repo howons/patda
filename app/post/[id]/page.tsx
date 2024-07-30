@@ -1,5 +1,7 @@
 import ContentContainer from "#app/post/[id]/_components/ContentContainer/ContentContainer.jsx";
 import TitleBar from "#app/post/[id]/_components/TitleBar/TitleBar.jsx";
+import AuthorContainer from "#app/post/[id]/(author)/AuthorContainer.jsx";
+import CommentContainer from "#app/post/[id]/(comment)/CommentContainer.jsx";
 import { getPost } from "#lib/database/posts";
 
 export default async function PostDetailPage({
@@ -7,23 +9,20 @@ export default async function PostDetailPage({
 }: {
   params: { id: string };
 }) {
-  const { platform, targetNickname, tag, images, content, etcPlatformName } =
-    await getPost(params.id);
+  const id = params.id;
+  const { platform, images, content } = await getPost(id);
 
   return (
     <>
-      <TitleBar
-        platform={platform}
-        targetNickname={targetNickname}
-        tag={tag}
-        etcPlatformName={etcPlatformName}
-      />
+      <TitleBar postId={id} />
       <ContentContainer
         platform={platform}
         images={images}
         content={content}
-        postId={params.id}
+        postId={id}
       />
+      <AuthorContainer postId={id} />
+      <CommentContainer postId={id} />
     </>
   );
 }

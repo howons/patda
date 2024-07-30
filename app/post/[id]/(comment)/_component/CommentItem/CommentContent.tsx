@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import MoreButton from "#app/post/[id]/@comment/_component/CommentItem/MoreButton.jsx";
-import UpdateForm from "#app/post/[id]/@comment/_component/UpdateForm.jsx";
+import MoreButton from "#app/post/[id]/(comment)/_component/CommentItem/MoreButton.jsx";
+import UpdateForm from "#app/post/[id]/(comment)/_component/UpdateForm.jsx";
 import type { CommentInfo } from "#lib/types/response.js";
 
 const CONTENT_HEIGHT_GAP = 40;

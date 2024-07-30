@@ -2,24 +2,20 @@ import CommentIndicator from "#app/post/[id]/_components/TitleBar/CommentIndicat
 import Title from "#app/post/[id]/_components/TitleBar/Title.jsx";
 import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
+import { getPost } from "#lib/database/posts";
 import type { Platform } from "#lib/types/property.js";
-import type { PostInfo } from "#lib/types/response.js";
 import Dot from "#ui/Dot/Dot.jsx";
 import CategoryItem from "#ui/SearchBar/CategoryItem.jsx";
 import TagItem from "#ui/TagItem/TagItem.jsx";
 
-interface TitlebarProps
-  extends Pick<
-    PostInfo,
-    "platform" | "targetNickname" | "tag" | "etcPlatformName"
-  > {}
+interface TitlebarProps {
+  postId: string;
+}
 
-export default function TitleBar({
-  platform,
-  targetNickname,
-  tag,
-  etcPlatformName,
-}: TitlebarProps) {
+export default async function TitleBar({ postId }: TitlebarProps) {
+  const { platform, targetNickname, tag, etcPlatformName } =
+    await getPost(postId);
+
   const platformNameStyle: { [key in Platform]: string } = {
     daangn: "text-orange-700",
     bunjang: "text-red-700",

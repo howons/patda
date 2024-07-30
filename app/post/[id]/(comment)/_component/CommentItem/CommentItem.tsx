@@ -2,8 +2,8 @@
 
 import { type ComponentProps, useCallback, useState } from "react";
 
-import CommentContent from "#app/post/[id]/@comment/_component/CommentItem/CommentContent.jsx";
-import CommentHeader from "#app/post/[id]/@comment/_component/CommentItem/CommentHeader.jsx";
+import CommentContent from "#app/post/[id]/(comment)/_component/CommentItem/CommentContent.jsx";
+import CommentHeader from "#app/post/[id]/(comment)/_component/CommentItem/CommentHeader.jsx";
 import type { CommentInfo } from "#lib/types/response.js";
 import SideLine from "#ui/SIdeLine/SideLine.jsx";
 
