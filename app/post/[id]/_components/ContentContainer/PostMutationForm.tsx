@@ -1,6 +1,6 @@
 "use client";
 
-import { deletePostAction } from "#lib/actions/deletePostAction.js";
+import { deletePostAction } from "#lib/actions/post/deletePostAction.js";
 import useDeleteAction from "#lib/hooks/useDeleteAction.js";
 import MutationButtonGroup from "#ui/MutationButtonGroup/MutationButtonGroup.jsx";
 

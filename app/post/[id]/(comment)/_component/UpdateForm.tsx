@@ -7,7 +7,7 @@ import { type ComponentProps, useCallback } from "react";
 import {
   type CommentUpdateFormValues,
   updateCommentAction,
-} from "#lib/actions/updateCommentAction.js";
+} from "#lib/actions/comment/updateCommentAction.js";
 import { useFormAction } from "#lib/hooks/useFormAction.js";
 import type { CommentInfo } from "#lib/types/response.js";
 import Button from "#ui/Button/Button.jsx";

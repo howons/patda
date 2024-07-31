@@ -10,8 +10,8 @@ import { Controller, useFieldArray, type UseFormProps } from "react-hook-form";
 import {
   createPostAction,
   type FormValues,
-} from "#lib/actions/createPostAction.js";
-import { updatePostAction } from "#lib/actions/updatePostAction.js";
+} from "#lib/actions/post/createPostAction.js";
+import { updatePostAction } from "#lib/actions/post/updatePostAction.js";
 import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import { type OnSuccess, useFormAction } from "#lib/hooks/useFormAction.js";

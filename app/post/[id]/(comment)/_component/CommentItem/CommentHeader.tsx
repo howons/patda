@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteCommentAction } from "#lib/actions/deleteCommentAction.js";
+import { deleteCommentAction } from "#lib/actions/comment/deleteCommentAction.js";
 import useDeleteAction from "#lib/hooks/useDeleteAction.js";
 import type { CommentInfo } from "#lib/types/response.js";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";

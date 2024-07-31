@@ -8,7 +8,7 @@ import { useCallback } from "react";
 import {
   type CommentFormValues,
   createCommentAction,
-} from "#lib/actions/createCommentAction.js";
+} from "#lib/actions/comment/createCommentAction.js";
 import { useFormAction } from "#lib/hooks/useFormAction.js";
 import { useCommentStatusStore } from "#lib/providers/CommentStatusStoreProvider.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
