@@ -11,15 +11,13 @@ import { TAG_ID } from "#lib/constants/tag.js";
 import { getPost, updatePost, type UpdatePostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
 
-const baseSchema = z
+const formSchema = z
   .object({
     platform: z.nativeEnum(PLATFORM_ID),
     targetNickname: z.string().min(1, ERROR.POST.NO_TARGET_NICKNAME),
     tag: z.nativeEnum(TAG_ID),
     content: z.string().min(30, ERROR.POST.SHORT_CONTENT),
     images: z.array(z.object({ id: z.string() })).nullish(),
-    anonymousUserNickname: z.string().nullish(),
-    anonymousPassword: z.string().nullish(),
     etcPlatformName: z.string().nullish(),
   })
   .refine(
@@ -32,7 +30,7 @@ const baseSchema = z
     { path: ["etcPlatformName"], message: ERROR.POST.NO_ETC_PLATFORM_NAME }
   );
 
-export type PostUpdateFormValues = z.infer<typeof baseSchema>;
+export type PostUpdateFormValues = z.infer<typeof formSchema>;
 
 export async function updatePostAction(
   id: string,
@@ -49,45 +47,12 @@ export async function updatePostAction(
     };
   }
 
-  const formSchema = baseSchema
-    .refine(
-      (data) => {
-        if (!session) {
-          return (
-            data.anonymousUserNickname != null &&
-            data.anonymousUserNickname.length > 0
-          );
-        }
-        return true;
-      },
-      {
-        path: ["anonymousUserNickname"],
-        message: ERROR.POST.NO_USER_NICKNAME,
-      }
-    )
-    .refine(
-      (data) => {
-        if (!session) {
-          return (
-            data.anonymousPassword != null && data.anonymousPassword.length >= 4
-          );
-        }
-        return true;
-      },
-      {
-        path: ["anonymousPassword"],
-        message: ERROR.POST.NO_USER_PASSWORD,
-      }
-    );
-
   const input = formSchema.safeParse({
     platform: formData.get("platform"),
     targetNickname: formData.get("targetNickname"),
     tag: formData.get("tag"),
     images: formData.get("images"),
     content: formData.get("content"),
-    anonymousUserNickname: formData.get("anonymousUserNickname"),
-    anonymousPassword: formData.get("anonymousPassword"),
     etcPlatformName: formData.get("etcPlatformName"),
   });
 
@@ -99,18 +64,10 @@ export async function updatePostAction(
     };
   }
 
-  const {
-    images,
-    anonymousUserNickname,
-    anonymousPassword,
-    etcPlatformName,
-    ...restData
-  } = input.data;
+  const { images, etcPlatformName, ...restData } = input.data;
 
   const newPostData: UpdatePostData = {
     images: images?.map(({ id }) => id) ?? null,
-    anonymousUserNickname: anonymousUserNickname ?? null,
-    anonymousPassword: anonymousPassword ?? null,
     etcPlatformName: etcPlatformName ?? null,
     ...restData,
   };

@@ -3,7 +3,6 @@
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
-import { Session } from "next-auth";
 import { ChangeEvent, useCallback, useState } from "react";
 import { Controller, useFieldArray, type UseFormProps } from "react-hook-form";
 
@@ -43,19 +42,16 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
 }));
 
 interface PostCreateFormProps {
-  session: Session | null;
   id?: never;
   postData?: never;
 }
 
 interface PostUpdateFormProps {
-  session: Session | null;
   id: string;
   postData: PostInfo;
 }
 
 export default function PostForm({
-  session,
   id,
   postData,
 }: PostCreateFormProps | PostUpdateFormProps) {
@@ -77,19 +73,11 @@ export default function PostForm({
 
   let useFormProps: UseFormProps<FormValues> | undefined;
   if (postData) {
-    const {
-      anonymousUserNickname,
-      content,
-      etcPlatformName,
-      images,
-      platform,
-      tag,
-      targetNickname,
-    } = postData;
+    const { content, etcPlatformName, images, platform, tag, targetNickname } =
+      postData;
 
     useFormProps = {
       defaultValues: {
-        anonymousUserNickname,
         content,
         etcPlatformName,
         images: images?.map((image) => ({ id: image })) ?? null,
@@ -174,36 +162,6 @@ export default function PostForm({
                 render={({ message }) => <ErrorText>{message}</ErrorText>}
               />
             </Field>
-            {!session && (
-              <>
-                <Field className="mt-2 flex flex-col">
-                  <Label>본인 닉네임</Label>
-                  <Input
-                    type="text"
-                    className="block w-full"
-                    {...register("anonymousUserNickname")}
-                  />
-                  <ErrorMessage
-                    name="anonymousUserNickname"
-                    errors={errors}
-                    render={({ message }) => <ErrorText>{message}</ErrorText>}
-                  />
-                </Field>
-                <Field className="mt-2 flex flex-col">
-                  <Label>게시글 비밀번호</Label>
-                  <Input
-                    type="password"
-                    className="block w-full"
-                    {...register("anonymousPassword")}
-                  />
-                  <ErrorMessage
-                    name="anonymousPassword"
-                    errors={errors}
-                    render={({ message }) => <ErrorText>{message}</ErrorText>}
-                  />
-                </Field>
-              </>
-            )}
           </div>
         </div>
         <Field>

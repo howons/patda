@@ -51,8 +51,6 @@ export interface Database {
     status: Generated<PostCommentStatus>;
     createdAt: GeneratedAlways<Date>;
     updatedAt: Generated<Date>;
-    anonymousUserNickname: string | null;
-    anonymousPassword: string | null;
     etcPlatformName: string | null;
   };
   Comment: {

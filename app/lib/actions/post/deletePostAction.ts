@@ -16,18 +16,13 @@ export async function deletePostAction(
   const post = await getPost(id);
 
   if (!session?.user?.id) {
-    if (post.anonymousPassword === null) {
-      return {
-        status: "ERROR_AUTH",
-        message: ERROR.POST.NO_AUTH,
-      };
-    } else if (post.anonymousPassword !== formData.get("password")) {
-      return {
-        status: "ERROR_AUTH",
-        message: ERROR.POST.NO_MATCH_PASSWORD,
-      };
-    }
-  } else if (session.user.id !== post?.userId) {
+    return {
+      status: "ERROR_AUTH",
+      message: ERROR.POST.NO_AUTH,
+    };
+  }
+
+  if (session.user.id !== post?.userId) {
     return {
       status: "ERROR_AUTH",
       message: ERROR.POST.NO_MATCH_AUTH,
