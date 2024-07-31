@@ -8,6 +8,7 @@ export const ERROR = {
     NO_RESULT_DB: "게시글 생성 오류. 잠시 후 다시 시도해주세요.",
     NO_AUTH: "로그인 후 시도해주세요.",
     NO_MATCH_AUTH: "사용자가 생성자와 일치하지 않습니다.",
+    NO_MATCH_PASSWORD: "비밀번호가 일치하지 않습니다.",
   },
   COMMENT: {
     NO_AUTH: "로그인 후 시도해주세요.",

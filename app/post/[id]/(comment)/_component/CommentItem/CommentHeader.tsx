@@ -33,12 +33,13 @@ export default function CommentHeader({
       </h3>
       <div className="flex max-2xs:flex-col-reverse max-2xs:gap-1">
         {isMine && (
-          <MutationButtonGroup
-            updateClicked={updateClicked}
-            onUpdateClick={onUpdateClick}
-            deleteAction={deleteFormAction}
-            deleteState={deleteState}
-          />
+          <form action={deleteFormAction}>
+            <MutationButtonGroup
+              updateClicked={updateClicked}
+              onUpdateClick={onUpdateClick}
+              deleteState={deleteState}
+            />
+          </form>
         )}
         <AuthorTag
           name={""}

@@ -12,7 +12,6 @@ import { useFormStatus } from "react-dom";
 import type { ActionState } from "#lib/types/action.js";
 
 interface CommonProps {
-  deleteAction: (payload: FormData) => void;
   deleteState: ActionState;
 }
 type ConditionalUpdateProps =
@@ -30,7 +29,7 @@ type ConditionalUpdateProps =
 type MutationButtonGroupProps = CommonProps & ConditionalUpdateProps;
 
 export default function MutationButtonGroup(props: MutationButtonGroupProps) {
-  const { deleteState, deleteAction } = props;
+  const { deleteState } = props;
 
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [deleteErrorMessage, setDeleteErrorMessage] = useState("");
@@ -51,26 +50,34 @@ export default function MutationButtonGroup(props: MutationButtonGroupProps) {
 
   if (props.updateClicked) {
     return (
-      <MutationButton
-        theme="concern"
-        onClick={() => props.onUpdateClick(false)}>
-        취소
-      </MutationButton>
+      <div className="flex justify-end">
+        <MutationButton
+          theme="concern"
+          onClick={() => props.onUpdateClick(false)}>
+          취소
+        </MutationButton>
+      </div>
     );
   }
 
   if (deleteClicked) {
-    return deleteErrorMessage === "" ? (
-      <form action={deleteAction} className="flex h-6 justify-end">
-        <MutationSubmitButton theme="alert">삭제 승인</MutationSubmitButton>
-        <MutationButton theme="concern" onClick={() => setDeleteClicked(false)}>
-          취소
-        </MutationButton>
-      </form>
-    ) : (
-      <MutationButton onClick={() => setDeleteErrorMessage("")}>
-        {deleteErrorMessage}
-      </MutationButton>
+    return (
+      <div className="flex justify-end">
+        {deleteErrorMessage === "" ? (
+          <>
+            <MutationSubmitButton theme="alert">삭제 승인</MutationSubmitButton>
+            <MutationButton
+              theme="concern"
+              onClick={() => setDeleteClicked(false)}>
+              취소
+            </MutationButton>
+          </>
+        ) : (
+          <MutationButton onClick={() => setDeleteErrorMessage("")}>
+            {deleteErrorMessage}
+          </MutationButton>
+        )}
+      </div>
     );
   }
 

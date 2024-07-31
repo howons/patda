@@ -1,44 +1,29 @@
-"use client";
-
 import Content from "#app/post/[id]/_components/ContentContainer/Content.jsx";
-import { deletePostAction } from "#lib/actions/deletePostAction.js";
+import PostMutationForm from "#app/post/[id]/_components/ContentContainer/PostMutationForm.jsx";
+import { auth } from "#auth";
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
-import useDeleteAction from "#lib/hooks/useDeleteAction.js";
-import type { PostInfo } from "#lib/types/response.js";
+import { getPost } from "#lib/database/posts";
 import Dot from "#ui/Dot/Dot.jsx";
-import MutationButtonGroup from "#ui/MutationButtonGroup/MutationButtonGroup.jsx";
 import CommentLine from "#ui/SIdeLine/CommentLine.jsx";
 
-interface ContentContainerProps
-  extends Pick<PostInfo, "platform" | "images" | "content"> {
+interface ContentContainerProps {
   postId: string;
-  isMine: boolean;
 }
 
-export default function ContentContainer({
-  platform,
-  images,
-  content,
+export default async function ContentContainer({
   postId,
-  isMine,
 }: ContentContainerProps) {
-  const [deleteState, deleteFormAction] = useDeleteAction(
-    deletePostAction.bind(null, postId),
-    "/"
-  );
+  const { userId, platform, images, content } = await getPost(postId);
+
+  const session = await auth();
+  const isMine = userId === session?.user?.id;
 
   return (
     <div className="mt-3 flex">
       <CommentLine topDotSize="sm" bottomDotSize="sm" className="pt-2" />
       <div className="flex grow flex-col gap-4 sm:px-4">
         <section className="h-6">
-          {isMine && (
-            <MutationButtonGroup
-              deleteState={deleteState}
-              deleteAction={deleteFormAction}
-              updateHref={`/post/update/${postId}`}
-            />
-          )}
+          {isMine && <PostMutationForm postId={postId} />}
         </section>
         <section className="min-h-72">이미지</section>
         <Dot color={PLATFORM_COLOR[platform]} className="mx-auto" />
