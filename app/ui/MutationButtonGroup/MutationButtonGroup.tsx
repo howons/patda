@@ -118,6 +118,7 @@ function MutationButton({
 
   return (
     <button
+      type="button"
       className={`px-1.5 text-sm ${themeStyles[theme]} ${className}`}
       {...props}>
       {children}
