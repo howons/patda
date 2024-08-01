@@ -10,14 +10,13 @@ import { TAG_ID } from "#lib/constants/tag.js";
 import { createPost, type NewPostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
 
-const baseSchema = z
+const formSchema = z
   .object({
     platform: z.nativeEnum(PLATFORM_ID),
-    targetNickname: z.string().min(1, ERROR.NO_TARGET_NICKNAME),
+    targetNickname: z.string().min(1, ERROR.POST.NO_TARGET_NICKNAME),
     tag: z.nativeEnum(TAG_ID),
-    content: z.string().min(30, ERROR.SHORT_CONTENT),
+    content: z.string().min(30, ERROR.POST.SHORT_CONTENT),
     images: z.array(z.object({ id: z.string() })).nullish(),
-    anonymousUserNickname: z.string().nullish(),
     etcPlatformName: z.string().nullish(),
   })
   .refine(
@@ -27,10 +26,10 @@ const baseSchema = z
       }
       return true;
     },
-    { path: ["etcPlatformName"], message: ERROR.NO_ETC_PLATFORM_NAME }
+    { path: ["etcPlatformName"], message: ERROR.POST.NO_ETC_PLATFORM_NAME }
   );
 
-export type FormValues = z.infer<typeof baseSchema>;
+export type FormValues = z.infer<typeof formSchema>;
 
 export async function createPostAction(
   prevState: ActionState,
@@ -38,21 +37,12 @@ export async function createPostAction(
 ): Promise<ActionState> {
   const session = await auth();
 
-  const formSchema = baseSchema.refine(
-    (data) => {
-      if (!session) {
-        return (
-          data.anonymousUserNickname != null &&
-          data.anonymousUserNickname.length > 0
-        );
-      }
-      return true;
-    },
-    {
-      path: ["anonymousUserNickname"],
-      message: ERROR.NO_USER_NICKNAME,
-    }
-  );
+  if (!session?.user?.id) {
+    return {
+      status: "ERROR_AUTH",
+      message: ERROR.POST.NO_AUTH,
+    };
+  }
 
   const input = formSchema.safeParse({
     platform: formData.get("platform"),
@@ -60,7 +50,6 @@ export async function createPostAction(
     tag: formData.get("tag"),
     images: formData.get("images"),
     content: formData.get("content"),
-    anonymousUserNickname: formData.get("anonymousUserNickname"),
     etcPlatformName: formData.get("etcPlatformName"),
   });
 
@@ -72,13 +61,11 @@ export async function createPostAction(
     };
   }
 
-  const { images, anonymousUserNickname, etcPlatformName, ...restData } =
-    input.data;
+  const { images, etcPlatformName, ...restData } = input.data;
 
   const newPostData: NewPostData = {
-    userId: session?.user?.id ?? null,
+    userId: session.user.id,
     images: images?.map(({ id }) => id) ?? null,
-    anonymousUserNickname: anonymousUserNickname ?? null,
     etcPlatformName: etcPlatformName ?? null,
     ...restData,
   };
@@ -90,19 +77,19 @@ export async function createPostAction(
     if (error instanceof NoResultError) {
       return {
         status: "ERROR_DATABASE",
-        message: ERROR.NO_RESULT_DB,
+        message: ERROR.POST.NO_RESULT_DB,
       };
     } else {
       return {
         status: "ERROR_INTERNAL",
-        error: (error as { message: string })?.message ?? "",
+        message: ERROR.POST.NO_RESULT_DB,
       };
     }
   }
 
   return {
     status: "SUCCESS",
-    message: "포스트 생성 완료",
+    message: "게시글 생성 완료",
     resultId: result.id,
   };
 }

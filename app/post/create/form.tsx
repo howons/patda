@@ -2,19 +2,21 @@
 
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
-import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useCallback, useState } from "react";
-import { Controller, useFieldArray } from "react-hook-form";
+import { Controller, useFieldArray, type UseFormProps } from "react-hook-form";
 
 import {
   createPostAction,
   type FormValues,
-} from "#lib/actions/createPostAction.js";
-import { PLATFORM_NAME } from "#lib/constants/platform.js";
+} from "#lib/actions/post/createPostAction.js";
+import { updatePostAction } from "#lib/actions/post/updatePostAction.js";
+import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import { type OnSuccess, useFormAction } from "#lib/hooks/useFormAction.js";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import type { Platform, TagId } from "#lib/types/property.js";
+import type { PostInfo } from "#lib/types/response.js";
 import Logo from "#public/당근빳다.svg";
 import Button from "#ui/Button/Button.jsx";
 import CancelButton from "#ui/Button/CancelButton.jsx";
@@ -26,8 +28,8 @@ import {
   RadioTabs,
   Select,
   SubmitButton,
+  Textarea,
 } from "#ui/formItems/index.jsx";
-import Textarea from "#ui/formItems/Textarea.jsx";
 
 const platformOptions = Object.entries(PLATFORM_NAME).map(([id, name]) => ({
   name,
@@ -38,24 +40,55 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
   name,
   description: TAG_DESC[id as TagId],
 }));
-
-interface PostCreateFormProps {
-  session: Session | null;
+interface PostFormProps {
+  id?: string;
+  postData?: PostInfo;
 }
 
-function PostCreateForm({ session }: PostCreateFormProps) {
+export default function PostForm({ id, postData }: PostFormProps) {
+  const isUpdate = id !== undefined;
+
   const [saveLoading, setSaveLoading] = useState(false);
   const { platform, updatePlatform } = usePlatformStore((store) => store);
+  const router = useRouter();
 
-  const onSuccess: OnSuccess = useCallback((state) => {
-    alert("post" + state.resultId);
-  }, []);
+  const color = PLATFORM_COLOR[platform];
+
+  const onSuccess: OnSuccess = useCallback(
+    (state) => {
+      const postId = isUpdate ? id : state.resultId;
+      router.push(`/post/${postId}`);
+    },
+    [router, id, isUpdate]
+  );
+
+  let useFormProps: UseFormProps<FormValues> | undefined;
+  if (postData) {
+    const { content, etcPlatformName, images, platform, tag, targetNickname } =
+      postData;
+
+    useFormProps = {
+      defaultValues: {
+        content,
+        etcPlatformName,
+        images: images?.map((image) => ({ id: image })) ?? null,
+        platform,
+        tag,
+        targetNickname,
+      },
+    };
+  }
+
   const {
     register,
     control,
     formState: { errors },
     formAction,
-  } = useFormAction<FormValues>({ action: createPostAction, onSuccess });
+  } = useFormAction<FormValues>({
+    action: isUpdate ? updatePostAction.bind(null, id) : createPostAction,
+    onSuccess,
+    useFormProps,
+  });
   const { fields, append, remove } = useFieldArray<FormValues>({
     control,
     name: "images",
@@ -75,7 +108,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
       data-testid="post-create-form">
       <Fieldset className="space-y-6">
         <div className="mt-8 flex items-center justify-between">
-          <Legend className="group flex">
+          <Legend color={color} className="group flex">
             중고거래 진상 박제글 작성
             <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
           </Legend>
@@ -120,21 +153,6 @@ function PostCreateForm({ session }: PostCreateFormProps) {
                 render={({ message }) => <ErrorText>{message}</ErrorText>}
               />
             </Field>
-            {!session && (
-              <Field className="mt-2 flex flex-col">
-                <Label>본인 닉네임</Label>
-                <Input
-                  type="text"
-                  className="block w-full"
-                  {...register("anonymousUserNickname")}
-                />
-                <ErrorMessage
-                  name="anonymousUserNickname"
-                  errors={errors}
-                  render={({ message }) => <ErrorText>{message}</ErrorText>}
-                />
-              </Field>
-            )}
           </div>
         </div>
         <Field>
@@ -145,7 +163,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
             render={({ field }) => (
               <RadioTabs<TagId>
                 name="tag"
-                defaultValue="others"
+                defaultValue={isUpdate ? postData?.tag : "others"}
                 onChange={field.onChange}
                 items={tagOptions}
               />
@@ -165,6 +183,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
         <Field>
           <Label>상세 설명</Label>
           <Textarea
+            color={PLATFORM_COLOR[platform]}
             className="block w-full resize-y"
             required
             minLength={30}
@@ -180,6 +199,7 @@ function PostCreateForm({ session }: PostCreateFormProps) {
       </Fieldset>
       <div className="mt-6 flex justify-end gap-6">
         <Button
+          color={PLATFORM_COLOR[platform]}
           loading={saveLoading}
           onClick={() => {
             setSaveLoading(true);
@@ -187,10 +207,8 @@ function PostCreateForm({ session }: PostCreateFormProps) {
           }}>
           임시 저장
         </Button>
-        <SubmitButton>작성</SubmitButton>
+        <SubmitButton color={PLATFORM_COLOR[platform]}>작성</SubmitButton>
       </div>
     </form>
   );
 }
-
-export default PostCreateForm;

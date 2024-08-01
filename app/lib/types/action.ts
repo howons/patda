@@ -1,5 +1,3 @@
-import type { FormValues } from "#lib/actions/createPostAction.js";
-
 export type ActionState =
   | {
       status: "SUCCESS";
@@ -9,16 +7,17 @@ export type ActionState =
   | {
       status: "ERROR_VALIDATE";
       fieldErrors: {
-        [field in keyof FormValues]?: string[];
+        [key: string]: string[];
       };
     }
+  | { status: "ERROR_AUTH"; message: string }
   | {
       status: "ERROR_DATABASE";
       message: string;
     }
   | {
       status: "ERROR_INTERNAL";
-      error: any;
+      message: string;
     }
   | {
       status: null;

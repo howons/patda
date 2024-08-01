@@ -1,4 +1,4 @@
-import type { Platform } from "#lib/types/property.js";
+import type { FormColor, Platform } from "#lib/types/property.js";
 
 export const PLATFORM_ID: { [key: number]: Platform } = [
   "daangn",
@@ -15,3 +15,10 @@ export const PLATFORM_NAME: { [key in Platform]: string } = {
 } as const;
 
 export const TRANS_DURATION = 300;
+
+export const PLATFORM_COLOR: { [key in Platform]: FormColor } = {
+  daangn: "orange",
+  bunjang: "red",
+  joongna: "green",
+  etc: "zinc",
+};

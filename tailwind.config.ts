@@ -15,6 +15,8 @@ const config: Config = {
       },
       screens: {
         cs: "0px",
+        "2xs": "360px",
+        xs: "430px",
       },
       width: {
         "full-plus-6rem": "calc(100% + 6rem)",

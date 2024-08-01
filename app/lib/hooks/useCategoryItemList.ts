@@ -29,6 +29,8 @@ function useCategoryItemList() {
     isActive && toggleActive();
 
     setTimeout(() => {
+      if (curItemIdx !== 0 || itemList.current[0] === platform) return;
+
       reorderItemList(itemIdx, itemList.current);
       setCurItemIdx(0);
     }, TRANS_DURATION);

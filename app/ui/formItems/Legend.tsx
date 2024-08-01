@@ -1,32 +1,32 @@
-"use client";
-
 import { Legend as HeadlessLegend } from "@headlessui/react";
-import { HTMLAttributes, PropsWithChildren } from "react";
+import type { ComponentProps, PropsWithChildren } from "react";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
-import type { Platform } from "#lib/types/property.js";
+import type { FormColor } from "#lib/types/property.js";
 
-interface LegendProps extends HTMLAttributes<HTMLLegendElement> {}
+interface LegendProps extends ComponentProps<"legend"> {
+  color: FormColor;
+}
 
 function Legend({
+  color,
   className = "",
   children,
   ...props
 }: PropsWithChildren<LegendProps>) {
-  const platform = usePlatformStore((store) => store.platform);
-
-  const platformStyles: { [key in Platform]: string } = {
-    daangn: "text-orange-600",
-    bunjang: "text-red-600",
-    joongna: "text-green-600",
-    etc: "text-zinc-600",
+  const colorStyles: { [key in FormColor]: string } = {
+    orange: "text-orange-600",
+    red: "text-red-600",
+    green: "text-green-600",
+    zinc: "text-zinc-600",
+    lime: "text-lime-600",
+    rose: "text-rose-600",
   };
 
   const defaultStyle = "font-bold text-2xl";
 
   return (
     <HeadlessLegend
-      className={`${defaultStyle} ${platformStyles[platform]} ${className}`}
+      className={`${defaultStyle} ${colorStyles[color]} ${className}`}
       {...props}>
       {children}
     </HeadlessLegend>

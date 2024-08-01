@@ -3,6 +3,7 @@ import { db, sql } from "../app/lib/database/db.js";
 export async function create() {
   await db.schema
     .createTable("User")
+    .ifNotExists()
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
@@ -14,6 +15,7 @@ export async function create() {
 
   await db.schema
     .createTable("Account")
+    .ifNotExists()
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
@@ -34,12 +36,14 @@ export async function create() {
 
   await db.schema
     .createIndex("Account_userId_index")
+    .ifNotExists()
     .on("Account")
     .column("userId")
     .execute();
 
   await db.schema
     .createTable("Session")
+    .ifNotExists()
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
@@ -52,6 +56,7 @@ export async function create() {
 
   await db.schema
     .createTable("VerificationToken")
+    .ifNotExists()
     .addColumn("identifier", "text", (col) => col.notNull())
     .addColumn("token", "text", (col) => col.notNull().unique())
     .addColumn("expires", "timestamptz", (col) => col.notNull())
@@ -59,14 +64,16 @@ export async function create() {
 
   await db.schema
     .createIndex("Session_userId_index")
+    .ifNotExists()
     .on("Session")
     .column("userId")
     .execute();
 
   await db.schema
     .createTable("Post")
-    .addColumn("id", "uuid", (col) =>
-      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
+    .ifNotExists()
+    .addColumn("id", "integer", (col) =>
+      col.primaryKey().generatedAlwaysAsIdentity()
     )
     .addColumn("userId", "uuid", (col) =>
       col.references("User.id").onDelete("set null")
@@ -83,28 +90,29 @@ export async function create() {
     .addColumn("updatedAt", "timestamptz", (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
-    .addColumn("anonymousUserNickname", "text")
     .addColumn("etcPlatformName", "text")
     .execute();
 
   await db.schema
     .createIndex("Post_userId_index")
+    .ifNotExists()
     .on("Post")
     .column("userId")
     .execute();
 
   await db.schema
     .createTable("Comment")
+    .ifNotExists()
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
     .addColumn("userId", "uuid", (col) =>
       col.references("User.id").onDelete("cascade").notNull()
     )
-    .addColumn("postId", "uuid", (col) =>
+    .addColumn("postId", "integer", (col) =>
       col.references("Post.id").onDelete("cascade").notNull()
     )
-    .addColumn("imageUrls", sql`text[]`, (col) => col.notNull())
+    .addColumn("images", sql`text[]`)
     .addColumn("content", "text", (col) => col.notNull())
     .addColumn("status", "text", (col) => col.notNull())
     .addColumn("createdAt", "timestamptz", (col) =>
@@ -117,18 +125,21 @@ export async function create() {
 
   await db.schema
     .createIndex("Comment_userId_index")
+    .ifNotExists()
     .on("Comment")
     .column("userId")
     .execute();
 
   await db.schema
     .createIndex("Comment_postId_index")
+    .ifNotExists()
     .on("Comment")
     .column("postId")
     .execute();
 
   await db.schema
     .createTable("Image")
+    .ifNotExists()
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )

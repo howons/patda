@@ -13,3 +13,5 @@ export type TagId =
   | "lier"
   | "noManner"
   | "others";
+
+export type FormColor = "orange" | "red" | "green" | "zinc" | "lime" | "rose";
