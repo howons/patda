@@ -37,6 +37,13 @@ export async function createPostAction(
 ): Promise<ActionState> {
   const session = await auth();
 
+  if (!session?.user?.id) {
+    return {
+      status: "ERROR_AUTH",
+      message: ERROR.POST.NO_AUTH,
+    };
+  }
+
   const input = formSchema.safeParse({
     platform: formData.get("platform"),
     targetNickname: formData.get("targetNickname"),
@@ -57,7 +64,7 @@ export async function createPostAction(
   const { images, etcPlatformName, ...restData } = input.data;
 
   const newPostData: NewPostData = {
-    userId: session?.user?.id ?? null,
+    userId: session.user.id,
     images: images?.map(({ id }) => id) ?? null,
     etcPlatformName: etcPlatformName ?? null,
     ...restData,
