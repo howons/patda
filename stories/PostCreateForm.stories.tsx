@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
+import type { Session } from "next-auth";
 
 import PostForm from "#app/post/create/form.jsx";
 import { auth } from "#auth.mock.js";
@@ -33,8 +34,8 @@ export const CreationForm: Story = {
   tags: ["skip-test"],
   args: {},
   beforeEach: async () => {
-    const mockAuth = new Promise<null>((resolve) => {
-      resolve(null);
+    const mockAuth = new Promise<Session>((resolve) => {
+      resolve({ user: { id: "1" }, expires: "" });
     });
     auth.mockReturnValue(mockAuth);
   },
