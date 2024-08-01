@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
+import type { Session } from "next-auth";
 
 import { auth } from "#auth.mock.js";
 import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
+import { ProfileRefStoreProvider } from "#lib/providers/ProfileRefProvider.jsx";
 import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider.jsx";
 import Header from "#ui/Header/Header.jsx";
 
@@ -21,7 +23,9 @@ const meta = {
   decorators: [
     (Story) => (
       <PlatformStoreProvider>
-        <SearchStoreProvider>{Story()}</SearchStoreProvider>
+        <ProfileRefStoreProvider>
+          <SearchStoreProvider>{Story()}</SearchStoreProvider>
+        </ProfileRefStoreProvider>
       </PlatformStoreProvider>
     ),
   ],
@@ -33,11 +37,10 @@ type Story = StoryObj<typeof meta>;
 export const NonSessionHeader: Story = {
   tags: ["skip-test"],
   beforeEach: async () => {
-    const mockAuth = () =>
-      new Promise((resolve) => {
-        resolve(null);
-      });
-    auth.mockReturnValue(mockAuth as () => Promise<Response>);
+    const mockAuth: Promise<Session | null> = new Promise((resolve) => {
+      resolve(null);
+    });
+    auth.mockReturnValue(mockAuth);
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);

@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
 
-import PostCreateForm from "#app/post/create/form.jsx";
+import PostForm from "#app/post/create/form.jsx";
 import { auth } from "#auth.mock.js";
-import type { FormValues } from "#lib/actions/createPostAction.js";
+import type { FormValues } from "#lib/actions/post/createPostAction.js";
 import { ERROR } from "#lib/constants/messages.js";
 import { createPost } from "#lib/database/posts.mock.js";
 import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
 
 const meta = {
-  title: "form/PostCreateForm",
-  component: PostCreateForm,
+  title: "form/PostForm",
+  component: PostForm,
   parameters: {
     layout: "centered",
   },
@@ -24,16 +24,14 @@ const meta = {
     });
     createPost.mockReturnValue(mockResult);
   },
-} satisfies Meta<typeof PostCreateForm>;
+} satisfies Meta<typeof PostForm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const NonSession: Story = {
+export const CreationForm: Story = {
   tags: ["skip-test"],
-  args: {
-    session: null,
-  },
+  args: {},
   beforeEach: async () => {
     const mockAuth = new Promise<null>((resolve) => {
       resolve(null);
@@ -45,7 +43,6 @@ export const NonSession: Story = {
     const form = canvas.getByTestId("post-create-form");
     const platformSelect = canvas.getByLabelText("거래 사이트");
     const targetNicknameInput = canvas.getByLabelText("상대 닉네임");
-    const userNicknameInput = canvas.getByLabelText("본인 닉네임");
     const contentTextarea = canvas.getByLabelText("상세 설명");
     const submitButton = canvas.getByRole("button", { name: "작성" });
 
@@ -55,7 +52,6 @@ export const NonSession: Story = {
         targetNickname: "",
         tag: "others",
         content: "",
-        anonymousUserNickname: "",
       };
       expect(form).toHaveFormValues(initFormValues);
     });
@@ -75,8 +71,10 @@ export const NonSession: Story = {
       );
       await userEvent.click(submitButton);
       await waitFor(() => {
-        expect(canvas.getByText(ERROR.NO_TARGET_NICKNAME)).toBeInTheDocument();
-        expect(userNicknameInput).toHaveFocus();
+        expect(
+          canvas.getByText(ERROR.POST.NO_TARGET_NICKNAME)
+        ).toBeInTheDocument();
+        expect(targetNicknameInput).toHaveFocus();
         expect(createPost).not.toBeCalled();
       });
     });
@@ -85,7 +83,6 @@ export const NonSession: Story = {
       await userEvent.selectOptions(platformSelect, "etc");
       await userEvent.type(canvas.getByLabelText("사이트 이름"), "짭고나라");
       await userEvent.type(targetNicknameInput, "target");
-      await userEvent.type(userNicknameInput, "myNickname");
       await userEvent.click(canvas.getByLabelText("안전결제 악용"));
 
       const sucessFormValues: FormValues = {
@@ -93,7 +90,6 @@ export const NonSession: Story = {
         targetNickname: "target",
         tag: "abuse",
         content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
-        anonymousUserNickname: "myNickname",
         etcPlatformName: "짭고나라",
       };
       expect(form).toHaveFormValues(sucessFormValues);
@@ -102,36 +98,6 @@ export const NonSession: Story = {
       await waitFor(() => {
         expect(createPost).toBeCalled();
       });
-    });
-  },
-};
-
-export const Session: Story = {
-  tags: ["skip-test"],
-  args: {
-    session: {
-      user: { id: "id", name: "name" },
-      expires: "",
-    },
-  },
-  beforeEach: async () => {
-    const mockAuth = new Promise<{
-      user: { id: string; name: string };
-      expires: string;
-    }>((resolve) => {
-      resolve({
-        user: { id: "id", name: "name" },
-        expires: "",
-      });
-    });
-    auth.mockReturnValue(mockAuth);
-  },
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-    const form = canvas.getByTestId("post-create-form");
-
-    await step("본인 닉네임 칸 미표시", async () => {
-      expect(canvas.queryByLabelText("본인 닉네임")).not.toBeInTheDocument();
     });
   },
 };

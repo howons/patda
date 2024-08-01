@@ -40,21 +40,12 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
   name,
   description: TAG_DESC[id as TagId],
 }));
-
-interface PostCreateFormProps {
-  id?: never;
-  postData?: never;
+interface PostFormProps {
+  id?: string;
+  postData?: PostInfo;
 }
 
-interface PostUpdateFormProps {
-  id: string;
-  postData: PostInfo;
-}
-
-export default function PostForm({
-  id,
-  postData,
-}: PostCreateFormProps | PostUpdateFormProps) {
+export default function PostForm({ id, postData }: PostFormProps) {
   const isUpdate = id !== undefined;
 
   const [saveLoading, setSaveLoading] = useState(false);
@@ -172,7 +163,7 @@ export default function PostForm({
             render={({ field }) => (
               <RadioTabs<TagId>
                 name="tag"
-                defaultValue={isUpdate ? postData.tag : "others"}
+                defaultValue={isUpdate ? postData?.tag : "others"}
                 onChange={field.onChange}
                 items={tagOptions}
               />
