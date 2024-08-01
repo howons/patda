@@ -11,19 +11,15 @@ interface AuthorContainerProps {
 export default async function AuthorContainer({
   postId,
 }: AuthorContainerProps) {
-  const { userId, platform, createdAt, anonymousUserNickname } =
-    await getPost(postId);
+  const { userId, platform, createdAt } = await getPost(postId);
 
-  let userNickname = null;
-  if (userId !== null) {
-    userNickname = (await getUser(userId)).name;
-  }
+  const userNickname = (await getUser(userId)).name;
 
   return (
     <div className="flex">
       <CommentLine bottomDotSize="md" data-comment-line-end />
       <AuthorTag
-        name={userNickname || anonymousUserNickname || ""}
+        name={userNickname ?? ""}
         color={PLATFORM_COLOR[platform]}
         date={createdAt}
         className="mr-3 h-24 grow sm:px-4"

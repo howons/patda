@@ -1,12 +1,15 @@
 import Link from "next/link";
 
+import { auth } from "#auth";
 import Logo from "#public/당근빳다.svg";
 import HeaderSearch from "#ui/Header/HeaderSearch.jsx";
 import LogoText from "#ui/Header/LogoText.jsx";
 import PostCreateButton from "#ui/Header/PostCreateButton.jsx";
 import ProfileMenu from "#ui/Header/Profile/ProfileMenu.jsx";
 
-function Header() {
+async function Header() {
+  const session = await auth();
+
   return (
     <div className="fixed left-0 top-0 flex h-14 w-screen items-center justify-between border-b border-zinc-300 bg-white px-4">
       <Link href="/" className="flex">
@@ -15,7 +18,7 @@ function Header() {
       </Link>
       <HeaderSearch className="relative h-full min-w-0 grow" />
       <div className="flex items-center gap-4">
-        <PostCreateButton />
+        <PostCreateButton isLoggedIn={!!session} />
         <ProfileMenu />
       </div>
     </div>

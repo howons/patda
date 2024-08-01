@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Nanum_Gothic } from "next/font/google";
 
 import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
+import { ProfileRefStoreProvider } from "#lib/providers/ProfileRefProvider.jsx";
 import Header from "#ui/Header/Header.jsx";
 
 const nanumGoth = Nanum_Gothic({ weight: ["400", "700"], subsets: ["latin"] });
@@ -22,10 +23,12 @@ export default function RootLayout({
     <html lang="en" className="overflow-x-hidden">
       <body className={nanumGoth.className}>
         <PlatformStoreProvider>
-          <main className="flex min-h-screen w-screen max-w-full flex-col items-center pb-28 pt-14">
-            {children}
-          </main>
-          <Header />
+          <ProfileRefStoreProvider>
+            <main className="flex min-h-screen w-screen max-w-full flex-col items-center pb-28 pt-14">
+              {children}
+            </main>
+            <Header />
+          </ProfileRefStoreProvider>
         </PlatformStoreProvider>
       </body>
     </html>

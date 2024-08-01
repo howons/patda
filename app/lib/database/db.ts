@@ -42,7 +42,7 @@ export interface Database {
   };
   Post: {
     id: GeneratedAlways<string>;
-    userId: string | null;
+    userId: string;
     platform: Platform;
     targetNickname: string;
     tag: TagId;
