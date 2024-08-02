@@ -74,6 +74,10 @@
       "storybook": "./app/lib/database/posts.mock.ts",
       "default": "./app/lib/database/posts.ts"
     },
+    "#lib/database/comments": {
+      "storybook": "./app/lib/database/comments.mock.ts",
+      "default": "./app/lib/database/comments.ts"
+    },
     "#auth": {
       "storybook": "./auth.mock.ts",
       "default": "./auth.ts"

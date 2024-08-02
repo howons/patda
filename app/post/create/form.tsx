@@ -125,7 +125,7 @@ export default function PostForm({
     <form
       action={formAction}
       className="flex w-5/6 min-w-[22rem] max-w-3xl grow flex-col justify-between md:w-4/6"
-      data-testid="post-create-form">
+      data-testid="post-form">
       <Fieldset className="space-y-6">
         <div className="mt-8 flex items-center justify-between">
           <Legend color={color} className="group flex">

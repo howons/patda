@@ -43,7 +43,7 @@ export const CreationForm: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    const form = canvas.getByTestId("post-create-form");
+    const form = canvas.getByTestId("post-form");
     const platformSelect = canvas.getByLabelText("거래 사이트");
     const targetNicknameInput = canvas.getByLabelText("상대 닉네임");
     const contentTextarea = canvas.getByLabelText("상세 설명");

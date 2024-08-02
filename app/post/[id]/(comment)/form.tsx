@@ -13,6 +13,7 @@ import { useFormAction } from "#lib/hooks/useFormAction.js";
 import { useCommentStatusStore } from "#lib/providers/CommentStatusStoreProvider.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
 import {
+  ErrorText,
   Legend,
   SubmitButton,
   Switch,
@@ -37,6 +38,7 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
     register,
     formState: { errors },
     formAction,
+    state,
   } = useFormAction<CommentFormValues>({
     action: createCommentAction.bind(null, postId),
     onSuccess,
@@ -50,11 +52,13 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
   };
 
   const placeholder = session
-    ? ""
+    ? isDebate
+      ? "위 논란의 당사자로서 반박할 사항이 있다면 작성해주세요. 작성 시 게시글의 상태가 변경됩니다."
+      : "반박 이외의 간단한 댓글을 작성해주세요."
     : `${isDebate ? "반박" : "댓글"}은 로그인 후 작성할 수 있습니다.`;
 
   return (
-    <form action={formAction}>
+    <form action={formAction} data-testid="comment-form">
       <Fieldset>
         <Field className="flex items-center">
           <Legend color={color} className="ml-1 mr-4 text-xl transition-colors">
@@ -94,6 +98,10 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
             {...register("content")}
           />
         </Field>
+        {state.status === "ERROR_INTERNAL" ||
+          (state.status === "ERROR_DATABASE" && (
+            <ErrorText>{state.message}</ErrorText>
+          ))}
         <div className="flex justify-end max-sm:px-3">
           <SubmitButton color={color} className="ml-auto transition-colors">
             작성
