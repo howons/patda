@@ -32,7 +32,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const CreationForm: Story = {
-  tags: ["skip-test"],
   args: { session: { user: { id: "1" }, expires: "" }, postId: "1" },
   beforeEach: async () => {
     const mockResult = new Promise<{ id: string }>((resolve) => {

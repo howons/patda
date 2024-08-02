@@ -74,9 +74,11 @@ export default function CommentContent({
         ) : (
           <p className={`py-2`}>{content}</p>
         )}
-        {moreEnabled && (
-          <MoreButton isActive={moreClicked} onClick={onMoreClick} />
-        )}
+        <MoreButton
+          isActive={moreClicked}
+          onClick={onMoreClick}
+          hidden={moreEnabled}
+        />
       </div>
     </section>
   );
