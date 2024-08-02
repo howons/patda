@@ -3,7 +3,7 @@
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { Controller, useFieldArray, type UseFormProps } from "react-hook-form";
 
 import {
@@ -40,12 +40,29 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
   name,
   description: TAG_DESC[id as TagId],
 }));
-interface PostFormProps {
-  id?: string;
-  postData?: PostInfo;
-}
+interface PostFormProps
+  extends Partial<
+    Pick<
+      PostInfo,
+      | "id"
+      | "content"
+      | "etcPlatformName"
+      | "images"
+      | "platform"
+      | "tag"
+      | "targetNickname"
+    >
+  > {}
 
-export default function PostForm({ id, postData }: PostFormProps) {
+export default function PostForm({
+  id,
+  content,
+  etcPlatformName,
+  images,
+  platform: initPlatform,
+  tag,
+  targetNickname,
+}: PostFormProps) {
   const isUpdate = id !== undefined;
 
   const [saveLoading, setSaveLoading] = useState(false);
@@ -63,16 +80,13 @@ export default function PostForm({ id, postData }: PostFormProps) {
   );
 
   let useFormProps: UseFormProps<FormValues> | undefined;
-  if (postData) {
-    const { content, etcPlatformName, images, platform, tag, targetNickname } =
-      postData;
-
+  if (isUpdate) {
     useFormProps = {
       defaultValues: {
         content,
         etcPlatformName,
         images: images?.map((image) => ({ id: image })) ?? null,
-        platform,
+        platform: initPlatform,
         tag,
         targetNickname,
       },
@@ -100,6 +114,12 @@ export default function PostForm({ id, postData }: PostFormProps) {
     },
     [updatePlatform]
   );
+
+  useEffect(() => {
+    if (!initPlatform) return;
+
+    updatePlatform(initPlatform);
+  }, [initPlatform, updatePlatform]);
 
   return (
     <form
@@ -163,7 +183,7 @@ export default function PostForm({ id, postData }: PostFormProps) {
             render={({ field }) => (
               <RadioTabs<TagId>
                 name="tag"
-                defaultValue={isUpdate ? postData?.tag : "others"}
+                defaultValue={isUpdate ? tag : "others"}
                 onChange={field.onChange}
                 items={tagOptions}
               />

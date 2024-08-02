@@ -5,9 +5,11 @@ import type { Session } from "next-auth";
 import PostForm from "#app/post/create/form.jsx";
 import { auth } from "#auth.mock.js";
 import type { FormValues } from "#lib/actions/post/createPostAction.js";
+import type { PostUpdateFormValues } from "#lib/actions/post/updatePostAction.js";
 import { ERROR } from "#lib/constants/messages.js";
-import { createPost } from "#lib/database/posts.mock.js";
+import { createPost, getPost, updatePost } from "#lib/database/posts.mock.js";
 import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
+import type { PostInfo } from "#lib/types/response.js";
 
 const meta = {
   title: "form/PostForm",
@@ -20,10 +22,10 @@ const meta = {
     (Story) => <PlatformStoreProvider>{Story()}</PlatformStoreProvider>,
   ],
   async beforeEach() {
-    const mockResult = new Promise<{ id: string }>((resolve) => {
-      resolve({ id: "postId" });
+    const mockAuth = new Promise<Session>((resolve) => {
+      resolve({ user: { id: "1" }, expires: "" });
     });
-    createPost.mockReturnValue(mockResult);
+    auth.mockReturnValue(mockAuth);
   },
 } satisfies Meta<typeof PostForm>;
 
@@ -34,10 +36,10 @@ export const CreationForm: Story = {
   tags: ["skip-test"],
   args: {},
   beforeEach: async () => {
-    const mockAuth = new Promise<Session>((resolve) => {
-      resolve({ user: { id: "1" }, expires: "" });
+    const mockResult = new Promise<{ id: string }>((resolve) => {
+      resolve({ id: "postId" });
     });
-    auth.mockReturnValue(mockAuth);
+    createPost.mockReturnValue(mockResult);
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -98,6 +100,66 @@ export const CreationForm: Story = {
       await userEvent.click(submitButton);
       await waitFor(() => {
         expect(createPost).toBeCalled();
+      });
+    });
+  },
+};
+
+export const UpdateForm: Story = {
+  tags: ["skip-test"],
+  args: {
+    id: "1",
+    content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
+    etcPlatformName: null,
+    images: [],
+    platform: "bunjang",
+    tag: "cancel",
+    targetNickname: "bull",
+  },
+  beforeEach: async () => {
+    const mockUpdateResult = new Promise<{ numUpdatedRows: bigint }>(
+      (resolve) => {
+        resolve({ numUpdatedRows: BigInt(1) });
+      }
+    );
+    updatePost.mockReturnValue(mockUpdateResult);
+
+    const mockGetResult = new Promise<PostInfo>((resolve) => {
+      resolve({
+        id: "1",
+        userId: "1",
+        content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
+        etcPlatformName: null,
+        images: [],
+        platform: "bunjang",
+        tag: "cancel",
+        targetNickname: "bull",
+        createdAt: new Date("2024-08-01T09:24:00"),
+        updatedAt: new Date("2024-08-01T09:24:00"),
+        status: "normal",
+      });
+    });
+    getPost.mockReturnValue(mockGetResult);
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    const form = canvas.getByTestId("post-create-form");
+    const submitButton = canvas.getByRole("button", { name: "작성" });
+
+    await step("초기 상태", async () => {
+      const initFormValues: PostUpdateFormValues = {
+        content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
+        platform: "bunjang",
+        tag: "cancel",
+        targetNickname: "bull",
+      };
+      expect(form).toHaveFormValues(initFormValues);
+    });
+
+    await step("초기 상태로 제출 가능", async () => {
+      await userEvent.click(submitButton);
+      await waitFor(() => {
+        expect(updatePost).toBeCalled();
       });
     });
   },

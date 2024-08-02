@@ -10,11 +10,29 @@ export default async function PostUpdatePage({
   params: { id: string };
 }) {
   const session = await auth();
-  const post = await getPost(params.id);
+  const {
+    userId,
+    content,
+    etcPlatformName,
+    tag,
+    targetNickname,
+    images,
+    platform,
+  } = await getPost(params.id);
 
-  if (!session || session.user?.id !== post.userId) {
+  if (!session || session.user?.id !== userId) {
     redirect(`/post/${params.id}`);
   }
 
-  return <PostForm id={params.id} postData={post} />;
+  return (
+    <PostForm
+      id={params.id}
+      content={content}
+      etcPlatformName={etcPlatformName}
+      images={images}
+      platform={platform}
+      tag={tag}
+      targetNickname={targetNickname}
+    />
+  );
 }
