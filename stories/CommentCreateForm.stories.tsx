@@ -41,6 +41,8 @@ export const CreationForm: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const user = userEvent.setup({ delay: 30 });
+
     const form = canvas.getByTestId("comment-form");
     const commentStatusSwitch = canvas.getByRole("switch", {
       name: "댓글 반박 작성",
@@ -58,7 +60,7 @@ export const CreationForm: Story = {
     });
 
     await step("초기 상태로 제출 시 클라이언트 검증", async () => {
-      await userEvent.click(submitButton);
+      await user.click(submitButton);
       await waitFor(() => {
         expect(contentTextarea).toHaveFocus();
         expect(createComment).not.toBeCalled();
@@ -66,8 +68,8 @@ export const CreationForm: Story = {
     });
 
     await step("폼 작성 후 연결 확인", async () => {
-      await userEvent.click(commentStatusSwitch);
-      await userEvent.type(contentTextarea, "content");
+      await user.click(commentStatusSwitch);
+      await user.type(contentTextarea, "content");
 
       const sucessFormValues = {
         status:
@@ -76,7 +78,7 @@ export const CreationForm: Story = {
       };
       expect(form).toHaveFormValues(sucessFormValues);
 
-      await userEvent.click(submitButton);
+      await user.click(submitButton);
       await waitFor(() => {
         expect(createComment).toBeCalled();
       });
