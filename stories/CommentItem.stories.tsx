@@ -21,7 +21,16 @@ const meta = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <CommentStatusStoreProvider>{Story()}</CommentStatusStoreProvider>
+      <CommentStatusStoreProvider>
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "48rem",
+            margin: "10% auto 10% auto",
+          }}>
+          {Story()}
+        </div>
+      </CommentStatusStoreProvider>
     ),
   ],
   async beforeEach() {
@@ -79,7 +88,7 @@ export const Comment: Story = {
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     const user = userEvent.setup({ delay: 300 });
-    const moreButton = canvas.getByRole("button", { name: "" });
+    const moreButton = await canvas.findByRole("button", { name: "" });
     const contentContainer = moreButton.parentElement;
 
     await step("더보기 버튼 클릭", async () => {
@@ -90,6 +99,37 @@ export const Comment: Story = {
 
       await user.click(moreButton);
       expect(contentContainer).toHaveClass("max-h-[25rem]");
+    });
+
+    await step("수정 버튼 클릭", async () => {
+      await user.click(moreButton);
+
+      await user.click(canvas.getByRole("button", { name: "수정" }));
+      await waitFor(() => {
+        expect(contentContainer).toHaveClass("max-h-60");
+      });
+      await waitFor(() => {
+        expect(contentContainer).toHaveClass("max-h-[50rem]");
+      });
+
+      expect(moreButton).toHaveClass("hidden");
+    });
+
+    await step("수정 폼 제출", async () => {
+      await user.click(canvas.getByRole("button", { name: "작성" }));
+
+      await waitFor(() => {
+        expect(updateComment).toBeCalled();
+      });
+    });
+
+    await step("삭제 버튼 클릭", async () => {
+      await user.click(canvas.getByRole("button", { name: "삭제" }));
+      await user.click(canvas.getByRole("button", { name: "삭제 승인" }));
+
+      await waitFor(() => {
+        expect(deleteComment).toBeCalled();
+      });
     });
   },
 };

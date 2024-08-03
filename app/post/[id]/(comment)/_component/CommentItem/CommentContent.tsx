@@ -77,7 +77,7 @@ export default function CommentContent({
         <MoreButton
           isActive={moreClicked}
           onClick={onMoreClick}
-          hidden={moreEnabled}
+          className={`${moreEnabled ? "" : "hidden"}`}
         />
       </div>
     </section>
