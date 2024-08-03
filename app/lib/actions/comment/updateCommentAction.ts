@@ -9,7 +9,7 @@ import {
   getComment,
   updateComment,
   type UpdateCommentData,
-} from "#lib/database/comments.js";
+} from "#lib/database/comments";
 import type { ActionState } from "#lib/types/action.js";
 
 const formSchema = z.object({

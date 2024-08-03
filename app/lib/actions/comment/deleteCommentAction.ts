@@ -4,7 +4,7 @@ import { NoResultError } from "kysely";
 
 import { auth } from "#auth";
 import { ERROR } from "#lib/constants/messages.js";
-import { deleteComment, getComment } from "#lib/database/comments.js";
+import { deleteComment, getComment } from "#lib/database/comments";
 import type { ActionState } from "#lib/types/action.js";
 
 export async function deleteCommentAction(

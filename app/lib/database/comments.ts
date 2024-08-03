@@ -38,7 +38,21 @@ export const getComments = cache((postId: string) =>
 );
 
 export const getComment = cache((id: string) =>
-  db.selectFrom("Comment").selectAll().where("id", "=", id).executeTakeFirst()
+  db
+    .selectFrom("Comment")
+    .innerJoin("User", "User.id", "Comment.userId")
+    .select([
+      "Comment.id as id",
+      "User.id as userId",
+      "User.name as userName",
+      "images",
+      "content",
+      "status",
+      "createdAt",
+      "updatedAt",
+    ])
+    .where("id", "=", id)
+    .executeTakeFirst()
 );
 
 export function updateComment(

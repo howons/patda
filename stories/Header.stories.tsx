@@ -19,7 +19,7 @@ const meta = {
       },
     },
   },
-  tags: ["autodocs", "skip-test"],
+  tags: ["autodocs"],
   decorators: [
     (Story) => (
       <PlatformStoreProvider>
@@ -35,7 +35,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const NonSessionHeader: Story = {
-  tags: ["skip-test"],
   beforeEach: async () => {
     const mockAuth: Promise<Session | null> = new Promise((resolve) => {
       resolve(null);
@@ -44,6 +43,7 @@ export const NonSessionHeader: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const user = userEvent.setup({ delay: 300 });
 
     await step("처음에는 목록 숨겨진 상태", async () => {
       {
@@ -60,9 +60,7 @@ export const NonSessionHeader: Story = {
 
     await step("헤더 검색바 클릭 시 목록 노출", async () => {
       {
-        await userEvent.click(
-          canvas.getByRole("button", { name: "헤더 검색바" })
-        );
+        await user.click(canvas.getByRole("button", { name: "헤더 검색바" }));
         await waitFor(() => {
           expect(
             canvas.queryByRole("list", { name: "검색목록" })
@@ -73,7 +71,7 @@ export const NonSessionHeader: Story = {
 
     await step("외부 영역 클릭 시 목록 숨기기", async () => {
       {
-        await userEvent.click(canvas.getByTestId("screen"));
+        await user.click(canvas.getByTestId("screen"));
         await waitFor(
           () => {
             expect(
@@ -88,7 +86,7 @@ export const NonSessionHeader: Story = {
     await step("헤더 검색바 인풋 클릭 시 포커스 & 목룍 노출", async () => {
       {
         const input = canvas.getByRole("textbox", { name: "검색바" });
-        await userEvent.click(input);
+        await user.click(input);
 
         expect(input).toHaveFocus();
 

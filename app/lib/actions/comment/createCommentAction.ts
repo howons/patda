@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import { auth } from "#auth";
 import { ERROR } from "#lib/constants/messages.js";
-import { createComment, type NewCommentData } from "#lib/database/comments.js";
+import { createComment, type NewCommentData } from "#lib/database/comments";
 import type { ActionState } from "#lib/types/action.js";
 import type { PostCommentStatus } from "#lib/types/property.js";
 
@@ -15,7 +15,6 @@ const INPUT_STATUS: { [key: number]: PostCommentStatus } = [
 ] as const;
 
 const formSchema = z.object({
-  postId: z.string(),
   content: z.string().min(2, ERROR.POST.SHORT_CONTENT),
   images: z.array(z.object({ id: z.string() })).nullish(),
   status: z.nativeEnum(INPUT_STATUS).nullish(),
@@ -38,7 +37,6 @@ export async function createCommentAction(
   }
 
   const input = formSchema.safeParse({
-    postId,
     content: formData.get("content"),
     images: formData.get("images"),
     status: formData.get("status"),
@@ -55,6 +53,7 @@ export async function createCommentAction(
   const { images, status, ...restData } = input.data;
 
   const newCommentData: NewCommentData = {
+    postId,
     userId: session.user.id,
     images: images?.map(({ id }) => id) ?? null,
     status: status ?? "normal",
