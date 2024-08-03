@@ -17,7 +17,7 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-  tags: ["autodocs", "skip-test"],
+  tags: ["autodocs"],
   decorators: [
     (Story) => <PlatformStoreProvider>{Story()}</PlatformStoreProvider>,
   ],
@@ -33,7 +33,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const CreationForm: Story = {
-  tags: ["skip-test"],
   args: {},
   beforeEach: async () => {
     const mockResult = new Promise<{ id: string }>((resolve) => {
@@ -43,6 +42,8 @@ export const CreationForm: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
+    const user = userEvent.setup({ delay: 30 });
+
     const form = canvas.getByTestId("post-form");
     const platformSelect = canvas.getByLabelText("거래 사이트");
     const targetNicknameInput = canvas.getByLabelText("상대 닉네임");
@@ -60,7 +61,7 @@ export const CreationForm: Story = {
     });
 
     await step("초기 상태로 제출 시 클라이언트 검증", async () => {
-      await userEvent.click(submitButton);
+      await user.click(submitButton);
       await waitFor(() => {
         expect(contentTextarea).toHaveFocus();
         expect(createPost).not.toBeCalled();
@@ -68,11 +69,11 @@ export const CreationForm: Story = {
     });
 
     await step("내용만 30자 작성 후 제출 시 서버 검증", async () => {
-      await userEvent.type(
+      await user.type(
         contentTextarea,
         "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ"
       );
-      await userEvent.click(submitButton);
+      await user.click(submitButton);
       await waitFor(() => {
         expect(
           canvas.getByText(ERROR.POST.NO_TARGET_NICKNAME)
@@ -83,10 +84,10 @@ export const CreationForm: Story = {
     });
 
     await step("폼 작성 후 연결 확인", async () => {
-      await userEvent.selectOptions(platformSelect, "etc");
-      await userEvent.type(canvas.getByLabelText("사이트 이름"), "짭고나라");
-      await userEvent.type(targetNicknameInput, "target");
-      await userEvent.click(canvas.getByLabelText("안전결제 악용"));
+      await user.selectOptions(platformSelect, "etc");
+      await user.type(canvas.getByLabelText("사이트 이름"), "짭고나라");
+      await user.type(targetNicknameInput, "target");
+      await user.click(canvas.getByLabelText("안전결제 악용"));
 
       const sucessFormValues: FormValues = {
         platform: "etc",
@@ -97,7 +98,7 @@ export const CreationForm: Story = {
       };
       expect(form).toHaveFormValues(sucessFormValues);
 
-      await userEvent.click(submitButton);
+      await user.click(submitButton);
       await waitFor(() => {
         expect(createPost).toBeCalled();
       });
@@ -106,7 +107,6 @@ export const CreationForm: Story = {
 };
 
 export const UpdateForm: Story = {
-  tags: ["skip-test"],
   args: {
     id: "1",
     content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
@@ -143,7 +143,9 @@ export const UpdateForm: Story = {
   },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    const form = canvas.getByTestId("post-create-form");
+    const user = userEvent.setup({ delay: 30 });
+
+    const form = canvas.getByTestId("post-form");
     const submitButton = canvas.getByRole("button", { name: "작성" });
 
     await step("초기 상태", async () => {
@@ -157,7 +159,7 @@ export const UpdateForm: Story = {
     });
 
     await step("초기 상태로 제출 가능", async () => {
-      await userEvent.click(submitButton);
+      await user.click(submitButton);
       await waitFor(() => {
         expect(updatePost).toBeCalled();
       });
