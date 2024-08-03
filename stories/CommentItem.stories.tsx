@@ -133,3 +133,19 @@ export const Comment: Story = {
     });
   },
 };
+
+export const NotMyComment: Story = {
+  args: {
+    comment: dummyComment,
+    isMine: false,
+    isLast: true,
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    await step("수정/삭제 버튼 미노출", async () => {
+      expect(
+        canvas.queryByRole("button", { name: "수정" })
+      ).not.toBeInTheDocument();
+    });
+  },
+};
