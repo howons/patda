@@ -20,7 +20,7 @@ const meta = {
       <CommentStatusStoreProvider>{Story()}</CommentStatusStoreProvider>
     ),
   ],
-  async beforeEach() {
+  beforeEach() {
     const mockAuth = new Promise<Session>((resolve) => {
       resolve({ user: { id: "1" }, expires: "" });
     });
@@ -33,7 +33,7 @@ type Story = StoryObj<typeof meta>;
 
 export const CreationForm: Story = {
   args: { session: { user: { id: "1" }, expires: "" }, postId: "1" },
-  beforeEach: async () => {
+  beforeEach: () => {
     const mockResult = new Promise<{ id: string }>((resolve) => {
       resolve({ id: "commentId" });
     });
