@@ -14,7 +14,7 @@ const SearchBar = forwardRef<HTMLDivElement, SearchBarProps>(
     return (
       <div
         ref={ref}
-        className={`relative m-3 ml-9 w-3/5 min-w-36 max-w-[37rem] ${className}`}
+        className={`relative m-3 ml-9 w-4/5 min-w-36 max-w-md sm:w-3/5 ${className}`}
         {...props}>
         <CategoryStoreProvider>
           <CategorySelector />

@@ -14,7 +14,7 @@ function SearchList({ className, ...props }: SearchListProps) {
 
   return (
     <ul
-      className={`flex w-full flex-col ${className}`}
+      className={`flex w-full max-w-3xl flex-col sm:w-4/5 ${className}`}
       aria-label="검색목록"
       {...props}>
       <Divider direction="horizon" />

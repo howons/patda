@@ -1,7 +1,10 @@
 import Link from "next/link";
 
+import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
+import { TAG_NAMES } from "#lib/constants/tag.js";
 import type { Platform } from "#lib/types/property.js";
 import type { TroublemakerInfo } from "#lib/types/response.js";
+import Dot from "#ui/Dot/Dot.jsx";
 import Thumbnail from "#ui/Thumbnail/Thumbnail.jsx";
 
 interface SearchListItemProps {
@@ -9,7 +12,14 @@ interface SearchListItemProps {
 }
 
 function SearchListItem({
-  itemInfo: { nickname, platform, image, additionalUserInfo, postCount },
+  itemInfo: {
+    targetNickname,
+    platform,
+    status,
+    tag,
+    etcPlatformName,
+    createdAt,
+  },
 }: SearchListItemProps) {
   const defaultStyle = "w-full flex rounded-3xl p-3 text-zinc-700 bg-white";
 
@@ -36,17 +46,25 @@ function SearchListItem({
       <Link href={""} className={defaultStyle}>
         <Thumbnail
           platform={platform}
-          src={image}
+          src=""
           alt="프로필 사진"
           width={100}
           height={100}
           className="shrink-0 rounded-full"
         />
         <div className="ml-4 flex grow flex-col justify-between">
-          <label className="text-xl font-bold">{nickname}</label>
-          <p className="text-sm">{additionalUserInfo}</p>
+          <label className="text-xl font-bold">{targetNickname}</label>
+          <p className="text-sm">
+            {PLATFORM_NAME[platform]}
+            {platform === "etc" && (
+              <>
+                <Dot color={PLATFORM_COLOR[platform]} />
+                {etcPlatformName}
+              </>
+            )}
+          </p>
           <div className="h-2" />
-          <p className="text-right text-sm">{postCount}</p>
+          <p className="text-right text-sm">{TAG_NAMES[tag]}</p>
         </div>
       </Link>
     </li>
