@@ -1,10 +1,7 @@
 import { createStore } from "zustand/vanilla";
 
-import type { TroublemakerInfo } from "#lib/types/response.js";
-
 export type SearchState = {
   query: string;
-  searchResults: TroublemakerInfo[];
 };
 
 export type SearchActions = {
@@ -14,12 +11,11 @@ export type SearchActions = {
 export type SearchStore = SearchState & SearchActions;
 
 export const initSearchStore = (query: string = ""): SearchState => {
-  return { query, searchResults: [] };
+  return { query };
 };
 
 export const defaultInitState: SearchState = {
   query: "",
-  searchResults: [],
 };
 
 export const createSearchStore = (

@@ -28,6 +28,23 @@ export const getPost = cache((postId: string) =>
     .executeTakeFirstOrThrow()
 );
 
+export const getPostsByNickname = cache((nickname: string) =>
+  db
+    .selectFrom("Post")
+    .select([
+      "id",
+      "platform",
+      "targetNickname",
+      "tag",
+      "status",
+      "createdAt",
+      "updatedAt",
+      "etcPlatformName",
+    ])
+    .where("Post.targetNickname", "like", `%${nickname}%`)
+    .execute()
+);
+
 export function updatePost(id: string, updatePostData: UpdatePostData) {
   return db
     .updateTable("Post")

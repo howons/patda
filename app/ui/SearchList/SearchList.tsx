@@ -2,53 +2,15 @@
 
 import { Fragment, HTMLAttributes } from "react";
 
-import { useSearchStore } from "#lib/providers/SearchStoreProvider.jsx";
-import type { TroublemakerInfo } from "#lib/types/response.js";
+import useSearchList from "#lib/hooks/useSearchList.js";
 import Divider from "#ui/Divider/Divider.jsx";
 import NoResults from "#ui/SearchList/NoResults.jsx";
 import SearchListItem from "#ui/SearchList/SearchListItem.jsx";
 
-const tempList: TroublemakerInfo[] = [
-  {
-    id: 1,
-    nickname: "qwer",
-    platform: "daangn",
-    additionalUserInfo: "당근동",
-    image: "",
-    postCount: 2,
-  },
-  {
-    id: 2,
-    nickname: "asdf",
-    platform: "bunjang",
-    additionalUserInfo: "김*공",
-    image: "",
-    postCount: 1,
-  },
-  {
-    id: 3,
-    nickname: "zxcv",
-    platform: "joongna",
-    additionalUserInfo: "wer123",
-    image: "",
-    postCount: 3,
-  },
-  {
-    id: 4,
-    nickname: "1234",
-    platform: "etc",
-    additionalUserInfo: "짭고나라",
-    image: "",
-    postCount: 4,
-  },
-];
-
 interface SearchListProps extends HTMLAttributes<HTMLUListElement> {}
 
 function SearchList({ className, ...props }: SearchListProps) {
-  const { query, searchResults } = useSearchStore((state) => state);
-
-  const troubleMakerList = query.length > 0 ? searchResults : tempList;
+  const troublemakers = useSearchList();
 
   return (
     <ul
@@ -56,13 +18,13 @@ function SearchList({ className, ...props }: SearchListProps) {
       aria-label="검색목록"
       {...props}>
       <Divider direction="horizon" />
-      {troubleMakerList.map((troublemaker) => (
+      {troublemakers.map((troublemaker) => (
         <Fragment key={troublemaker.id}>
           <SearchListItem itemInfo={troublemaker} />
           <Divider direction="horizon" />
         </Fragment>
       ))}
-      {troubleMakerList.length <= 0 && (
+      {troublemakers.length <= 0 && (
         <>
           <NoResults />
           <Divider direction="horizon" />
