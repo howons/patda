@@ -19,7 +19,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     };
 
     const defaultStyle =
-      "min-h-40 min-w-40 rounded border px-2 py-1 transition-colors";
+      "min-h-40 min-w-20 rounded border px-2 py-1 transition-colors";
 
     return (
       <HeadlessTextarea
