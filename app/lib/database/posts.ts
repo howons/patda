@@ -40,6 +40,7 @@ export const getPostsByNickname = cache((nickname: string) =>
       "createdAt",
       "updatedAt",
       "etcPlatformName",
+      "additionalInfo",
     ])
     .where("Post.targetNickname", "like", `%${nickname}%`)
     .execute()

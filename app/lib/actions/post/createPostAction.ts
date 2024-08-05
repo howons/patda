@@ -18,6 +18,7 @@ const formSchema = z
     content: z.string().min(30, ERROR.POST.SHORT_CONTENT),
     images: z.array(z.object({ id: z.string() })).nullish(),
     etcPlatformName: z.string().nullish(),
+    additionalInfo: z.string().nullish(),
   })
   .refine(
     (data) => {
@@ -51,6 +52,7 @@ export async function createPostAction(
     images: formData.get("images"),
     content: formData.get("content"),
     etcPlatformName: formData.get("etcPlatformName"),
+    additionalInfo: formData.get("additionalInfo"),
   });
 
   if (!input.success) {
@@ -61,12 +63,13 @@ export async function createPostAction(
     };
   }
 
-  const { images, etcPlatformName, ...restData } = input.data;
+  const { images, etcPlatformName, additionalInfo, ...restData } = input.data;
 
   const newPostData: NewPostData = {
     userId: session.user.id,
     images: images?.map(({ id }) => id) ?? null,
     etcPlatformName: etcPlatformName ?? null,
+    additionalInfo: additionalInfo ?? null,
     ...restData,
   };
 

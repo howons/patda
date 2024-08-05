@@ -51,6 +51,7 @@ interface PostFormProps
       | "platform"
       | "tag"
       | "targetNickname"
+      | "additionalInfo"
     >
   > {}
 
@@ -58,6 +59,7 @@ export default function PostForm({
   id,
   content,
   etcPlatformName,
+  additionalInfo,
   images,
   platform: initPlatform,
   tag,
@@ -70,6 +72,13 @@ export default function PostForm({
   const router = useRouter();
 
   const color = PLATFORM_COLOR[platform];
+
+  const infoPlaceholder: { [key in Platform]: string } = {
+    daangn: "상대 동네 이름",
+    bunjang: "상대 본인인증 이름 (ex: 김*수)",
+    joongna: "네이버 아이디",
+    etc: "기타 추가 정보",
+  };
 
   const onSuccess: OnSuccess = useCallback(
     (state) => {
@@ -89,6 +98,7 @@ export default function PostForm({
         platform: initPlatform,
         tag,
         targetNickname,
+        additionalInfo,
       },
     };
   }
@@ -169,6 +179,19 @@ export default function PostForm({
               />
               <ErrorMessage
                 name="targetNickname"
+                errors={errors}
+                render={({ message }) => <ErrorText>{message}</ErrorText>}
+              />
+            </Field>
+            <Field className="mt-2 flex flex-col">
+              <Label>추가 정보</Label>
+              <Input
+                type="text"
+                placeholder={infoPlaceholder[platform]}
+                {...register("additionalInfo")}
+              />
+              <ErrorMessage
+                name="additionalInfo"
                 errors={errors}
                 render={({ message }) => <ErrorText>{message}</ErrorText>}
               />

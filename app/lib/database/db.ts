@@ -52,6 +52,7 @@ export interface Database {
     createdAt: GeneratedAlways<Date>;
     updatedAt: Generated<Date>;
     etcPlatformName: string | null;
+    additionalInfo: string | null;
   };
   Comment: {
     id: GeneratedAlways<string>;
