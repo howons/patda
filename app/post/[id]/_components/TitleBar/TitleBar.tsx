@@ -13,7 +13,7 @@ interface TitlebarProps {
 }
 
 export default async function TitleBar({ postId }: TitlebarProps) {
-  const { platform, targetNickname, tag, etcPlatformName } =
+  const { platform, targetNickname, tag, etcPlatformName, additionalInfo } =
     await getPost(postId);
 
   const platformNameStyle: { [key in Platform]: string } = {
@@ -51,7 +51,8 @@ export default async function TitleBar({ postId }: TitlebarProps) {
       <div className="flex grow flex-col">
         <section className="ml-24 flex h-14 items-center">
           <div>
-            <Title className={`${platformNameStyle[platform]}`}>
+            <Title
+              className={`max-2xs:text-base ${platformNameStyle[platform]}`}>
               {platform === "etc" ? etcPlatformName : PLATFORM_NAME[platform]}
             </Title>
             <Title className={`2xs:hidden ${platformNicknameStyle[platform]}`}>
@@ -66,6 +67,8 @@ export default async function TitleBar({ postId }: TitlebarProps) {
             className={`max-2xs:hidden ${platformNicknameStyle[platform]}`}>
             {targetNickname}
           </Title>
+          <Dot color={PLATFORM_COLOR[platform]} className="mx-5" />
+          <p className="text-sm text-neutral-500">{additionalInfo}</p>
           <div
             className={`relative ml-8 h-0 grow border-b ${platformLineStyle[platform]}`}>
             <Dot
