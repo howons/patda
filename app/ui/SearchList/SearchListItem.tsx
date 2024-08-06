@@ -53,31 +53,25 @@ function SearchListItem({
           alt="프로필 사진"
           className="size-20 shrink-0 rounded-full xs:size-24"
         />
-        <div className="ml-4 flex grow flex-col justify-between">
-          <label className="ml-2 text-xl font-bold">{targetNickname}</label>
-          <div className="ml-2 flex items-center gap-2 text-sm">
-            {PLATFORM_NAME[platform]}
-            {platform === "etc" && (
-              <>
-                <Dot color={PLATFORM_COLOR[platform]} />
-                {etcPlatformName}
-              </>
-            )}
-            {additionalInfo && (
-              <>
-                <Dot color={PLATFORM_COLOR[platform]} />
-                {additionalInfo}
-              </>
-            )}
+        <div className="ml-4 flex grow flex-col justify-around">
+          <div className="flex items-center gap-2">
+            <label className="text-xl font-bold">{targetNickname}</label>
+            <Dot color={PLATFORM_COLOR[platform]} />
+            <div className="flex items-center gap-2 text-sm">
+              {platform !== "etc" ? PLATFORM_NAME[platform] : etcPlatformName}
+              {additionalInfo && (
+                <>
+                  <Dot color={PLATFORM_COLOR[platform]} />
+                  {additionalInfo}
+                </>
+              )}
+            </div>
           </div>
-          <span className="h-1" />
-          <div className="relative flex items-center">
-            <TagItem
-              tag={tag}
-              size="sm"
-              className="absolute -left-10 -top-3 -rotate-45"
-            />
-            <p className="mt-1 text-sm text-neutral-500">{TAG_NAMES[tag]}</p>
+          <div className="ml-2 flex items-center">
+            <TagItem tag={tag} size="sm" className="-rotate-45" />
+            <p className="mt-1 pl-4 text-sm text-neutral-500">
+              {TAG_NAMES[tag]}
+            </p>
           </div>
         </div>
         <div className="flex flex-col justify-between">
