@@ -13,8 +13,14 @@ interface TitlebarProps {
 }
 
 export default async function TitleBar({ postId }: TitlebarProps) {
-  const { platform, targetNickname, tag, etcPlatformName, additionalInfo } =
-    await getPost(postId);
+  const {
+    platform,
+    targetNickname,
+    tag,
+    etcPlatformName,
+    additionalInfo,
+    commentCount,
+  } = await getPost(postId);
 
   const platformNameStyle: { [key in Platform]: string } = {
     daangn: "text-orange-700",
@@ -44,7 +50,7 @@ export default async function TitleBar({ postId }: TitlebarProps) {
         <TagItem tag={tag} />
         <CommentIndicator
           postStatus="normal"
-          commentCount={0}
+          commentCount={commentCount ?? 0}
           className="absolute right-20 top-20"
         />
       </div>

@@ -1,3 +1,4 @@
+import { sql } from "kysely";
 import { cache } from "react";
 
 import { type Database, db } from "#lib/database/db.js";
@@ -23,6 +24,16 @@ export function createPost(newPostData: NewPostData) {
 export const getPost = cache((postId: string) =>
   db
     .selectFrom("Post")
+    .leftJoin(
+      (eb) =>
+        eb
+          .selectFrom("Comment")
+          .select(["postId", sql<number>`count(*)`.as("commentCount")])
+          .groupBy("postId")
+          .where("postId", "=", postId)
+          .as("c"),
+      (join) => join.onRef("c.postId", "=", "Post.id")
+    )
     .selectAll()
     .where("id", "=", postId)
     .executeTakeFirstOrThrow()
@@ -31,6 +42,15 @@ export const getPost = cache((postId: string) =>
 export const getPostsByNickname = cache((nickname: string) =>
   db
     .selectFrom("Post")
+    .leftJoin(
+      (eb) =>
+        eb
+          .selectFrom("Comment")
+          .select(["postId", sql<number>`count(*)`.as("commentCount")])
+          .groupBy("postId")
+          .as("c"),
+      (join) => join.onRef("c.postId", "=", "Post.id")
+    )
     .select([
       "id",
       "platform",
@@ -41,6 +61,7 @@ export const getPostsByNickname = cache((nickname: string) =>
       "updatedAt",
       "etcPlatformName",
       "additionalInfo",
+      "commentCount",
     ])
     .where("Post.targetNickname", "like", `%${nickname}%`)
     .execute()

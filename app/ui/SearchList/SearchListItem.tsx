@@ -1,3 +1,5 @@
+import { FaRegComment } from "@react-icons/all-files/fa/FaRegComment";
+import { RiScales3Line } from "@react-icons/all-files/ri/RiScales3Line";
 import Link from "next/link";
 
 import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
@@ -15,6 +17,7 @@ interface SearchListItemProps {
 
 function SearchListItem({
   itemInfo: {
+    id,
     targetNickname,
     platform,
     status,
@@ -22,6 +25,7 @@ function SearchListItem({
     etcPlatformName,
     additionalInfo,
     createdAt,
+    commentCount,
   },
 }: SearchListItemProps) {
   const defaultStyle = "w-full flex rounded-3xl p-3 text-zinc-700 bg-white";
@@ -44,9 +48,11 @@ function SearchListItem({
     etc: "",
   };
 
+  const commentSvgStyle = "size-4 fill-stone-500/50";
+
   return (
     <li className={`shrink-0 ${platformStyle[platform]}`}>
-      <Link href={""} className={defaultStyle}>
+      <Link href={`/post/${id}`} className={defaultStyle}>
         <Thumbnail
           platform={platform}
           src=""
@@ -69,17 +75,23 @@ function SearchListItem({
           </div>
           <div className="ml-2 flex items-center">
             <TagItem tag={tag} size="sm" className="-rotate-45" />
-            <p className="mt-1 pl-4 text-sm text-neutral-500">
-              {TAG_NAMES[tag]}
-            </p>
+            <p className="mt-1 pl-4 text-neutral-700">{TAG_NAMES[tag]}</p>
           </div>
         </div>
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between pr-1">
           <AuthorTag
             color={PLATFORM_COLOR[platform]}
             date={createdAt}
             summary
           />
+          <div className="flex items-center justify-end gap-2 text-sm text-neutral-400">
+            {status === "debate" ? (
+              <RiScales3Line className={commentSvgStyle} />
+            ) : (
+              <FaRegComment className={commentSvgStyle} />
+            )}
+            {commentCount ?? 0}
+          </div>
         </div>
       </Link>
     </li>
