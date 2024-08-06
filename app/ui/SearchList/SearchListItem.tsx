@@ -4,7 +4,9 @@ import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
 import { TAG_NAMES } from "#lib/constants/tag.js";
 import type { Platform } from "#lib/types/property.js";
 import type { TroublemakerInfo } from "#lib/types/response.js";
+import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
+import TagItem from "#ui/TagItem/TagItem.jsx";
 import Thumbnail from "#ui/Thumbnail/Thumbnail.jsx";
 
 interface SearchListItemProps {
@@ -18,6 +20,7 @@ function SearchListItem({
     status,
     tag,
     etcPlatformName,
+    additionalInfo,
     createdAt,
   },
 }: SearchListItemProps) {
@@ -48,13 +51,11 @@ function SearchListItem({
           platform={platform}
           src=""
           alt="프로필 사진"
-          width={100}
-          height={100}
-          className="shrink-0 rounded-full"
+          className="size-20 shrink-0 rounded-full xs:size-24"
         />
         <div className="ml-4 flex grow flex-col justify-between">
-          <label className="text-xl font-bold">{targetNickname}</label>
-          <p className="text-sm">
+          <label className="ml-2 text-xl font-bold">{targetNickname}</label>
+          <div className="ml-2 flex items-center gap-2 text-sm">
             {PLATFORM_NAME[platform]}
             {platform === "etc" && (
               <>
@@ -62,9 +63,29 @@ function SearchListItem({
                 {etcPlatformName}
               </>
             )}
-          </p>
-          <div className="h-2" />
-          <p className="text-right text-sm">{TAG_NAMES[tag]}</p>
+            {additionalInfo && (
+              <>
+                <Dot color={PLATFORM_COLOR[platform]} />
+                {additionalInfo}
+              </>
+            )}
+          </div>
+          <span className="h-1" />
+          <div className="relative flex items-center">
+            <TagItem
+              tag={tag}
+              size="sm"
+              className="absolute -left-10 -top-3 -rotate-45"
+            />
+            <p className="mt-1 text-sm text-neutral-500">{TAG_NAMES[tag]}</p>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between">
+          <AuthorTag
+            color={PLATFORM_COLOR[platform]}
+            date={createdAt}
+            summary
+          />
         </div>
       </Link>
     </li>

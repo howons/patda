@@ -24,16 +24,27 @@ const TagIcons: { [key in TagId]: React.JSX.Element } = {
   others: <FiMoreHorizontal className={iconStyle} />,
 };
 
-interface TagItemProps extends ComponentProps<"div">, Pick<PostInfo, "tag"> {}
+interface TagItemProps extends ComponentProps<"div">, Pick<PostInfo, "tag"> {
+  size?: "sm" | "md";
+}
 
 export default function TagItem({
   tag,
+  size = "md",
   className = "",
   ...props
 }: TagItemProps) {
+  const defaultStyle =
+    "flex items-center justify-center border-double border-stone-400 bg-yellow-200";
+
+  const sizeStyle = {
+    sm: "size-8 border-4",
+    md: "size-14 border-[6px]",
+  };
+
   return (
     <div
-      className={`flex size-14 items-center justify-center border-[6px] border-double border-stone-400 bg-yellow-200 ${className}`}
+      className={`${defaultStyle} ${sizeStyle[size]} ${className}`}
       {...props}>
       {TagIcons[tag]}
     </div>

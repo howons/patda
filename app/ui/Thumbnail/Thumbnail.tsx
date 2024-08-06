@@ -17,14 +17,12 @@ function Thumbnail({
   platform,
   src,
   alt,
-  width,
-  height,
-  className,
+  className = "",
   ...props
 }: ThumbnailProps) {
   const [isError, setIsError] = useState(false);
 
-  const defaultStyle = "border border-zinc-100 shadow-inner";
+  const defaultStyle = "border border-zinc-100 shadow-inner object-contain";
 
   return !isError && src ? (
     <Image
@@ -37,25 +35,13 @@ function Thumbnail({
       {...props}
     />
   ) : platform === "daangn" ? (
-    <DaangnLogo
-      width={width}
-      height={height}
-      className={`${defaultStyle} ${className}`}
-    />
+    <DaangnLogo className={`${defaultStyle} ${className}`} />
   ) : platform === "bunjang" ? (
-    <BunjangLogo
-      width={width}
-      height={height}
-      className={`${defaultStyle} ${className}`}
-    />
+    <BunjangLogo className={`${defaultStyle} ${className}`} />
   ) : platform === "joongna" ? (
-    <JoongnaLogo
-      width={width}
-      height={height}
-      className={`${defaultStyle} ${className}`}
-    />
+    <JoongnaLogo className={`${defaultStyle} ${className}`} />
   ) : (
-    <FiMoreHorizontal size={width} className={`${defaultStyle} ${className}`} />
+    <FiMoreHorizontal className={`${defaultStyle} ${className}`} />
   );
 }
 
