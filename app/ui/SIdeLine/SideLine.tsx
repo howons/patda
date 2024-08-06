@@ -22,7 +22,7 @@ export default function SideLine({
 
   return (
     <div
-      className={`ml-2.5 flex shrink-0 grow-0 basis-5 flex-col items-center justify-center ${className}`}
+      className={`flex shrink-0 grow-0 basis-5 flex-col items-center justify-center xs:ml-2.5 ${className}`}
       {...props}>
       {topDotSize && (
         <Dot color={color} size={topDotSize} className="transition-colors" />

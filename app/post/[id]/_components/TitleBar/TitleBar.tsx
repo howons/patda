@@ -85,7 +85,7 @@ export default async function TitleBar({ postId }: TitlebarProps) {
         <section className="ml-28 mt-4 flex h-14 flex-col xs:flex-row">
           <Title className="shrink-0 text-neutral-800">{TAG_NAMES[tag]}</Title>
           <Dot color="zinc" size="sm" className="mx-4 mt-2.5 max-xs:hidden" />
-          <p className="mt-1 pr-2 text-sm text-neutral-500 xs:break-keep">
+          <p className="mt-1 max-h-16 pr-2 text-sm text-neutral-500 xs:break-keep">
             {TAG_DESC[tag]}
           </p>
         </section>

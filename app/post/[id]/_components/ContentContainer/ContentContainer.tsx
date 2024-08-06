@@ -21,8 +21,8 @@ export default async function ContentContainer({
   return (
     <div className="mt-3 flex">
       <CommentLine topDotSize="sm" bottomDotSize="sm" className="pt-2" />
-      <div className="flex grow flex-col gap-4 sm:px-4">
-        <section className="h-6">
+      <div className="flex grow flex-col gap-4 max-xs:mt-12 sm:px-4">
+        <section className="h-6 px-2">
           {isMine && <PostMutationForm postId={postId} />}
         </section>
         <section className="min-h-72">이미지</section>
