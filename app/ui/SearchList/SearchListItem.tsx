@@ -63,19 +63,24 @@ function SearchListItem({
           <div className="flex items-center gap-2">
             <label className="text-xl font-bold">{targetNickname}</label>
             <Dot color={PLATFORM_COLOR[platform]} />
-            <div className="flex items-center gap-2 text-sm">
+            <div className="flex shrink-0 text-sm max-xs:flex-col xs:items-center xs:gap-2 ">
               {platform !== "etc" ? PLATFORM_NAME[platform] : etcPlatformName}
               {additionalInfo && (
                 <>
-                  <Dot color={PLATFORM_COLOR[platform]} />
-                  {additionalInfo}
+                  <Dot
+                    color={PLATFORM_COLOR[platform]}
+                    className="max-xs:hidden"
+                  />
+                  <p>{additionalInfo}</p>
                 </>
               )}
             </div>
           </div>
           <div className="ml-2 flex items-center">
-            <TagItem tag={tag} size="sm" className="-rotate-45" />
-            <p className="mt-1 pl-4 text-neutral-700">{TAG_NAMES[tag]}</p>
+            <TagItem tag={tag} size="sm" className="shrink-0 -rotate-45" />
+            <p className="mt-1 pl-4 text-neutral-700 max-xs:text-sm">
+              {TAG_NAMES[tag]}
+            </p>
           </div>
         </div>
         <div className="flex flex-col justify-between pr-1">
