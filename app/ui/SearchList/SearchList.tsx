@@ -31,7 +31,7 @@ function SearchList({ className, ...props }: SearchListProps) {
   } else {
     Items = (
       <>
-        <NoResults />
+        <NoResults error={status === "ERROR"} />
         <Divider direction="horizon" />
       </>
     );

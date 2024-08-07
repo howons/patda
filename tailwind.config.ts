@@ -27,6 +27,7 @@ const config: Config = {
       animation: {
         swing: "swing 1s infinite",
         "swing-vert": "swing-vert 1s infinite",
+        "pade-out": "pade-out 0.5s forwards",
       },
       keyframes: {
         swing: {
@@ -47,6 +48,14 @@ const config: Config = {
           "25%": {
             transform: "rotate(35deg)",
             "animation-timing-function": "cubic-bezier(0, 0, 0.2, 1)",
+          },
+        },
+        "pade-out": {
+          "0%": {
+            opacity: "1",
+          },
+          "100%": {
+            opacity: "0",
           },
         },
       },
