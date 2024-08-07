@@ -51,7 +51,7 @@ export default function AuthorTag({
     <section
       className={`flex items-center justify-end gap-4 text-sm text-neutral-500 ${className}`}
       {...props}>
-      {name && (
+      {name !== undefined && (
         <>
           <p>{name}</p>
           <Dot color={color} />
