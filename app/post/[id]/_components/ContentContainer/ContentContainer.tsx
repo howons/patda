@@ -21,13 +21,13 @@ export default async function ContentContainer({
   return (
     <div className="mt-3 flex">
       <CommentLine topDotSize="sm" bottomDotSize="sm" className="pt-2" />
-      <div className="flex grow flex-col gap-4 max-xs:mt-12 sm:px-4">
+      <div className="flex min-w-0 grow flex-col gap-4 max-xs:mt-12 sm:px-4">
         <section className="h-6 px-2">
           {isMine && <PostMutationForm postId={postId} />}
         </section>
         <section className="min-h-72">이미지</section>
         <Dot color={PLATFORM_COLOR[platform]} className="mx-auto" />
-        <Content content={content} className="min-h-40" />
+        <Content content={content} className="min-h-40 w-full break-words" />
       </div>
     </div>
   );
