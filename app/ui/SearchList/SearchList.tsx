@@ -2,46 +2,77 @@
 
 import { Fragment, HTMLAttributes } from "react";
 
+import { PLATFORM_COLOR } from "#lib/constants/platform.js";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import { useSearchListContext } from "#lib/providers/SearchListProvider.jsx";
+import type { TroublemakerInfo } from "#lib/types/response.js";
 import Divider from "#ui/Divider/Divider.jsx";
+import Dot from "#ui/Dot/Dot.jsx";
 import Loading from "#ui/SearchList/Loading.jsx";
 import NoResults from "#ui/SearchList/NoResults.jsx";
 import SearchListItem from "#ui/SearchList/SearchListItem.jsx";
 
 interface SearchListProps extends HTMLAttributes<HTMLUListElement> {}
 
-function SearchList({ className, ...props }: SearchListProps) {
+export default function SearchList({ className, ...props }: SearchListProps) {
+  const platform = usePlatformStore((state) => state.platform);
   const {
     activeItemIdx,
-    troublemakersStatus: { status, troublemakers },
+    troublemakersStatus: { status, troublemakers, otherPlatformTroublemakers },
     searchListRef,
   } = useSearchListContext();
 
   let Items: JSX.Element | JSX.Element[] = <></>;
-  if (status === "SUCCESS" && troublemakers.length > 0) {
-    Items = troublemakers.map((troublemaker, idx) => (
-      <Fragment key={troublemaker.id}>
-        <SearchListItem
-          itemInfo={troublemaker}
-          isActive={idx === activeItemIdx}
-        />
-        <Divider direction="horizon" />
-      </Fragment>
-    ));
-  } else if (status === "LOADING") {
+  let OtherPlatformItems: JSX.Element | JSX.Element[] = <></>;
+  let idxCounter = 0;
+  const troublemakerMapper = (troublemaker: TroublemakerInfo) => (
+    <Fragment key={troublemaker.id}>
+      <SearchListItem
+        itemInfo={troublemaker}
+        isActive={idxCounter++ === activeItemIdx}
+      />
+      <Divider direction="horizon" />
+    </Fragment>
+  );
+
+  if (status === "LOADING") {
     Items = (
       <>
         <Loading />
         <Divider direction="horizon" />
       </>
     );
-  } else {
-    Items = (
+    OtherPlatformItems = (
       <>
-        <NoResults error={status === "ERROR"} />
+        <Loading single />
         <Divider direction="horizon" />
       </>
     );
+  } else {
+    if (status === "SUCCESS") {
+      if (troublemakers.length > 0) {
+        Items = troublemakers.map(troublemakerMapper);
+      }
+      if (otherPlatformTroublemakers.length > 0) {
+        OtherPlatformItems = otherPlatformTroublemakers.map(troublemakerMapper);
+      }
+    }
+    if (status === "ERROR" || troublemakers.length <= 0) {
+      Items = (
+        <>
+          <NoResults error={status === "ERROR"} />
+          <Divider direction="horizon" />
+        </>
+      );
+    }
+    if (status === "ERROR" || otherPlatformTroublemakers.length <= 0) {
+      OtherPlatformItems = (
+        <>
+          <NoResults error={status === "ERROR"} single />
+          <Divider direction="horizon" />
+        </>
+      );
+    }
   }
 
   return (
@@ -52,8 +83,9 @@ function SearchList({ className, ...props }: SearchListProps) {
       {...props}>
       <Divider direction="horizon" />
       {Items}
+      <Dot color={PLATFORM_COLOR[platform]} className="mx-auto my-8" />
+      <Divider direction="horizon" />
+      {OtherPlatformItems}
     </ul>
   );
 }
-
-export default SearchList;

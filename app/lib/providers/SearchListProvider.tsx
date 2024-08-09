@@ -11,7 +11,9 @@ import {
   useState,
 } from "react";
 
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import { useSearchStore } from "#lib/providers/SearchStoreProvider.jsx";
+import type { TroublemakerInfo } from "#lib/types/response.js";
 import type { SearchState } from "#lib/types/state.js";
 
 const DEBOUNCE_INTERVAL = 200;
@@ -33,9 +35,11 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
   const [troublemakersStatus, setTroublemakersStatus] = useState<SearchState>({
     status: "LOADING",
     troublemakers: [],
+    otherPlatformTroublemakers: [],
   });
   const [activeItemIdx, setActiveItemIdx] = useState(0);
-  const query = useSearchStore((store) => store.query);
+  const query = useSearchStore((state) => state.query);
+  const platform = usePlatformStore((state) => state.platform);
 
   const handleInputKeyDown: KeyboardEventHandler<HTMLDivElement> = (e) => {
     if (!searchListRef.current) return;
@@ -55,17 +59,23 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
   useEffect(() => {
     const timeoutId = setTimeout(async () => {
       try {
-        setTroublemakersStatus((prev) => ({
+        setTroublemakersStatus(({ status, ...rest }) => ({
           status: "LOADING",
-          troublemakers: prev.troublemakers,
+          ...rest,
         }));
         const response = await fetch(`/api/v1/posts?nickname=${query}`);
-        const posts = await response.json();
-        setTroublemakersStatus({ status: "SUCCESS", troublemakers: posts });
+        const posts = (await response.json()) as TroublemakerInfo[];
+        setTroublemakersStatus({
+          status: "SUCCESS",
+          troublemakers: posts.filter((post) => post.platform === platform),
+          otherPlatformTroublemakers: posts.filter(
+            (post) => post.platform !== platform
+          ),
+        });
       } catch (err) {
-        setTroublemakersStatus((prev) => ({
+        setTroublemakersStatus(({ status, ...rest }) => ({
           status: "ERROR",
-          troublemakers: prev.troublemakers,
+          ...rest,
         }));
       }
 
@@ -75,7 +85,7 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [query]);
+  }, [platform, query]);
 
   const value = {
     activeItemIdx,
