@@ -1,5 +1,6 @@
 "use client";
 
+import { IoCloseCircleOutline } from "@react-icons/all-files/io5/IoCloseCircleOutline";
 import { IoSearchOutline } from "@react-icons/all-files/io5/IoSearchOutline";
 
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
@@ -38,9 +39,18 @@ function SearchBarCore() {
         onKeyDown={handleInputKeyDown}
         aria-label="검색바"
       />
-      <IoSearchOutline
-        className={`absolute right-1 top-1 size-6 transition-colors duration-300 ${platformIconStyle[platform]}`}
-      />
+      {query.length > 0 ? (
+        <IoCloseCircleOutline
+          className={`absolute right-1.5 top-1 size-[1.3rem] cursor-pointer transition-colors duration-300 ${platformIconStyle[platform]}`}
+          onClick={() => {
+            updateQuery("");
+          }}
+        />
+      ) : (
+        <IoSearchOutline
+          className={`absolute right-1 top-1 size-6 transition-colors duration-300 ${platformIconStyle[platform]}`}
+        />
+      )}
     </>
   );
 }
