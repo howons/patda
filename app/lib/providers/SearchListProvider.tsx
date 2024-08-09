@@ -47,7 +47,7 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
       setActiveItemIdx((idx) => (idx > 0 ? idx - 1 : idx));
     } else if (e.key === "ArrowDown") {
       setActiveItemIdx((idx) => (idx < listLength - 1 ? idx + 1 : idx));
-    } else if (e.key === "Enter" && listItems) {
+    } else if (e.key === "Enter" && listItems && activeItemIdx >= 0) {
       listItems[activeItemIdx].click();
     }
   };
@@ -69,7 +69,7 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
         }));
       }
 
-      setActiveItemIdx(0);
+      setActiveItemIdx(-1);
     }, DEBOUNCE_INTERVAL);
 
     return () => {

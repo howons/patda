@@ -47,7 +47,7 @@ function SearchListItem({
       "bg-orange-400 rounded-3xl rounded-br-md transition-all hover:rounded-none",
     bunjang: `relative overflow-hidden ${bunjangBeforeStyle} ${bunjangAfterStyle}`,
     joongna: `relative overflow-hidden rounded-l-3xl transition-all hover:rounded-br-xl ${joongnaBeforeStyle} ${joongnaAfterStyle}`,
-    etc: "rounded-3xl transition-all hover:shadow",
+    etc: "rounded-3xl transition-all hover:shadow-md",
   };
 
   const activeStyles: { [key in Platform]: string } = {
@@ -56,15 +56,16 @@ function SearchListItem({
     joongna: isActive
       ? "before:translate-x-5 after:-translate-x-1 rounded-br-xl"
       : "",
-    etc: isActive ? "shadow" : "",
+    etc: isActive ? "shadow-md" : "",
   };
 
   const commentSvgStyle = "size-4 fill-stone-500/50";
 
   return (
-    <li
+    <Link
+      href={`/post/${id}`}
       className={`shrink-0 ${platformStyle[platform]} ${activeStyles[platform]}`}>
-      <Link href={`/post/${id}`} className={defaultStyle}>
+      <li className={defaultStyle}>
         <Thumbnail
           platform={platform}
           src=""
@@ -110,8 +111,8 @@ function SearchListItem({
             {commentCount ?? 0}
           </div>
         </div>
-      </Link>
-    </li>
+      </li>
+    </Link>
   );
 }
 
