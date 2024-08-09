@@ -2,7 +2,7 @@
 
 import { Fragment, HTMLAttributes } from "react";
 
-import useSearchList from "#lib/hooks/useSearchList.js";
+import { useSearchListContext } from "#lib/providers/SearchListProvider.jsx";
 import Divider from "#ui/Divider/Divider.jsx";
 import Loading from "#ui/SearchList/Loading.jsx";
 import NoResults from "#ui/SearchList/NoResults.jsx";
@@ -11,7 +11,10 @@ import SearchListItem from "#ui/SearchList/SearchListItem.jsx";
 interface SearchListProps extends HTMLAttributes<HTMLUListElement> {}
 
 function SearchList({ className, ...props }: SearchListProps) {
-  const { status, troublemakers } = useSearchList();
+  const {
+    troublemakersStatus: { status, troublemakers },
+    searchListRef,
+  } = useSearchListContext();
 
   let Items: JSX.Element | JSX.Element[] = <></>;
   if (status === "SUCCESS" && troublemakers.length > 0) {
@@ -39,6 +42,7 @@ function SearchList({ className, ...props }: SearchListProps) {
 
   return (
     <ul
+      ref={searchListRef}
       className={`flex w-full max-w-3xl flex-col sm:w-4/5 ${className}`}
       aria-label="검색목록"
       {...props}>
