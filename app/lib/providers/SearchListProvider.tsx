@@ -17,6 +17,7 @@ import type { SearchState } from "#lib/types/state.js";
 const DEBOUNCE_INTERVAL = 200;
 
 const SearchListContext = createContext<{
+  activeItemIdx: number;
   searchListRef: RefObject<HTMLUListElement | HTMLOListElement>;
   troublemakersStatus: SearchState;
   handleInputKeyDown: KeyboardEventHandler<HTMLDivElement>;
@@ -77,6 +78,7 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
   }, [query]);
 
   const value = {
+    activeItemIdx,
     searchListRef,
     troublemakersStatus,
     handleInputKeyDown,

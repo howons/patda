@@ -13,6 +13,7 @@ import Thumbnail from "#ui/Thumbnail/Thumbnail.jsx";
 
 interface SearchListItemProps {
   itemInfo: TroublemakerInfo;
+  isActive?: boolean;
 }
 
 function SearchListItem({
@@ -27,6 +28,7 @@ function SearchListItem({
     createdAt,
     commentCount,
   },
+  isActive,
 }: SearchListItemProps) {
   const defaultStyle = "w-full flex rounded-3xl p-3 text-zinc-700 bg-white";
 
@@ -45,13 +47,23 @@ function SearchListItem({
       "bg-orange-400 rounded-3xl rounded-br-md transition-all hover:rounded-none",
     bunjang: `relative overflow-hidden ${bunjangBeforeStyle} ${bunjangAfterStyle}`,
     joongna: `relative overflow-hidden rounded-l-3xl transition-all hover:rounded-br-xl ${joongnaBeforeStyle} ${joongnaAfterStyle}`,
-    etc: "",
+    etc: "rounded-3xl transition-all hover:shadow",
+  };
+
+  const activeStyles: { [key in Platform]: string } = {
+    daangn: isActive ? "rounded-none" : "",
+    bunjang: isActive ? "before:w-9 after:w-[2.15rem]" : "",
+    joongna: isActive
+      ? "before:translate-x-5 after:-translate-x-1 rounded-br-xl"
+      : "",
+    etc: isActive ? "shadow" : "",
   };
 
   const commentSvgStyle = "size-4 fill-stone-500/50";
 
   return (
-    <li className={`shrink-0 ${platformStyle[platform]}`}>
+    <li
+      className={`shrink-0 ${platformStyle[platform]} ${activeStyles[platform]}`}>
       <Link href={`/post/${id}`} className={defaultStyle}>
         <Thumbnail
           platform={platform}

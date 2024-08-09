@@ -12,15 +12,19 @@ interface SearchListProps extends HTMLAttributes<HTMLUListElement> {}
 
 function SearchList({ className, ...props }: SearchListProps) {
   const {
+    activeItemIdx,
     troublemakersStatus: { status, troublemakers },
     searchListRef,
   } = useSearchListContext();
 
   let Items: JSX.Element | JSX.Element[] = <></>;
   if (status === "SUCCESS" && troublemakers.length > 0) {
-    Items = troublemakers.map((troublemaker) => (
+    Items = troublemakers.map((troublemaker, idx) => (
       <Fragment key={troublemaker.id}>
-        <SearchListItem itemInfo={troublemaker} />
+        <SearchListItem
+          itemInfo={troublemaker}
+          isActive={idx === activeItemIdx}
+        />
         <Divider direction="horizon" />
       </Fragment>
     ));
