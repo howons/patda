@@ -34,7 +34,21 @@ export const getPost = cache((postId: string) =>
           .as("c"),
       (join) => join.onRef("c.postId", "=", "Post.id")
     )
-    .selectAll()
+    .select([
+      "id",
+      "userId",
+      "platform",
+      "targetNickname",
+      "tag",
+      "status",
+      "images",
+      "content",
+      "createdAt",
+      "updatedAt",
+      "etcPlatformName",
+      "additionalInfo",
+      "commentCount",
+    ])
     .where("id", "=", postId)
     .executeTakeFirstOrThrow()
 );
@@ -64,6 +78,7 @@ export const getPostsByNickname = cache((nickname: string) =>
       "commentCount",
     ])
     .where("Post.targetNickname", "like", `%${nickname}%`)
+    .orderBy("Post.createdAt desc")
     .execute()
 );
 
