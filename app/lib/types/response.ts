@@ -1,6 +1,5 @@
 import type { getComments } from "#lib/database/comments.js";
-import type { getPost } from "#lib/database/posts";
-import type { Platform } from "#lib/types/property.js";
+import type { getPost, getPostsByNickname } from "#lib/database/posts";
 
 export type PostInfo =
   ReturnType<typeof getPost> extends Promise<infer T> ? T : never;
@@ -8,11 +7,7 @@ export type PostInfo =
 export type CommentInfo =
   ReturnType<typeof getComments> extends Promise<(infer T)[]> ? T : never;
 
-export type TroublemakerInfo = {
-  id: number;
-  nickname: string;
-  platform: Platform;
-  additionalUserInfo: string;
-  image: string;
-  postCount: number;
-};
+export type TroublemakerInfo =
+  ReturnType<typeof getPostsByNickname> extends Promise<(infer T)[]>
+    ? T
+    : never;

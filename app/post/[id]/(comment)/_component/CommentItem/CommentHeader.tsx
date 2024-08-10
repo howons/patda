@@ -33,7 +33,7 @@ export default function CommentHeader({
       </h3>
       <div className="flex max-2xs:flex-col-reverse max-2xs:gap-1">
         {isMine && (
-          <form action={deleteFormAction}>
+          <form action={deleteFormAction} className="flex items-center">
             <MutationButtonGroup
               updateClicked={updateClicked}
               onUpdateClick={onUpdateClick}

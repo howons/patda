@@ -91,6 +91,7 @@ export async function create() {
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
     .addColumn("etcPlatformName", "text")
+    .addColumn("additionalInfo", "text")
     .execute();
 
   await db.schema

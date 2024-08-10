@@ -13,8 +13,14 @@ interface TitlebarProps {
 }
 
 export default async function TitleBar({ postId }: TitlebarProps) {
-  const { platform, targetNickname, tag, etcPlatformName } =
-    await getPost(postId);
+  const {
+    platform,
+    targetNickname,
+    tag,
+    etcPlatformName,
+    additionalInfo,
+    commentCount,
+  } = await getPost(postId);
 
   const platformNameStyle: { [key in Platform]: string } = {
     daangn: "text-orange-700",
@@ -44,14 +50,15 @@ export default async function TitleBar({ postId }: TitlebarProps) {
         <TagItem tag={tag} />
         <CommentIndicator
           postStatus="normal"
-          commentCount={0}
+          commentCount={commentCount ?? 0}
           className="absolute right-20 top-20"
         />
       </div>
       <div className="flex grow flex-col">
         <section className="ml-24 flex h-14 items-center">
           <div>
-            <Title className={`${platformNameStyle[platform]}`}>
+            <Title
+              className={`max-2xs:text-base ${platformNameStyle[platform]}`}>
               {platform === "etc" ? etcPlatformName : PLATFORM_NAME[platform]}
             </Title>
             <Title className={`2xs:hidden ${platformNicknameStyle[platform]}`}>
@@ -66,6 +73,8 @@ export default async function TitleBar({ postId }: TitlebarProps) {
             className={`max-2xs:hidden ${platformNicknameStyle[platform]}`}>
             {targetNickname}
           </Title>
+          <Dot color={PLATFORM_COLOR[platform]} className="mx-5" />
+          <p className="text-sm text-neutral-500">{additionalInfo}</p>
           <div
             className={`relative ml-8 h-0 grow border-b ${platformLineStyle[platform]}`}>
             <Dot
@@ -82,7 +91,7 @@ export default async function TitleBar({ postId }: TitlebarProps) {
         <section className="ml-28 mt-4 flex h-14 flex-col xs:flex-row">
           <Title className="shrink-0 text-neutral-800">{TAG_NAMES[tag]}</Title>
           <Dot color="zinc" size="sm" className="mx-4 mt-2.5 max-xs:hidden" />
-          <p className="mt-1 pr-2 text-sm text-neutral-500 xs:break-keep">
+          <p className="mt-1 max-h-16 pr-2 text-sm text-neutral-500 xs:break-keep">
             {TAG_DESC[tag]}
           </p>
         </section>

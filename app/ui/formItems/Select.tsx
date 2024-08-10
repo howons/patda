@@ -21,7 +21,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       etc: "border-zinc-500 focus:outline-zinc-400",
     };
 
-    const defaultStyle = "h-8 min-w-40 rounded border px-2";
+    const defaultStyle = "h-8 min-w-32 rounded border px-2";
 
     return (
       <HeadlessSelect

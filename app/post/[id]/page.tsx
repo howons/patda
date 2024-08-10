@@ -3,9 +3,12 @@ import TitleBar from "#app/post/[id]/_components/TitleBar/TitleBar.jsx";
 import AuthorContainer from "#app/post/[id]/(author)/AuthorContainer.jsx";
 import CommentContainer from "#app/post/[id]/(comment)/CommentContainer.jsx";
 
-export default function PostDetailPage({ params }: { params: { id: string } }) {
+export default async function PostDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const id = params.id;
-
   return (
     <>
       <TitleBar postId={id} />

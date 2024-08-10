@@ -51,7 +51,7 @@ export const getComment = cache((id: string) =>
       "createdAt",
       "updatedAt",
     ])
-    .where("id", "=", id)
+    .where("Comment.id", "=", id)
     .executeTakeFirst()
 );
 
@@ -62,7 +62,7 @@ export function updateComment(
   return db
     .updateTable("Comment")
     .set(updateCommentData)
-    .where("id", "=", id)
+    .where("Comment.id", "=", id)
     .executeTakeFirstOrThrow();
 }
 

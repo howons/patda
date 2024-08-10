@@ -30,6 +30,7 @@ import {
   SubmitButton,
   Textarea,
 } from "#ui/formItems/index.jsx";
+import HelpCircle from "#ui/HelpCircle/HelpCircle.jsx";
 
 const platformOptions = Object.entries(PLATFORM_NAME).map(([id, name]) => ({
   name,
@@ -51,6 +52,7 @@ interface PostFormProps
       | "platform"
       | "tag"
       | "targetNickname"
+      | "additionalInfo"
     >
   > {}
 
@@ -58,6 +60,7 @@ export default function PostForm({
   id,
   content,
   etcPlatformName,
+  additionalInfo,
   images,
   platform: initPlatform,
   tag,
@@ -70,6 +73,13 @@ export default function PostForm({
   const router = useRouter();
 
   const color = PLATFORM_COLOR[platform];
+
+  const infoPlaceholder: { [key in Platform]: string } = {
+    daangn: "상대 동네 이름",
+    bunjang: "상대 본인인증 이름 (ex: 김*수)",
+    joongna: "네이버 아이디",
+    etc: "기타 추가 정보",
+  };
 
   const onSuccess: OnSuccess = useCallback(
     (state) => {
@@ -89,6 +99,7 @@ export default function PostForm({
         platform: initPlatform,
         tag,
         targetNickname,
+        additionalInfo,
       },
     };
   }
@@ -124,17 +135,17 @@ export default function PostForm({
   return (
     <form
       action={formAction}
-      className="flex w-5/6 min-w-[22rem] max-w-3xl grow flex-col justify-between md:w-4/6"
+      className="flex w-full min-w-80 max-w-3xl flex-col justify-between px-3 md:w-5/6"
       data-testid="post-form">
       <Fieldset className="space-y-6">
         <div className="mt-8 flex items-center justify-between">
-          <Legend color={color} className="group flex">
+          <Legend color={color} className="group flex break-keep">
             중고거래 진상 박제글 작성
             <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
           </Legend>
           <CancelButton />
         </div>
-        <div className="flex justify-between gap-7">
+        <div className="flex gap-6">
           <div className="flex-1">
             <Field className="flex flex-col">
               <Label>거래 사이트</Label>
@@ -159,7 +170,7 @@ export default function PostForm({
               </Field>
             )}
           </div>
-          <div className="flex-1">
+          <div className="flex-1 flex-col">
             <Field className="flex flex-col">
               <Label>상대 닉네임</Label>
               <Input
@@ -169,6 +180,24 @@ export default function PostForm({
               />
               <ErrorMessage
                 name="targetNickname"
+                errors={errors}
+                render={({ message }) => <ErrorText>{message}</ErrorText>}
+              />
+            </Field>
+            <Field className="mt-2 flex flex-col">
+              <Label className="flex items-center">
+                추가 정보
+                <HelpCircle className="ml-2">
+                  상대방을 특정하는데 도움이 될 추가 정보를 적어주세요.
+                </HelpCircle>
+              </Label>
+              <Input
+                type="text"
+                placeholder={infoPlaceholder[platform]}
+                {...register("additionalInfo")}
+              />
+              <ErrorMessage
+                name="additionalInfo"
                 errors={errors}
                 render={({ message }) => <ErrorText>{message}</ErrorText>}
               />

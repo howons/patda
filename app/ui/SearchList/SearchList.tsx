@@ -2,74 +2,90 @@
 
 import { Fragment, HTMLAttributes } from "react";
 
-import { useSearchStore } from "#lib/providers/SearchStoreProvider.jsx";
+import { PLATFORM_COLOR } from "#lib/constants/platform.js";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
+import { useSearchListContext } from "#lib/providers/SearchListProvider.jsx";
 import type { TroublemakerInfo } from "#lib/types/response.js";
 import Divider from "#ui/Divider/Divider.jsx";
+import Dot from "#ui/Dot/Dot.jsx";
+import Loading from "#ui/SearchList/Loading.jsx";
 import NoResults from "#ui/SearchList/NoResults.jsx";
 import SearchListItem from "#ui/SearchList/SearchListItem.jsx";
 
-const tempList: TroublemakerInfo[] = [
-  {
-    id: 1,
-    nickname: "qwer",
-    platform: "daangn",
-    additionalUserInfo: "당근동",
-    image: "",
-    postCount: 2,
-  },
-  {
-    id: 2,
-    nickname: "asdf",
-    platform: "bunjang",
-    additionalUserInfo: "김*공",
-    image: "",
-    postCount: 1,
-  },
-  {
-    id: 3,
-    nickname: "zxcv",
-    platform: "joongna",
-    additionalUserInfo: "wer123",
-    image: "",
-    postCount: 3,
-  },
-  {
-    id: 4,
-    nickname: "1234",
-    platform: "etc",
-    additionalUserInfo: "짭고나라",
-    image: "",
-    postCount: 4,
-  },
-];
-
 interface SearchListProps extends HTMLAttributes<HTMLUListElement> {}
 
-function SearchList({ className, ...props }: SearchListProps) {
-  const { query, searchResults } = useSearchStore((state) => state);
+export default function SearchList({ className, ...props }: SearchListProps) {
+  const platform = usePlatformStore((state) => state.platform);
+  const {
+    activeItemIdx,
+    troublemakersStatus: { status, troublemakers, otherPlatformTroublemakers },
+    searchListRef,
+  } = useSearchListContext();
 
-  const troubleMakerList = query.length > 0 ? searchResults : tempList;
+  let Items: JSX.Element | JSX.Element[] = <></>;
+  let OtherPlatformItems: JSX.Element | JSX.Element[] = <></>;
+  let idxCounter = 0;
+  const troublemakerMapper = (troublemaker: TroublemakerInfo) => (
+    <Fragment key={troublemaker.id}>
+      <SearchListItem
+        itemInfo={troublemaker}
+        isActive={idxCounter++ === activeItemIdx}
+      />
+      <Divider direction="horizon" />
+    </Fragment>
+  );
+
+  if (status === "LOADING") {
+    Items = (
+      <>
+        <Loading />
+        <Divider direction="horizon" />
+      </>
+    );
+    OtherPlatformItems = (
+      <>
+        <Loading single />
+        <Divider direction="horizon" />
+      </>
+    );
+  } else {
+    if (status === "SUCCESS") {
+      if (troublemakers.length > 0) {
+        Items = troublemakers.map(troublemakerMapper);
+      }
+      if (otherPlatformTroublemakers.length > 0) {
+        OtherPlatformItems = otherPlatformTroublemakers.map(troublemakerMapper);
+      }
+    }
+    if (status === "ERROR" || troublemakers.length <= 0) {
+      Items = (
+        <>
+          <NoResults error={status === "ERROR"} />
+          <Divider direction="horizon" />
+        </>
+      );
+    }
+    if (status === "ERROR" || otherPlatformTroublemakers.length <= 0) {
+      OtherPlatformItems = (
+        <>
+          <NoResults error={status === "ERROR"} single />
+          <Divider direction="horizon" />
+        </>
+      );
+    }
+  }
 
   return (
     <ul
-      className={`flex w-full flex-col ${className}`}
+      ref={searchListRef}
+      className={`flex w-full max-w-3xl flex-col sm:w-4/5 ${className}`}
       aria-label="검색목록"
       {...props}>
       <Divider direction="horizon" />
-      {troubleMakerList.map((troublemaker) => (
-        <Fragment key={troublemaker.id}>
-          <SearchListItem itemInfo={troublemaker} />
-          <Divider direction="horizon" />
-        </Fragment>
-      ))}
-      {troubleMakerList.length <= 0 && (
-        <>
-          <NoResults />
-          <Divider direction="horizon" />
-        </>
-      )}
+      {Items}
+      <Dot color={PLATFORM_COLOR[platform]} className="mx-auto my-8" />
+      <Divider direction="horizon" />
+      {OtherPlatformItems}
     </ul>
   );
 }
-
-export default SearchList;

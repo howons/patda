@@ -1,15 +1,34 @@
+import { FaRegComment } from "@react-icons/all-files/fa/FaRegComment";
+import { RiScales3Line } from "@react-icons/all-files/ri/RiScales3Line";
 import Link from "next/link";
 
+import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
+import { TAG_NAMES } from "#lib/constants/tag.js";
 import type { Platform } from "#lib/types/property.js";
 import type { TroublemakerInfo } from "#lib/types/response.js";
+import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
+import Dot from "#ui/Dot/Dot.jsx";
+import TagItem from "#ui/TagItem/TagItem.jsx";
 import Thumbnail from "#ui/Thumbnail/Thumbnail.jsx";
 
 interface SearchListItemProps {
   itemInfo: TroublemakerInfo;
+  isActive?: boolean;
 }
 
 function SearchListItem({
-  itemInfo: { nickname, platform, image, additionalUserInfo, postCount },
+  itemInfo: {
+    id,
+    targetNickname,
+    platform,
+    status,
+    tag,
+    etcPlatformName,
+    additionalInfo,
+    createdAt,
+    commentCount,
+  },
+  isActive,
 }: SearchListItemProps) {
   const defaultStyle = "w-full flex rounded-3xl p-3 text-zinc-700 bg-white";
 
@@ -28,28 +47,72 @@ function SearchListItem({
       "bg-orange-400 rounded-3xl rounded-br-md transition-all hover:rounded-none",
     bunjang: `relative overflow-hidden ${bunjangBeforeStyle} ${bunjangAfterStyle}`,
     joongna: `relative overflow-hidden rounded-l-3xl transition-all hover:rounded-br-xl ${joongnaBeforeStyle} ${joongnaAfterStyle}`,
-    etc: "",
+    etc: "rounded-3xl transition-all hover:shadow-md",
   };
 
+  const activeStyles: { [key in Platform]: string } = {
+    daangn: isActive ? "rounded-none" : "",
+    bunjang: isActive ? "before:w-9 after:w-[2.15rem]" : "",
+    joongna: isActive
+      ? "before:translate-x-5 after:-translate-x-1 rounded-br-xl"
+      : "",
+    etc: isActive ? "shadow-md" : "",
+  };
+
+  const commentSvgStyle = "size-4 fill-stone-500/50";
+
   return (
-    <li className={`shrink-0 ${platformStyle[platform]}`}>
-      <Link href={""} className={defaultStyle}>
+    <Link
+      href={`/post/${id}`}
+      className={`shrink-0 ${platformStyle[platform]} ${activeStyles[platform]}`}>
+      <li className={defaultStyle}>
         <Thumbnail
           platform={platform}
-          src={image}
+          src=""
           alt="프로필 사진"
-          width={100}
-          height={100}
-          className="shrink-0 rounded-full"
+          className="size-20 shrink-0 rounded-full xs:size-24"
         />
-        <div className="ml-4 flex grow flex-col justify-between">
-          <label className="text-xl font-bold">{nickname}</label>
-          <p className="text-sm">{additionalUserInfo}</p>
-          <div className="h-2" />
-          <p className="text-right text-sm">{postCount}</p>
+        <div className="ml-4 flex grow flex-col justify-around">
+          <div className="flex items-center gap-2">
+            <label className="text-xl font-bold">{targetNickname}</label>
+            <Dot color={PLATFORM_COLOR[platform]} />
+            <div className="flex shrink-0 text-sm max-xs:flex-col xs:items-center xs:gap-2 ">
+              {platform !== "etc" ? PLATFORM_NAME[platform] : etcPlatformName}
+              {additionalInfo && (
+                <>
+                  <Dot
+                    color={PLATFORM_COLOR[platform]}
+                    className="max-xs:hidden"
+                  />
+                  <p>{additionalInfo}</p>
+                </>
+              )}
+            </div>
+          </div>
+          <div className="ml-2 flex items-center">
+            <TagItem tag={tag} size="sm" className="shrink-0 -rotate-45" />
+            <p className="mt-1 pl-4 text-neutral-700 max-xs:text-sm">
+              {TAG_NAMES[tag]}
+            </p>
+          </div>
         </div>
-      </Link>
-    </li>
+        <div className="flex flex-col justify-between pr-1">
+          <AuthorTag
+            color={PLATFORM_COLOR[platform]}
+            date={createdAt}
+            summary
+          />
+          <div className="flex items-center justify-end gap-2 text-sm text-neutral-400">
+            {status === "debate" ? (
+              <RiScales3Line className={commentSvgStyle} />
+            ) : (
+              <FaRegComment className={commentSvgStyle} />
+            )}
+            {commentCount ?? 0}
+          </div>
+        </div>
+      </li>
+    </Link>
   );
 }
 

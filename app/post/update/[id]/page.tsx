@@ -18,6 +18,7 @@ export default async function PostUpdatePage({
     targetNickname,
     images,
     platform,
+    additionalInfo,
   } = await getPost(params.id);
 
   if (!session || session.user?.id !== userId) {
@@ -33,6 +34,7 @@ export default async function PostUpdatePage({
       platform={platform}
       tag={tag}
       targetNickname={targetNickname}
+      additionalInfo={additionalInfo}
     />
   );
 }

@@ -19,7 +19,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       etc: "border-zinc-500 focus:outline-zinc-400",
     };
 
-    const inputDefaultStyle = "h-8 min-w-40 rounded border px-2";
+    const inputDefaultStyle = "h-8 min-w-32 rounded border px-2";
 
     return (
       <HeadlessInput

@@ -137,6 +137,8 @@ export const UpdateForm: Story = {
         createdAt: new Date("2024-08-01T09:24:00"),
         updatedAt: new Date("2024-08-01T09:24:00"),
         status: "normal",
+        additionalInfo: "add",
+        commentCount: 5,
       });
     });
     getPost.mockReturnValue(mockGetResult);

@@ -1,6 +1,5 @@
 import { forwardRef, HTMLAttributes } from "react";
 
-import { CategoryStoreProvider } from "#lib/providers/CategoryStoreProvider.jsx";
 import Category from "#ui/SearchBar/Category.jsx";
 import CategoryDivider from "#ui/SearchBar/CategoryDivider.jsx";
 import CategorySelector from "#ui/SearchBar/CategorySelector.jsx";
@@ -14,16 +13,14 @@ const SearchBar = forwardRef<HTMLDivElement, SearchBarProps>(
     return (
       <div
         ref={ref}
-        className={`relative m-3 ml-9 w-3/5 min-w-36 max-w-[37rem] ${className}`}
+        className={`relative m-3 ml-9 w-4/5 min-w-36 max-w-md sm:w-3/5 ${className}`}
         {...props}>
-        <CategoryStoreProvider>
-          <CategorySelector />
-          <SearchBarWrapper>
-            <CategoryDivider />
-            <Category />
-            <SearchBarCore />
-          </SearchBarWrapper>
-        </CategoryStoreProvider>
+        <CategorySelector />
+        <SearchBarWrapper>
+          <CategoryDivider />
+          <Category />
+          <SearchBarCore />
+        </SearchBarWrapper>
       </div>
     );
   }

@@ -11,7 +11,7 @@ import {
 import { usePathname } from "next/navigation";
 import { MouseEvent } from "react";
 
-import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider.jsx";
+import { SearchListProvider } from "#lib/providers/SearchListProvider.jsx";
 import SearchBar from "#ui/SearchBar/SearchBar.jsx";
 import SearchList from "#ui/SearchList/SearchList.jsx";
 
@@ -19,7 +19,7 @@ interface HeaderSearchProps extends PopoverProps {}
 
 function HeaderSearch({ className = "", ...props }: HeaderSearchProps) {
   const pathname = usePathname();
-  if (pathname === "/") return null;
+  const isHome = pathname === "/";
 
   const handlePopoverButtonClick =
     (open: boolean) => (e: MouseEvent<HTMLDivElement>) => {
@@ -39,9 +39,9 @@ function HeaderSearch({ className = "", ...props }: HeaderSearchProps) {
     "h-[70vh] pb-16 rounded-b-2xl max-sm:-translate-x-12 max-sm:w-full-plus-6rem";
 
   return (
-    <Popover className={`${className}`} {...props}>
+    <Popover className={`${isHome ? "hidden" : ""} ${className}`} {...props}>
       {({ open }) => (
-        <SearchStoreProvider>
+        <SearchListProvider>
           <PopoverOverlay className="fixed inset-0 bg-black/15" />
           <div
             className={`${popoverDefaultStyle} ${open ? popoverOpenStyle : ""}`}>
@@ -64,7 +64,7 @@ function HeaderSearch({ className = "", ...props }: HeaderSearchProps) {
               </PopoverPanel>
             </Transition>
           </div>
-        </SearchStoreProvider>
+        </SearchListProvider>
       )}
     </Popover>
   );
