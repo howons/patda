@@ -10,7 +10,7 @@ function Search({ className, ...props }: SearchProps) {
   return (
     <SearchListProvider>
       <div className={`flex flex-col items-center ${className}`} {...props}>
-        <SearchBar />
+        <SearchBar className="sticky top-10 z-10" />
         <SearchList className="mt-16" />
       </div>
     </SearchListProvider>
