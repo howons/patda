@@ -5,25 +5,31 @@ import {
   type KeyboardEventHandler,
   type ReactNode,
   type RefObject,
+  useCallback,
   useContext,
-  useEffect,
   useRef,
   useState,
 } from "react";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
-import { useSearchStore } from "#lib/providers/SearchStoreProvider.jsx";
-import type { TroublemakerInfo } from "#lib/types/response.js";
+import useInfiniteSearch from "#lib/hooks/useInfiniteSearch.js";
+import type { InfinitePostsInfo } from "#lib/types/response.js";
 import type { SearchState } from "#lib/types/state.js";
 
-const DEBOUNCE_INTERVAL = 200;
-
-const SearchListContext = createContext<{
+interface SearchListValue {
   activeItemIdx: number;
   searchListRef: RefObject<HTMLUListElement | HTMLOListElement>;
-  troublemakersStatus: SearchState;
+  troublemakersState: SearchState;
+  setTroublemakersSize: (
+    size: number | ((_size: number) => number)
+  ) => Promise<InfinitePostsInfo[] | undefined>;
+  othersState: SearchState;
+  setOthersSize: (
+    size: number | ((_size: number) => number)
+  ) => Promise<InfinitePostsInfo[] | undefined>;
   handleInputKeyDown: KeyboardEventHandler<HTMLDivElement>;
-} | null>(null);
+}
+
+const SearchListContext = createContext<SearchListValue | null>(null);
 
 interface SearchListProviderProps {
   children: ReactNode;
@@ -31,15 +37,16 @@ interface SearchListProviderProps {
 
 export const SearchListProvider = ({ children }: SearchListProviderProps) => {
   const searchListRef = useRef<HTMLUListElement | HTMLOListElement>(null);
-
-  const [troublemakersStatus, setTroublemakersStatus] = useState<SearchState>({
-    status: "LOADING",
-    troublemakers: [],
-    otherPlatformTroublemakers: [],
-  });
   const [activeItemIdx, setActiveItemIdx] = useState(0);
-  const query = useSearchStore((state) => state.query);
-  const platform = usePlatformStore((state) => state.platform);
+
+  const handleQueryKeyChange = useCallback(() => setActiveItemIdx(-1), []);
+  const { state: troublemakersState, setSize: setTroublemakersSize } =
+    useInfiniteSearch({
+      onChange: handleQueryKeyChange,
+    });
+  const { state: othersState, setSize: setOthersSize } = useInfiniteSearch({
+    onChange: handleQueryKeyChange,
+  });
 
   const handleInputKeyDown: KeyboardEventHandler<HTMLDivElement> = (e) => {
     if (!searchListRef.current) return;
@@ -56,41 +63,13 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
     }
   };
 
-  useEffect(() => {
-    const timeoutId = setTimeout(async () => {
-      try {
-        setTroublemakersStatus(({ status, ...rest }) => ({
-          status: "LOADING",
-          ...rest,
-        }));
-        const response = await fetch(`/api/v1/posts?nickname=${query}`);
-        const posts = (await response.json()) as TroublemakerInfo[];
-        setTroublemakersStatus({
-          status: "SUCCESS",
-          troublemakers: posts.filter((post) => post.platform === platform),
-          otherPlatformTroublemakers: posts.filter(
-            (post) => post.platform !== platform
-          ),
-        });
-      } catch (err) {
-        setTroublemakersStatus(({ status, ...rest }) => ({
-          status: "ERROR",
-          ...rest,
-        }));
-      }
-
-      setActiveItemIdx(-1);
-    }, DEBOUNCE_INTERVAL);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [platform, query]);
-
-  const value = {
+  const value: SearchListValue = {
     activeItemIdx,
     searchListRef,
-    troublemakersStatus,
+    troublemakersState,
+    setTroublemakersSize,
+    othersState,
+    setOthersSize,
     handleInputKeyDown,
   };
 

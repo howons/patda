@@ -11,3 +11,8 @@ export type TroublemakerInfo =
   ReturnType<typeof getPostsByNicknamePlatform> extends Promise<(infer T)[]>
     ? T
     : never;
+
+export type InfinitePostsInfo = {
+  data: TroublemakerInfo[];
+  nextCursor: number;
+};

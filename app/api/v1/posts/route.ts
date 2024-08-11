@@ -8,9 +8,9 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const nickname = searchParams.get("nickname");
   const platform = searchParams.get("platform");
-  const cursor = Number(searchParams.get("cursor"));
-  const limit = Number(searchParams.get("limit"));
-  const isExclude = searchParams.get("isExclude");
+  const cursorParam = searchParams.get("cursor");
+  const limitParam = searchParams.get("limit");
+  const isExclude = searchParams.get("exclude");
 
   if (!nickname) {
     return NextResponse.json(
@@ -24,12 +24,15 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
+
+  const cursor = cursorParam ? Number(cursorParam) : Number.MAX_SAFE_INTEGER;
   if (Number.isNaN(cursor)) {
     return NextResponse.json(
       { error: "cursor is incorrect." },
       { status: 400 }
     );
   }
+  const limit = limitParam ? Number(limitParam) : 10;
   if (Number.isNaN(limit)) {
     return NextResponse.json({ error: "limit is incorrect." }, { status: 400 });
   }
@@ -43,7 +46,10 @@ export async function GET(request: NextRequest) {
       isExclude: !(isExclude === null || isExclude === "false"),
     });
 
-    return NextResponse.json(posts);
+    return NextResponse.json({
+      data: posts,
+      nextCursor: posts[posts.length - 1].id,
+    });
   } catch (err) {
     return NextResponse.json(
       { error: "Database error occurred" },
