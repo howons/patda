@@ -8,7 +8,7 @@ export default async function PostDetailPage({
 }: {
   params: { id: string };
 }) {
-  const id = params.id;
+  const id = Number(params.id);
   return (
     <>
       <TitleBar postId={id} />

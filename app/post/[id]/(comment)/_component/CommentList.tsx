@@ -6,7 +6,7 @@ import { getComments } from "#lib/database/comments.js";
 import Dot from "#ui/Dot/Dot.jsx";
 
 interface CommentListProps extends ComponentProps<"section"> {
-  postId: string;
+  postId: number;
 }
 
 export default async function CommentList({

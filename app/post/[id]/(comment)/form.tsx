@@ -22,7 +22,7 @@ import {
 
 interface CommentFormProps {
   session: Session | null;
-  postId: string;
+  postId: number;
 }
 
 export default function CommentForm({ session, postId }: CommentFormProps) {

@@ -41,7 +41,7 @@ export interface Database {
     expires: Date;
   };
   Post: {
-    id: GeneratedAlways<string>;
+    id: GeneratedAlways<number>;
     userId: string;
     platform: Platform;
     targetNickname: string;
@@ -57,7 +57,7 @@ export interface Database {
   Comment: {
     id: GeneratedAlways<string>;
     userId: string;
-    postId: string;
+    postId: number;
     images: string[] | null;
     content: string;
     status: PostCommentStatus;

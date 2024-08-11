@@ -8,7 +8,7 @@ import { deletePost, getPost } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
 
 export async function deletePostAction(
-  id: string,
+  id: number,
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {

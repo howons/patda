@@ -95,13 +95,6 @@ export async function create() {
     .execute();
 
   await db.schema
-    .createIndex("Post_userId_index")
-    .ifNotExists()
-    .on("Post")
-    .column("userId")
-    .execute();
-
-  await db.schema
     .createTable("Comment")
     .ifNotExists()
     .addColumn("id", "uuid", (col) =>
@@ -122,13 +115,6 @@ export async function create() {
     .addColumn("updatedAt", "timestamptz", (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
-    .execute();
-
-  await db.schema
-    .createIndex("Comment_userId_index")
-    .ifNotExists()
-    .on("Comment")
-    .column("userId")
     .execute();
 
   await db.schema

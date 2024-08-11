@@ -34,7 +34,7 @@ const formSchema = z
 export type PostUpdateFormValues = z.infer<typeof formSchema>;
 
 export async function updatePostAction(
-  id: string,
+  id: number,
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {

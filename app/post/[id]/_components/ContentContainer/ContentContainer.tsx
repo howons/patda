@@ -7,7 +7,7 @@ import Dot from "#ui/Dot/Dot.jsx";
 import CommentLine from "#ui/SIdeLine/CommentLine.jsx";
 
 interface ContentContainerProps {
-  postId: string;
+  postId: number;
 }
 
 export default async function ContentContainer({
