@@ -1,21 +1,16 @@
 "use client";
 
-import type { ComponentProps } from "react";
-
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import type { SearchState } from "#lib/types/state.js";
 import Button from "#ui/Button/Button.jsx";
 
-interface MoreButtonProps extends ComponentProps<"button"> {
+interface MoreButtonProps {
   status: SearchState["status"];
+  onClick: () => void;
 }
 
-export default function MoreButton({
-  status,
-  className,
-  ...props
-}: MoreButtonProps) {
+export default function MoreButton({ status, onClick }: MoreButtonProps) {
   const platform = usePlatformStore((state) => state.platform);
 
   const loading = status === "LOADING_MORE";
@@ -28,7 +23,7 @@ export default function MoreButton({
       theme="sub"
       loading={loading}
       className={`mt-3 ${disabled ? "hidden" : ""}`}
-      {...props}>
+      onClick={onClick}>
       더보기
     </Button>
   );
