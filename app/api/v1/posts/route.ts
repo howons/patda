@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { PLATFORM_ID } from "#lib/constants/platform.js";
+import { PLATFORM_SET } from "#lib/constants/platform.js";
 import { getPostsByNicknamePlatform } from "#lib/database/posts";
 import type { Platform } from "#lib/types/property.js";
 
@@ -12,20 +12,14 @@ export async function GET(request: NextRequest) {
   const limitParam = searchParams.get("limit");
   const isExclude = searchParams.get("exclude");
 
-  if (!nickname) {
-    return NextResponse.json(
-      { error: "nickname is required." },
-      { status: 400 }
-    );
-  }
-  if (!platform || !(platform in PLATFORM_ID)) {
+  if (!platform || !PLATFORM_SET.has(platform)) {
     return NextResponse.json(
       { error: "platform is incorrect." },
       { status: 400 }
     );
   }
 
-  const cursor = cursorParam ? Number(cursorParam) : Number.MAX_SAFE_INTEGER;
+  const cursor = cursorParam ? Number(cursorParam) : 999999;
   if (Number.isNaN(cursor)) {
     return NextResponse.json(
       { error: "cursor is incorrect." },
@@ -39,7 +33,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const posts = await getPostsByNicknamePlatform({
-      nickname,
+      nickname: nickname ?? "",
       platform: platform as Platform,
       cursor,
       limit,
@@ -48,9 +42,11 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       data: posts,
-      nextCursor: posts[posts.length - 1].id,
+      nextCursor: posts.at(-1)?.id ?? 0,
     });
   } catch (err) {
+    console.error(err);
+
     return NextResponse.json(
       { error: "Database error occurred" },
       { status: 500 }

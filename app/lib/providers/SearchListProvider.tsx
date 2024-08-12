@@ -46,6 +46,7 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
     });
   const { state: othersState, setSize: setOthersSize } = useInfiniteSearch({
     onChange: handleQueryKeyChange,
+    isExclude: true,
   });
 
   const handleInputKeyDown: KeyboardEventHandler<HTMLDivElement> = (e) => {

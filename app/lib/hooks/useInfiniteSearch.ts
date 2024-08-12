@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import type { Fetcher } from "swr";
 import type { SWRInfiniteKeyLoader } from "swr/infinite";
@@ -31,28 +33,22 @@ const getKey: (
     return `/api/v1/posts?${searchQuery}&cursor=${previousPageData.nextCursor}&limit=${LIMIT}`;
   };
 
-const fetcher: Fetcher<InfinitePostsInfo, string> = (url) =>
-  fetch(url).then((res) => res.json());
+const fetcher: Fetcher<InfinitePostsInfo, string> = async (url) => {
+  const res = await fetch(url);
 
-const getInfiniteStatus = (
-  isLoading: boolean,
-  size: number,
-  error: any,
-  infiniteData?: InfinitePostsInfo[]
-): SearchState["status"] => {
-  const isLoadingMore =
-    isLoading ||
-    (size > 0 && infiniteData && typeof infiniteData[size - 1] === "undefined");
-  const isEmpty = infiniteData?.[0].data.length === 0;
-  const isReachingEnd =
-    isEmpty ||
-    (infiniteData && infiniteData[infiniteData.length - 1].data.length < LIMIT);
+  if (!res.ok) {
+    const cause = {
+      info: await res.json(),
+      status: res.status,
+    };
+    const error = new Error("An error occurred while fetching the data.", {
+      cause,
+    });
 
-  if (isLoading) return "LOADING";
-  if (isLoadingMore) return "LOADING_MORE";
-  if (isReachingEnd) return "END";
-  if (error) return "ERROR";
-  return "READY";
+    throw error;
+  }
+
+  return res.json();
 };
 
 interface UseInfiniteSearchProps {
@@ -67,13 +63,16 @@ export default function useInfiniteSearch({
   const query = useSearchStore((state) => state.query);
   const platform = usePlatformStore((state) => state.platform);
 
-  const [platformKey, setPlatformKey] = useState<ReturnType<typeof getKey>>(
-    getKey("", platform, isExclude)
-  );
-  const { data, isLoading, error, size, setSize } = useSWRInfinite(
-    platformKey,
-    fetcher
-  );
+  const [keyParams, setKeyParams] = useState<Parameters<typeof getKey>>([
+    "",
+    platform,
+    isExclude,
+  ]);
+  const { data, isLoading, error, size, setSize } = useSWRInfinite<
+    InfinitePostsInfo,
+    Error
+  >(getKey(...keyParams), fetcher);
+  console.log(data, keyParams, isLoading, error?.cause);
 
   const state: SearchState = {
     status: getInfiniteStatus(isLoading, size, error, data),
@@ -84,7 +83,7 @@ export default function useInfiniteSearch({
 
   useEffect(() => {
     const timeoutId = setTimeout(async () => {
-      setPlatformKey(getKey(query, platform));
+      setKeyParams([query, platform, isExclude]);
 
       onChange?.();
     }, DEBOUNCE_INTERVAL);
@@ -92,10 +91,31 @@ export default function useInfiniteSearch({
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [query, platform, onChange]);
+  }, [query, platform, onChange, isExclude]);
 
   return {
     state,
     setSize,
   };
+}
+
+function getInfiniteStatus(
+  isLoading: boolean,
+  size: number,
+  error: any,
+  infiniteData?: InfinitePostsInfo[]
+): SearchState["status"] {
+  if (error) return "ERROR";
+
+  const isLoadingMore =
+    size > 0 && infiniteData && typeof infiniteData[size - 1] === "undefined";
+  const isEmpty = infiniteData?.[0]?.data?.length === 0;
+  const isReachingEnd =
+    isEmpty ||
+    (infiniteData && infiniteData[infiniteData.length - 1].data.length < LIMIT);
+
+  if (isLoading) return "LOADING";
+  if (isLoadingMore) return "LOADING_MORE";
+  if (isReachingEnd) return "END";
+  return "READY";
 }
