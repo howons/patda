@@ -10,6 +10,7 @@ import type { SearchState } from "#lib/types/state.js";
 import Divider from "#ui/Divider/Divider.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
 import Loading from "#ui/SearchList/Loading.jsx";
+import MoreButton from "#ui/SearchList/MoreButton.jsx";
 import NoResults from "#ui/SearchList/NoResults.jsx";
 import SearchListItem from "#ui/SearchList/SearchListItem.jsx";
 
@@ -21,9 +22,8 @@ export default function SearchList({ className, ...props }: SearchListProps) {
     activeItemIdx,
     searchListRef,
     troublemakersState,
-    setTroublemakersSize,
     othersState,
-    setOthersSize,
+    handleMoreClick,
   } = useSearchListContext();
 
   const itemFactory = convertItems();
@@ -38,9 +38,14 @@ export default function SearchList({ className, ...props }: SearchListProps) {
       {...props}>
       <Divider direction="horizon" />
       {Troublemakers}
+      <MoreButton
+        status={troublemakersState.status}
+        onClick={handleMoreClick()}
+      />
       <Dot color={PLATFORM_COLOR[platform]} className="mx-auto my-8" />
       <Divider direction="horizon" />
       {Others}
+      <MoreButton status={othersState.status} onClick={handleMoreClick(true)} />
     </ul>
   );
 }
@@ -91,10 +96,10 @@ function convertItems() {
 
       if (status === "LOADING_MORE") {
         Items.push(
-          <>
+          <Fragment key="loadingMore">
             <Loading single={single} />
             <Divider direction="horizon" />
-          </>
+          </Fragment>
         );
       }
     }

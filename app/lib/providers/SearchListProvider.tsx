@@ -12,21 +12,15 @@ import {
 } from "react";
 
 import useInfiniteSearch from "#lib/hooks/useInfiniteSearch.js";
-import type { InfinitePostsInfo } from "#lib/types/response.js";
 import type { SearchState } from "#lib/types/state.js";
 
 interface SearchListValue {
   activeItemIdx: number;
   searchListRef: RefObject<HTMLUListElement | HTMLOListElement>;
   troublemakersState: SearchState;
-  setTroublemakersSize: (
-    size: number | ((_size: number) => number)
-  ) => Promise<InfinitePostsInfo[] | undefined>;
   othersState: SearchState;
-  setOthersSize: (
-    size: number | ((_size: number) => number)
-  ) => Promise<InfinitePostsInfo[] | undefined>;
   handleInputKeyDown: KeyboardEventHandler<HTMLDivElement>;
+  handleMoreClick: (isExclude?: boolean) => () => void;
 }
 
 const SearchListContext = createContext<SearchListValue | null>(null);
@@ -40,11 +34,18 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
   const [activeItemIdx, setActiveItemIdx] = useState(0);
 
   const handleQueryKeyChange = useCallback(() => setActiveItemIdx(-1), []);
-  const { state: troublemakersState, setSize: setTroublemakersSize } =
-    useInfiniteSearch({
-      onChange: handleQueryKeyChange,
-    });
-  const { state: othersState, setSize: setOthersSize } = useInfiniteSearch({
+  const {
+    state: troublemakersState,
+    size: troublemakersSize,
+    setSize: setTroublemakersSize,
+  } = useInfiniteSearch({
+    onChange: handleQueryKeyChange,
+  });
+  const {
+    state: othersState,
+    size: othersSize,
+    setSize: setOthersSize,
+  } = useInfiniteSearch({
     onChange: handleQueryKeyChange,
     isExclude: true,
   });
@@ -64,14 +65,21 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
     }
   };
 
+  const handleMoreClick = (isExclude?: boolean) => () => {
+    if (isExclude) {
+      setOthersSize(othersSize + 1);
+    } else {
+      setTroublemakersSize(troublemakersSize + 1);
+    }
+  };
+
   const value: SearchListValue = {
     activeItemIdx,
     searchListRef,
     troublemakersState,
-    setTroublemakersSize,
     othersState,
-    setOthersSize,
     handleInputKeyDown,
+    handleMoreClick,
   };
 
   return (

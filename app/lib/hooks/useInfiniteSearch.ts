@@ -72,7 +72,6 @@ export default function useInfiniteSearch({
     InfinitePostsInfo,
     Error
   >(getKey(...keyParams), fetcher);
-  console.log(data, keyParams, isLoading, error?.cause);
 
   const state: SearchState = {
     status: getInfiniteStatus(isLoading, size, error, data),
@@ -95,6 +94,7 @@ export default function useInfiniteSearch({
 
   return {
     state,
+    size,
     setSize,
   };
 }
