@@ -23,7 +23,7 @@ const formSchema = z.object({
 export type CommentFormValues = z.infer<typeof formSchema>;
 
 export async function createCommentAction(
-  postId: string,
+  postId: number,
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {

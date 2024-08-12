@@ -2,7 +2,7 @@ export type ActionState =
   | {
       status: "SUCCESS";
       message: string;
-      resultId?: string;
+      resultId?: number | string;
     }
   | {
       status: "ERROR_VALIDATE";

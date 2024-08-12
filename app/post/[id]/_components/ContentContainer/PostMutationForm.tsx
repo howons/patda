@@ -5,7 +5,7 @@ import useDeleteAction from "#lib/hooks/useDeleteAction.js";
 import MutationButtonGroup from "#ui/MutationButtonGroup/MutationButtonGroup.jsx";
 
 interface PostMutationFormProps {
-  postId: string;
+  postId: number;
 }
 
 export default function PostMutationForm({ postId }: PostMutationFormProps) {

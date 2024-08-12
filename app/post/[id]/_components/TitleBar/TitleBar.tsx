@@ -9,7 +9,7 @@ import CategoryItem from "#ui/SearchBar/CategoryItem.jsx";
 import TagItem from "#ui/TagItem/TagItem.jsx";
 
 interface TitlebarProps {
-  postId: string;
+  postId: number;
 }
 
 export default async function TitleBar({ postId }: TitlebarProps) {

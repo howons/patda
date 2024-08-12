@@ -3,7 +3,7 @@ import CommentForm from "#app/post/[id]/(comment)/form.jsx";
 import { auth } from "#auth";
 
 interface CommentContainerProps {
-  postId: string;
+  postId: number;
 }
 
 export default async function CommentContainer({

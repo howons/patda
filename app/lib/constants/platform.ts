@@ -1,5 +1,7 @@
 import type { FormColor, Platform } from "#lib/types/property.js";
 
+export const PLATFORM_SET = new Set(["daangn", "bunjang", "joongna", "etc"]);
+
 export const PLATFORM_ID: { [key: number]: Platform } = [
   "daangn",
   "bunjang",

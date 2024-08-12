@@ -5,7 +5,7 @@ import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import CommentLine from "#ui/SIdeLine/CommentLine.jsx";
 
 interface AuthorContainerProps {
-  postId: string;
+  postId: number;
 }
 
 export default async function AuthorContainer({

@@ -35,8 +35,8 @@ type Story = StoryObj<typeof meta>;
 export const CreationForm: Story = {
   args: {},
   beforeEach: async () => {
-    const mockResult = new Promise<{ id: string }>((resolve) => {
-      resolve({ id: "postId" });
+    const mockResult = new Promise<{ id: number }>((resolve) => {
+      resolve({ id: 1 });
     });
     createPost.mockReturnValue(mockResult);
   },
@@ -108,7 +108,7 @@ export const CreationForm: Story = {
 
 export const UpdateForm: Story = {
   args: {
-    id: "1",
+    id: 1,
     content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
     etcPlatformName: null,
     images: [],
@@ -126,7 +126,7 @@ export const UpdateForm: Story = {
 
     const mockGetResult = new Promise<PostInfo>((resolve) => {
       resolve({
-        id: "1",
+        id: 1,
         userId: "1",
         content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
         etcPlatformName: null,

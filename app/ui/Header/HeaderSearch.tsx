@@ -20,6 +20,7 @@ interface HeaderSearchProps extends PopoverProps {}
 function HeaderSearch({ className = "", ...props }: HeaderSearchProps) {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  if (isHome) return null;
 
   const handlePopoverButtonClick =
     (open: boolean) => (e: MouseEvent<HTMLDivElement>) => {
@@ -39,7 +40,7 @@ function HeaderSearch({ className = "", ...props }: HeaderSearchProps) {
     "h-[70vh] pb-16 rounded-b-2xl max-sm:-translate-x-12 max-sm:w-full-plus-6rem";
 
   return (
-    <Popover className={`${isHome ? "hidden" : ""} ${className}`} {...props}>
+    <Popover className={`${className}`} {...props}>
       {({ open }) => (
         <SearchListProvider>
           <PopoverOverlay className="fixed inset-0 bg-black/15" />

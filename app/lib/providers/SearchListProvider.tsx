@@ -5,25 +5,26 @@ import {
   type KeyboardEventHandler,
   type ReactNode,
   type RefObject,
+  useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
-import { useSearchStore } from "#lib/providers/SearchStoreProvider.jsx";
-import type { TroublemakerInfo } from "#lib/types/response.js";
+import useInfiniteSearch from "#lib/hooks/useInfiniteSearch.js";
 import type { SearchState } from "#lib/types/state.js";
 
-const DEBOUNCE_INTERVAL = 200;
-
-const SearchListContext = createContext<{
+interface SearchListValue {
   activeItemIdx: number;
   searchListRef: RefObject<HTMLUListElement | HTMLOListElement>;
-  troublemakersStatus: SearchState;
+  troublemakersState: SearchState;
+  othersState: SearchState;
   handleInputKeyDown: KeyboardEventHandler<HTMLDivElement>;
-} | null>(null);
+  handleMoreClick: (isExclude?: boolean) => () => void;
+}
+
+const SearchListContext = createContext<SearchListValue | null>(null);
 
 interface SearchListProviderProps {
   children: ReactNode;
@@ -31,15 +32,32 @@ interface SearchListProviderProps {
 
 export const SearchListProvider = ({ children }: SearchListProviderProps) => {
   const searchListRef = useRef<HTMLUListElement | HTMLOListElement>(null);
-
-  const [troublemakersStatus, setTroublemakersStatus] = useState<SearchState>({
-    status: "LOADING",
-    troublemakers: [],
-    otherPlatformTroublemakers: [],
-  });
   const [activeItemIdx, setActiveItemIdx] = useState(0);
-  const query = useSearchStore((state) => state.query);
-  const platform = usePlatformStore((state) => state.platform);
+
+  useEffect(() => {
+    if (!searchListRef.current) return;
+
+    scrollToActiveItem(
+      searchListRef.current.querySelectorAll("li")[activeItemIdx]
+    );
+  }, [activeItemIdx]);
+
+  const handleQueryKeyChange = useCallback(() => setActiveItemIdx(-1), []);
+  const {
+    state: troublemakersState,
+    size: troublemakersSize,
+    setSize: setTroublemakersSize,
+  } = useInfiniteSearch({
+    onChange: handleQueryKeyChange,
+  });
+  const {
+    state: othersState,
+    size: othersSize,
+    setSize: setOthersSize,
+  } = useInfiniteSearch({
+    onChange: handleQueryKeyChange,
+    isExclude: true,
+  });
 
   const handleInputKeyDown: KeyboardEventHandler<HTMLDivElement> = (e) => {
     if (!searchListRef.current) return;
@@ -56,42 +74,21 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
     }
   };
 
-  useEffect(() => {
-    const timeoutId = setTimeout(async () => {
-      try {
-        setTroublemakersStatus(({ status, ...rest }) => ({
-          status: "LOADING",
-          ...rest,
-        }));
-        const response = await fetch(`/api/v1/posts?nickname=${query}`);
-        const posts = (await response.json()) as TroublemakerInfo[];
-        setTroublemakersStatus({
-          status: "SUCCESS",
-          troublemakers: posts.filter((post) => post.platform === platform),
-          otherPlatformTroublemakers: posts.filter(
-            (post) => post.platform !== platform
-          ),
-        });
-      } catch (err) {
-        setTroublemakersStatus(({ status, ...rest }) => ({
-          status: "ERROR",
-          ...rest,
-        }));
-      }
+  const handleMoreClick = (isExclude?: boolean) => () => {
+    if (isExclude) {
+      setOthersSize(othersSize + 1);
+    } else {
+      setTroublemakersSize(troublemakersSize + 1);
+    }
+  };
 
-      setActiveItemIdx(-1);
-    }, DEBOUNCE_INTERVAL);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [platform, query]);
-
-  const value = {
+  const value: SearchListValue = {
     activeItemIdx,
     searchListRef,
-    troublemakersStatus,
+    troublemakersState,
+    othersState,
     handleInputKeyDown,
+    handleMoreClick,
   };
 
   return (
@@ -112,3 +109,20 @@ export const useSearchListContext = () => {
 
   return searchListContext;
 };
+
+const HEADER_HEIGHT = 56;
+
+function scrollToActiveItem(item: HTMLLIElement) {
+  if (typeof window === "undefined" || !item) return;
+
+  const { top, bottom } = item.getBoundingClientRect();
+  if (top < HEADER_HEIGHT) {
+    window.scrollBy({ top: top - HEADER_HEIGHT });
+  }
+
+  const windowHeight =
+    window.innerHeight || document.documentElement.clientHeight;
+  if (bottom > windowHeight) {
+    window.scrollBy({ top: bottom - windowHeight });
+  }
+}

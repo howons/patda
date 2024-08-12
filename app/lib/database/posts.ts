@@ -2,6 +2,7 @@ import { sql } from "kysely";
 import { cache } from "react";
 
 import { type Database, db } from "#lib/database/db.js";
+import type { Platform } from "#lib/types/property.js";
 
 export type NewPostData = Omit<
   Database["Post"],
@@ -21,7 +22,7 @@ export function createPost(newPostData: NewPostData) {
     .executeTakeFirstOrThrow();
 }
 
-export const getPost = cache((postId: string) =>
+export const getPost = cache((postId: number) =>
   db
     .selectFrom("Post")
     .leftJoin(
@@ -53,36 +54,55 @@ export const getPost = cache((postId: string) =>
     .executeTakeFirstOrThrow()
 );
 
-export const getPostsByNickname = cache((nickname: string) =>
-  db
-    .selectFrom("Post")
-    .leftJoin(
-      (eb) =>
-        eb
-          .selectFrom("Comment")
-          .select(["postId", sql<number>`count(*)`.as("commentCount")])
-          .groupBy("postId")
-          .as("c"),
-      (join) => join.onRef("c.postId", "=", "Post.id")
-    )
-    .select([
-      "id",
-      "platform",
-      "targetNickname",
-      "tag",
-      "status",
-      "createdAt",
-      "updatedAt",
-      "etcPlatformName",
-      "additionalInfo",
-      "commentCount",
-    ])
-    .where("Post.targetNickname", "like", `%${nickname}%`)
-    .orderBy("Post.createdAt desc")
-    .execute()
+interface GetPostsByNicknamePlatformProps {
+  nickname: string;
+  platform: Platform;
+  cursor: number;
+  limit: number;
+  isExclude?: boolean;
+}
+
+export const getPostsByNicknamePlatform = cache(
+  ({
+    nickname,
+    platform,
+    cursor,
+    limit,
+    isExclude,
+  }: GetPostsByNicknamePlatformProps) =>
+    db
+      .selectFrom("Post")
+      .leftJoin(
+        (eb) =>
+          eb
+            .selectFrom("Comment")
+            .select(["postId", sql<number>`count(*)`.as("commentCount")])
+            .where("postId", "<", cursor)
+            .groupBy("postId")
+            .as("c"),
+        (join) => join.onRef("c.postId", "=", "Post.id")
+      )
+      .select([
+        "id",
+        "platform",
+        "targetNickname",
+        "tag",
+        "status",
+        "createdAt",
+        "updatedAt",
+        "etcPlatformName",
+        "additionalInfo",
+        "commentCount",
+      ])
+      .where("Post.id", "<", cursor)
+      .where("Post.platform", isExclude ? "!=" : "=", platform)
+      .where("Post.targetNickname", "like", `${nickname}%`)
+      .orderBy("Post.id desc")
+      .limit(limit)
+      .execute()
 );
 
-export function updatePost(id: string, updatePostData: UpdatePostData) {
+export function updatePost(id: number, updatePostData: UpdatePostData) {
   return db
     .updateTable("Post")
     .set(updatePostData)
@@ -90,7 +110,7 @@ export function updatePost(id: string, updatePostData: UpdatePostData) {
     .executeTakeFirstOrThrow();
 }
 
-export function deletePost(id: string) {
+export function deletePost(id: number) {
   return db
     .deleteFrom("Post")
     .where("Post.id", "=", id)

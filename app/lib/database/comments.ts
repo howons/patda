@@ -19,7 +19,7 @@ export function createComment(newCommentData: NewCommentData) {
     .executeTakeFirstOrThrow();
 }
 
-export const getComments = cache((postId: string) =>
+export const getComments = cache((postId: number) =>
   db
     .selectFrom("Comment")
     .innerJoin("User", "User.id", "Comment.userId")
