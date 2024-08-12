@@ -7,6 +7,7 @@ import {
   type RefObject,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -32,6 +33,14 @@ interface SearchListProviderProps {
 export const SearchListProvider = ({ children }: SearchListProviderProps) => {
   const searchListRef = useRef<HTMLUListElement | HTMLOListElement>(null);
   const [activeItemIdx, setActiveItemIdx] = useState(0);
+
+  useEffect(() => {
+    if (!searchListRef.current) return;
+
+    scrollToActiveItem(
+      searchListRef.current.querySelectorAll("li")[activeItemIdx]
+    );
+  }, [activeItemIdx]);
 
   const handleQueryKeyChange = useCallback(() => setActiveItemIdx(-1), []);
   const {
@@ -100,3 +109,20 @@ export const useSearchListContext = () => {
 
   return searchListContext;
 };
+
+const HEADER_HEIGHT = 56;
+
+function scrollToActiveItem(item: HTMLLIElement) {
+  if (typeof window === "undefined" || !item) return;
+
+  const { top, bottom } = item.getBoundingClientRect();
+  if (top < HEADER_HEIGHT) {
+    window.scrollBy({ top: top - HEADER_HEIGHT });
+  }
+
+  const windowHeight =
+    window.innerHeight || document.documentElement.clientHeight;
+  if (bottom > windowHeight) {
+    window.scrollBy({ top: bottom - windowHeight });
+  }
+}
