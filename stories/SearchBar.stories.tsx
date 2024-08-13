@@ -1,18 +1,31 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
 
-import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
-import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider.jsx";
+import Providers from "#lib/providers/Providers.jsx";
+import { SearchListProvider } from "#lib/providers/SearchListProvider.jsx";
 import SearchBar from "#ui/SearchBar/SearchBar.jsx";
 
 const meta = {
   title: "ui/SearchBar",
   component: SearchBar,
   parameters: {
-    layout: "centered",
+    layout: "padded",
   },
   tags: ["autodocs"],
-  decorators: [(Story) => <SearchStoreProvider>{Story()}</SearchStoreProvider>],
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "48rem",
+          margin: "10% auto 10% auto",
+          display: "flex",
+          justifyContent: "center",
+        }}>
+        {Story()}
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof SearchBar>;
 
 export default meta;
@@ -20,7 +33,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Daangn: Story = {
   decorators: [
-    (Story) => <PlatformStoreProvider>{Story()}</PlatformStoreProvider>,
+    (Story) => (
+      <Providers>
+        <SearchListProvider>{Story()}</SearchListProvider>
+      </Providers>
+    ),
   ],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -66,9 +83,9 @@ export const Daangn: Story = {
 export const Bunjang: Story = {
   decorators: [
     (Story) => (
-      <PlatformStoreProvider defaultState="bunjang">
-        {Story()}
-      </PlatformStoreProvider>
+      <Providers platformDefaultState={{ platform: "bunjang" }}>
+        <SearchListProvider>{Story()}</SearchListProvider>
+      </Providers>
     ),
   ],
 };
@@ -76,9 +93,9 @@ export const Bunjang: Story = {
 export const Joongna: Story = {
   decorators: [
     (Story) => (
-      <PlatformStoreProvider defaultState="joongna">
-        {Story()}
-      </PlatformStoreProvider>
+      <Providers platformDefaultState={{ platform: "joongna" }}>
+        <SearchListProvider>{Story()}</SearchListProvider>
+      </Providers>
     ),
   ],
 };
@@ -86,9 +103,9 @@ export const Joongna: Story = {
 export const Etc: Story = {
   decorators: [
     (Story) => (
-      <PlatformStoreProvider defaultState="etc">
-        {Story()}
-      </PlatformStoreProvider>
+      <Providers platformDefaultState={{ platform: "etc" }}>
+        <SearchListProvider>{Story()}</SearchListProvider>
+      </Providers>
     ),
   ],
 };

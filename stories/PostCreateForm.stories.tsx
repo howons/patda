@@ -15,11 +15,22 @@ const meta = {
   title: "form/PostForm",
   component: PostForm,
   parameters: {
-    layout: "centered",
+    layout: "padded",
   },
   tags: ["autodocs"],
   decorators: [
-    (Story) => <PlatformStoreProvider>{Story()}</PlatformStoreProvider>,
+    (Story) => (
+      <PlatformStoreProvider>
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "48rem",
+            margin: "10% auto 10% auto",
+          }}>
+          {Story()}
+        </div>
+      </PlatformStoreProvider>
+    ),
   ],
   async beforeEach() {
     const mockAuth = new Promise<Session>((resolve) => {

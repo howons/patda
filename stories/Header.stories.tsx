@@ -3,9 +3,8 @@ import { expect, userEvent, waitFor, within } from "@storybook/test";
 import type { Session } from "next-auth";
 
 import { auth } from "#auth.mock.js";
-import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
-import { ProfileRefStoreProvider } from "#lib/providers/ProfileRefProvider.jsx";
-import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider.jsx";
+import Providers from "#lib/providers/Providers.jsx";
+import { SearchListProvider } from "#lib/providers/SearchListProvider.jsx";
 import Header from "#ui/Header/Header.jsx";
 
 const meta = {
@@ -22,11 +21,9 @@ const meta = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <PlatformStoreProvider>
-        <ProfileRefStoreProvider>
-          <SearchStoreProvider>{Story()}</SearchStoreProvider>
-        </ProfileRefStoreProvider>
-      </PlatformStoreProvider>
+      <Providers>
+        <SearchListProvider>{Story()}</SearchListProvider>
+      </Providers>
     ),
   ],
 } satisfies Meta<typeof Header>;
