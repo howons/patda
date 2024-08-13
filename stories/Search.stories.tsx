@@ -1,15 +1,51 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
+import { delay, http, HttpResponse } from "msw";
 
 import Providers from "#lib/providers/Providers.jsx";
-import { SearchListProvider } from "#lib/providers/SearchListProvider.jsx";
-import SearchBar from "#ui/SearchBar/SearchBar.jsx";
+import type {
+  InfinitePostsInfo,
+  TroublemakerInfo,
+} from "#lib/types/response.js";
+import Search from "#ui/Search/Search.jsx";
+
+let idx = 0;
+const itemList: TroublemakerInfo[] = Array.from(
+  { length: 145 },
+  (_, i) => 145 - i
+).map((id) => ({
+  id,
+  additionalInfo: "add",
+  commentCount: 7,
+  createdAt: new Date("2024-08-08T20:20:20"),
+  updatedAt: new Date("2024-08-08T20:20:20"),
+  platform: "daangn",
+  status: "normal",
+  tag: "abuse",
+  targetNickname: "target",
+  etcPlatformName: null,
+}));
 
 const meta = {
-  title: "ui/SearchBar",
-  component: SearchBar,
+  title: "ui/Search",
+  component: Search,
   parameters: {
     layout: "padded",
+    msw: {
+      handlers: [
+        http.get(`/api/v1/posts`, async () => {
+          await delay(800);
+          const data = itemList.slice(idx, idx + 10);
+          const info: InfinitePostsInfo = {
+            data,
+            nextCursor: data.at(-1)?.id ?? 0,
+          };
+
+          idx += 10;
+          return HttpResponse.json(info);
+        }),
+      ],
+    },
   },
   tags: ["autodocs"],
   decorators: [
@@ -19,26 +55,18 @@ const meta = {
           width: "100%",
           maxWidth: "48rem",
           margin: "10% auto 10% auto",
-          display: "flex",
-          justifyContent: "center",
         }}>
         {Story()}
       </div>
     ),
   ],
-} satisfies Meta<typeof SearchBar>;
+} satisfies Meta<typeof Search>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Daangn: Story = {
-  decorators: [
-    (Story) => (
-      <Providers>
-        <SearchListProvider>{Story()}</SearchListProvider>
-      </Providers>
-    ),
-  ],
+  decorators: [(Story) => <Providers>{Story()}</Providers>],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     const selector = canvas.getByRole("group");
@@ -84,7 +112,7 @@ export const Bunjang: Story = {
   decorators: [
     (Story) => (
       <Providers platformDefaultState={{ platform: "bunjang" }}>
-        <SearchListProvider>{Story()}</SearchListProvider>
+        {Story()}
       </Providers>
     ),
   ],
@@ -94,7 +122,7 @@ export const Joongna: Story = {
   decorators: [
     (Story) => (
       <Providers platformDefaultState={{ platform: "joongna" }}>
-        <SearchListProvider>{Story()}</SearchListProvider>
+        {Story()}
       </Providers>
     ),
   ],
@@ -104,7 +132,7 @@ export const Etc: Story = {
   decorators: [
     (Story) => (
       <Providers platformDefaultState={{ platform: "etc" }}>
-        <SearchListProvider>{Story()}</SearchListProvider>
+        {Story()}
       </Providers>
     ),
   ],
