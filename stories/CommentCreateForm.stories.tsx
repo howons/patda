@@ -12,12 +12,21 @@ const meta = {
   title: "form/CommentForm",
   component: CommentForm,
   parameters: {
-    layout: "centered",
+    layout: "padded",
   },
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <CommentStatusStoreProvider>{Story()}</CommentStatusStoreProvider>
+      <CommentStatusStoreProvider>
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "48rem",
+            margin: "10% auto 10% auto",
+          }}>
+          {Story()}
+        </div>
+      </CommentStatusStoreProvider>
     ),
   ],
   beforeEach() {

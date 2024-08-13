@@ -3,6 +3,9 @@ import "../app/globals.css";
 
 import { Nanum_Gothic } from "next/font/google";
 import React from "react";
+import { initialize, mswLoader } from "msw-storybook-addon";
+
+initialize();
 
 const nanumGoth = Nanum_Gothic({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -27,7 +30,9 @@ const preview: Preview = {
     ),
   ],
 
-  tags: ["autodocs", "autodocs"],
+  tags: ["autodocs"],
+
+  loaders: [mswLoader],
 };
 
 export default preview;

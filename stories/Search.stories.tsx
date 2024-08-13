@@ -1,27 +1,72 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
+import { delay, http, HttpResponse } from "msw";
 
-import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
-import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider.jsx";
-import SearchBar from "#ui/SearchBar/SearchBar.jsx";
+import Providers from "#lib/providers/Providers.jsx";
+import type {
+  InfinitePostsInfo,
+  TroublemakerInfo,
+} from "#lib/types/response.js";
+import Search from "#ui/Search/Search.jsx";
+
+let idx = 0;
+const itemList: TroublemakerInfo[] = Array.from(
+  { length: 145 },
+  (_, i) => 145 - i
+).map((id) => ({
+  id,
+  additionalInfo: "add",
+  commentCount: 7,
+  createdAt: new Date("2024-08-08T20:20:20"),
+  updatedAt: new Date("2024-08-08T20:20:20"),
+  platform: "daangn",
+  status: "normal",
+  tag: "abuse",
+  targetNickname: "target",
+  etcPlatformName: null,
+}));
 
 const meta = {
-  title: "ui/SearchBar",
-  component: SearchBar,
+  title: "ui/Search",
+  component: Search,
   parameters: {
-    layout: "centered",
+    layout: "padded",
+    msw: {
+      handlers: [
+        http.get(`/api/v1/posts`, async () => {
+          await delay(800);
+          const data = itemList.slice(idx, idx + 10);
+          const info: InfinitePostsInfo = {
+            data,
+            nextCursor: data.at(-1)?.id ?? 0,
+          };
+
+          idx += 10;
+          return HttpResponse.json(info);
+        }),
+      ],
+    },
   },
   tags: ["autodocs"],
-  decorators: [(Story) => <SearchStoreProvider>{Story()}</SearchStoreProvider>],
-} satisfies Meta<typeof SearchBar>;
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "48rem",
+          margin: "10% auto 10% auto",
+        }}>
+        {Story()}
+      </div>
+    ),
+  ],
+} satisfies Meta<typeof Search>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Daangn: Story = {
-  decorators: [
-    (Story) => <PlatformStoreProvider>{Story()}</PlatformStoreProvider>,
-  ],
+  decorators: [(Story) => <Providers>{Story()}</Providers>],
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     const selector = canvas.getByRole("group");
@@ -66,9 +111,9 @@ export const Daangn: Story = {
 export const Bunjang: Story = {
   decorators: [
     (Story) => (
-      <PlatformStoreProvider defaultState="bunjang">
+      <Providers platformDefaultState={{ platform: "bunjang" }}>
         {Story()}
-      </PlatformStoreProvider>
+      </Providers>
     ),
   ],
 };
@@ -76,9 +121,9 @@ export const Bunjang: Story = {
 export const Joongna: Story = {
   decorators: [
     (Story) => (
-      <PlatformStoreProvider defaultState="joongna">
+      <Providers platformDefaultState={{ platform: "joongna" }}>
         {Story()}
-      </PlatformStoreProvider>
+      </Providers>
     ),
   ],
 };
@@ -86,9 +131,9 @@ export const Joongna: Story = {
 export const Etc: Story = {
   decorators: [
     (Story) => (
-      <PlatformStoreProvider defaultState="etc">
+      <Providers platformDefaultState={{ platform: "etc" }}>
         {Story()}
-      </PlatformStoreProvider>
+      </Providers>
     ),
   ],
 };

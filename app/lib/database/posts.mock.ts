@@ -7,4 +7,8 @@ export type UpdatePostData = actual.UpdatePostData;
 
 export const createPost = fn(actual.createPost).mockName("createPost");
 export const getPost = fn(actual.getPost).mockName("getPost");
+export const getPostsByNicknamePlatform = fn(
+  actual.getPostsByNicknamePlatform
+).mockName("getPostsByNicknamePlatform");
 export const updatePost = fn(actual.updatePost).mockName("updatePost");
+export const deletePost = fn(actual.deletePost).mockName("deletePost");
