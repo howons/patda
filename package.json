@@ -53,6 +53,8 @@
     "eslint-plugin-tailwindcss": "^3.15.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "msw": "^2.3.5",
+    "msw-storybook-addon": "^2.0.3",
     "postcss": "^8",
     "prettier": "^3.2.5",
     "storybook": "^8.2.7",
@@ -101,6 +103,11 @@
       "./*",
       "./*.ts",
       "./*.tsx"
+    ]
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
     ]
   }
 }

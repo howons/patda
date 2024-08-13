@@ -1,11 +1,33 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, waitFor, within } from "@storybook/test";
+import { delay, http, HttpResponse } from "msw";
 import type { Session } from "next-auth";
 
 import { auth } from "#auth.mock.js";
 import Providers from "#lib/providers/Providers.jsx";
 import { SearchListProvider } from "#lib/providers/SearchListProvider.jsx";
+import type {
+  InfinitePostsInfo,
+  TroublemakerInfo,
+} from "#lib/types/response.js";
 import Header from "#ui/Header/Header.jsx";
+
+let idx = 0;
+const itemList: TroublemakerInfo[] = Array.from(
+  { length: 45 },
+  (_, i) => 45 - i
+).map((id) => ({
+  id,
+  additionalInfo: "add",
+  commentCount: 7,
+  createdAt: new Date("2024-08-08T20:20:20"),
+  updatedAt: new Date("2024-08-08T20:20:20"),
+  platform: "daangn",
+  status: "normal",
+  tag: "abuse",
+  targetNickname: "target",
+  etcPlatformName: null,
+}));
 
 const meta = {
   title: "ui/Header",
@@ -16,6 +38,21 @@ const meta = {
       navigation: {
         pathname: "/not-homepage",
       },
+    },
+    msw: {
+      handlers: [
+        http.get(`/api/v1/posts`, async () => {
+          await delay(800);
+          const data = itemList.slice(idx, idx + 10);
+          const info: InfinitePostsInfo = {
+            data,
+            nextCursor: data.at(-1)?.id ?? 0,
+          };
+
+          idx += 10;
+          return HttpResponse.json(info);
+        }),
+      ],
     },
   },
   tags: ["autodocs"],
