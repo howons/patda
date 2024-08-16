@@ -11,9 +11,14 @@ import {
   type FormValues,
 } from "#lib/actions/post/createPostAction.js";
 import { updatePostAction } from "#lib/actions/post/updatePostAction.js";
-import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
+import {
+  PLATFORM_COLOR,
+  PLATFORM_NAME,
+  PLATFORM_PLACEHOLDER,
+} from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import { type OnSuccess, useFormAction } from "#lib/hooks/useFormAction.js";
+import { useImageFormContext } from "#lib/providers/ImageFormProvider.jsx";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import type { Platform, TagId } from "#lib/types/property.js";
 import type { PostInfo } from "#lib/types/response.js";
@@ -31,6 +36,7 @@ import {
   Textarea,
 } from "#ui/formItems/index.jsx";
 import HelpCircle from "#ui/HelpCircle/HelpCircle.jsx";
+import UploadButton from "#ui/ImageForm/UploadButton.jsx";
 
 const platformOptions = Object.entries(PLATFORM_NAME).map(([id, name]) => ({
   name,
@@ -74,13 +80,6 @@ export default function PostForm({
 
   const color = PLATFORM_COLOR[platform];
 
-  const infoPlaceholder: { [key in Platform]: string } = {
-    daangn: "상대 동네 이름",
-    bunjang: "상대 본인인증 이름 (ex: 김*수)",
-    joongna: "네이버 아이디",
-    etc: "기타 추가 정보",
-  };
-
   const onSuccess: OnSuccess = useCallback(
     (state) => {
       const postId = isUpdate ? id : state.resultId;
@@ -114,10 +113,12 @@ export default function PostForm({
     onSuccess,
     useFormProps,
   });
-  const { fields, append, remove } = useFieldArray<FormValues>({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "images",
   });
+
+  const { handleUploadClick } = useImageFormContext();
 
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
@@ -193,7 +194,7 @@ export default function PostForm({
               </Label>
               <Input
                 type="text"
-                placeholder={infoPlaceholder[platform]}
+                placeholder={PLATFORM_PLACEHOLDER[platform]}
                 {...register("additionalInfo")}
               />
               <ErrorMessage
@@ -221,6 +222,11 @@ export default function PostForm({
         </Field>
         <Field>
           <Label>스크린샷</Label>
+          <UploadButton
+            imageCount={fields.length}
+            color={PLATFORM_COLOR[platform]}
+            onClick={handleUploadClick}
+          />
           <ul>
             {fields.map((item, index) => (
               <li key={item.id}>

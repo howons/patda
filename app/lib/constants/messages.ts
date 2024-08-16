@@ -13,4 +13,10 @@ export const ERROR = {
     NO_RESULT_DB: "댓글 생성 오류. 잠시 후 다시 시도해주세요.",
     NO_MATCH_AUTH: "사용자가 생성자와 일치하지 않습니다.",
   },
+  IMAGE: {
+    NO_AUTH: "로그인 후 시도해주세요.",
+    NO_RESULT_DB: "이미지 업로드 오류. 잠시 후 다시 시도해주세요.",
+    NO_MATCH_AUTH: "게시글/댓글 생성자와 일치하지 않습니다.",
+    NO_IMAGES: "이미지 파일을 업로드 해주세요.",
+  },
 };
