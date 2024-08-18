@@ -5,7 +5,9 @@ import {
   createContext,
   type ReactNode,
   type RefObject,
+  useCallback,
   useContext,
+  useMemo,
   useRef,
 } from "react";
 import { useFormState } from "react-dom";
@@ -33,30 +35,36 @@ export const ImageFormProvider = ({ children }: ImageFormProviderProps) => {
     status: null,
   });
 
-  const handleUploadClick = () => {
+  const handleUploadClick = useCallback(() => {
     inputRef.current?.click();
-  };
+  }, []);
 
-  const handleFileChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const files = e.target.files;
-    if (!files) return;
+  const handleFileChange: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      const files = e.target.files;
+      if (!files) return;
 
-    const formData = new FormData();
-    Array.from(files)
-      .slice(0, 10)
-      .forEach((file, idx) => {
-        formData.append(`image[${idx}]`, file);
-      });
+      const formData = new FormData();
+      Array.from(files)
+        .slice(0, 10)
+        .forEach((file, idx) => {
+          formData.append(`image[${idx}]`, file);
+        });
 
-    imageFormAction(formData);
-  };
+      imageFormAction(formData);
+    },
+    [imageFormAction]
+  );
 
-  const value: ImageFormValue = {
-    inputRef,
-    imageState,
-    handleUploadClick,
-    handleFileChange,
-  };
+  const value: ImageFormValue = useMemo(
+    () => ({
+      inputRef,
+      imageState,
+      handleUploadClick,
+      handleFileChange,
+    }),
+    [handleFileChange, handleUploadClick, imageState]
+  );
 
   return (
     <ImageFormContext.Provider value={value}>

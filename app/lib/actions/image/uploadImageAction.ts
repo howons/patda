@@ -38,7 +38,7 @@ export async function uploadImageAction(
   }
 
   const supabase = createClient();
-  const resultIds: (string | null)[] = Array.from(
+  const resultImages: ({ id: string; path: string } | null)[] = Array.from(
     { length: inputImages.length },
     () => null
   );
@@ -47,21 +47,20 @@ export async function uploadImageAction(
       .from("patda-images")
       .upload(`temp/${image.name}`, image);
     if (data) {
-      resultIds[idx] = data.id;
+      resultImages[idx] = { id: data.id, path: data.id };
     }
     if (error) {
-      resultIds[idx] = null;
+      resultImages[idx] = null;
     }
-    console.log(data, error);
   });
 
-  const successCount = resultIds.reduce(
+  const successCount = resultImages.reduce(
     (acc, cur) => (cur !== null ? acc + 1 : acc),
     0
   );
   return {
     status: "SUCCESS",
-    message: `${successCount}개 이미지 업로드 완료, ${resultIds.length - successCount}개 실패`,
-    resultIds,
+    message: `${successCount}개 이미지 업로드 완료, ${resultImages.length - successCount}개 실패`,
+    resultImages,
   };
 }

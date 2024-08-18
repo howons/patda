@@ -118,7 +118,7 @@ export default function PostForm({
     name: "images",
   });
 
-  const { handleUploadClick } = useImageFormContext();
+  const { handleUploadClick, imageState } = useImageFormContext();
 
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
