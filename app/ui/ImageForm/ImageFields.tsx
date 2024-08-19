@@ -1,6 +1,8 @@
 "use client";
 
 import { Input } from "@headlessui/react";
+import Image from "next/image";
+import { useEffect } from "react";
 import {
   type Control,
   useFieldArray,
@@ -27,6 +29,19 @@ export default function ImageFields({ register, control }: ImageFieldsProps) {
     name: "images",
   });
 
+  useEffect(() => {
+    if (imageState.status === "SUCCESS" && imageState.resultImages) {
+      const imagePathes = fields.map((field) => field.path);
+      const newImages = imageState.resultImages.filter(
+        (path) => path && imagePathes.includes(path)
+      ) as string[];
+
+      if (newImages.length <= 0) return;
+
+      append(newImages.map((path) => ({ path })));
+    }
+  }, [append, fields, imageState]);
+
   return (
     <>
       <UploadButton
@@ -35,9 +50,14 @@ export default function ImageFields({ register, control }: ImageFieldsProps) {
         onClick={handleUploadClick}
       />
       <ul>
-        {fields.map((item, index) => (
-          <li key={item.id}>
-            <Input type="hidden" {...register(`images.${index}.id`)} />
+        {fields.map(({ path }, index) => (
+          <li key={path}>
+            <Image
+              src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/patda-images/${path}`}
+              alt={`${index + 1}번째 이미지`}
+              className="size-20"
+            />
+            <Input type="hidden" {...register(`images.${index}.path`)} />
           </li>
         ))}
       </ul>

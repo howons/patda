@@ -95,7 +95,7 @@ export default function PostForm({
       defaultValues: {
         content,
         etcPlatformName,
-        images: images?.map((image) => ({ id: image })) ?? null,
+        images: images?.map((image) => ({ path: image })) ?? null,
         platform: initPlatform,
         tag,
         targetNickname,

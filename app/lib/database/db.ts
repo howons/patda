@@ -64,10 +64,6 @@ export interface Database {
     createdAt: GeneratedAlways<Date>;
     updatedAt: Generated<Date>;
   };
-  Image: {
-    id: GeneratedAlways<string>;
-    url: string;
-  };
 }
 
 export const db = createKysely<Database>();

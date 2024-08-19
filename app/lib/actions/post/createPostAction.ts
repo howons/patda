@@ -16,7 +16,7 @@ const formSchema = z
     targetNickname: z.string().min(1, ERROR.POST.NO_TARGET_NICKNAME),
     tag: z.nativeEnum(TAG_ID),
     content: z.string().min(30, ERROR.POST.SHORT_CONTENT),
-    images: z.array(z.object({ id: z.string() })).nullish(),
+    images: z.array(z.object({ path: z.string() })).nullish(),
     etcPlatformName: z.string().nullish(),
     additionalInfo: z.string().nullish(),
   })
@@ -67,7 +67,7 @@ export async function createPostAction(
 
   const newPostData: NewPostData = {
     userId: session.user.id,
-    images: images?.map(({ id }) => id) ?? null,
+    images: images?.map(({ path }) => path) ?? null,
     etcPlatformName: etcPlatformName ?? null,
     additionalInfo: additionalInfo ?? null,
     ...restData,
