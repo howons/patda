@@ -1,12 +1,11 @@
 import { IoCameraSharp } from "@react-icons/all-files/io5/IoCameraSharp";
-import type { ComponentProps } from "react";
 
 import { MAX_IMAGE_COUNT } from "#lib/constants/image.js";
 import type { FormColor } from "#lib/types/property.js";
+import Button, { type ButtonProps } from "#ui/Button/Button.jsx";
 
-interface UploadButtonProps extends ComponentProps<"button"> {
+interface UploadButtonProps extends ButtonProps {
   imageCount: number;
-  color: FormColor;
 }
 
 export default function UploadButton({
@@ -15,17 +14,7 @@ export default function UploadButton({
   className = "",
   ...props
 }: UploadButtonProps) {
-  const defaultStyle =
-    "flex size-24 flex-col items-center justify-evenly border rounded-md";
-
-  const colorStyles: { [key in FormColor]: string } = {
-    orange: "border-orange-400 bg-orange-50 hover:bg-orange-100",
-    red: "border-red-400 bg-red-50 hover:bg-red-100",
-    green: "border-green-400 bg-green-50 hover:bg-green-100",
-    zinc: "border-zinc-400 bg-zinc-50 hover:bg-zinc-100",
-    lime: "border-lime-400 bg-lime-50 hover:bg-lime-100",
-    rose: "border-rose-400 bg-rose-50 hover:bg-rose-100",
-  };
+  const defaultStyle = "flex cs:size-28 flex-col items-center justify-evenly";
 
   const svgColorStyles: { [key in FormColor]: string } = {
     orange: "fill-orange-400",
@@ -37,14 +26,15 @@ export default function UploadButton({
   };
 
   return (
-    <button
+    <Button
+      color={color}
       type="button"
-      className={`${defaultStyle} ${colorStyles[color]} ${className}`}
+      className={`${defaultStyle} ${className}`}
       {...props}>
       <IoCameraSharp className={`size-1/3 ${svgColorStyles[color]}`} />
-      <div className="flex">
+      <div className="flex font-light text-neutral-700">
         <p>{imageCount}</p> / <p>{MAX_IMAGE_COUNT}</p>
       </div>
-    </button>
+    </Button>
   );
 }

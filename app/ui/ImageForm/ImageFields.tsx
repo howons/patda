@@ -18,13 +18,15 @@ interface ImageFieldsProps {
 export default function ImageFields({ register }: ImageFieldsProps) {
   const platform = usePlatformStore((state) => state.platform);
 
-  const { fields, handleUploadClick, remove } = useImageFormContext();
+  const { fields, handleUploadClick, remove, isPending } =
+    useImageFormContext();
 
   return (
     <div className="flex gap-2">
       <UploadButton
         imageCount={fields.length}
         color={PLATFORM_COLOR[platform]}
+        loading={isPending}
         onClick={handleUploadClick}
       />
       <ul className="flex gap-2">
@@ -33,8 +35,8 @@ export default function ImageFields({ register }: ImageFieldsProps) {
             <Image
               src={path}
               alt={`${index + 1}번째 이미지`}
-              width={96}
-              height={96}
+              width={112}
+              height={112}
               loader={supabaseLoader}
               className="rounded-md border-2"
             />

@@ -25,6 +25,7 @@ import { MAX_IMAGE_COUNT } from "#lib/constants/image.js";
 
 interface ImageFormValue {
   inputRef: RefObject<HTMLInputElement>;
+  isPending: boolean;
   fields: FieldArrayWithId<FormValues>[];
   remove: UseFieldArrayRemove;
   handleUploadClick: () => void;
@@ -52,10 +53,8 @@ export const ImageFormProvider = ({
   const imageCount = fields.length;
 
   const handleUploadClick = useCallback(() => {
-    if (isPending) return;
-
     inputRef.current?.click();
-  }, [isPending]);
+  }, []);
 
   const handleFileChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
@@ -90,12 +89,13 @@ export const ImageFormProvider = ({
   const value: ImageFormValue = useMemo(
     () => ({
       inputRef,
+      isPending,
       fields,
       remove,
       handleUploadClick,
       handleFileChange,
     }),
-    [fields, handleFileChange, handleUploadClick, remove]
+    [fields, handleFileChange, handleUploadClick, isPending, remove]
   );
 
   return (
