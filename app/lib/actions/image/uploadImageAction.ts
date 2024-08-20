@@ -47,18 +47,23 @@ export async function uploadImageAction(
   let successCount = 0;
 
   for (const image of inputImages) {
+    const path = `temp/${userNameKey}${userId.slice(0, 3)}/${image.name}`;
     const { data, error } = await supabase.storage
       .from("patda-images")
-      .upload(`temp/${userNameKey}${userId.slice(0, 3)}/${image.name}`, image);
+      .upload(path, image);
 
     if (data) {
       resultImages.push(data.path);
       successCount += 1;
-    }
-    if (error) {
-      resultImages.push(
-        (error as unknown as { statusCode: string }).statusCode ?? "500"
-      );
+    } else if (error) {
+      const statusCode =
+        (error as unknown as { statusCode: string }).statusCode ?? "500";
+
+      if (statusCode === "409") {
+        resultImages.push(path);
+      } else {
+        resultImages.push(statusCode);
+      }
     }
   }
 
