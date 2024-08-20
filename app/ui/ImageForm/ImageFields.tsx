@@ -14,6 +14,7 @@ import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { useImageFormContext } from "#lib/providers/ImageFormProvider.jsx";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import UploadButton from "#ui/ImageForm/UploadButton.jsx";
+import supabaseLoader from "#utils/supabase/loader.js";
 
 interface ImageFieldsProps {
   register: UseFormRegister<FormValues>;
@@ -33,8 +34,8 @@ export default function ImageFields({ register, control }: ImageFieldsProps) {
     if (imageState.status === "SUCCESS" && imageState.resultImages) {
       const imagePathes = fields.map((field) => field.path);
       const newImages = imageState.resultImages.filter(
-        (path) => path && imagePathes.includes(path)
-      ) as string[];
+        (path) => !imagePathes.includes(path)
+      );
 
       if (newImages.length <= 0) return;
 
@@ -53,9 +54,11 @@ export default function ImageFields({ register, control }: ImageFieldsProps) {
         {fields.map(({ path }, index) => (
           <li key={path}>
             <Image
-              src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/patda-images/${path}`}
+              src={path}
               alt={`${index + 1}번째 이미지`}
-              className="size-20"
+              width={200}
+              height={200}
+              loader={supabaseLoader}
             />
             <Input type="hidden" {...register(`images.${index}.path`)} />
           </li>

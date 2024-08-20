@@ -39,29 +39,28 @@ export async function uploadImageAction(
   }
 
   const supabase = createClient();
-  const resultImages: string[] = Array.from(
-    { length: inputImages.length },
-    () => ""
-  );
+  const resultImages: string[] = [];
   const userNameKey = encodeURIComponent(session.user?.name ?? "").replace(
     /[^a-zA-Z0-9]/g,
     ""
   );
   let successCount = 0;
 
-  inputImages.forEach(async (image, idx) => {
+  for (const image of inputImages) {
     const { data, error } = await supabase.storage
       .from("patda-images")
       .upload(`temp/${userNameKey}${userId.slice(0, 3)}/${image.name}`, image);
+
     if (data) {
-      resultImages[idx] = data.path;
+      resultImages.push(data.path);
       successCount += 1;
     }
     if (error) {
-      resultImages[idx] =
-        (error as unknown as { statusCode: string }).statusCode ?? "500";
+      resultImages.push(
+        (error as unknown as { statusCode: string }).statusCode ?? "500"
+      );
     }
-  });
+  }
 
   return {
     status: "SUCCESS",
