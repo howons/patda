@@ -9,15 +9,24 @@ import {
   useContext,
   useMemo,
   useRef,
+  useState,
+  useTransition,
 } from "react";
-import { useFormState } from "react-dom";
+import {
+  type Control,
+  type FieldArrayWithId,
+  useFieldArray,
+  type UseFieldArrayRemove,
+} from "react-hook-form";
 
 import { uploadImageAction } from "#lib/actions/image/uploadImageAction.js";
-import type { ActionState } from "#lib/types/action.js";
+import type { FormValues } from "#lib/actions/post/createPostAction.js";
+import { MAX_IMAGE_COUNT } from "#lib/constants/image.js";
 
 interface ImageFormValue {
   inputRef: RefObject<HTMLInputElement>;
-  imageState: ActionState;
+  fields: FieldArrayWithId<FormValues>[];
+  remove: UseFieldArrayRemove;
   handleUploadClick: () => void;
   handleFileChange: ChangeEventHandler<HTMLInputElement>;
 }
@@ -25,19 +34,28 @@ interface ImageFormValue {
 const ImageFormContext = createContext<ImageFormValue | null>(null);
 
 interface ImageFormProviderProps {
+  control: Control<FormValues>;
   children: ReactNode;
 }
 
-export const ImageFormProvider = ({ children }: ImageFormProviderProps) => {
+export const ImageFormProvider = ({
+  control,
+  children,
+}: ImageFormProviderProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isPending, startTranstion] = useTransition();
 
-  const [imageState, imageFormAction] = useFormState(uploadImageAction, {
-    status: null,
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "images",
   });
+  const imageCount = fields.length;
 
   const handleUploadClick = useCallback(() => {
+    if (isPending) return;
+
     inputRef.current?.click();
-  }, []);
+  }, [isPending]);
 
   const handleFileChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
@@ -46,24 +64,38 @@ export const ImageFormProvider = ({ children }: ImageFormProviderProps) => {
 
       const formData = new FormData();
       Array.from(files)
-        .slice(0, 10)
+        .slice(0, MAX_IMAGE_COUNT - imageCount)
         .forEach((file, idx) => {
           formData.append(`image[${idx}]`, file);
         });
 
-      imageFormAction(formData);
+      startTranstion(async () => {
+        const imageState = await uploadImageAction(imageCount, formData);
+
+        if (imageState.status === "SUCCESS" && imageState.resultImages) {
+          const imagePathes = fields.map((field) => field.path);
+          const newImages = imageState.resultImages.filter(
+            (path) => !imagePathes.includes(path)
+          );
+
+          if (newImages.length <= 0) return;
+
+          append(newImages.map((path) => ({ path })));
+        }
+      });
     },
-    [imageFormAction]
+    [append, fields, imageCount]
   );
 
   const value: ImageFormValue = useMemo(
     () => ({
       inputRef,
-      imageState,
+      fields,
+      remove,
       handleUploadClick,
       handleFileChange,
     }),
-    [handleFileChange, handleUploadClick, imageState]
+    [fields, handleFileChange, handleUploadClick, remove]
   );
 
   return (

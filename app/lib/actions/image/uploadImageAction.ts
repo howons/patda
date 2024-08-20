@@ -7,7 +7,7 @@ import type { ActionState } from "#lib/types/action.js";
 import { createClient } from "#utils/supabase/server.js";
 
 export async function uploadImageAction(
-  prevState: ActionState,
+  imageCount: number,
   formData: FormData
 ): Promise<ActionState> {
   const session = await auth();
@@ -21,7 +21,7 @@ export async function uploadImageAction(
   }
 
   const inputImages: File[] = [];
-  for (let i = 0; i < MAX_IMAGE_COUNT; i++) {
+  for (let i = 0; i < MAX_IMAGE_COUNT - imageCount; i++) {
     const image = formData.get(`image[${i}]`);
     if (!image || !(image instanceof File) || !image.type.startsWith("image/"))
       break;

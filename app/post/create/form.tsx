@@ -129,7 +129,7 @@ export default function PostForm({
   }, [initPlatform, updatePlatform]);
 
   return (
-    <ImageFormProvider>
+    <ImageFormProvider control={control}>
       <form
         action={formAction}
         className="flex w-full min-w-80 max-w-3xl flex-col justify-between px-3 md:w-5/6"
@@ -218,7 +218,7 @@ export default function PostForm({
           </Field>
           <Field>
             <Label>스크린샷</Label>
-            <ImageFields register={register} control={control} />
+            <ImageFields register={register} />
           </Field>
           <Field>
             <Label>상세 설명</Label>
