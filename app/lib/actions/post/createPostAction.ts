@@ -9,6 +9,7 @@ import { PLATFORM_ID } from "#lib/constants/platform.js";
 import { TAG_ID } from "#lib/constants/tag.js";
 import { createPost, type NewPostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
+import { createClient } from "#utils/supabase/server.js";
 
 const formSchema = z
   .object({
@@ -91,6 +92,16 @@ export async function createPostAction(
       };
     }
   }
+
+  const supabase = createClient();
+  images.forEach(async ({ path }) => {
+    const newPath = [`post/${result.id}`, ...path.split("/").slice(1)].join(
+      "/"
+    );
+    const { data, error } = await supabase.storage
+      .from("patda-images")
+      .move(path, newPath);
+  });
 
   return {
     status: "SUCCESS",

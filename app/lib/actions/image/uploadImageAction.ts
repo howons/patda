@@ -48,7 +48,7 @@ export async function uploadImageAction(
 
   for (const image of inputImages) {
     const imageName = encodeURIComponent(image.name).replace(
-      /[^a-zA-Z0-9]/g,
+      /[^a-zA-Z0-9/./-/_]/g,
       ""
     );
     const path = `temp/${userNameKey}${userId.slice(0, 3)}/${imageName}`;
