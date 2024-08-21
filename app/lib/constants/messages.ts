@@ -18,5 +18,6 @@ export const ERROR = {
     NO_RESULT_DB: "이미지 업로드 오류. 잠시 후 다시 시도해주세요.",
     NO_MATCH_AUTH: "게시글/댓글 생성자와 일치하지 않습니다.",
     NO_IMAGES: "이미지 파일을 업로드 해주세요.",
+    MAX_IMAGE_SIZE: "너무 큰 용량의 이미지입니다.",
   },
 };

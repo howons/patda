@@ -22,11 +22,19 @@ import {
 import { uploadImageAction } from "#lib/actions/image/uploadImageAction.js";
 import type { FormValues } from "#lib/actions/post/createPostAction.js";
 import { MAX_IMAGE_COUNT } from "#lib/constants/image.js";
+import { ERROR } from "#lib/constants/messages.js";
+
+const IMAGE_ERRORS: { [key: string]: string } = {
+  "413": ERROR.IMAGE.MAX_IMAGE_SIZE,
+  "500": ERROR.IMAGE.NO_RESULT_DB,
+  "503": ERROR.IMAGE.NO_RESULT_DB,
+};
 
 interface ImageFormValue {
   inputRef: RefObject<HTMLInputElement>;
   isPending: boolean;
   fields: FieldArrayWithId<FormValues>[];
+  errors: string[];
   remove: UseFieldArrayRemove;
   handleUploadClick: () => void;
   handleFileChange: ChangeEventHandler<HTMLInputElement>;
@@ -45,6 +53,7 @@ export const ImageFormProvider = ({
 }: ImageFormProviderProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isPending, startTranstion] = useTransition();
+  const [errors, setErrors] = useState<string[]>([]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -70,20 +79,28 @@ export const ImageFormProvider = ({
 
       startTranstion(async () => {
         const imageState = await uploadImageAction(imageCount, formData);
-
         if (imageState.status === "SUCCESS" && imageState.resultImages) {
           const imagePathes = fields.map((field) => field.path);
           const newImages = imageState.resultImages.filter(
-            (path) => !imagePathes.includes(path)
+            (path) => !imagePathes.includes(path) && !isErrorCode(path)
           );
+          if (newImages.length > 0) {
+            append(newImages.map((path) => ({ path })));
+          }
 
-          if (newImages.length <= 0) return;
-
-          append(newImages.map((path) => ({ path })));
+          if (newImages.length !== imageState.resultImages.length) {
+            imageState.resultImages.map((image) => {
+              if (isErrorCode(image) && !errors.includes(IMAGE_ERRORS[image])) {
+                setErrors([...errors, IMAGE_ERRORS[image]]);
+              }
+            });
+          } else {
+            setErrors([]);
+          }
         }
       });
     },
-    [append, fields, imageCount]
+    [append, errors, fields, imageCount]
   );
 
   const value: ImageFormValue = useMemo(
@@ -91,11 +108,12 @@ export const ImageFormProvider = ({
       inputRef,
       isPending,
       fields,
+      errors,
       remove,
       handleUploadClick,
       handleFileChange,
     }),
-    [fields, handleFileChange, handleUploadClick, isPending, remove]
+    [errors, fields, handleFileChange, handleUploadClick, isPending, remove]
   );
 
   return (
@@ -114,3 +132,7 @@ export const useImageFormContext = () => {
 
   return imageFormContext;
 };
+
+function isErrorCode(image: string) {
+  return image.length <= 3;
+}

@@ -47,7 +47,11 @@ export async function uploadImageAction(
   let successCount = 0;
 
   for (const image of inputImages) {
-    const path = `temp/${userNameKey}${userId.slice(0, 3)}/${image.name}`;
+    const imageName = encodeURIComponent(image.name).replace(
+      /[^a-zA-Z0-9]/g,
+      ""
+    );
+    const path = `temp/${userNameKey}${userId.slice(0, 3)}/${imageName}`;
     const { data, error } = await supabase.storage
       .from("patda-images")
       .upload(path, image);
