@@ -95,7 +95,7 @@ export default function PostForm({
       defaultValues: {
         content,
         etcPlatformName,
-        images: images?.map((image) => ({ path: image })) ?? null,
+        images: images?.map((image) => ({ path: image })) ?? [],
         platform: initPlatform,
         tag,
         targetNickname,
@@ -219,6 +219,11 @@ export default function PostForm({
           <Field>
             <Label>스크린샷</Label>
             <ImageFields register={register} />
+            <ErrorMessage
+              name="images"
+              errors={errors}
+              render={({ message }) => <ErrorText>{message}</ErrorText>}
+            />
           </Field>
           <Field>
             <Label>상세 설명</Label>

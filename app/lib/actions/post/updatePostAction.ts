@@ -17,7 +17,9 @@ const formSchema = z
     targetNickname: z.string().min(1, ERROR.POST.NO_TARGET_NICKNAME),
     tag: z.nativeEnum(TAG_ID),
     content: z.string().min(30, ERROR.POST.SHORT_CONTENT),
-    images: z.array(z.object({ path: z.string() })).nullish(),
+    images: z
+      .array(z.object({ path: z.string() }))
+      .min(1, ERROR.IMAGE.NO_IMAGES),
     etcPlatformName: z.string().nullish(),
     additionalInfo: z.string().nullish(),
   })
@@ -52,7 +54,7 @@ export async function updatePostAction(
     platform: formData.get("platform"),
     targetNickname: formData.get("targetNickname"),
     tag: formData.get("tag"),
-    images: formData.get("images"),
+    images: formData.get("images") ?? [],
     content: formData.get("content"),
     etcPlatformName: formData.get("etcPlatformName"),
     additionalInfo: formData.get("additionalInfo"),
@@ -69,7 +71,7 @@ export async function updatePostAction(
   const { images, etcPlatformName, additionalInfo, ...restData } = input.data;
 
   const newPostData: UpdatePostData = {
-    images: images?.map(({ path }) => path) ?? null,
+    images: images.map(({ path }) => path),
     etcPlatformName: etcPlatformName ?? null,
     additionalInfo: additionalInfo ?? null,
     ...restData,
