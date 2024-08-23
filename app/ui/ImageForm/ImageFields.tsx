@@ -32,8 +32,8 @@ export default function ImageFields({ register }: ImageFieldsProps) {
           onClick={handleUploadClick}
         />
         <ul className="flex gap-2">
-          {fields.map(({ path }, index) => (
-            <li key={path} className="relative">
+          {fields.map(({ path, id }, index) => (
+            <li key={id} className="relative">
               <Image
                 src={path}
                 alt={`${index + 1}번째 이미지`}

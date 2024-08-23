@@ -9,6 +9,7 @@ import { PLATFORM_ID } from "#lib/constants/platform.js";
 import { TAG_ID } from "#lib/constants/tag.js";
 import { createPost, type NewPostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
+import { getFieldArrayFormData } from "#lib/utils/action.js";
 import { createClient } from "#utils/supabase/server.js";
 
 const formSchema = z
@@ -52,7 +53,7 @@ export async function createPostAction(
     platform: formData.get("platform"),
     targetNickname: formData.get("targetNickname"),
     tag: formData.get("tag"),
-    images: formData.get("images") ?? [],
+    images: getFieldArrayFormData("images", "path", formData),
     content: formData.get("content"),
     etcPlatformName: formData.get("etcPlatformName"),
     additionalInfo: formData.get("additionalInfo"),
