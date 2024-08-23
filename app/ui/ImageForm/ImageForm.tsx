@@ -10,6 +10,7 @@ export default function ImageForm() {
       <input
         ref={inputRef}
         type="file"
+        multiple
         className="hidden"
         onChange={handleFileChange}
       />

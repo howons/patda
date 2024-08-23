@@ -45,11 +45,13 @@ const ImageFormContext = createContext<ImageFormValue | null>(null);
 interface ImageFormProviderProps {
   control: Control<FormValues>;
   children: ReactNode;
+  postId?: number;
 }
 
 export const ImageFormProvider = ({
   control,
   children,
+  postId,
 }: ImageFormProviderProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isPending, startTranstion] = useTransition();
@@ -78,7 +80,11 @@ export const ImageFormProvider = ({
         });
 
       startTranstion(async () => {
-        const imageState = await uploadImageAction(imageCount, formData);
+        const imageState = await uploadImageAction(
+          imageCount,
+          formData,
+          postId
+        );
         if (imageState.status === "SUCCESS" && imageState.resultImages) {
           const imagePathes = fields.map((field) => field.path);
           const newImages = imageState.resultImages.filter(
@@ -100,7 +106,7 @@ export const ImageFormProvider = ({
         }
       });
     },
-    [append, errors, fields, imageCount]
+    [append, errors, fields, imageCount, postId]
   );
 
   const value: ImageFormValue = useMemo(

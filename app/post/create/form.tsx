@@ -129,7 +129,7 @@ export default function PostForm({
   }, [initPlatform, updatePlatform]);
 
   return (
-    <ImageFormProvider control={control}>
+    <ImageFormProvider control={control} postId={id}>
       <form
         action={formAction}
         className="flex w-full min-w-80 max-w-3xl flex-col justify-between px-3 md:w-5/6"

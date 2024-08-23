@@ -8,10 +8,12 @@ import { createClient } from "#lib/utils/supabase/server.js";
 
 export async function uploadImageAction(
   imageCount: number,
-  formData: FormData
+  formData: FormData,
+  postId?: number
 ): Promise<ActionState> {
   const session = await auth();
   const userId = session?.user?.id;
+  const isUpdate = postId !== undefined;
 
   if (!userId) {
     return {
@@ -51,7 +53,9 @@ export async function uploadImageAction(
       /[^a-zA-Z0-9/./-/_]/g,
       ""
     );
-    const path = `temp/${userNameKey}${userId.slice(0, 3)}/${imageName}`;
+    const path = isUpdate
+      ? `post/${postId}/${imageName}`
+      : `temp/${userNameKey}${userId.slice(0, 3)}/${imageName}`;
     const { data, error } = await supabase.storage
       .from("patda-images")
       .upload(path, image);
