@@ -8,9 +8,9 @@ import type { FormValues } from "#lib/actions/post/createPostAction.js";
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { useImageFormContext } from "#lib/providers/ImageFormProvider.jsx";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
+import supabaseLoader from "#lib/utils/supabase/loader.js";
 import ErrorText from "#ui/formItems/ErrorText.jsx";
 import UploadButton from "#ui/ImageForm/UploadButton.jsx";
-import supabaseLoader from "#utils/supabase/loader.js";
 
 interface ImageFieldsProps {
   register: UseFormRegister<FormValues>;

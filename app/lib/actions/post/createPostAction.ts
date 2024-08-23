@@ -10,7 +10,7 @@ import { TAG_ID } from "#lib/constants/tag.js";
 import { createPost, type NewPostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
 import { getFieldArrayFormData } from "#lib/utils/action.js";
-import { createClient } from "#utils/supabase/server.js";
+import { createClient } from "#lib/utils/supabase/server.js";
 
 const formSchema = z
   .object({

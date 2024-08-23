@@ -4,7 +4,7 @@ import { auth } from "#auth";
 import { MAX_IMAGE_COUNT } from "#lib/constants/image.js";
 import { ERROR } from "#lib/constants/messages.js";
 import type { ActionState } from "#lib/types/action.js";
-import { createClient } from "#utils/supabase/server.js";
+import { createClient } from "#lib/utils/supabase/server.js";
 
 export async function uploadImageAction(
   imageCount: number,
