@@ -10,7 +10,7 @@ import { TAG_ID } from "#lib/constants/tag.js";
 import { createPost, type NewPostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
 import { getFieldArrayFormData } from "#lib/utils/action.js";
-import { createClient } from "#lib/utils/supabase/server.js";
+import { moveImages } from "#lib/utils/supabase/moveImages.js";
 
 const formSchema = z
   .object({
@@ -94,15 +94,7 @@ export async function createPostAction(
     }
   }
 
-  const supabase = createClient();
-  images.forEach(async ({ path }) => {
-    const newPath = [`post/${result.id}`, ...path.split("/").slice(1)].join(
-      "/"
-    );
-    const { data, error } = await supabase.storage
-      .from("patda-images")
-      .move(path, newPath);
-  });
+  moveImages(images, `post/${result.id}`);
 
   return {
     status: "SUCCESS",
