@@ -15,7 +15,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: `${process.env.NEXT_PUBLIC_SUPABASE_URL.slice(8)}`,
+        hostname: `${process.env.NEXT_PUBLIC_SUPABASE_HOST}`,
         port: "",
         pathname: "/storage/v1/object/public/patda-images/**",
       },
