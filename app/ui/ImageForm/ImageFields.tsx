@@ -14,9 +14,10 @@ import UploadButton from "#ui/ImageForm/UploadButton.jsx";
 
 interface ImageFieldsProps {
   register: UseFormRegister<FormValues>;
+  imagePath: string;
 }
 
-export default function ImageFields({ register }: ImageFieldsProps) {
+export default function ImageFields({ register, imagePath }: ImageFieldsProps) {
   const platform = usePlatformStore((state) => state.platform);
 
   const { fields, handleUploadClick, remove, isPending, errors } =
@@ -32,10 +33,10 @@ export default function ImageFields({ register }: ImageFieldsProps) {
           onClick={handleUploadClick}
         />
         <ul className="flex gap-2">
-          {fields.map(({ path, id }, index) => (
+          {fields.map(({ name, id }, index) => (
             <li key={id} className="relative">
               <Image
-                src={path}
+                src={`${imagePath}/${name}`}
                 alt={`${index + 1}번째 이미지`}
                 width={112}
                 height={112}
@@ -48,7 +49,7 @@ export default function ImageFields({ register }: ImageFieldsProps) {
                 onClick={() => remove(index)}>
                 +
               </button>
-              <Input type="hidden" {...register(`images.${index}.path`)} />
+              <Input type="hidden" {...register(`images.${index}.name`)} />
             </li>
           ))}
         </ul>

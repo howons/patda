@@ -3,13 +3,16 @@ import type { Session } from "next-auth";
 import type { FormValues } from "#lib/actions/post/createPostAction.js";
 import { createClient } from "#lib/utils/supabase/server.js";
 
-export function moveImages(images: FormValues["images"], to: string) {
+export function moveImages(
+  images: FormValues["images"],
+  from: string,
+  to: string
+) {
   const supabase = createClient();
-  images.forEach(async ({ path }) => {
-    const destPath = `${to}/${path.split("/").at(-1)}`;
+  images.forEach(async ({ name }) => {
     const { data, error } = await supabase.storage
       .from("patda-images")
-      .move(path, destPath);
+      .move(`${from}/${name}`, `${to}/${name}`);
   });
 }
 
@@ -38,4 +41,21 @@ export function getTempFolderPath(session: Session) {
   const userId = session.user?.id ?? "";
 
   return `temp/${userNameKey}${userId.slice(0, 3)}`;
+}
+
+interface GetImagePathProps {
+  session?: Session;
+  postId?: number;
+  commentId?: string;
+}
+
+export function getImagePath({
+  session,
+  postId,
+  commentId,
+}: GetImagePathProps) {
+  if (session) return getTempFolderPath(session);
+  if (postId !== undefined) return `post/${postId}`;
+  if (commentId !== undefined) return `comment/${commentId}`;
+  return "";
 }

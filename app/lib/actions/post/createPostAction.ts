@@ -23,7 +23,7 @@ const formSchema = z
     tag: z.nativeEnum(TAG_ID),
     content: z.string().min(30, ERROR.POST.SHORT_CONTENT),
     images: z
-      .array(z.object({ path: z.string() }))
+      .array(z.object({ name: z.string() }))
       .min(1, ERROR.IMAGE.NO_IMAGES),
     etcPlatformName: z.string().nullish(),
     additionalInfo: z.string().nullish(),
@@ -57,7 +57,7 @@ export async function createPostAction(
     platform: formData.get("platform"),
     targetNickname: formData.get("targetNickname"),
     tag: formData.get("tag"),
-    images: getFieldArrayFormData("images", "path", formData),
+    images: getFieldArrayFormData("images", "name", formData),
     content: formData.get("content"),
     etcPlatformName: formData.get("etcPlatformName"),
     additionalInfo: formData.get("additionalInfo"),
@@ -75,7 +75,7 @@ export async function createPostAction(
 
   const newPostData: NewPostData = {
     userId: session.user.id,
-    images: images.map(({ path }) => path),
+    images: images.map(({ name }) => name),
     etcPlatformName: etcPlatformName ?? null,
     additionalInfo: additionalInfo ?? null,
     ...restData,
@@ -98,7 +98,7 @@ export async function createPostAction(
     }
   }
 
-  moveImages(images, `post/${result.id}`);
+  moveImages(images, getTempFolderPath(session), `post/${result.id}`);
   removeImages(getTempFolderPath(session));
 
   return {

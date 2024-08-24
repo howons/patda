@@ -4,16 +4,16 @@ import { auth } from "#auth";
 import { MAX_IMAGE_COUNT } from "#lib/constants/image.js";
 import { ERROR } from "#lib/constants/messages.js";
 import type { ActionState } from "#lib/types/action.js";
-import { getTempFolderPath } from "#lib/utils/supabase/images.js";
+import { getImagePath } from "#lib/utils/supabase/images.js";
 import { createClient } from "#lib/utils/supabase/server.js";
 
 export async function uploadImageAction(
   imageCount: number,
   formData: FormData,
-  postId?: number
+  id?: string | number
 ): Promise<ActionState> {
   const session = await auth();
-  const isUpdate = postId !== undefined;
+  const isUpdate = id !== undefined;
 
   if (!session) {
     return {
@@ -50,15 +50,20 @@ export async function uploadImageAction(
       /[^a-zA-Z0-9/./-/_]/g,
       ""
     );
-    const path = isUpdate
-      ? `post/${postId}/${imageName}`
-      : `${getTempFolderPath(session)}/${imageName}`;
+
+    const pathProps: Parameters<typeof getImagePath>[0] = !isUpdate
+      ? { session }
+      : typeof id === "number"
+        ? { postId: id }
+        : { commentId: id };
+    const path = `${getImagePath(pathProps)}/${imageName}`;
+
     const { data, error } = await supabase.storage
       .from("patda-images")
       .upload(path, image);
 
     if (data) {
-      resultImages.push(data.path);
+      resultImages.push(imageName);
       successCount += 1;
     } else if (error) {
       const statusCode =

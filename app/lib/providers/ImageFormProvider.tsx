@@ -86,12 +86,12 @@ export const ImageFormProvider = ({
           postId
         );
         if (imageState.status === "SUCCESS" && imageState.resultImages) {
-          const imagePathes = fields.map((field) => field.path);
+          const imageNames = fields.map((field) => field.name);
           const newImages = imageState.resultImages.filter(
-            (path) => !imagePathes.includes(path) && !isErrorCode(path)
+            (name) => !imageNames.includes(name) && !isErrorCode(name)
           );
           if (newImages.length > 0) {
-            append(newImages.map((path) => ({ path })));
+            append(newImages.map((name) => ({ name })));
           }
 
           if (newImages.length !== imageState.resultImages.length) {

@@ -61,7 +61,9 @@ interface PostFormProps
       | "targetNickname"
       | "additionalInfo"
     >
-  > {}
+  > {
+  imagePath: string;
+}
 
 export default function PostForm({
   id,
@@ -72,6 +74,7 @@ export default function PostForm({
   platform: initPlatform,
   tag,
   targetNickname,
+  imagePath,
 }: PostFormProps) {
   const isUpdate = id !== undefined;
 
@@ -95,7 +98,7 @@ export default function PostForm({
       defaultValues: {
         content,
         etcPlatformName,
-        images: images?.map((image) => ({ path: image })) ?? [],
+        images: images?.map((name) => ({ name })) ?? [],
         platform: initPlatform,
         tag,
         targetNickname,
@@ -218,7 +221,7 @@ export default function PostForm({
           </Field>
           <Field>
             <Label>스크린샷</Label>
-            <ImageFields register={register} />
+            <ImageFields register={register} imagePath={imagePath} />
             <ErrorMessage
               name="images"
               errors={errors}
