@@ -70,7 +70,7 @@ export async function uploadImageAction(
         (error as unknown as { statusCode: string }).statusCode ?? "500";
 
       if (statusCode === "409") {
-        resultImages.push(path);
+        resultImages.push(imageName);
       } else {
         resultImages.push(statusCode);
       }

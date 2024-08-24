@@ -11,7 +11,7 @@ import { createPost, type NewPostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
 import { getFieldArrayFormData } from "#lib/utils/action.js";
 import {
-  getTempFolderPath,
+  getImagePath,
   moveImages,
   removeImages,
 } from "#lib/utils/supabase/images.js";
@@ -98,8 +98,8 @@ export async function createPostAction(
     }
   }
 
-  moveImages(images, getTempFolderPath(session), `post/${result.id}`);
-  removeImages(getTempFolderPath(session));
+  moveImages(images, getImagePath({ session }), `post/${result.id}`);
+  removeImages(getImagePath({ session }));
 
   return {
     status: "SUCCESS",

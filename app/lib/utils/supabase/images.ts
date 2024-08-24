@@ -24,13 +24,13 @@ export async function removeImages(folder: string, imagesToRemain?: string[]) {
     .list(folder);
   if (!listData) return;
 
-  const imagesToDelete = listData
-    .map(({ name }) => `${folder}/${name}`)
-    .filter((path) => !(imagesToRemain && imagesToRemain.includes(path)));
+  const imagePathesToDelete = listData
+    .filter(({ name }) => !(imagesToRemain && imagesToRemain.includes(name)))
+    .map(({ name }) => `${folder}/${name}`);
 
   const { data, error } = await supabase.storage
     .from("patda-images")
-    .remove(imagesToDelete);
+    .remove(imagePathesToDelete);
 }
 
 export function getTempFolderPath(session: Session) {

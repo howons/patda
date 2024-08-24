@@ -11,6 +11,7 @@ import { TAG_ID } from "#lib/constants/tag.js";
 import { getPost, updatePost, type UpdatePostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
 import { getFieldArrayFormData } from "#lib/utils/action.js";
+import { getImagePath, removeImages } from "#lib/utils/supabase/images.js";
 
 const formSchema = z
   .object({
@@ -70,9 +71,10 @@ export async function updatePostAction(
   }
 
   const { images, etcPlatformName, additionalInfo, ...restData } = input.data;
+  const imageList = images.map(({ name }) => name);
 
   const newPostData: UpdatePostData = {
-    images: images.map(({ name }) => name),
+    images: imageList,
     etcPlatformName: etcPlatformName ?? null,
     additionalInfo: additionalInfo ?? null,
     ...restData,
@@ -94,6 +96,8 @@ export async function updatePostAction(
       };
     }
   }
+
+  removeImages(getImagePath({ postId: id }), imageList);
 
   revalidatePath(`/post/${id}`);
 
