@@ -34,7 +34,7 @@ const meta = {
   ],
   async beforeEach() {
     const mockAuth = new Promise<Session>((resolve) => {
-      resolve({ user: { id: "1" }, expires: "" });
+      resolve({ user: { id: "1", name: "n" }, expires: "" });
     });
     auth.mockReturnValue(mockAuth);
   },
@@ -44,7 +44,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const CreationForm: Story = {
-  args: {},
+  args: {
+    imagePath: "test",
+  },
   beforeEach: async () => {
     const mockResult = new Promise<{ id: number }>((resolve) => {
       resolve({ id: 1 });
@@ -67,6 +69,7 @@ export const CreationForm: Story = {
         targetNickname: "",
         tag: "others",
         content: "",
+        images: [],
       };
       expect(form).toHaveFormValues(initFormValues);
     });
@@ -106,6 +109,7 @@ export const CreationForm: Story = {
         tag: "abuse",
         content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
         etcPlatformName: "짭고나라",
+        images: [],
       };
       expect(form).toHaveFormValues(sucessFormValues);
 
@@ -126,6 +130,7 @@ export const UpdateForm: Story = {
     platform: "bunjang",
     tag: "cancel",
     targetNickname: "bull",
+    imagePath: "post/0",
   },
   beforeEach: async () => {
     const mockUpdateResult = new Promise<{ numUpdatedRows: bigint }>(
@@ -167,6 +172,7 @@ export const UpdateForm: Story = {
         platform: "bunjang",
         tag: "cancel",
         targetNickname: "bull",
+        images: [],
       };
       expect(form).toHaveFormValues(initFormValues);
     });
