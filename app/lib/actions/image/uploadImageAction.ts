@@ -4,6 +4,7 @@ import { auth } from "#auth";
 import { MAX_IMAGE_COUNT } from "#lib/constants/image.js";
 import { ERROR } from "#lib/constants/messages.js";
 import type { ActionState } from "#lib/types/action.js";
+import { getTempFolderPath } from "#lib/utils/supabase/images.js";
 import { createClient } from "#lib/utils/supabase/server.js";
 
 export async function uploadImageAction(
@@ -12,10 +13,9 @@ export async function uploadImageAction(
   postId?: number
 ): Promise<ActionState> {
   const session = await auth();
-  const userId = session?.user?.id;
   const isUpdate = postId !== undefined;
 
-  if (!userId) {
+  if (!session) {
     return {
       status: "ERROR_AUTH",
       message: ERROR.IMAGE.NO_AUTH,
@@ -42,10 +42,7 @@ export async function uploadImageAction(
 
   const supabase = createClient();
   const resultImages: string[] = [];
-  const userNameKey = encodeURIComponent(session.user?.name ?? "").replace(
-    /[^a-zA-Z0-9]/g,
-    ""
-  );
+
   let successCount = 0;
 
   for (const image of inputImages) {
@@ -55,7 +52,7 @@ export async function uploadImageAction(
     );
     const path = isUpdate
       ? `post/${postId}/${imageName}`
-      : `temp/${userNameKey}${userId.slice(0, 3)}/${imageName}`;
+      : `${getTempFolderPath(session)}/${imageName}`;
     const { data, error } = await supabase.storage
       .from("patda-images")
       .upload(path, image);

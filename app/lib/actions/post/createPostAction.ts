@@ -10,7 +10,11 @@ import { TAG_ID } from "#lib/constants/tag.js";
 import { createPost, type NewPostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
 import { getFieldArrayFormData } from "#lib/utils/action.js";
-import { moveImages } from "#lib/utils/supabase/moveImages.js";
+import {
+  getTempFolderPath,
+  moveImages,
+  removeImages,
+} from "#lib/utils/supabase/images.js";
 
 const formSchema = z
   .object({
@@ -95,6 +99,7 @@ export async function createPostAction(
   }
 
   moveImages(images, `post/${result.id}`);
+  removeImages(getTempFolderPath(session));
 
   return {
     status: "SUCCESS",
