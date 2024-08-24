@@ -3,6 +3,7 @@ export type ActionState =
       status: "SUCCESS";
       message: string;
       resultId?: number | string;
+      resultImages?: string[];
     }
   | {
       status: "ERROR_VALIDATE";

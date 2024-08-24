@@ -124,15 +124,6 @@ export async function create() {
     .column("postId")
     .execute();
 
-  await db.schema
-    .createTable("Image")
-    .ifNotExists()
-    .addColumn("id", "uuid", (col) =>
-      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
-    )
-    .addColumn("url", "text", (col) => col.notNull())
-    .execute();
-
   console.log("Migration completed");
 }
 
@@ -143,7 +134,6 @@ export async function drop() {
   await db.schema.dropTable("VerificationToken").ifExists().execute();
   await db.schema.dropTable("Account").ifExists().execute();
   await db.schema.dropTable("User").ifExists().execute();
-  await db.schema.dropTable("Image").ifExists().execute();
 
   console.log("Rollback completed");
 }

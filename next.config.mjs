@@ -11,6 +11,16 @@ const nextConfig = {
     };
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: `${process.env.NEXT_PUBLIC_SUPABASE_HOST}`,
+        port: "",
+        pathname: "/storage/v1/object/public/patda-images/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

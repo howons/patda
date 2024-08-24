@@ -46,7 +46,7 @@ export interface Database {
     platform: Platform;
     targetNickname: string;
     tag: TagId;
-    images: string[] | null;
+    images: string[];
     content: string;
     status: Generated<PostCommentStatus>;
     createdAt: GeneratedAlways<Date>;
@@ -63,10 +63,6 @@ export interface Database {
     status: PostCommentStatus;
     createdAt: GeneratedAlways<Date>;
     updatedAt: Generated<Date>;
-  };
-  Image: {
-    id: GeneratedAlways<string>;
-    url: string;
   };
 }
 

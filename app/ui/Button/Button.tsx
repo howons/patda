@@ -4,13 +4,13 @@ import { type ComponentPropsWithRef, PropsWithChildren } from "react";
 import type { FormColor } from "#lib/types/property.js";
 import Logo from "#public/당근빳다.svg";
 
-interface ButtonProps extends ComponentPropsWithRef<"button"> {
+export interface ButtonProps extends ComponentPropsWithRef<"button"> {
   color: FormColor;
   theme?: "primary" | "sub";
   loading?: boolean;
 }
 
-function Button({
+export default function Button({
   color,
   theme = "sub",
   loading,
@@ -66,5 +66,3 @@ function Button({
     </HeadlessButton>
   );
 }
-
-export default Button;

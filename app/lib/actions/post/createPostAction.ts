@@ -9,6 +9,12 @@ import { PLATFORM_ID } from "#lib/constants/platform.js";
 import { TAG_ID } from "#lib/constants/tag.js";
 import { createPost, type NewPostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
+import { getFieldArrayFormData } from "#lib/utils/action.js";
+import {
+  getImagePath,
+  moveImages,
+  removeImages,
+} from "#lib/utils/supabase/images.js";
 
 const formSchema = z
   .object({
@@ -16,7 +22,9 @@ const formSchema = z
     targetNickname: z.string().min(1, ERROR.POST.NO_TARGET_NICKNAME),
     tag: z.nativeEnum(TAG_ID),
     content: z.string().min(30, ERROR.POST.SHORT_CONTENT),
-    images: z.array(z.object({ id: z.string() })).nullish(),
+    images: z
+      .array(z.object({ name: z.string() }))
+      .min(1, ERROR.IMAGE.NO_IMAGES),
     etcPlatformName: z.string().nullish(),
     additionalInfo: z.string().nullish(),
   })
@@ -49,7 +57,7 @@ export async function createPostAction(
     platform: formData.get("platform"),
     targetNickname: formData.get("targetNickname"),
     tag: formData.get("tag"),
-    images: formData.get("images"),
+    images: getFieldArrayFormData("images", "name", formData),
     content: formData.get("content"),
     etcPlatformName: formData.get("etcPlatformName"),
     additionalInfo: formData.get("additionalInfo"),
@@ -67,7 +75,7 @@ export async function createPostAction(
 
   const newPostData: NewPostData = {
     userId: session.user.id,
-    images: images?.map(({ id }) => id) ?? null,
+    images: images.map(({ name }) => name),
     etcPlatformName: etcPlatformName ?? null,
     additionalInfo: additionalInfo ?? null,
     ...restData,
@@ -89,6 +97,9 @@ export async function createPostAction(
       };
     }
   }
+
+  moveImages(images, getImagePath({ session }), `post/${result.id}`);
+  removeImages(getImagePath({ session }));
 
   return {
     status: "SUCCESS",

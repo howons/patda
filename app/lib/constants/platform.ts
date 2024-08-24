@@ -23,4 +23,11 @@ export const PLATFORM_COLOR: { [key in Platform]: FormColor } = {
   bunjang: "red",
   joongna: "green",
   etc: "zinc",
-};
+} as const;
+
+export const PLATFORM_PLACEHOLDER: { [key in Platform]: string } = {
+  daangn: "상대 동네 이름",
+  bunjang: "상대 본인인증 이름 (ex: 김*수)",
+  joongna: "네이버 아이디",
+  etc: "기타 추가 정보",
+} as const;
