@@ -37,7 +37,7 @@ export default function ImageFields({ register, imagePath }: ImageFieldsProps) {
             <li key={id} className="relative">
               <Image
                 src={`${imagePath}/${name}`}
-                alt={`${index + 1}번째 이미지`}
+                alt={name}
                 width={112}
                 height={112}
                 loader={supabaseLoader}

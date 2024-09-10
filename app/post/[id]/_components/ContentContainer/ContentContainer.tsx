@@ -1,8 +1,10 @@
 import Content from "#app/post/[id]/_components/ContentContainer/Content.jsx";
+import ImageCarousel from "#app/post/[id]/_components/ContentContainer/ImageCarousel.jsx";
 import PostMutationForm from "#app/post/[id]/_components/ContentContainer/PostMutationForm.jsx";
 import { auth } from "#auth";
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { getPost } from "#lib/database/posts";
+import { getImagePath } from "#lib/utils/supabase/images.js";
 import Dot from "#ui/Dot/Dot.jsx";
 import CommentLine from "#ui/SIdeLine/CommentLine.jsx";
 
@@ -25,7 +27,11 @@ export default async function ContentContainer({
         <section className="h-6 px-2">
           {isMine && <PostMutationForm postId={postId} />}
         </section>
-        <section className="min-h-72">이미지</section>
+        <ImageCarousel
+          images={images}
+          imagePath={getImagePath({ postId })}
+          className="min-h-72"
+        />
         <Dot color={PLATFORM_COLOR[platform]} className="mx-auto" />
         <Content content={content} className="min-h-40 w-full break-words" />
       </div>
