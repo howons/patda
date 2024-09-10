@@ -26,15 +26,15 @@ export default function ImageCarousel({
   ...props
 }: ImageCarouselProps) {
   return (
-    <Carousel className={cn(className)} {...props}>
+    <Carousel className={cn(className, "mx-5")} {...props}>
       <CarouselContent>
         {images.map((name) => (
-          <CarouselItem key={name}>
+          <CarouselItem key={name} className="sm:basis-1/2 lg:basis-1/3">
             <Image
               src={`${imagePath}/${name}`}
               alt={name}
-              width={112}
-              height={112}
+              width={350}
+              height={700}
               loader={supabaseLoader}
               className="rounded-md border-2"
             />
