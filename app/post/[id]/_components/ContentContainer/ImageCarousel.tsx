@@ -40,14 +40,24 @@ export default function ImageCarousel({
               key={name}
               className="sm:basis-1/2 lg:basis-1/3"
               onClick={handleItemClick}>
-              <ImageItem imagePath={imagePath} name={name} />
+              <ImageItem
+                imagePath={imagePath}
+                name={name}
+                width={350}
+                height={650}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-      <ImageDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ImageDialog
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        images={images}
+        imagePath={imagePath}
+      />
     </>
   );
 }

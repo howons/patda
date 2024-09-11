@@ -1,21 +1,31 @@
-import Image from "next/image";
+"use client";
+
+import Image, { type ImageProps } from "next/image";
 
 import supabaseLoader from "#lib/utils/supabase/loader.js";
 
-interface ImageItemProps {
+interface ImageItemProps extends Partial<ImageProps> {
   imagePath: string;
   name: string;
 }
 
-export default function ImageItem({ imagePath, name }: ImageItemProps) {
+export default function ImageItem({
+  imagePath,
+  name,
+  width,
+  height,
+  src,
+  alt,
+  ...props
+}: ImageItemProps) {
   return (
     <Image
       src={`${imagePath}/${name}`}
       alt={name}
-      width={350}
-      height={700}
+      width={width}
+      height={height}
       loader={supabaseLoader}
-      className="rounded-md border-2"
+      {...props}
     />
   );
 }
