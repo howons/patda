@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, DialogPanel } from "@headlessui/react";
+import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { type Dispatch, type SetStateAction, useCallback } from "react";
 
 import ImageItem from "#app/post/[id]/_components/ContentContainer/ImageItem.jsx";
@@ -32,6 +32,7 @@ export default function ImageDialog({
 
   return (
     <Dialog open={isOpen} onClose={handleCloseClick} className="relative z-50">
+      <DialogBackdrop className="fixed inset-0 bg-black/70" />
       <div className="fixed inset-0 flex h-screen w-screen items-center justify-center p-4">
         <DialogPanel>
           <Carousel className={""}>
