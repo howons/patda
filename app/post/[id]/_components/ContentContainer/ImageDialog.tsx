@@ -7,7 +7,7 @@ import {
   DialogPanel,
 } from "@headlessui/react";
 import { IoClose } from "@react-icons/all-files/io5/IoClose";
-import { type Dispatch, type SetStateAction, useCallback } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 
 import ImageItem from "#app/post/[id]/_components/ContentContainer/ImageItem.jsx";
 import {
@@ -15,6 +15,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "#components/ui/carousel.jsx";
+import usePopstate from "#lib/hooks/usePopstate.js";
 import type { PostInfo } from "#lib/types/response.js";
 
 interface ImageDialogProps {
@@ -30,9 +31,10 @@ export default function ImageDialog({
   imagePath,
   images,
 }: ImageDialogProps) {
-  const handleCloseClick = useCallback(() => {
-    setIsOpen(false);
-  }, [setIsOpen]);
+  const { handleExternalPopAction: handleCloseClick } = usePopstate({
+    onPopstate: () => setIsOpen(false),
+    condition: isOpen,
+  });
 
   return (
     <Dialog open={isOpen} onClose={handleCloseClick} className="relative z-50">
