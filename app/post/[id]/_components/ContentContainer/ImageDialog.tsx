@@ -8,8 +8,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "#components/ui/carousel.jsx";
 import type { PostInfo } from "#lib/types/response.js";
 
@@ -35,10 +33,10 @@ export default function ImageDialog({
       <DialogBackdrop className="fixed inset-0 bg-black/70" />
       <div className="fixed inset-0 flex h-screen w-screen items-center justify-center p-4">
         <DialogPanel>
-          <Carousel className={""}>
+          <Carousel>
             <CarouselContent>
               {images.map((name) => (
-                <CarouselItem key={name}>
+                <CarouselItem key={name} className="h-screen w-screen">
                   <ImageItem
                     imagePath={imagePath}
                     name={name}
@@ -49,8 +47,6 @@ export default function ImageDialog({
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
           </Carousel>
         </DialogPanel>
       </div>
