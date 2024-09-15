@@ -41,11 +41,11 @@ export default function ImageFields({ register, imagePath }: ImageFieldsProps) {
                 width={112}
                 height={112}
                 loader={supabaseLoader}
-                className="rounded-md border-2"
+                className="cursor-pointer rounded-md border-2 hover:opacity-80"
               />
               <button
                 type="button"
-                className="absolute right-0 top-0 size-7 rotate-45 border bg-white opacity-50 transition-opacity hover:opacity-100"
+                className="absolute right-0 top-0 size-7 rotate-45 border bg-white opacity-50 hover:opacity-100"
                 onClick={() => remove(index)}>
                 +
               </button>

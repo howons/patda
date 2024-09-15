@@ -2,7 +2,6 @@
 
 import { type ComponentProps, useCallback, useState } from "react";
 
-import ImageDialog from "#app/post/[id]/_components/ContentContainer/ImageDialog.jsx";
 import ImageItem from "#app/post/[id]/_components/ContentContainer/ImageItem.jsx";
 import {
   Carousel,
@@ -12,6 +11,7 @@ import {
   CarouselPrevious,
 } from "#components/ui/carousel.jsx";
 import type { PostInfo } from "#lib/types/response.js";
+import ImageModal from "#ui/ImageModal/ImageModal.jsx";
 import { cn } from "#utils/utils.js";
 
 interface ImageCarouselProps extends ComponentProps<"div"> {
@@ -52,7 +52,7 @@ export default function ImageCarousel({
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-      <ImageDialog
+      <ImageModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         images={images}
