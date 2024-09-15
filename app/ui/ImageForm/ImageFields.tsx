@@ -2,6 +2,7 @@
 
 import { Input } from "@headlessui/react";
 import Image from "next/image";
+import { useMemo, useState } from "react";
 import { type UseFormRegister } from "react-hook-form";
 
 import type { FormValues } from "#lib/actions/post/createPostAction.js";
@@ -11,6 +12,7 @@ import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import supabaseLoader from "#lib/utils/supabase/loader.js";
 import ErrorText from "#ui/formItems/ErrorText.jsx";
 import UploadButton from "#ui/ImageForm/UploadButton.jsx";
+import ImageModal from "#ui/ImageModal/ImageModal.jsx";
 
 interface ImageFieldsProps {
   register: UseFormRegister<FormValues>;
@@ -18,10 +20,13 @@ interface ImageFieldsProps {
 }
 
 export default function ImageFields({ register, imagePath }: ImageFieldsProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const platform = usePlatformStore((state) => state.platform);
 
   const { fields, handleUploadClick, remove, isPending, errors } =
     useImageFormContext();
+
+  const images = useMemo(() => fields.map(({ name }) => name), [fields]);
 
   return (
     <>
@@ -42,6 +47,7 @@ export default function ImageFields({ register, imagePath }: ImageFieldsProps) {
                 height={112}
                 loader={supabaseLoader}
                 className="cursor-pointer rounded-md border-2 hover:opacity-80"
+                onClick={() => setIsOpen(true)}
               />
               <button
                 type="button"
@@ -53,6 +59,12 @@ export default function ImageFields({ register, imagePath }: ImageFieldsProps) {
             </li>
           ))}
         </ul>
+        <ImageModal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          imagePath={imagePath}
+          images={images}
+        />
       </div>
       {errors.map((error) => (
         <ErrorText key={error}>{error}</ErrorText>
