@@ -33,14 +33,16 @@ export async function removeImages(folder: string, imagesToRemain?: string[]) {
     .remove(imagePathesToDelete);
 }
 
-export function getTempFolderPath(session: Session) {
+export function getTempFolderPath(session: Session, postId?: number) {
   const userNameKey = encodeURIComponent(session.user?.name ?? "").replace(
     /[^a-zA-Z0-9]/g,
     ""
   );
   const userId = session.user?.id ?? "";
 
-  return `temp/${userNameKey}${userId.slice(0, 3)}`;
+  const postKey = postId !== undefined ? `${postId}/` : "";
+
+  return `temp/${postKey}${userNameKey}${userId.slice(0, 3)}`;
 }
 
 interface GetImagePathProps {
@@ -54,7 +56,7 @@ export function getImagePath({
   postId,
   commentId,
 }: GetImagePathProps) {
-  if (session) return getTempFolderPath(session);
+  if (session) return getTempFolderPath(session, postId);
   if (postId !== undefined) return `post/${postId}`;
   if (commentId !== undefined) return `comment/${commentId}`;
   return "";

@@ -118,6 +118,11 @@ export default function PostForm({
     useFormProps,
   });
 
+  const imageArrayRegister = useCallback(
+    (index: number) => register(`images.${index}.name`),
+    [register]
+  );
+
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
       updatePlatform(e.target.value as Platform);
@@ -221,7 +226,7 @@ export default function PostForm({
           </Field>
           <Field>
             <Label>스크린샷</Label>
-            <ImageFields register={register} imagePath={imagePath} />
+            <ImageFields register={imageArrayRegister} imagePath={imagePath} />
             <ErrorMessage
               name="images"
               errors={errors}

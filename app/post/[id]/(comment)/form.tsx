@@ -1,6 +1,7 @@
 "use client";
 
 import { Field, Fieldset } from "@headlessui/react";
+import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
 import { useCallback } from "react";
@@ -14,18 +15,25 @@ import { useCommentStatusStore } from "#lib/providers/CommentStatusStoreProvider
 import Dot from "#ui/Dot/Dot.jsx";
 import {
   ErrorText,
+  Label,
   Legend,
   SubmitButton,
   Switch,
   Textarea,
 } from "#ui/formItems/index.jsx";
+import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 
 interface CommentFormProps {
   session: Session | null;
   postId: number;
+  imagePath: string;
 }
 
-export default function CommentForm({ session, postId }: CommentFormProps) {
+export default function CommentForm({
+  session,
+  postId,
+  imagePath,
+}: CommentFormProps) {
   const { commentStatus, updateCommentStatus } = useCommentStatusStore(
     (store) => store
   );
@@ -43,6 +51,11 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
     action: createCommentAction.bind(null, postId),
     onSuccess,
   });
+
+  const imageArrayRegister = useCallback(
+    (index: number) => register(`images.${index}.name`),
+    [register]
+  );
 
   const isDebate = commentStatus === "debate";
   const color = isDebate ? "rose" : "lime";
@@ -98,6 +111,17 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
             {...register("content")}
           />
         </Field>
+        {isDebate && (
+          <Field>
+            <Label>스크린샷</Label>
+            <ImageFields register={imageArrayRegister} imagePath={imagePath} />
+            <ErrorMessage
+              name="images"
+              errors={errors}
+              render={({ message }) => <ErrorText>{message}</ErrorText>}
+            />
+          </Field>
+        )}
         {state.status === "ERROR_INTERNAL" ||
           (state.status === "ERROR_DATABASE" && (
             <ErrorText>{state.message}</ErrorText>

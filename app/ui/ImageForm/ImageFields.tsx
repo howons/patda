@@ -3,9 +3,8 @@
 import { Input } from "@headlessui/react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { type UseFormRegister } from "react-hook-form";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
-import type { FormValues } from "#lib/actions/post/createPostAction.js";
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { useImageFormContext } from "#lib/providers/ImageFormProvider.jsx";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
@@ -15,7 +14,7 @@ import UploadButton from "#ui/ImageForm/UploadButton.jsx";
 import ImageModal from "#ui/ImageModal/ImageModal.jsx";
 
 interface ImageFieldsProps {
-  register: UseFormRegister<FormValues>;
+  register: (index: number) => UseFormRegisterReturn<`images.${number}.name`>;
   imagePath: string;
 }
 
@@ -55,7 +54,7 @@ export default function ImageFields({ register, imagePath }: ImageFieldsProps) {
                 onClick={() => remove(index)}>
                 +
               </button>
-              <Input type="hidden" {...register(`images.${index}.name`)} />
+              <Input type="hidden" {...register(index)} />
             </li>
           ))}
         </ul>

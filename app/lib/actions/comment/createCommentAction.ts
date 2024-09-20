@@ -16,7 +16,7 @@ const INPUT_STATUS: { [key: number]: PostCommentStatus } = [
 
 const formSchema = z.object({
   content: z.string().min(2, ERROR.POST.SHORT_CONTENT),
-  images: z.array(z.object({ id: z.string() })).nullish(),
+  images: z.array(z.object({ name: z.string() })),
   status: z.nativeEnum(INPUT_STATUS).nullish(),
 });
 
@@ -55,7 +55,7 @@ export async function createCommentAction(
   const newCommentData: NewCommentData = {
     postId,
     userId: session.user.id,
-    images: images?.map(({ id }) => id) ?? null,
+    images: images?.map(({ name }) => name) ?? null,
     status: status ?? "normal",
     ...restData,
   };

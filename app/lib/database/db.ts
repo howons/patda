@@ -58,7 +58,7 @@ export interface Database {
     id: GeneratedAlways<string>;
     userId: string;
     postId: number;
-    images: string[] | null;
+    images: string[];
     content: string;
     status: PostCommentStatus;
     createdAt: GeneratedAlways<Date>;
