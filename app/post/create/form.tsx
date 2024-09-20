@@ -4,7 +4,7 @@ import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { Controller, type UseFormProps } from "react-hook-form";
+import { Controller, useFieldArray, type UseFormProps } from "react-hook-form";
 
 import {
   createPostAction,
@@ -123,6 +123,11 @@ export default function PostForm({
     [register]
   );
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "images",
+  });
+
   const handleSelectChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
       updatePlatform(e.target.value as Platform);
@@ -137,7 +142,7 @@ export default function PostForm({
   }, [initPlatform, updatePlatform]);
 
   return (
-    <ImageFormProvider control={control} postId={id}>
+    <ImageFormProvider fields={fields} append={append} remove={remove} id={id}>
       <form
         action={formAction}
         className="flex w-full min-w-80 max-w-3xl flex-col justify-between px-3 md:w-5/6"

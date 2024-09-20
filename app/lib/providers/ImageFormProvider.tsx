@@ -13,14 +13,12 @@ import {
   useTransition,
 } from "react";
 import {
-  type Control,
+  type FieldArrayMethodProps,
   type FieldArrayWithId,
-  useFieldArray,
   type UseFieldArrayRemove,
 } from "react-hook-form";
 
 import { uploadImageAction } from "#lib/actions/image/uploadImageAction.js";
-import type { FormValues } from "#lib/actions/post/createPostAction.js";
 import { MAX_IMAGE_COUNT } from "#lib/constants/image.js";
 import { ERROR } from "#lib/constants/messages.js";
 
@@ -30,12 +28,16 @@ const IMAGE_ERRORS: { [key: string]: string } = {
   "503": ERROR.IMAGE.NO_RESULT_DB,
 };
 
+type ImageFormFields = {
+  images: { name: string }[];
+};
+
 interface ImageFormValue {
   inputRef: RefObject<HTMLInputElement>;
   isPending: boolean;
-  fields: FieldArrayWithId<FormValues>[];
-  errors: string[];
+  fields: FieldArrayWithId<ImageFormFields>[];
   remove: UseFieldArrayRemove;
+  errors: string[];
   handleUploadClick: () => void;
   handleFileChange: ChangeEventHandler<HTMLInputElement>;
 }
@@ -43,24 +45,33 @@ interface ImageFormValue {
 const ImageFormContext = createContext<ImageFormValue | null>(null);
 
 interface ImageFormProviderProps {
-  control: Control<FormValues>;
+  fields: FieldArrayWithId<ImageFormFields, "images", "id">[];
+  append: (
+    value:
+      | {
+          name: string;
+        }
+      | {
+          name: string;
+        }[],
+    options?: FieldArrayMethodProps
+  ) => void;
+  remove: UseFieldArrayRemove;
   children: ReactNode;
-  postId?: number;
+  id?: number | string;
 }
 
 export const ImageFormProvider = ({
-  control,
+  fields,
+  append,
+  remove,
   children,
-  postId,
+  id,
 }: ImageFormProviderProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isPending, startTranstion] = useTransition();
   const [errors, setErrors] = useState<string[]>([]);
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "images",
-  });
   const imageCount = fields.length;
 
   const handleUploadClick = useCallback(() => {
@@ -80,11 +91,7 @@ export const ImageFormProvider = ({
         });
 
       startTranstion(async () => {
-        const imageState = await uploadImageAction(
-          imageCount,
-          formData,
-          postId
-        );
+        const imageState = await uploadImageAction(imageCount, formData, id);
         if (imageState.status === "SUCCESS" && imageState.resultImages) {
           const imageNames = fields.map((field) => field.name);
           const newImages = imageState.resultImages.filter(
@@ -106,7 +113,7 @@ export const ImageFormProvider = ({
         }
       });
     },
-    [append, errors, fields, imageCount, postId]
+    [append, errors, fields, imageCount, id]
   );
 
   const value: ImageFormValue = useMemo(
@@ -114,12 +121,12 @@ export const ImageFormProvider = ({
       inputRef,
       isPending,
       fields,
-      errors,
       remove,
+      errors,
       handleUploadClick,
       handleFileChange,
     }),
-    [errors, fields, handleFileChange, handleUploadClick, isPending, remove]
+    [errors, fields, remove, handleFileChange, handleUploadClick, isPending]
   );
 
   return (

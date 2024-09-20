@@ -5,6 +5,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
 import type { Session } from "next-auth";
 import { useCallback } from "react";
+import { useFieldArray } from "react-hook-form";
 
 import {
   type CommentFormValues,
@@ -12,6 +13,7 @@ import {
 } from "#lib/actions/comment/createCommentAction.js";
 import { useFormAction } from "#lib/hooks/useFormAction.js";
 import { useCommentStatusStore } from "#lib/providers/CommentStatusStoreProvider.jsx";
+import { ImageFormProvider } from "#lib/providers/ImageFormProvider.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
 import {
   ErrorText,
@@ -22,6 +24,7 @@ import {
   Textarea,
 } from "#ui/formItems/index.jsx";
 import ImageFields from "#ui/ImageForm/ImageFields.jsx";
+import ImageForm from "#ui/ImageForm/ImageForm.jsx";
 
 interface CommentFormProps {
   session: Session | null;
@@ -44,6 +47,7 @@ export default function CommentForm({
   }, [router]);
   const {
     register,
+    control,
     formState: { errors },
     formAction,
     state,
@@ -56,6 +60,11 @@ export default function CommentForm({
     (index: number) => register(`images.${index}.name`),
     [register]
   );
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "images",
+  });
 
   const isDebate = commentStatus === "debate";
   const color = isDebate ? "rose" : "lime";
@@ -71,67 +80,75 @@ export default function CommentForm({
     : `${isDebate ? "반박" : "댓글"}은 로그인 후 작성할 수 있습니다.`;
 
   return (
-    <form action={formAction} data-testid="comment-form">
-      <Fieldset>
-        <Field className="flex items-center">
-          <Legend color={color} className="ml-1 mr-4 text-xl transition-colors">
-            <b
-              className={`transition-all ${isDebate ? "text-sm font-normal text-rose-400" : ""}`}>
-              댓글
-            </b>
-            <Dot
-              color={isDebate ? "rose" : "lime"}
-              className={`mx-3 inline-block transition-colors`}
-            />
-            <b
-              className={`mr-1 transition-all ${isDebate ? "" : "text-sm font-normal text-lime-400"}`}>
-              반박
-            </b>{" "}
-            작성
-          </Legend>
-          <Switch
-            color="lime"
-            checkedColor="rose"
-            name="status"
-            value="debate"
-            checked={isDebate}
-            onChange={handleSwitchChange}
-            className="mt-1"
-          />
-        </Field>
-        <Field className="my-3 max-sm:px-3">
-          <Textarea
-            color={color}
-            className="w-full"
-            required
-            minLength={2}
-            maxLength={9999}
-            disabled={!session}
-            placeholder={placeholder}
-            {...register("content")}
-          />
-        </Field>
-        {isDebate && (
-          <Field>
-            <Label>스크린샷</Label>
-            <ImageFields register={imageArrayRegister} imagePath={imagePath} />
-            <ErrorMessage
-              name="images"
-              errors={errors}
-              render={({ message }) => <ErrorText>{message}</ErrorText>}
+    <ImageFormProvider fields={fields} append={append} remove={remove}>
+      <form action={formAction} data-testid="comment-form">
+        <Fieldset>
+          <Field className="flex items-center">
+            <Legend
+              color={color}
+              className="ml-1 mr-4 text-xl transition-colors">
+              <b
+                className={`transition-all ${isDebate ? "text-sm font-normal text-rose-400" : ""}`}>
+                댓글
+              </b>
+              <Dot
+                color={isDebate ? "rose" : "lime"}
+                className={`mx-3 inline-block transition-colors`}
+              />
+              <b
+                className={`mr-1 transition-all ${isDebate ? "" : "text-sm font-normal text-lime-400"}`}>
+                반박
+              </b>{" "}
+              작성
+            </Legend>
+            <Switch
+              color="lime"
+              checkedColor="rose"
+              name="status"
+              value="debate"
+              checked={isDebate}
+              onChange={handleSwitchChange}
+              className="mt-1"
             />
           </Field>
-        )}
-        {state.status === "ERROR_INTERNAL" ||
-          (state.status === "ERROR_DATABASE" && (
-            <ErrorText>{state.message}</ErrorText>
-          ))}
-        <div className="flex justify-end max-sm:px-3">
-          <SubmitButton color={color} className="ml-auto transition-colors">
-            작성
-          </SubmitButton>
-        </div>
-      </Fieldset>
-    </form>
+          <Field className="my-3 max-sm:px-3">
+            <Textarea
+              color={color}
+              className="w-full"
+              required
+              minLength={2}
+              maxLength={9999}
+              disabled={!session}
+              placeholder={placeholder}
+              {...register("content")}
+            />
+          </Field>
+          {isDebate && (
+            <Field>
+              <Label>스크린샷</Label>
+              <ImageFields
+                register={imageArrayRegister}
+                imagePath={imagePath}
+              />
+              <ErrorMessage
+                name="images"
+                errors={errors}
+                render={({ message }) => <ErrorText>{message}</ErrorText>}
+              />
+            </Field>
+          )}
+          {state.status === "ERROR_INTERNAL" ||
+            (state.status === "ERROR_DATABASE" && (
+              <ErrorText>{state.message}</ErrorText>
+            ))}
+          <div className="flex justify-end max-sm:px-3">
+            <SubmitButton color={color} className="ml-auto transition-colors">
+              작성
+            </SubmitButton>
+          </div>
+        </Fieldset>
+      </form>
+      <ImageForm />
+    </ImageFormProvider>
   );
 }
