@@ -80,7 +80,11 @@ export default function CommentForm({
     : `${isDebate ? "반박" : "댓글"}은 로그인 후 작성할 수 있습니다.`;
 
   return (
-    <ImageFormProvider fields={fields} append={append} remove={remove}>
+    <ImageFormProvider
+      fields={fields}
+      append={append}
+      remove={remove}
+      parentId={postId}>
       <form action={formAction} data-testid="comment-form">
         <Fieldset>
           <Field className="flex items-center">

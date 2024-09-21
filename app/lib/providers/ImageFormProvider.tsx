@@ -59,6 +59,7 @@ interface ImageFormProviderProps {
   remove: UseFieldArrayRemove;
   children: ReactNode;
   id?: number | string;
+  parentId?: number;
 }
 
 export const ImageFormProvider = ({
@@ -67,6 +68,7 @@ export const ImageFormProvider = ({
   remove,
   children,
   id,
+  parentId,
 }: ImageFormProviderProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isPending, startTranstion] = useTransition();
@@ -91,7 +93,12 @@ export const ImageFormProvider = ({
         });
 
       startTranstion(async () => {
-        const imageState = await uploadImageAction(imageCount, formData, id);
+        const imageState = await uploadImageAction(
+          imageCount,
+          formData,
+          id,
+          parentId
+        );
         if (imageState.status === "SUCCESS" && imageState.resultImages) {
           const imageNames = fields.map((field) => field.name);
           const newImages = imageState.resultImages.filter(
@@ -113,7 +120,7 @@ export const ImageFormProvider = ({
         }
       });
     },
-    [append, errors, fields, imageCount, id]
+    [imageCount, id, parentId, fields, append, errors]
   );
 
   const value: ImageFormValue = useMemo(
