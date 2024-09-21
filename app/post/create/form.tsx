@@ -158,7 +158,7 @@ export default function PostForm({
           <div className="flex gap-6">
             <div className="flex-1">
               <Field className="flex flex-col">
-                <Label>거래 사이트</Label>
+                <Label color={color}>거래 사이트</Label>
                 <Select
                   options={platformOptions}
                   className="block"
@@ -170,7 +170,7 @@ export default function PostForm({
               </Field>
               {platform === "etc" && (
                 <Field className="mt-2 flex flex-col">
-                  <Label>사이트 이름</Label>
+                  <Label color={color}>사이트 이름</Label>
                   <Input type="text" {...register("etcPlatformName")} />
                   <ErrorMessage
                     name="etcPlatformName"
@@ -182,7 +182,7 @@ export default function PostForm({
             </div>
             <div className="flex-1 flex-col">
               <Field className="flex flex-col">
-                <Label>상대 닉네임</Label>
+                <Label color={color}>상대 닉네임</Label>
                 <Input
                   type="text"
                   className="block w-full"
@@ -195,7 +195,7 @@ export default function PostForm({
                 />
               </Field>
               <Field className="mt-2 flex flex-col">
-                <Label className="flex items-center">
+                <Label color={color} className="flex items-center">
                   추가 정보
                   <HelpCircle className="ml-2">
                     상대방을 특정하는데 도움이 될 추가 정보를 적어주세요.
@@ -215,7 +215,7 @@ export default function PostForm({
             </div>
           </div>
           <Field>
-            <Label>사유</Label>
+            <Label color={color}>사유</Label>
             <Controller
               control={control}
               name="tag"
@@ -230,8 +230,12 @@ export default function PostForm({
             />
           </Field>
           <Field>
-            <Label>스크린샷</Label>
-            <ImageFields register={imageArrayRegister} imagePath={imagePath} />
+            <Label color={color}>스크린샷</Label>
+            <ImageFields
+              register={imageArrayRegister}
+              imagePath={imagePath}
+              color={color}
+            />
             <ErrorMessage
               name="images"
               errors={errors}
@@ -239,7 +243,7 @@ export default function PostForm({
             />
           </Field>
           <Field>
-            <Label>상세 설명</Label>
+            <Label color={color}>상세 설명</Label>
             <Textarea
               color={PLATFORM_COLOR[platform]}
               className="block w-full resize-y"

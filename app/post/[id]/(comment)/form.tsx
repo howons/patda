@@ -125,10 +125,11 @@ export default function CommentForm({
           </Field>
           {isDebate && (
             <Field>
-              <Label>스크린샷</Label>
+              <Label color={color}>스크린샷</Label>
               <ImageFields
                 register={imageArrayRegister}
                 imagePath={imagePath}
+                color={color}
               />
               <ErrorMessage
                 name="images"
