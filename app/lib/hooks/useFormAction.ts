@@ -12,17 +12,26 @@ interface UseFormActionProps<FormValues extends FieldValues> {
   action: (prevState: ActionState, formData: FormData) => Promise<ActionState>;
   onSuccess?: OnSuccess;
   useFormProps?: UseFormProps<FormValues>;
+  resetKey?: keyof FormValues;
+  resetValue?: any;
 }
+
+// useEffect dependancy 제거 용
+let resetValueStore: any;
 
 export function useFormAction<FormValues extends FieldValues>({
   action,
   onSuccess,
   useFormProps,
+  resetKey,
+  resetValue,
 }: UseFormActionProps<FormValues>) {
   const form = useForm<FormValues>(useFormProps);
   const [state, formAction] = useFormState(action, { status: null });
 
   const { setError, clearErrors, setFocus, reset } = form;
+
+  resetValueStore = resetValue;
 
   useEffect(() => {
     if (!state) return;
@@ -45,10 +54,17 @@ export function useFormAction<FormValues extends FieldValues>({
 
     if (state.status === "SUCCESS") {
       clearErrors();
-      reset();
+      if (resetKey) {
+        reset((values) => ({
+          ...values,
+          [resetKey]: resetValueStore,
+        }));
+      } else {
+        reset();
+      }
       onSuccess?.(state);
     }
-  }, [clearErrors, onSuccess, setError, setFocus, state, reset]);
+  }, [clearErrors, onSuccess, setError, setFocus, state, reset, resetKey]);
 
   return { ...form, state, formAction };
 }
