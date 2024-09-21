@@ -3,17 +3,19 @@ import type { Session } from "next-auth";
 import type { FormValues } from "#lib/actions/post/createPostAction.js";
 import { createClient } from "#lib/utils/supabase/server.js";
 
-export function moveImages(
+export async function moveImages(
   images: FormValues["images"],
   from: string,
   to: string
 ) {
   const supabase = createClient();
-  images.forEach(async ({ name }) => {
+  const promises = images.map(async ({ name }) => {
     const { data, error } = await supabase.storage
       .from("patda-images")
       .move(`${from}/${name}`, `${to}/${name}`);
   });
+
+  await Promise.all(promises);
 }
 
 export async function removeImages(folder: string, imagesToRemain?: string[]) {

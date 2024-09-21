@@ -8,6 +8,12 @@ import { ERROR } from "#lib/constants/messages.js";
 import { createComment, type NewCommentData } from "#lib/database/comments";
 import type { ActionState } from "#lib/types/action.js";
 import type { PostCommentStatus } from "#lib/types/property.js";
+import { getFieldArrayFormData } from "#lib/utils/action.js";
+import {
+  getImagePath,
+  moveImages,
+  removeImages,
+} from "#lib/utils/supabase/images.js";
 
 const INPUT_STATUS: { [key: number]: PostCommentStatus } = [
   "normal",
@@ -38,7 +44,7 @@ export async function createCommentAction(
 
   const input = formSchema.safeParse({
     content: formData.get("content"),
-    images: formData.get("images"),
+    images: getFieldArrayFormData("images", "name", formData),
     status: formData.get("status"),
   });
 
@@ -76,6 +82,13 @@ export async function createCommentAction(
       };
     }
   }
+
+  await moveImages(
+    images,
+    getImagePath({ session, postId }),
+    `comment/${result.id}`
+  );
+  removeImages(getImagePath({ session, postId }));
 
   return {
     status: "SUCCESS",

@@ -98,7 +98,7 @@ export async function createPostAction(
     }
   }
 
-  moveImages(images, getImagePath({ session }), `post/${result.id}`);
+  await moveImages(images, getImagePath({ session }), `post/${result.id}`);
   removeImages(getImagePath({ session }));
 
   return {
