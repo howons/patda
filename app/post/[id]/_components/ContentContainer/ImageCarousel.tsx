@@ -33,7 +33,7 @@ export default function ImageCarousel({
 
   return (
     <>
-      <Carousel className={cn(className, "mx-5")} {...props}>
+      <Carousel className={cn("mx-5", className)} {...props}>
         <CarouselContent>
           {images.map((name) => (
             <CarouselItem

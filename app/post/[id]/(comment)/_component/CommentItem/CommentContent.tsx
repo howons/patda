@@ -76,10 +76,13 @@ export default function CommentContent({
         ) : (
           <>
             <p className={`py-2`}>{content}</p>
-            <ImageCarousel
-              images={images}
-              imagePath={getImagePath({ commentId: id })}
-            />
+            {images?.length > 0 && (
+              <ImageCarousel
+                images={images}
+                imagePath={getImagePath({ commentId: id })}
+                className="mx-12"
+              />
+            )}
           </>
         )}
         <MoreButton
