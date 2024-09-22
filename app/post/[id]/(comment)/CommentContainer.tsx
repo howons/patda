@@ -12,13 +12,13 @@ export default async function CommentContainer({
 }: CommentContainerProps) {
   const session = await auth();
 
-  const formImagePath = session ? getImagePath({ session, postId }) : "";
+  const formImagePath = getImagePath({ session, postId });
 
   return (
     <>
       <section className="my-3">
         <CommentForm
-          session={session}
+          isLogin={!!session}
           postId={postId}
           imagePath={formImagePath}
         />

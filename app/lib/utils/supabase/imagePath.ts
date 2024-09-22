@@ -25,7 +25,7 @@ export function getTempFolderPath(session: Session, postId?: number) {
 }
 
 interface GetImagePathProps {
-  session?: Session;
+  session?: Session | null;
   postId?: number;
   commentId?: string;
 }

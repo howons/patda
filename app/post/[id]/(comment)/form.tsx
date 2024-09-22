@@ -3,7 +3,6 @@
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
-import type { Session } from "next-auth";
 import { useCallback } from "react";
 import { useFieldArray } from "react-hook-form";
 
@@ -27,13 +26,13 @@ import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 import ImageForm from "#ui/ImageForm/ImageForm.jsx";
 
 interface CommentFormProps {
-  session: Session | null;
+  isLogin: boolean;
   postId: number;
   imagePath: string;
 }
 
 export default function CommentForm({
-  session,
+  isLogin,
   postId,
   imagePath,
 }: CommentFormProps) {
@@ -75,7 +74,7 @@ export default function CommentForm({
     updateCommentStatus(checked ? "debate" : "normal");
   };
 
-  const placeholder = session
+  const placeholder = isLogin
     ? isDebate
       ? "위 논란의 당사자로서 반박할 사항이 있다면 작성해주세요. 작성 시 게시글의 상태가 변경됩니다."
       : "반박 이외의 간단한 댓글을 작성해주세요."
@@ -124,7 +123,7 @@ export default function CommentForm({
               required
               minLength={2}
               maxLength={9999}
-              disabled={!session}
+              disabled={!isLogin}
               placeholder={placeholder}
               {...register("content")}
             />

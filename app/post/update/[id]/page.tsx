@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import PostForm from "#app/post/create/form.jsx";
 import { auth } from "#auth";
 import { getPost } from "#lib/database/posts";
-import { getImagePath } from "#lib/utils/supabase/images.js";
+import { getImagePath } from "#lib/utils/supabase/imagePath.js";
 
 export default async function PostUpdatePage({
   params,
