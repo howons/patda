@@ -7,7 +7,7 @@ import type { UseFormRegisterReturn } from "react-hook-form";
 
 import { useImageFormContext } from "#lib/providers/ImageFormProvider.jsx";
 import type { FormColor } from "#lib/types/property.js";
-import supabaseLoader from "#lib/utils/supabase/loader.js";
+import { supabaseLoader } from "#lib/utils/supabase/imagePath.js";
 import ErrorText from "#ui/formItems/ErrorText.jsx";
 import UploadButton from "#ui/ImageForm/UploadButton.jsx";
 import ImageModal from "#ui/ImageModal/ImageModal.jsx";

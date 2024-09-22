@@ -1,4 +1,6 @@
-import type { ComponentProps } from "react";
+"use client";
+
+import { type ComponentProps, useEffect, useRef } from "react";
 
 import type { FormColor } from "#lib/types/property.js";
 import Dot from "#ui/Dot/Dot.jsx";
@@ -21,31 +23,32 @@ export default function AuthorTag({
   className = "",
   ...props
 }: AuthorTagProps) {
-  const thisDate = new Date(date);
+  const formattedDate = useRef("");
 
-  const thisDateTime = thisDate.getTime();
-  const curDateTime = new Date().getTime();
+  useEffect(() => {
+    const thisDateTime = new Date(date).getTime();
+    const curDateTime = new Date().getTime();
 
-  const timeDiff = curDateTime - thisDateTime;
-  const hourDiff = Math.floor(timeDiff / HOUR_MILLISEC);
-  const dayDiff = Math.floor(timeDiff / DAY_MILLISEC);
+    const timeDiff = curDateTime - thisDateTime;
+    const hourDiff = Math.floor(timeDiff / HOUR_MILLISEC);
+    const dayDiff = Math.floor(timeDiff / DAY_MILLISEC);
 
-  let formattedDate = "";
-  if (hourDiff < 1) {
-    formattedDate = "방금 전";
-  } else if (hourDiff < 24) {
-    formattedDate = `${hourDiff}시간 전`;
-  } else if (dayDiff < 8) {
-    formattedDate = `${dayDiff}일 전`;
-  } else if (summary) {
-    formattedDate = `${Math.floor(timeDiff / (30 * DAY_MILLISEC))}달 전`;
-  } else {
-    formattedDate = new Intl.DateTimeFormat("ko-KR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }).format(new Date(date));
-  }
+    if (hourDiff < 1) {
+      formattedDate.current = "방금 전";
+    } else if (hourDiff < 24) {
+      formattedDate.current = `${hourDiff}시간 전`;
+    } else if (dayDiff < 8) {
+      formattedDate.current = `${dayDiff}일 전`;
+    } else if (summary) {
+      formattedDate.current = `${Math.floor(timeDiff / (30 * DAY_MILLISEC))}달 전`;
+    } else {
+      formattedDate.current = new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(new Date(date));
+    }
+  }, [date, summary]);
 
   return (
     <section
@@ -57,7 +60,7 @@ export default function AuthorTag({
           <Dot color={color} />
         </>
       )}
-      <p>{formattedDate}</p>
+      <p>{formattedDate.current}</p>
     </section>
   );
 }

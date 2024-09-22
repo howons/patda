@@ -4,7 +4,7 @@ import PostMutationForm from "#app/post/[id]/_components/ContentContainer/PostMu
 import { auth } from "#auth";
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { getPost } from "#lib/database/posts";
-import { getImagePath } from "#lib/utils/supabase/images.js";
+import { getImagePath } from "#lib/utils/supabase/imagePath.js";
 import Dot from "#ui/Dot/Dot.jsx";
 import CommentLine from "#ui/SIdeLine/CommentLine.jsx";
 

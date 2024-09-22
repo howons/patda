@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import ImageCarousel from "#app/post/[id]/_components/ContentContainer/ImageCarousel.jsx";
 import MoreButton from "#app/post/[id]/(comment)/_component/CommentItem/MoreButton.jsx";
 import UpdateForm from "#app/post/[id]/(comment)/_component/UpdateForm.jsx";
 import type { CommentInfo } from "#lib/types/response.js";
+import { getImagePath } from "#lib/utils/supabase/imagePath.js";
 
 const CONTENT_HEIGHT_GAP = 40;
 const CONTENT_MAX_HEIGHT = 10 * CONTENT_HEIGHT_GAP;
@@ -72,7 +74,13 @@ export default function CommentContent({
             className={`${updateTransitioning ? "pb-[35rem]" : "pb-0"}`}
           />
         ) : (
-          <p className={`py-2`}>{content}</p>
+          <>
+            <p className={`py-2`}>{content}</p>
+            <ImageCarousel
+              images={images}
+              imagePath={getImagePath({ commentId: id })}
+            />
+          </>
         )}
         <MoreButton
           isActive={moreClicked}

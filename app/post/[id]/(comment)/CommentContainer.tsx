@@ -1,7 +1,7 @@
 import CommentList from "#app/post/[id]/(comment)/_component/CommentList.jsx";
 import CommentForm from "#app/post/[id]/(comment)/form.jsx";
 import { auth } from "#auth";
-import { getImagePath } from "#lib/utils/supabase/images.js";
+import { getImagePath } from "#lib/utils/supabase/imagePath.js";
 
 interface CommentContainerProps {
   postId: number;

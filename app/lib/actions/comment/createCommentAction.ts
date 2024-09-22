@@ -9,11 +9,8 @@ import { createComment, type NewCommentData } from "#lib/database/comments";
 import type { ActionState } from "#lib/types/action.js";
 import type { PostCommentStatus } from "#lib/types/property.js";
 import { getFieldArrayFormData } from "#lib/utils/action.js";
-import {
-  getImagePath,
-  moveImages,
-  removeImages,
-} from "#lib/utils/supabase/images.js";
+import { getImagePath } from "#lib/utils/supabase/imagePath.js";
+import { moveImages, removeImages } from "#lib/utils/supabase/images.js";
 
 const INPUT_STATUS: { [key: number]: PostCommentStatus } = [
   "normal",
