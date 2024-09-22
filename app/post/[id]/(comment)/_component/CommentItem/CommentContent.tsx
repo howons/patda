@@ -31,6 +31,8 @@ export default function CommentContent({
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
 
+  const isDebate = status === "debate";
+
   useEffect(() => {
     if (!contentRef.current) return;
 
@@ -45,7 +47,11 @@ export default function CommentContent({
 
   let contentHeightStyle = "";
   if (updateClicked) {
-    contentHeightStyle = updateTransitioning ? "max-h-60" : "max-h-[50rem]";
+    contentHeightStyle = updateTransitioning
+      ? isDebate
+        ? "max-h-96"
+        : "max-h-60"
+      : "max-h-[50rem]";
   } else {
     contentHeightStyle = moreClicked
       ? "max-h-[50rem]"
@@ -56,9 +62,7 @@ export default function CommentContent({
     (!updateClicked && !updateTransitioning) ||
     (updateClicked && updateTransitioning);
 
-  const moreEnabled = contentHeight >= CONTENT_MAX_HEIGHT && !updateClicked;
-
-  const isDebate = status === "debate";
+  const moreEnabled = contentHeight > CONTENT_MAX_HEIGHT && !updateClicked;
 
   return (
     <section

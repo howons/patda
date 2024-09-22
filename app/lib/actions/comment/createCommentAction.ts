@@ -58,7 +58,7 @@ export async function createCommentAction(
   const newCommentData: NewCommentData = {
     postId,
     userId: session.user.id,
-    images: images?.map(({ name }) => name) ?? null,
+    images: images.map(({ name }) => name),
     status: status ?? "normal",
     ...restData,
   };
