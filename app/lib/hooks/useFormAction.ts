@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { FieldValues, Path, useForm, type UseFormProps } from "react-hook-form";
 
@@ -12,26 +12,21 @@ interface UseFormActionProps<FormValues extends FieldValues> {
   action: (prevState: ActionState, formData: FormData) => Promise<ActionState>;
   onSuccess?: OnSuccess;
   useFormProps?: UseFormProps<FormValues>;
-  resetKey?: keyof FormValues;
-  resetValue?: any;
+  defaultValues?: Partial<FormValues>;
 }
-
-// useEffect dependancy 제거 용
-let resetValueStore: any;
 
 export function useFormAction<FormValues extends FieldValues>({
   action,
   onSuccess,
   useFormProps,
-  resetKey,
-  resetValue,
+  defaultValues,
 }: UseFormActionProps<FormValues>) {
   const form = useForm<FormValues>(useFormProps);
   const [state, formAction] = useFormState(action, { status: null });
 
-  const { setError, clearErrors, setFocus, reset } = form;
+  const defaultValuesRef = useRef(defaultValues);
 
-  resetValueStore = resetValue;
+  const { setError, clearErrors, setFocus, reset } = form;
 
   useEffect(() => {
     if (!state) return;
@@ -54,17 +49,22 @@ export function useFormAction<FormValues extends FieldValues>({
 
     if (state.status === "SUCCESS") {
       clearErrors();
-      if (resetKey) {
+      console.log(defaultValuesRef.current, !!defaultValuesRef.current);
+      if (defaultValuesRef.current) {
         reset((values) => ({
           ...values,
-          [resetKey]: resetValueStore,
+          ...defaultValuesRef.current,
         }));
       } else {
         reset();
       }
       onSuccess?.(state);
     }
-  }, [clearErrors, onSuccess, setError, setFocus, state, reset, resetKey]);
+  }, [clearErrors, onSuccess, setError, setFocus, state, reset]);
+
+  useEffect(() => {
+    defaultValuesRef.current = defaultValues;
+  }, [defaultValues]);
 
   return { ...form, state, formAction };
 }

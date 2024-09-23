@@ -25,6 +25,11 @@ import {
 import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 import ImageForm from "#ui/ImageForm/ImageForm.jsx";
 
+const defaultValues: CommentFormValues = {
+  content: "",
+  images: [],
+};
+
 interface CommentFormProps {
   isLogin: boolean;
   postId: number;
@@ -53,8 +58,7 @@ export default function CommentForm({
   } = useFormAction<CommentFormValues>({
     action: createCommentAction.bind(null, postId),
     onSuccess,
-    resetKey: "images",
-    resetValue: [],
+    defaultValues,
   });
 
   const imageArrayRegister = useCallback(
