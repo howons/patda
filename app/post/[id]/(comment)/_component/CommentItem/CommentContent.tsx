@@ -36,8 +36,10 @@ export default function CommentContent({
   useEffect(() => {
     if (!contentRef.current) return;
 
+    if (content.length <= 0 && images.length <= 0) setContentHeight(16);
+
     setContentHeight(contentRef.current.scrollHeight);
-  }, []);
+  }, [content.length, images.length]);
 
   useEffect(() => {
     if (!updateClicked || !contentRef.current?.parentElement) return;
