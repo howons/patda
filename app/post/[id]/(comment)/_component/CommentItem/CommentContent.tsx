@@ -5,14 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import ImageCarousel from "#app/post/[id]/_components/ContentContainer/ImageCarousel.jsx";
 import MoreButton from "#app/post/[id]/(comment)/_component/CommentItem/MoreButton.jsx";
 import UpdateForm from "#app/post/[id]/(comment)/_component/UpdateForm.jsx";
-import type { CommentInfo } from "#lib/types/response.js";
+import { useCommentContext } from "#lib/providers/CommentProvider.jsx";
 import { getImagePath } from "#lib/utils/supabase/imagePath.js";
 
 const CONTENT_HEIGHT_GAP = 40;
 const CONTENT_MAX_HEIGHT = 10 * CONTENT_HEIGHT_GAP;
 
 interface CommentContentProps {
-  comment: CommentInfo;
   updateClicked: boolean;
   onUpdateClick: (value: boolean) => void;
   updateTransitioning: boolean;
@@ -21,7 +20,6 @@ interface CommentContentProps {
 }
 
 export default function CommentContent({
-  comment: { id, content, images, status },
   updateClicked,
   onUpdateClick,
   updateTransitioning,
@@ -30,6 +28,8 @@ export default function CommentContent({
 }: CommentContentProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
+
+  const { id, content, images, status } = useCommentContext();
 
   const isDebate = status === "debate";
 
@@ -72,7 +72,6 @@ export default function CommentContent({
         className={`${transitionEnabled ? "transtion duration-300 ease-out" : ""} ${contentHeightStyle}`}>
         {updateClicked ? (
           <UpdateForm
-            comment={{ id, content, images }}
             isDebate={isDebate}
             onUpdateClick={onUpdateClick}
             className={`${updateTransitioning ? "pb-[35rem]" : "pb-0"}`}

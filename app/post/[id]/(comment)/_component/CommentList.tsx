@@ -3,6 +3,7 @@ import type { ComponentProps } from "react";
 import CommentItem from "#app/post/[id]/(comment)/_component/CommentItem/CommentItem.jsx";
 import { auth } from "#auth";
 import { getComments } from "#lib/database/comments.js";
+import { CommentProvider } from "#lib/providers/CommentProvider.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
 
 interface CommentListProps extends ComponentProps<"section"> {
@@ -31,13 +32,13 @@ export default async function CommentList({
         <p className="text-lg text-rose-700">{debateCount}개의 반박</p>
       </div>
       <ul className="my-3 mr-3">
-        {comments.map((comment, idx) => (
-          <CommentItem
-            key={comment.id}
-            comment={comment}
-            isMine={comment.userId === session?.user?.id}
-            isLast={idx === comments.length - 1}
-          />
+        {comments.map(({ id, userId, ...commentInfo }, idx) => (
+          <CommentProvider key={id} id={id} {...commentInfo}>
+            <CommentItem
+              isMine={userId === session?.user?.id}
+              isLast={idx === comments.length - 1}
+            />
+          </CommentProvider>
         ))}
       </ul>
     </section>

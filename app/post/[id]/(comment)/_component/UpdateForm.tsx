@@ -11,8 +11,8 @@ import {
   updateCommentAction,
 } from "#lib/actions/comment/updateCommentAction.js";
 import { useFormAction } from "#lib/hooks/useFormAction.js";
+import { useCommentContext } from "#lib/providers/CommentProvider.jsx";
 import { ImageFormProvider } from "#lib/providers/ImageFormProvider.jsx";
-import type { CommentInfo } from "#lib/types/response.js";
 import { getImagePath } from "#lib/utils/supabase/imagePath.js";
 import Button from "#ui/Button/Button.jsx";
 import {
@@ -25,18 +25,18 @@ import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 import ImageForm from "#ui/ImageForm/ImageForm.jsx";
 
 interface UpdateFormProps extends ComponentProps<"form"> {
-  comment: Pick<CommentInfo, "id" | "content" | "images">;
   isDebate: boolean;
   onUpdateClick: (value: boolean) => void;
 }
 
 export default function UpdateForm({
-  comment: { id, content, images },
   isDebate,
   onUpdateClick,
   className = "",
   ...props
 }: UpdateFormProps) {
+  const { id, content, images } = useCommentContext();
+
   const router = useRouter();
 
   const onSuccess = useCallback(() => {

@@ -4,19 +4,17 @@ import { type ComponentProps, useCallback, useState } from "react";
 
 import CommentContent from "#app/post/[id]/(comment)/_component/CommentItem/CommentContent.jsx";
 import CommentHeader from "#app/post/[id]/(comment)/_component/CommentItem/CommentHeader.jsx";
-import type { CommentInfo } from "#lib/types/response.js";
+import { useCommentContext } from "#lib/providers/CommentProvider.jsx";
 import SideLine from "#ui/SIdeLine/SideLine.jsx";
 
 const TRANSTION_DELAY = 300;
 
 interface CommentItemProps extends ComponentProps<"li"> {
-  comment: CommentInfo;
   isMine: boolean;
   isLast?: boolean;
 }
 
 export default function CommentItem({
-  comment,
   isMine,
   isLast,
   className = "",
@@ -25,6 +23,8 @@ export default function CommentItem({
   const [updateClicked, setUpdateClicked] = useState(false);
   const [moreClicked, setMoreClicked] = useState(false);
   const [updateTransitioning, setUpdateTransitioning] = useState(false);
+
+  const { status } = useCommentContext();
 
   const handleUpdateClick = useCallback(
     (value: boolean) => {
@@ -53,7 +53,7 @@ export default function CommentItem({
 
   const handleMoreClick = useCallback(() => setMoreClicked((m) => !m), []);
 
-  const isDebate = comment.status === "debate";
+  const isDebate = status === "debate";
 
   return (
     <li className={`flex min-h-20 ${className}`} {...props}>
@@ -64,13 +64,11 @@ export default function CommentItem({
       />
       <article className="relative mb-3 grow flex-col">
         <CommentHeader
-          comment={comment}
           isMine={isMine}
           updateClicked={updateClicked}
           onUpdateClick={handleUpdateClick}
         />
         <CommentContent
-          comment={comment}
           updateClicked={updateClicked}
           onUpdateClick={handleUpdateClick}
           updateTransitioning={updateTransitioning}
