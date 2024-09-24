@@ -8,6 +8,9 @@ import { ERROR } from "#lib/constants/messages.js";
 import { createComment, type NewCommentData } from "#lib/database/comments";
 import type { ActionState } from "#lib/types/action.js";
 import type { PostCommentStatus } from "#lib/types/property.js";
+import { getFieldArrayFormData } from "#lib/utils/action.js";
+import { getImagePath } from "#lib/utils/supabase/imagePath.js";
+import { moveImages, removeImages } from "#lib/utils/supabase/images.js";
 
 const INPUT_STATUS: { [key: number]: PostCommentStatus } = [
   "normal",
@@ -16,7 +19,7 @@ const INPUT_STATUS: { [key: number]: PostCommentStatus } = [
 
 const formSchema = z.object({
   content: z.string().min(2, ERROR.POST.SHORT_CONTENT),
-  images: z.array(z.object({ id: z.string() })).nullish(),
+  images: z.array(z.object({ name: z.string() })),
   status: z.nativeEnum(INPUT_STATUS).nullish(),
 });
 
@@ -38,7 +41,7 @@ export async function createCommentAction(
 
   const input = formSchema.safeParse({
     content: formData.get("content"),
-    images: formData.get("images"),
+    images: getFieldArrayFormData("images", "name", formData),
     status: formData.get("status"),
   });
 
@@ -55,7 +58,7 @@ export async function createCommentAction(
   const newCommentData: NewCommentData = {
     postId,
     userId: session.user.id,
-    images: images?.map(({ id }) => id) ?? null,
+    images: images.map(({ name }) => name),
     status: status ?? "normal",
     ...restData,
   };
@@ -76,6 +79,13 @@ export async function createCommentAction(
       };
     }
   }
+
+  await moveImages(
+    images,
+    getImagePath({ session, postId }),
+    `comment/${result.id}`
+  );
+  removeImages(getImagePath({ session, postId }));
 
   return {
     status: "SUCCESS",

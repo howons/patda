@@ -11,7 +11,8 @@ import { TAG_ID } from "#lib/constants/tag.js";
 import { getPost, updatePost, type UpdatePostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
 import { getFieldArrayFormData } from "#lib/utils/action.js";
-import { getImagePath, removeImages } from "#lib/utils/supabase/images.js";
+import { getImagePath } from "#lib/utils/supabase/imagePath.js";
+import { removeImages } from "#lib/utils/supabase/images.js";
 
 const formSchema = z
   .object({

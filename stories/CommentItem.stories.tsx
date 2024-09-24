@@ -9,40 +9,9 @@ import {
   getComment,
   updateComment,
 } from "#lib/database/comments.mock.js";
+import { CommentProvider } from "#lib/providers/CommentProvider.jsx";
 import { CommentStatusStoreProvider } from "#lib/providers/CommentStatusStoreProvider.jsx";
 import type { CommentInfo } from "#lib/types/response.js";
-
-const meta = {
-  title: "ui/CommentItem",
-  component: CommentItem,
-  parameters: {
-    layout: "padded",
-  },
-  tags: ["autodocs"],
-  decorators: [
-    (Story) => (
-      <CommentStatusStoreProvider>
-        <div
-          style={{
-            width: "100%",
-            maxWidth: "48rem",
-            margin: "10% auto 10% auto",
-          }}>
-          {Story()}
-        </div>
-      </CommentStatusStoreProvider>
-    ),
-  ],
-  async beforeEach() {
-    const mockAuth = new Promise<Session>((resolve) => {
-      resolve({ user: { id: "1" }, expires: "" });
-    });
-    auth.mockReturnValue(mockAuth);
-  },
-} satisfies Meta<typeof CommentItem>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
 
 const dummyComment: CommentInfo = {
   id: "1",
@@ -59,9 +28,42 @@ const dummyComment: CommentInfo = {
   updatedAt: new Date("2024-08-01T09:24:00"),
 };
 
+const meta = {
+  title: "ui/CommentItem",
+  component: CommentItem,
+  parameters: {
+    layout: "padded",
+  },
+  tags: ["autodocs"],
+  decorators: [
+    (Story) => (
+      <CommentStatusStoreProvider>
+        <CommentProvider {...dummyComment}>
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "48rem",
+              margin: "10% auto 10% auto",
+            }}>
+            {Story()}
+          </div>
+        </CommentProvider>
+      </CommentStatusStoreProvider>
+    ),
+  ],
+  async beforeEach() {
+    const mockAuth = new Promise<Session>((resolve) => {
+      resolve({ user: { id: "1" }, expires: "" });
+    });
+    auth.mockReturnValue(mockAuth);
+  },
+} satisfies Meta<typeof CommentItem>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
 export const Comment: Story = {
   args: {
-    comment: dummyComment,
     isMine: true,
     isLast: true,
   },
@@ -136,7 +138,6 @@ export const Comment: Story = {
 
 export const NotMyComment: Story = {
   args: {
-    comment: dummyComment,
     isMine: false,
     isLast: true,
   },

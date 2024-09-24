@@ -2,7 +2,7 @@
 
 import Image, { type ImageProps } from "next/image";
 
-import supabaseLoader from "#lib/utils/supabase/loader.js";
+import { supabaseLoader } from "#lib/utils/supabase/imagePath.js";
 
 interface ImageItemProps extends Partial<ImageProps> {
   imagePath: string;

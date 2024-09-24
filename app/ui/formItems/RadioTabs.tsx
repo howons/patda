@@ -9,6 +9,7 @@ import {
 } from "@headlessui/react";
 import React from "react";
 
+import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import type { Platform } from "#lib/types/property.js";
 import Label from "#ui/formItems/Label.jsx";
@@ -71,6 +72,7 @@ function RadioTabs<ItemType extends string>({
               <div
                 className={`${itemDefaultStyle} ${platformStyles[platform]} ${platformCheckedStyles(checked)[platform]}`}>
                 <Label
+                  color={PLATFORM_COLOR[platform]}
                   size="md"
                   className={`${labelDefaultStyle} ${platformLabelStyles[platform]}`}>
                   {name}

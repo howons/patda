@@ -3,25 +3,27 @@
 import { Input } from "@headlessui/react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { type UseFormRegister } from "react-hook-form";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
-import type { FormValues } from "#lib/actions/post/createPostAction.js";
-import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { useImageFormContext } from "#lib/providers/ImageFormProvider.jsx";
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
-import supabaseLoader from "#lib/utils/supabase/loader.js";
+import type { FormColor } from "#lib/types/property.js";
+import { supabaseLoader } from "#lib/utils/supabase/imagePath.js";
 import ErrorText from "#ui/formItems/ErrorText.jsx";
 import UploadButton from "#ui/ImageForm/UploadButton.jsx";
 import ImageModal from "#ui/ImageModal/ImageModal.jsx";
 
 interface ImageFieldsProps {
-  register: UseFormRegister<FormValues>;
+  register: (index: number) => UseFormRegisterReturn<`images.${number}.name`>;
   imagePath: string;
+  color: FormColor;
 }
 
-export default function ImageFields({ register, imagePath }: ImageFieldsProps) {
+export default function ImageFields({
+  register,
+  imagePath,
+  color,
+}: ImageFieldsProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const platform = usePlatformStore((state) => state.platform);
 
   const { fields, handleUploadClick, remove, isPending, errors } =
     useImageFormContext();
@@ -33,7 +35,7 @@ export default function ImageFields({ register, imagePath }: ImageFieldsProps) {
       <div className="mb-1 flex gap-2">
         <UploadButton
           imageCount={fields.length}
-          color={PLATFORM_COLOR[platform]}
+          color={color}
           loading={isPending}
           onClick={handleUploadClick}
         />
@@ -55,7 +57,7 @@ export default function ImageFields({ register, imagePath }: ImageFieldsProps) {
                 onClick={() => remove(index)}>
                 +
               </button>
-              <Input type="hidden" {...register(`images.${index}.name`)} />
+              <Input type="hidden" {...register(index)} />
             </li>
           ))}
         </ul>

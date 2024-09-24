@@ -7,9 +7,7 @@ export type NewCommentData = Omit<
   "id" | "createdAt" | "updatedAt"
 >;
 
-export type UpdateCommentData = Partial<
-  Pick<Database["Comment"], "content" | "images">
->;
+export type UpdateCommentData = Pick<Database["Comment"], "content" | "images">;
 
 export function createComment(newCommentData: NewCommentData) {
   return db

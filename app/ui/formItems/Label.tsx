@@ -1,23 +1,20 @@
-"use client";
-
 import { Label as HeadlessLabel } from "@headlessui/react";
 import { LabelHTMLAttributes, PropsWithChildren } from "react";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
-import type { Platform } from "#lib/types/property.js";
+import type { FormColor } from "#lib/types/property.js";
 
 interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+  color: FormColor;
   size?: "xl" | "lg" | "md" | "sm";
 }
 
 function Label({
+  color,
   size = "lg",
   className = "",
   children,
   ...props
 }: PropsWithChildren<LabelProps>) {
-  const platform = usePlatformStore((store) => store.platform);
-
   const sizeStyles: {
     [key in Exclude<LabelProps["size"], undefined>]: string;
   } = {
@@ -27,18 +24,20 @@ function Label({
     sm: "text-sm",
   };
 
-  const platformStyles: { [key in Platform]: string } = {
-    daangn: "text-orange-500",
-    bunjang: "text-red-500",
-    joongna: "text-green-500",
-    etc: "text-zinc-500",
+  const colorStyles: { [key in FormColor]: string } = {
+    orange: "text-orange-500",
+    red: "text-red-500",
+    green: "text-green-500",
+    zinc: "text-zinc-500",
+    lime: "text-lime-500",
+    rose: "text-rose-500",
   };
 
   const defaultStyle = "font-bold";
 
   return (
     <HeadlessLabel
-      className={`${defaultStyle} ${sizeStyles[size]} ${platformStyles[platform]} ${className}`}
+      className={`${defaultStyle} ${sizeStyles[size]} ${colorStyles[color]} ${className}`}
       {...props}>
       {children}
     </HeadlessLabel>

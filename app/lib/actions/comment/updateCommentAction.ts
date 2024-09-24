@@ -11,10 +11,11 @@ import {
   type UpdateCommentData,
 } from "#lib/database/comments";
 import type { ActionState } from "#lib/types/action.js";
+import { getFieldArrayFormData } from "#lib/utils/action.js";
 
 const formSchema = z.object({
-  content: z.string().min(2, ERROR.POST.SHORT_CONTENT).nullish(),
-  images: z.array(z.object({ id: z.string() })).nullish(),
+  content: z.string().min(2, ERROR.POST.SHORT_CONTENT),
+  images: z.array(z.object({ name: z.string() })),
 });
 
 export type CommentUpdateFormValues = z.infer<typeof formSchema>;
@@ -44,7 +45,7 @@ export async function updateCommentAction(
 
   const input = formSchema.safeParse({
     content: formData.get("content"),
-    images: formData.get("images"),
+    images: getFieldArrayFormData("images", "name", formData),
   });
 
   if (!input.success) {
@@ -58,8 +59,8 @@ export async function updateCommentAction(
   const { images, content } = input.data;
 
   const updateCommentData: UpdateCommentData = {
-    content: content ?? undefined,
-    images: images?.map(({ id }) => id) ?? null,
+    content: content,
+    images: images.map(({ name }) => name),
   };
 
   try {

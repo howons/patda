@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { FieldValues, Path, useForm, type UseFormProps } from "react-hook-form";
 
@@ -12,15 +12,19 @@ interface UseFormActionProps<FormValues extends FieldValues> {
   action: (prevState: ActionState, formData: FormData) => Promise<ActionState>;
   onSuccess?: OnSuccess;
   useFormProps?: UseFormProps<FormValues>;
+  defaultValues?: Partial<FormValues>;
 }
 
 export function useFormAction<FormValues extends FieldValues>({
   action,
   onSuccess,
   useFormProps,
+  defaultValues,
 }: UseFormActionProps<FormValues>) {
   const form = useForm<FormValues>(useFormProps);
   const [state, formAction] = useFormState(action, { status: null });
+
+  const defaultValuesRef = useRef(defaultValues);
 
   const { setError, clearErrors, setFocus, reset } = form;
 
@@ -45,10 +49,22 @@ export function useFormAction<FormValues extends FieldValues>({
 
     if (state.status === "SUCCESS") {
       clearErrors();
-      reset();
+      console.log(defaultValuesRef.current, !!defaultValuesRef.current);
+      if (defaultValuesRef.current) {
+        reset((values) => ({
+          ...values,
+          ...defaultValuesRef.current,
+        }));
+      } else {
+        reset();
+      }
       onSuccess?.(state);
     }
   }, [clearErrors, onSuccess, setError, setFocus, state, reset]);
+
+  useEffect(() => {
+    defaultValuesRef.current = defaultValues;
+  }, [defaultValues]);
 
   return { ...form, state, formAction };
 }

@@ -10,11 +10,8 @@ import { TAG_ID } from "#lib/constants/tag.js";
 import { createPost, type NewPostData } from "#lib/database/posts";
 import type { ActionState } from "#lib/types/action.js";
 import { getFieldArrayFormData } from "#lib/utils/action.js";
-import {
-  getImagePath,
-  moveImages,
-  removeImages,
-} from "#lib/utils/supabase/images.js";
+import { getImagePath } from "#lib/utils/supabase/imagePath.js";
+import { moveImages, removeImages } from "#lib/utils/supabase/images.js";
 
 const formSchema = z
   .object({
@@ -98,7 +95,7 @@ export async function createPostAction(
     }
   }
 
-  moveImages(images, getImagePath({ session }), `post/${result.id}`);
+  await moveImages(images, getImagePath({ session }), `post/${result.id}`);
   removeImages(getImagePath({ session }));
 
   return {

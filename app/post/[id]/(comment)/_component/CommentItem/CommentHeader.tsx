@@ -2,23 +2,23 @@
 
 import { deleteCommentAction } from "#lib/actions/comment/deleteCommentAction.js";
 import useDeleteAction from "#lib/hooks/useDeleteAction.js";
-import type { CommentInfo } from "#lib/types/response.js";
+import { useCommentContext } from "#lib/providers/CommentProvider.jsx";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import MutationButtonGroup from "#ui/MutationButtonGroup/MutationButtonGroup.jsx";
 
 interface CommentHeaderProps {
   isMine: boolean;
-  comment: CommentInfo;
   updateClicked: boolean;
   onUpdateClick: (value: boolean) => void;
 }
 
 export default function CommentHeader({
   isMine,
-  comment: { id, userName, status, createdAt },
   updateClicked,
   onUpdateClick,
 }: CommentHeaderProps) {
+  const { id, userName, status, createdAt } = useCommentContext();
+
   const [deleteState, deleteFormAction] = useDeleteAction(
     deleteCommentAction.bind(null, id)
   );

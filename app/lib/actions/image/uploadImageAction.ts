@@ -4,13 +4,14 @@ import { auth } from "#auth";
 import { MAX_IMAGE_COUNT } from "#lib/constants/image.js";
 import { ERROR } from "#lib/constants/messages.js";
 import type { ActionState } from "#lib/types/action.js";
-import { getImagePath } from "#lib/utils/supabase/images.js";
+import { getImagePath } from "#lib/utils/supabase/imagePath.js";
 import { createClient } from "#lib/utils/supabase/server.js";
 
 export async function uploadImageAction(
   imageCount: number,
   formData: FormData,
-  id?: string | number
+  id?: string | number,
+  parentId?: number
 ): Promise<ActionState> {
   const session = await auth();
   const isUpdate = id !== undefined;
@@ -52,7 +53,7 @@ export async function uploadImageAction(
     );
 
     const pathProps: Parameters<typeof getImagePath>[0] = !isUpdate
-      ? { session }
+      ? { session, postId: parentId }
       : typeof id === "number"
         ? { postId: id }
         : { commentId: id };
