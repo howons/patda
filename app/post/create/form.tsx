@@ -48,35 +48,27 @@ const tagOptions = Object.entries(TAG_NAMES).map(([id, name]) => ({
   name,
   description: TAG_DESC[id as TagId],
 }));
-interface PostFormProps
-  extends Partial<
-    Pick<
-      PostInfo,
-      | "id"
-      | "content"
-      | "etcPlatformName"
-      | "images"
-      | "platform"
-      | "tag"
-      | "targetNickname"
-      | "additionalInfo"
-    >
-  > {
+interface PostFormProps {
   imagePath: string;
+  defaultValues?: Pick<
+    PostInfo,
+    | "content"
+    | "etcPlatformName"
+    | "images"
+    | "platform"
+    | "tag"
+    | "targetNickname"
+    | "additionalInfo"
+  >;
+  id?: PostInfo["id"];
 }
 
 export default function PostForm({
-  id,
-  content,
-  etcPlatformName,
-  additionalInfo,
-  images,
-  platform: initPlatform,
-  tag,
-  targetNickname,
   imagePath,
+  defaultValues,
+  id,
 }: PostFormProps) {
-  const isUpdate = id !== undefined;
+  const isUpdate = defaultValues !== undefined && id !== undefined;
 
   const [saveLoading, setSaveLoading] = useState(false);
   const { platform, updatePlatform } = usePlatformStore((store) => store);
@@ -96,13 +88,8 @@ export default function PostForm({
   if (isUpdate) {
     useFormProps = {
       defaultValues: {
-        content,
-        etcPlatformName,
-        images: images?.map((name) => ({ name })) ?? [],
-        platform: initPlatform,
-        tag,
-        targetNickname,
-        additionalInfo,
+        ...defaultValues,
+        images: defaultValues.images.map((name) => ({ name })),
       },
     };
   }
@@ -135,11 +122,13 @@ export default function PostForm({
     [updatePlatform]
   );
 
+  const initPlatform = defaultValues?.platform;
+
   useEffect(() => {
     if (!initPlatform) return;
 
     updatePlatform(initPlatform);
-  }, [initPlatform, updatePlatform]);
+  }, [updatePlatform, initPlatform]);
 
   return (
     <ImageFormProvider fields={fields} append={append} remove={remove} id={id}>
@@ -222,7 +211,7 @@ export default function PostForm({
               render={({ field }) => (
                 <RadioTabs<TagId>
                   name="tag"
-                  defaultValue={isUpdate ? tag : "others"}
+                  defaultValue={isUpdate ? defaultValues.tag : "others"}
                   onChange={field.onChange}
                   items={tagOptions}
                 />

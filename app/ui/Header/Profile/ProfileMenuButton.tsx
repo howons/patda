@@ -2,24 +2,15 @@
 
 import { MenuButton } from "@headlessui/react";
 import { IoPersonCircleOutline } from "@react-icons/all-files/io5/IoPersonCircleOutline";
-import { Session } from "next-auth";
-import { useEffect, useRef } from "react";
 
-import { useProfileRefStore } from "#lib/providers/ProfileRefProvider.jsx";
+import { useProfileRef } from "#lib/providers/ProfileRefProvider.jsx";
 
 interface ProfileMenuButtonProps {
-  session: Session | null;
+  isLogin: boolean;
 }
 
-function ProfileMenuButton({ session }: ProfileMenuButtonProps) {
-  const profileRef = useRef<HTMLButtonElement>(null);
-  const updateProfileRef = useProfileRefStore(
-    (store) => store.updateProfileRef
-  );
-
-  useEffect(() => {
-    updateProfileRef(profileRef.current);
-  }, [updateProfileRef]);
+function ProfileMenuButton({ isLogin }: ProfileMenuButtonProps) {
+  const profileRef = useProfileRef();
 
   return (
     <MenuButton className={`size-12 shrink-0 rounded-full`} ref={profileRef}>

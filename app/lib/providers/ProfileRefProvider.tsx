@@ -1,48 +1,33 @@
 "use client";
 
-import { createContext, type ReactNode, useContext, useRef } from "react";
-import { type StoreApi, useStore } from "zustand";
-
 import {
-  createProfileRefStore,
-  initProfileRefStore,
-  type ProfileRefStore,
-} from "#lib/stores/profileRefStore.js";
+  createContext,
+  type MutableRefObject,
+  type PropsWithChildren,
+  useContext,
+  useRef,
+} from "react";
 
-export const ProfileRefStoreContext =
-  createContext<StoreApi<ProfileRefStore> | null>(null);
+export const ProfileRefContext = createContext<
+  MutableRefObject<HTMLButtonElement | null>
+>({ current: null });
 
-export interface ProfileRefStoreProviderProps {
-  defaultState?: HTMLButtonElement | null;
-  children: ReactNode;
-}
-
-export const ProfileRefStoreProvider = ({
-  defaultState,
-  children,
-}: ProfileRefStoreProviderProps) => {
-  const storeRef = useRef<StoreApi<ProfileRefStore>>();
-  if (!storeRef.current) {
-    storeRef.current = createProfileRefStore(initProfileRefStore(defaultState));
-  }
+export const ProfileRefProvider = ({ children }: PropsWithChildren<{}>) => {
+  const profileRef = useRef<HTMLButtonElement | null>(null);
 
   return (
-    <ProfileRefStoreContext.Provider value={storeRef.current}>
+    <ProfileRefContext.Provider value={profileRef}>
       {children}
-    </ProfileRefStoreContext.Provider>
+    </ProfileRefContext.Provider>
   );
 };
 
-export const useProfileRefStore = <T,>(
-  selector: (store: ProfileRefStore) => T
-): T => {
-  const profileRefStoreContext = useContext(ProfileRefStoreContext);
+export const useProfileRef = () => {
+  const profileRefContext = useContext(ProfileRefContext);
 
-  if (!profileRefStoreContext) {
-    throw new Error(
-      `useProfileRefStore must be use within ProfileRefStoreProvider`
-    );
+  if (!profileRefContext) {
+    throw new Error(`useProfileRef must be use within ProfileRefProvider`);
   }
 
-  return useStore(profileRefStoreContext, selector);
+  return profileRefContext;
 };

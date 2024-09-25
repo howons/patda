@@ -124,12 +124,15 @@ export const CreationForm: Story = {
 export const UpdateForm: Story = {
   args: {
     id: 1,
-    content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
-    etcPlatformName: null,
-    images: [],
-    platform: "bunjang",
-    tag: "cancel",
-    targetNickname: "bull",
+    defaultValues: {
+      content: "1234567890abcdefghijㄱㄴㄷㄹㅁㅂㅅㅇㅈㅊ",
+      etcPlatformName: null,
+      images: [],
+      platform: "bunjang",
+      tag: "cancel",
+      targetNickname: "bull",
+      additionalInfo: "w*w",
+    },
     imagePath: "post/0",
   },
   beforeEach: async () => {

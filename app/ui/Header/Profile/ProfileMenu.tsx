@@ -9,7 +9,7 @@ async function ProfileMenu() {
 
   return (
     <Menu>
-      <ProfileMenuButton session={session} />
+      <ProfileMenuButton isLogin={!!session} />
       <Transition
         enter="duration-200 ease-out"
         enterFrom="scale-95 opacity-0"
