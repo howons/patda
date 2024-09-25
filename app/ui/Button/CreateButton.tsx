@@ -4,7 +4,7 @@ import { BiPlus } from "@react-icons/all-files/bi/BiPlus";
 import Link from "next/link";
 
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
-import { useProfileRefStore } from "#lib/providers/ProfileRefProvider.jsx";
+import { useProfileRef } from "#lib/providers/ProfileRefProvider.jsx";
 import type { Platform } from "#lib/types/property.js";
 
 interface CreateButtonProps {
@@ -14,7 +14,7 @@ interface CreateButtonProps {
 
 function CreateButton({ isLoggedIn, classname = "" }: CreateButtonProps) {
   const platform = usePlatformStore((store) => store.platform);
-  const profileRef = useProfileRefStore((store) => store.profileRef);
+  const profileRef = useProfileRef();
 
   const defaultStyle =
     "flex size-10 items-center justify-center rotate-45 transition-all hover:rounded-3xl hover:scale-[1.41]";
@@ -31,7 +31,7 @@ function CreateButton({ isLoggedIn, classname = "" }: CreateButtonProps) {
       <button
         className={`${defaultStyle} ${platformStyle[platform]} ${classname}`}
         onClick={() => {
-          profileRef?.click();
+          profileRef.current?.click();
         }}>
         <BiPlus className="size-8 rotate-45 fill-white" />
       </button>

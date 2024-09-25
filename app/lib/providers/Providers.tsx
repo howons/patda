@@ -2,7 +2,7 @@ import type { PropsWithChildren } from "react";
 
 import { CategoryStoreProvider } from "#lib/providers/CategoryStoreProvider.jsx";
 import { PlatformStoreProvider } from "#lib/providers/PlatformStoreProvider.jsx";
-import { ProfileRefStoreProvider } from "#lib/providers/ProfileRefProvider.jsx";
+import { ProfileRefProvider } from "#lib/providers/ProfileRefProvider.jsx";
 import { SearchStoreProvider } from "#lib/providers/SearchStoreProvider.jsx";
 import type { PlatformState } from "#lib/stores/platformStore.js";
 import type { SearchState } from "#lib/stores/searchStore.js";
@@ -21,7 +21,7 @@ export default function Providers({
     <PlatformStoreProvider defaultState={platformDefaultState?.platform}>
       <SearchStoreProvider defaultState={searchDefaultState?.query}>
         <CategoryStoreProvider>
-          <ProfileRefStoreProvider>{children}</ProfileRefStoreProvider>
+          <ProfileRefProvider>{children}</ProfileRefProvider>
         </CategoryStoreProvider>
       </SearchStoreProvider>
     </PlatformStoreProvider>
