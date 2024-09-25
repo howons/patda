@@ -30,15 +30,17 @@ export default async function PostUpdatePage({
 
   return (
     <PostForm
-      id={id}
-      content={content}
-      etcPlatformName={etcPlatformName}
-      images={images}
-      platform={platform}
-      tag={tag}
-      targetNickname={targetNickname}
-      additionalInfo={additionalInfo}
       imagePath={getImagePath({ postId: id })}
+      defaultValues={{
+        content,
+        etcPlatformName,
+        tag,
+        targetNickname,
+        images,
+        platform,
+        additionalInfo,
+      }}
+      id={id}
     />
   );
 }
