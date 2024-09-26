@@ -20,10 +20,10 @@ function SubmitButton({
 
   return (
     <Button
-      color={color}
+      colorStyle={color}
       loading={pending}
       type="submit"
-      theme="primary"
+      intent="primary"
       className={className}>
       {children}
     </Button>

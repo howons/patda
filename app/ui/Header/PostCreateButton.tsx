@@ -24,8 +24,8 @@ export default function PostCreateButton({
   if (!isLoggedIn) {
     return (
       <Button
-        color={PLATFORM_COLOR[platform]}
-        theme="primary"
+        colorStyle={PLATFORM_COLOR[platform]}
+        intent="primary"
         className={`ml-4 hidden cs:h-10 ${mediaStyle}`}
         onClick={() => {
           profileRef.current?.click();
@@ -38,8 +38,8 @@ export default function PostCreateButton({
   return (
     <Link href="/post/create">
       <Button
-        color={PLATFORM_COLOR[platform]}
-        theme="primary"
+        colorStyle={PLATFORM_COLOR[platform]}
+        intent="primary"
         className={`ml-4 hidden cs:h-10 ${mediaStyle}`}>
         글 작성
       </Button>

@@ -108,8 +108,8 @@ export default function UpdateForm({
             ))}
           <div className="flex justify-end gap-3 max-sm:px-3">
             <Button
-              color={color}
-              theme="sub"
+              colorStyle={color}
+              intent="secondary"
               className="transition-colors"
               onClick={() => onUpdateClick(false)}>
               취소

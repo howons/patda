@@ -10,7 +10,7 @@ interface UploadButtonProps extends ButtonProps {
 
 export default function UploadButton({
   imageCount,
-  color,
+  colorStyle,
   className = "",
   ...props
 }: UploadButtonProps) {
@@ -27,11 +27,13 @@ export default function UploadButton({
 
   return (
     <Button
-      color={color}
+      colorStyle={colorStyle}
       type="button"
       className={`${defaultStyle} ${className}`}
       {...props}>
-      <IoCameraSharp className={`size-1/3 ${svgColorStyles[color]}`} />
+      <IoCameraSharp
+        className={`size-1/3 ${svgColorStyles[colorStyle ?? "orange"]}`}
+      />
       <div className="flex font-light text-neutral-700">
         <p>{imageCount}</p> / <p>{MAX_IMAGE_COUNT}</p>
       </div>

@@ -258,7 +258,7 @@ export default function PostForm({
         </Fieldset>
         <div className="mt-6 flex justify-end gap-6">
           <Button
-            color={PLATFORM_COLOR[platform]}
+            colorStyle={PLATFORM_COLOR[platform]}
             loading={saveLoading}
             onClick={() => {
               setSaveLoading(true);

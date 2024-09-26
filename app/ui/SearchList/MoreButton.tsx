@@ -19,8 +19,8 @@ export default function MoreButton({ status, onClick }: MoreButtonProps) {
 
   return (
     <Button
-      color={PLATFORM_COLOR[platform]}
-      theme="sub"
+      colorStyle={PLATFORM_COLOR[platform]}
+      intent="secondary"
       loading={loading}
       className={`mt-3 ${disabled ? "hidden" : ""}`}
       onClick={onClick}>
