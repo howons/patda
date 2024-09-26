@@ -150,6 +150,7 @@ export default function PostForm({
                 <Label color={color}>거래 사이트</Label>
                 <Select
                   options={platformOptions}
+                  color={color}
                   className="block"
                   {...register("platform", {
                     onChange: handleSelectChange,
@@ -160,7 +161,11 @@ export default function PostForm({
               {platform === "etc" && (
                 <Field className="mt-2 flex flex-col">
                   <Label color={color}>사이트 이름</Label>
-                  <Input type="text" {...register("etcPlatformName")} />
+                  <Input
+                    color={color}
+                    type="text"
+                    {...register("etcPlatformName")}
+                  />
                   <ErrorMessage
                     name="etcPlatformName"
                     errors={errors}
@@ -173,6 +178,7 @@ export default function PostForm({
               <Field className="flex flex-col">
                 <Label color={color}>상대 닉네임</Label>
                 <Input
+                  color={color}
                   type="text"
                   className="block w-full"
                   {...register("targetNickname")}
@@ -191,6 +197,7 @@ export default function PostForm({
                   </HelpCircle>
                 </Label>
                 <Input
+                  color={color}
                   type="text"
                   placeholder={PLATFORM_PLACEHOLDER[platform]}
                   {...register("additionalInfo")}
@@ -210,6 +217,7 @@ export default function PostForm({
               name="tag"
               render={({ field }) => (
                 <RadioTabs<TagId>
+                  color={color}
                   name="tag"
                   defaultValue={isUpdate ? defaultValues.tag : "others"}
                   onChange={field.onChange}
