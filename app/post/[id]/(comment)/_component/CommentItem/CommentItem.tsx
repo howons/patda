@@ -58,7 +58,7 @@ export default function CommentItem({
   return (
     <li className={`flex min-h-20 ${className}`} {...props}>
       <SideLine
-        color={isDebate ? "rose" : "lime"}
+        colorStyle={isDebate ? "rose" : "lime"}
         topDotSize={isDebate ? "md" : "sm"}
         bottomDotSize={isLast ? "sm" : undefined}
       />
