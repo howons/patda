@@ -16,7 +16,7 @@ export default function CommentLine({
 
   return (
     <SideLine
-      color={isDebate ? "rose" : "lime"}
+      colorStyle={isDebate ? "rose" : "lime"}
       topDotSize={topDotSize}
       bottomDotSize={bottomDotSize}
       className={className}

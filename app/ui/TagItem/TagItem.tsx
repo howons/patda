@@ -6,10 +6,12 @@ import { GiUmbrella } from "@react-icons/all-files/gi/GiUmbrella";
 import { MdMoneyOff } from "@react-icons/all-files/md/MdMoneyOff";
 import { RiSafe2Line } from "@react-icons/all-files/ri/RiSafe2Line";
 import { RiZzzLine } from "@react-icons/all-files/ri/RiZzzLine";
+import { cva, type VariantProps } from "class-variance-authority";
 import type { ComponentProps } from "react";
 
 import type { TagId } from "#lib/types/property.js";
 import type { PostInfo } from "#lib/types/response.js";
+import { cn } from "#utils/utils.js";
 
 const iconStyle = "size-3/4 rotate-45 fill-neutral-600";
 
@@ -24,28 +26,34 @@ const TagIcons: { [key in TagId]: React.JSX.Element } = {
   others: <FiMoreHorizontal className={iconStyle} />,
 };
 
-interface TagItemProps extends ComponentProps<"div">, Pick<PostInfo, "tag"> {
-  size?: "sm" | "md";
-}
+const tagItemVariants = cva(
+  "flex items-center justify-center border-double border-stone-400 bg-yellow-200",
+  {
+    variants: {
+      size: {
+        sm: "size-8 border-4",
+        md: "size-14 border-[6px]",
+      },
+    },
+    defaultVariants: {
+      size: "md",
+    },
+  }
+);
+
+interface TagItemProps
+  extends ComponentProps<"div">,
+    Pick<PostInfo, "tag">,
+    VariantProps<typeof tagItemVariants> {}
 
 export default function TagItem({
   tag,
-  size = "md",
-  className = "",
+  size,
+  className,
   ...props
 }: TagItemProps) {
-  const defaultStyle =
-    "flex items-center justify-center border-double border-stone-400 bg-yellow-200";
-
-  const sizeStyle = {
-    sm: "size-8 border-4",
-    md: "size-14 border-[6px]",
-  };
-
   return (
-    <div
-      className={`${defaultStyle} ${sizeStyle[size]} ${className}`}
-      {...props}>
+    <div className={cn(tagItemVariants({ size, className }))} {...props}>
       {TagIcons[tag]}
     </div>
   );

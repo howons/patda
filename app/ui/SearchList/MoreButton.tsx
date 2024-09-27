@@ -4,6 +4,7 @@ import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import type { SearchState } from "#lib/types/state.js";
 import Button from "#ui/Button/Button.jsx";
+import { cn } from "#utils/utils.js";
 
 interface MoreButtonProps {
   status: SearchState["status"];
@@ -19,10 +20,10 @@ export default function MoreButton({ status, onClick }: MoreButtonProps) {
 
   return (
     <Button
-      color={PLATFORM_COLOR[platform]}
-      theme="sub"
+      colorStyle={PLATFORM_COLOR[platform]}
+      intent="secondary"
       loading={loading}
-      className={`mt-3 ${disabled ? "hidden" : ""}`}
+      className={cn("mt-3", disabled && "hidden")}
       onClick={onClick}>
       더보기
     </Button>

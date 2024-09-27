@@ -78,7 +78,7 @@ export default function UpdateForm({
         <Fieldset>
           <Field className="my-3 max-sm:px-3">
             <Textarea
-              color={color}
+              colorStyle={color}
               className="w-full"
               required
               minLength={2}
@@ -89,11 +89,11 @@ export default function UpdateForm({
           </Field>
           {isDebate && (
             <Field>
-              <Label color={color}>스크린샷</Label>
+              <Label colorStyle={color}>스크린샷</Label>
               <ImageFields
                 register={imageArrayRegister}
                 imagePath={getImagePath({ commentId: id })}
-                color={color}
+                colorStyle={color}
               />
               <ErrorMessage
                 name="images"
@@ -108,13 +108,13 @@ export default function UpdateForm({
             ))}
           <div className="flex justify-end gap-3 max-sm:px-3">
             <Button
-              color={color}
-              theme="sub"
+              colorStyle={color}
+              intent="secondary"
               className="transition-colors"
               onClick={() => onUpdateClick(false)}>
               취소
             </Button>
-            <SubmitButton color={color} className="transition-colors">
+            <SubmitButton colorStyle={color} className="transition-colors">
               작성
             </SubmitButton>
           </div>

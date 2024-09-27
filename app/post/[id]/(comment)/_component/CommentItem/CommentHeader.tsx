@@ -5,6 +5,7 @@ import useDeleteAction from "#lib/hooks/useDeleteAction.js";
 import { useCommentContext } from "#lib/providers/CommentProvider.jsx";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import MutationButtonGroup from "#ui/MutationButtonGroup/MutationButtonGroup.jsx";
+import { cn } from "#utils/utils.js";
 
 interface CommentHeaderProps {
   isMine: boolean;
@@ -28,7 +29,10 @@ export default function CommentHeader({
   return (
     <section className="flex justify-between">
       <h3
-        className={`ml-1 font-bold ${isDebate ? "text-rose-600" : "text-lime-600"}`}>
+        className={cn(
+          "ml-1 font-bold",
+          isDebate ? "text-rose-600" : "text-lime-600"
+        )}>
         {userName}
       </h3>
       <div className="flex max-2xs:flex-col-reverse max-2xs:gap-1">
@@ -45,7 +49,6 @@ export default function CommentHeader({
           name={""}
           color={isDebate ? "rose" : "lime"}
           date={createdAt}
-          className=""
         />
       </div>
     </section>

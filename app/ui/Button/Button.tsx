@@ -1,66 +1,197 @@
 import { Button as HeadlessButton } from "@headlessui/react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { type ComponentPropsWithRef, PropsWithChildren } from "react";
 
-import type { FormColor } from "#lib/types/property.js";
 import Logo from "#public/당근빳다.svg";
+import { cn } from "#utils/utils.js";
 
-export interface ButtonProps extends ComponentPropsWithRef<"button"> {
-  color: FormColor;
-  theme?: "primary" | "sub";
+const variants = {
+  colorStyle: {
+    orange: "",
+    red: "",
+    green: "",
+    zinc: "",
+    rose: "",
+    lime: "",
+  },
+  intent: {
+    primary: "",
+    secondary: "",
+  },
+};
+
+const buttonVariants = cva(
+  "relative h-12 min-w-28 overflow-hidden rounded-lg text-center text-lg font-bold",
+  {
+    variants,
+    compoundVariants: [
+      {
+        colorStyle: "orange",
+        intent: "primary",
+        className: "bg-orange-400 text-white data-[hover]:bg-orange-300",
+      },
+      {
+        colorStyle: "orange",
+        intent: "secondary",
+        className:
+          "border border-orange-400 bg-orange-50 text-orange-400 data-[hover]:bg-orange-100",
+      },
+      {
+        colorStyle: "red",
+        intent: "primary",
+        className: "bg-red-400 text-white data-[hover]:bg-red-300",
+      },
+      {
+        colorStyle: "red",
+        intent: "secondary",
+        className:
+          "border border-red-400 bg-red-50 text-red-400 data-[hover]:bg-red-100",
+      },
+      {
+        colorStyle: "green",
+        intent: "primary",
+        className: "bg-green-400 text-white data-[hover]:bg-green-300",
+      },
+      {
+        colorStyle: "green",
+        intent: "secondary",
+        className:
+          "border border-green-400 bg-green-50 text-green-400 data-[hover]:bg-green-100",
+      },
+      {
+        colorStyle: "zinc",
+        intent: "primary",
+        className: "bg-zinc-400 text-white data-[hover]:bg-zinc-300",
+      },
+      {
+        colorStyle: "zinc",
+        intent: "secondary",
+        className:
+          "border border-zinc-400 bg-zinc-50 text-zinc-400 data-[hover]:bg-zinc-100",
+      },
+      {
+        colorStyle: "rose",
+        intent: "primary",
+        className: "bg-rose-400 text-white data-[hover]:bg-rose-300",
+      },
+      {
+        colorStyle: "rose",
+        intent: "secondary",
+        className:
+          "border border-rose-400 bg-rose-50 text-rose-400 data-[hover]:bg-rose-100",
+      },
+      {
+        colorStyle: "lime",
+        intent: "primary",
+        className: "bg-lime-400 text-white data-[hover]:bg-lime-300",
+      },
+      {
+        colorStyle: "lime",
+        intent: "secondary",
+        className:
+          "border border-lime-400 bg-lime-50 text-lime-400 data-[hover]:bg-lime-100",
+      },
+    ],
+    defaultVariants: {
+      colorStyle: "orange",
+      intent: "secondary",
+    },
+  }
+);
+
+const logoVariants = cva(
+  "absolute -bottom-2 -left-4 size-8 origin-[25%_75%] -rotate-45 opacity-70",
+  {
+    variants,
+    compoundVariants: [
+      {
+        colorStyle: "orange",
+        intent: "primary",
+        className: "fill-orange-100",
+      },
+      {
+        colorStyle: "orange",
+        intent: "secondary",
+        className: "fill-orange-400",
+      },
+      {
+        colorStyle: "red",
+        intent: "primary",
+        className: "fill-red-100",
+      },
+      {
+        colorStyle: "red",
+        intent: "secondary",
+        className: "fill-red-400",
+      },
+      {
+        colorStyle: "green",
+        intent: "primary",
+        className: "fill-green-100",
+      },
+      {
+        colorStyle: "green",
+        intent: "secondary",
+        className: "fill-green-400",
+      },
+      {
+        colorStyle: "zinc",
+        intent: "primary",
+        className: "fill-zinc-100",
+      },
+      {
+        colorStyle: "zinc",
+        intent: "secondary",
+        className: "fill-zinc-400",
+      },
+      {
+        colorStyle: "rose",
+        intent: "primary",
+        className: "fill-rose-100",
+      },
+      {
+        colorStyle: "rose",
+        intent: "secondary",
+        className: "fill-rose-400",
+      },
+      {
+        colorStyle: "lime",
+        intent: "primary",
+        className: "fill-lime-100",
+      },
+      {
+        colorStyle: "lime",
+        intent: "secondary",
+        className: "fill-lime-400",
+      },
+    ],
+  }
+);
+
+export interface ButtonProps
+  extends ComponentPropsWithRef<"button">,
+    VariantProps<typeof buttonVariants> {
   loading?: boolean;
 }
 
 export default function Button({
-  color,
-  theme = "sub",
+  colorStyle,
+  intent,
   loading,
-  className = "",
+  className,
   children,
   ...props
 }: PropsWithChildren<ButtonProps>) {
-  const defaultStyle =
-    "relative rounded-lg h-12 min-w-28 text-lg text-center font-bold overflow-hidden";
-
-  const isPrimary = theme === "primary";
-  const colorStyles: { [key in FormColor]: string } = {
-    orange: isPrimary
-      ? "bg-orange-400 data-[hover]:bg-orange-300 text-white"
-      : "bg-orange-50 data-[hover]:bg-orange-100 border border-orange-400 text-orange-400",
-    red: isPrimary
-      ? "bg-red-400 data-[hover]:bg-red-300 text-white"
-      : "bg-red-50 data-[hover]:bg-red-100 border border-red-400 text-red-400",
-    green: isPrimary
-      ? "bg-green-400 data-[hover]:bg-green-300 text-white"
-      : "bg-green-50 data-[hover]:bg-green-100 border border-green-400 text-green-400",
-    zinc: isPrimary
-      ? "bg-zinc-400 data-[hover]:bg-zinc-300 text-white"
-      : "bg-zinc-50 data-[hover]:bg-zinc-100 border border-zinc-400 text-zinc-400",
-    lime: isPrimary
-      ? "bg-lime-400 data-[hover]:bg-lime-300 text-white"
-      : "bg-lime-50 data-[hover]:bg-lime-100 border border-lime-400 text-lime-400",
-    rose: isPrimary
-      ? "bg-rose-400 data-[hover]:bg-rose-300 text-white"
-      : "bg-rose-50 data-[hover]:bg-rose-100 border border-rose-400 text-rose-400",
-  };
-
-  const logoDefaultStyle =
-    "absolute -bottom-2 -left-4 size-8 origin-[25%_75%] -rotate-45 opacity-70";
-  const logoColorStyles: { [key in FormColor]: string } = {
-    orange: isPrimary ? "fill-orange-100" : "fill-orange-400",
-    red: isPrimary ? "fill-red-100" : "fill-red-400",
-    green: isPrimary ? "fill-green-100" : "fill-green-400",
-    zinc: isPrimary ? "fill-zinc-100" : "fill-zinc-400",
-    lime: isPrimary ? "fill-lime-100" : "fill-lime-400",
-    rose: isPrimary ? "fill-rose-100" : "fill-rose-400",
-  };
-
   return (
     <HeadlessButton
       disabled={loading}
-      className={`${defaultStyle} ${colorStyles[color]} ${className}`}
+      className={cn(buttonVariants({ colorStyle, intent, className }))}
       {...props}>
       <Logo
-        className={`${logoDefaultStyle} ${logoColorStyles[color]} ${loading ? "animate-swing-vert" : ""}`}
+        className={cn(
+          logoVariants({ colorStyle, intent }),
+          loading && "animate-swing-vert"
+        )}
       />
       {children}
     </HeadlessButton>

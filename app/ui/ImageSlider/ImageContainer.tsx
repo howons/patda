@@ -1,21 +1,23 @@
 import Image from "next/image";
 import { type ComponentProps } from "react";
 
+import { cn } from "#utils/utils.js";
+
 interface ImageContainerProps extends ComponentProps<"div"> {
   images: { id: string; url: string }[];
   width: number;
   height: number;
 }
 
-function ImageContainer({
+export default function ImageContainer({
   images,
   width,
   height,
-  className = "",
+  className,
   ...props
 }: ImageContainerProps) {
   return (
-    <div className={`flex shrink-0 ${className}`} {...props}>
+    <div className={cn("flex shrink-0", className)} {...props}>
       {images.map(({ id, url }) => (
         <Image
           key={id}
@@ -29,5 +31,3 @@ function ImageContainer({
     </div>
   );
 }
-
-export default ImageContainer;

@@ -4,6 +4,7 @@ import { type ComponentProps, useEffect, useRef } from "react";
 
 import type { FormColor } from "#lib/types/property.js";
 import Dot from "#ui/Dot/Dot.jsx";
+import { cn } from "#utils/utils.js";
 
 const HOUR_MILLISEC = 3600000;
 const DAY_MILLISEC = 86400000;
@@ -20,7 +21,7 @@ export default function AuthorTag({
   date,
   name,
   summary,
-  className = "",
+  className,
   ...props
 }: AuthorTagProps) {
   const formattedDate = useRef("");
@@ -52,12 +53,15 @@ export default function AuthorTag({
 
   return (
     <section
-      className={`flex items-center justify-end gap-4 text-sm text-neutral-500 ${className}`}
+      className={cn(
+        "flex items-center justify-end gap-4 text-sm text-neutral-500",
+        className
+      )}
       {...props}>
       {name !== undefined && (
         <>
           <p>{name}</p>
-          <Dot color={color} />
+          <Dot colorStyle={color} />
         </>
       )}
       <p>{formattedDate.current}</p>

@@ -7,8 +7,9 @@ import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import { useSearchListContext } from "#lib/providers/SearchListProvider.jsx";
 import { useSearchStore } from "#lib/providers/SearchStoreProvider.jsx";
 import type { Platform } from "#lib/types/property.js";
+import { cn } from "#utils/utils.js";
 
-function SearchBarCore() {
+export default function SearchBarCore() {
   const { query, updateQuery } = useSearchStore((state) => state);
   const platform = usePlatformStore((state) => state.platform);
 
@@ -33,7 +34,7 @@ function SearchBarCore() {
   return (
     <>
       <input
-        className={`${inputDefaultStyle} ${platformStyle[platform]}`}
+        className={cn(inputDefaultStyle, platformStyle[platform])}
         value={query}
         onChange={(e) => updateQuery(e.target.value)}
         onKeyDown={handleInputKeyDown}
@@ -41,18 +42,22 @@ function SearchBarCore() {
       />
       {query.length > 0 ? (
         <IoCloseCircleOutline
-          className={`absolute right-1.5 top-1 size-[1.3rem] cursor-pointer transition-colors duration-300 ${platformIconStyle[platform]}`}
+          className={cn(
+            "absolute right-1.5 top-1 size-[1.3rem] cursor-pointer transition-colors duration-300",
+            platformIconStyle[platform]
+          )}
           onClick={() => {
             updateQuery("");
           }}
         />
       ) : (
         <IoSearchOutline
-          className={`absolute right-1 top-1 size-6 transition-colors duration-300 ${platformIconStyle[platform]}`}
+          className={cn(
+            "absolute right-1 top-1 size-6 transition-colors duration-300",
+            platformIconStyle[platform]
+          )}
         />
       )}
     </>
   );
 }
-
-export default SearchBarCore;

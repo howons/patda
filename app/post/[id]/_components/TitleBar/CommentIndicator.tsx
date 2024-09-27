@@ -6,6 +6,7 @@ import type { ComponentProps } from "react";
 
 import { useCommentStatusStore } from "#lib/providers/CommentStatusStoreProvider.jsx";
 import type { PostCommentStatus } from "#lib/types/property.js";
+import { cn } from "#utils/utils.js";
 
 interface CommentIndicatorProps extends ComponentProps<"div"> {
   postStatus: PostCommentStatus;
@@ -15,7 +16,7 @@ interface CommentIndicatorProps extends ComponentProps<"div"> {
 export default function CommentIndicator({
   postStatus,
   commentCount,
-  className = "",
+  className,
   ...props
 }: CommentIndicatorProps) {
   const commentStatus = useCommentStatusStore((store) => store.commentStatus);
@@ -49,7 +50,7 @@ export default function CommentIndicator({
 
   return (
     <div
-      className={`${defaultStyle} ${statusStyle[integratedStatus]} ${className}`}
+      className={cn(defaultStyle, statusStyle[integratedStatus], className)}
       onClick={handleClick}
       {...props}>
       {integratedStatus === "normal" ? (

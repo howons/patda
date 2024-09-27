@@ -15,13 +15,13 @@ import ImageModal from "#ui/ImageModal/ImageModal.jsx";
 interface ImageFieldsProps {
   register: (index: number) => UseFormRegisterReturn<`images.${number}.name`>;
   imagePath: string;
-  color: FormColor;
+  colorStyle: FormColor;
 }
 
 export default function ImageFields({
   register,
   imagePath,
-  color,
+  colorStyle,
 }: ImageFieldsProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,7 +35,7 @@ export default function ImageFields({
       <div className="mb-1 flex gap-2">
         <UploadButton
           imageCount={fields.length}
-          color={color}
+          colorStyle={colorStyle}
           loading={isPending}
           onClick={handleUploadClick}
         />

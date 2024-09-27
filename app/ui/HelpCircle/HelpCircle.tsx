@@ -9,10 +9,12 @@ import {
   useState,
 } from "react";
 
+import { cn } from "#utils/utils.js";
+
 interface HelpCircleProps extends ComponentProps<"div"> {}
 
 const HelpCircle = ({
-  className = "",
+  className,
   children,
   ...props
 }: PropsWithChildren<HelpCircleProps>) => {
@@ -58,11 +60,11 @@ const HelpCircle = ({
   const tailPositionStyle = enoughBottomSpace
     ? "top-3 border-t-transparent border-b-neutral-100"
     : "bottom-3 border-t-neutral-100 border-b-transparent";
-  const visibilityStyle = showMenu ? "" : "invisible";
+  const visibilityStyle = showMenu || "invisible";
 
   return (
     <div
-      className={`relative font-normal text-neutral-800 ${className}`}
+      className={cn("relative font-normal text-neutral-800", className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       {...props}>
@@ -71,11 +73,20 @@ const HelpCircle = ({
         className="text-neutral-400 hover:text-neutral-300"
       />
       <div
-        className={`absolute size-0 border-8 border-x-transparent ${tailPositionStyle} ${visibilityStyle}`}
+        className={cn(
+          "absolute size-0 border-8 border-x-transparent",
+          tailPositionStyle,
+          visibilityStyle
+        )}
       />
       <div
         ref={boxRef}
-        className={`absolute w-48 break-words rounded-md bg-neutral-100 p-3 text-sm shadow ${boxPositionYStyle} ${boxPositionXStyle[xPosition]} ${visibilityStyle}`}>
+        className={cn(
+          "absolute w-48 break-words rounded-md bg-neutral-100 p-3 text-sm shadow",
+          boxPositionYStyle,
+          boxPositionXStyle[xPosition],
+          visibilityStyle
+        )}>
         {children}
       </div>
     </div>

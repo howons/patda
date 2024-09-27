@@ -7,12 +7,12 @@ import type { FormColor } from "#lib/types/property.js";
 import Button from "#ui/Button/Button.jsx";
 
 interface SubmitButtonProps {
-  color: FormColor;
+  colorStyle: FormColor;
   className?: string;
 }
 
-function SubmitButton({
-  color,
+export default function SubmitButton({
+  colorStyle,
   className = "",
   children,
 }: PropsWithChildren<SubmitButtonProps>) {
@@ -20,14 +20,12 @@ function SubmitButton({
 
   return (
     <Button
-      color={color}
+      colorStyle={colorStyle}
       loading={pending}
       type="submit"
-      theme="primary"
+      intent="primary"
       className={className}>
       {children}
     </Button>
   );
 }
-
-export default SubmitButton;

@@ -5,6 +5,7 @@ import { type ComponentProps, useEffect, useRef, useState } from "react";
 import { BANNER_IMAGES } from "#lib/constants/banner.js";
 import ImageContainer from "#ui/ImageSlider/ImageContainer.jsx";
 import SliderButton from "#ui/ImageSlider/SliderButton.jsx";
+import { cn } from "#utils/utils.js";
 
 interface ImageSliderProps extends ComponentProps<"div"> {
   images: { id: string; url: string }[];
@@ -18,7 +19,7 @@ export default function ImageSlider({
   width,
   height,
   auto,
-  className = "",
+  className,
   ...props
 }: ImageSliderProps) {
   const [curImage, setCurImage] = useState(0);
@@ -48,9 +49,8 @@ export default function ImageSlider({
     }
   }, [curImage]);
 
-  const imageTransitionStyle = isReturning
-    ? ""
-    : "transition-transform duration-500";
+  const imageTransitionStyle =
+    isReturning || "transition-transform duration-500";
 
   const imageTranslateStyle = [
     "",
@@ -61,19 +61,19 @@ export default function ImageSlider({
 
   return (
     <div
-      className={`relative flex h-64 w-screen overflow-hidden ${className}`}
+      className={cn("relative flex h-64 w-screen overflow-hidden", className)}
       {...props}>
       <ImageContainer
         images={images}
         width={width}
         height={height}
-        className={`${imageTransitionStyle} ${imageTranslateStyle[curImage]}`}
+        className={cn(imageTransitionStyle, imageTranslateStyle[curImage])}
       />
       <ImageContainer
         images={images}
         width={width}
         height={height}
-        className={`${imageTransitionStyle} ${imageTranslateStyle[curImage]}`}
+        className={cn(imageTransitionStyle, imageTranslateStyle[curImage])}
       />
       <SliderButton
         imageLength={images.length}

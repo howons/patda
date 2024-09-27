@@ -138,7 +138,7 @@ export default function PostForm({
         data-testid="post-form">
         <Fieldset className="space-y-6">
           <div className="mt-8 flex items-center justify-between">
-            <Legend color={color} className="group flex break-keep">
+            <Legend colorStyle={color} className="group flex break-keep">
               중고거래 진상 박제글 작성
               <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
             </Legend>
@@ -147,10 +147,10 @@ export default function PostForm({
           <div className="flex gap-6">
             <div className="flex-1">
               <Field className="flex flex-col">
-                <Label color={color}>거래 사이트</Label>
+                <Label colorStyle={color}>거래 사이트</Label>
                 <Select
                   options={platformOptions}
-                  color={color}
+                  colorStyle={color}
                   className="block"
                   {...register("platform", {
                     onChange: handleSelectChange,
@@ -160,9 +160,9 @@ export default function PostForm({
               </Field>
               {platform === "etc" && (
                 <Field className="mt-2 flex flex-col">
-                  <Label color={color}>사이트 이름</Label>
+                  <Label colorStyle={color}>사이트 이름</Label>
                   <Input
-                    color={color}
+                    colorStyle={color}
                     type="text"
                     {...register("etcPlatformName")}
                   />
@@ -176,9 +176,9 @@ export default function PostForm({
             </div>
             <div className="flex-1 flex-col">
               <Field className="flex flex-col">
-                <Label color={color}>상대 닉네임</Label>
+                <Label colorStyle={color}>상대 닉네임</Label>
                 <Input
-                  color={color}
+                  colorStyle={color}
                   type="text"
                   className="block w-full"
                   {...register("targetNickname")}
@@ -190,14 +190,14 @@ export default function PostForm({
                 />
               </Field>
               <Field className="mt-2 flex flex-col">
-                <Label color={color} className="flex items-center">
+                <Label colorStyle={color} className="flex items-center">
                   추가 정보
                   <HelpCircle className="ml-2">
                     상대방을 특정하는데 도움이 될 추가 정보를 적어주세요.
                   </HelpCircle>
                 </Label>
                 <Input
-                  color={color}
+                  colorStyle={color}
                   type="text"
                   placeholder={PLATFORM_PLACEHOLDER[platform]}
                   {...register("additionalInfo")}
@@ -211,13 +211,13 @@ export default function PostForm({
             </div>
           </div>
           <Field>
-            <Label color={color}>사유</Label>
+            <Label colorStyle={color}>사유</Label>
             <Controller
               control={control}
               name="tag"
               render={({ field }) => (
                 <RadioTabs<TagId>
-                  color={color}
+                  colorStyle={color}
                   name="tag"
                   defaultValue={isUpdate ? defaultValues.tag : "others"}
                   onChange={field.onChange}
@@ -227,11 +227,11 @@ export default function PostForm({
             />
           </Field>
           <Field>
-            <Label color={color}>스크린샷</Label>
+            <Label colorStyle={color}>스크린샷</Label>
             <ImageFields
               register={imageArrayRegister}
               imagePath={imagePath}
-              color={color}
+              colorStyle={color}
             />
             <ErrorMessage
               name="images"
@@ -240,9 +240,9 @@ export default function PostForm({
             />
           </Field>
           <Field>
-            <Label color={color}>상세 설명</Label>
+            <Label colorStyle={color}>상세 설명</Label>
             <Textarea
-              color={PLATFORM_COLOR[platform]}
+              colorStyle={PLATFORM_COLOR[platform]}
               className="block w-full resize-y"
               required
               minLength={30}
@@ -258,7 +258,7 @@ export default function PostForm({
         </Fieldset>
         <div className="mt-6 flex justify-end gap-6">
           <Button
-            color={PLATFORM_COLOR[platform]}
+            colorStyle={PLATFORM_COLOR[platform]}
             loading={saveLoading}
             onClick={() => {
               setSaveLoading(true);
@@ -266,7 +266,9 @@ export default function PostForm({
             }}>
             임시 저장
           </Button>
-          <SubmitButton color={PLATFORM_COLOR[platform]}>작성</SubmitButton>
+          <SubmitButton colorStyle={PLATFORM_COLOR[platform]}>
+            작성
+          </SubmitButton>
         </div>
       </form>
       <ImageForm />

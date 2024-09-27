@@ -1,30 +1,37 @@
 import { Select as HeadlessSelect } from "@headlessui/react";
+import { cva, type VariantProps } from "class-variance-authority";
 import React, { SelectHTMLAttributes } from "react";
 
-import type { FormColor } from "#lib/types/property.js";
+import { cn } from "#utils/utils.js";
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  options: { value: string; name: string }[];
-  color: FormColor;
-}
-
-const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ options, color, className = "", ...props }, ref) => {
-    const colorStyles: { [key in FormColor]: string } = {
+const selectVariants = cva("h-8 min-w-32 rounded border px-2", {
+  variants: {
+    colorStyle: {
       orange: "border-orange-500 focus:outline-orange-400",
       red: "border-red-500 focus:outline-red-400",
       green: "border-green-500 focus:outline-green-400",
       zinc: "border-zinc-500 focus:outline-zinc-400",
       rose: "border-rose-500 focus:outline-rose-400",
       lime: "border-lime-500 focus:outline-lime-400",
-    };
+    },
+  },
+  defaultVariants: {
+    colorStyle: "orange",
+  },
+});
 
-    const defaultStyle = "h-8 min-w-32 rounded border px-2";
+interface SelectProps
+  extends SelectHTMLAttributes<HTMLSelectElement>,
+    VariantProps<typeof selectVariants> {
+  options: { value: string; name: string }[];
+}
 
+const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
+  ({ options, colorStyle, className, ...props }, ref) => {
     return (
       <HeadlessSelect
         ref={ref}
-        className={`${defaultStyle} ${colorStyles[color]} ${className}`}
+        className={cn(selectVariants({ colorStyle, className }))}
         {...props}>
         {options.map(({ value, name }) => (
           <option key={name} value={value}>

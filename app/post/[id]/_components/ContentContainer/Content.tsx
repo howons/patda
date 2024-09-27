@@ -12,7 +12,7 @@ export default function Content({
   ...props
 }: ContentProps) {
   return (
-    <section className={`${className}`} {...props}>
+    <section className={className} {...props}>
       {content}
     </section>
   );

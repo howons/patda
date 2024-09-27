@@ -4,8 +4,9 @@ import { PLATFORM_NAME, TRANS_DURATION } from "#lib/constants/platform.js";
 import useLastPlatform from "#lib/hooks/useLastPlatform.js";
 import { useCategoryStore } from "#lib/providers/CategoryStoreProvider.jsx";
 import type { CategoryDirection, Platform } from "#lib/types/property.js";
+import { cn } from "#utils/utils.js";
 
-function Category() {
+export default function Category() {
   const { lastPlatform, platform, isChanging } =
     useLastPlatform(TRANS_DURATION);
   const { direction, toggleActive } = useCategoryStore((state) => state);
@@ -38,20 +39,28 @@ function Category() {
 
   return (
     <button
-      className={`${defualtStyle}`}
+      className={defualtStyle}
       aria-label="검색할 카테고리 이름"
       onClick={() => toggleActive()}>
       <label
-        className={`${labelDefaultStyle} ${platformStyle[lastPlatform]} ${lastTransitionStyle[direction]} ${durationStyle}`}
+        className={cn(
+          labelDefaultStyle,
+          platformStyle[lastPlatform],
+          lastTransitionStyle[direction],
+          durationStyle
+        )}
         aria-hidden>
         {PLATFORM_NAME[lastPlatform]}
       </label>
       <label
-        className={`${labelDefaultStyle} ${platformStyle[platform]} ${transitionStyle[direction]} ${durationStyle}`}>
+        className={cn(
+          labelDefaultStyle,
+          platformStyle[platform],
+          transitionStyle[direction],
+          durationStyle
+        )}>
         {PLATFORM_NAME[platform]}
       </label>
     </button>
   );
 }
-
-export default Category;

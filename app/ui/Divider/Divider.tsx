@@ -1,22 +1,27 @@
+import { cva, type VariantProps } from "class-variance-authority";
 import { HTMLAttributes } from "react";
 
-interface DividerProps extends HTMLAttributes<HTMLDivElement> {
-  direction: "horizon" | "vertical";
-}
+import { cn } from "#utils/utils.js";
 
-function Divider({ direction, ...props }: DividerProps) {
-  const defaultStyle = "border-zinc-200";
+const dividerVariants = cva("border-zinc-200", {
+  variants: {
+    direction: {
+      horizon: "mx-auto w-11/12 border-t",
+      vertical: "h-11/12 my-auto border-l",
+    },
+  },
+  defaultVariants: {
+    direction: "horizon",
+  },
+});
 
-  const directionStyle = {
-    horizon: "border-t w-11/12 mx-auto",
-    vertical: "border-l h-11/12 my-auto",
-  };
+interface DividerProps
+  extends HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof dividerVariants> {}
 
+function Divider({ direction, className, ...props }: DividerProps) {
   return (
-    <div
-      className={`${defaultStyle} ${directionStyle[direction]}`}
-      {...props}
-    />
+    <div className={cn(dividerVariants({ direction, className }))} {...props} />
   );
 }
 

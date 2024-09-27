@@ -10,6 +10,7 @@ import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
 import TagItem from "#ui/TagItem/TagItem.jsx";
 import Thumbnail from "#ui/Thumbnail/Thumbnail.jsx";
+import { cn } from "#utils/utils.js";
 
 interface SearchListItemProps {
   itemInfo: TroublemakerInfo;
@@ -28,7 +29,7 @@ function SearchListItem({
     createdAt,
     commentCount,
   },
-  isActive,
+  isActive = false,
 }: SearchListItemProps) {
   const defaultStyle = "w-full flex rounded-3xl p-3 text-zinc-700 bg-white";
 
@@ -50,13 +51,12 @@ function SearchListItem({
     etc: "rounded-3xl transition-all hover:shadow-md",
   };
 
-  const activeStyles: { [key in Platform]: string } = {
-    daangn: isActive ? "rounded-none" : "",
-    bunjang: isActive ? "before:w-9 after:w-[2.15rem]" : "",
-    joongna: isActive
-      ? "before:translate-x-5 after:-translate-x-1 rounded-br-xl"
-      : "",
-    etc: isActive ? "shadow-md" : "",
+  const activeStyles: { [key in Platform]: string | false } = {
+    daangn: isActive && "rounded-none",
+    bunjang: isActive && "before:w-9 after:w-[2.15rem]",
+    joongna:
+      isActive && "before:translate-x-5 after:-translate-x-1 rounded-br-xl",
+    etc: isActive && "shadow-md",
   };
 
   const commentSvgStyle = "size-4 fill-stone-500/50";
@@ -64,7 +64,11 @@ function SearchListItem({
   return (
     <Link
       href={`/post/${id}`}
-      className={`shrink-0 ${platformStyle[platform]} ${activeStyles[platform]}`}>
+      className={cn(
+        "shrink-0",
+        platformStyle[platform],
+        activeStyles[platform]
+      )}>
       <li className={defaultStyle}>
         <Thumbnail
           platform={platform}
@@ -75,13 +79,13 @@ function SearchListItem({
         <div className="ml-4 flex grow flex-col justify-around">
           <div className="flex items-center gap-2">
             <label className="text-xl font-bold">{targetNickname}</label>
-            <Dot color={PLATFORM_COLOR[platform]} />
+            <Dot colorStyle={PLATFORM_COLOR[platform]} />
             <div className="flex shrink-0 text-sm max-xs:flex-col xs:items-center xs:gap-2 ">
               {platform !== "etc" ? PLATFORM_NAME[platform] : etcPlatformName}
               {additionalInfo && (
                 <>
                   <Dot
-                    color={PLATFORM_COLOR[platform]}
+                    colorStyle={PLATFORM_COLOR[platform]}
                     className="max-xs:hidden"
                   />
                   <p>{additionalInfo}</p>

@@ -2,6 +2,8 @@
 
 import { Dispatch, HTMLAttributes, MouseEvent, SetStateAction } from "react";
 
+import { cn } from "#utils/utils.js";
+
 interface SliderButtonProps extends HTMLAttributes<HTMLDivElement> {
   imageLength: number;
   curImage: number;
@@ -9,7 +11,7 @@ interface SliderButtonProps extends HTMLAttributes<HTMLDivElement> {
   intervalRef: React.MutableRefObject<NodeJS.Timeout | null>;
 }
 
-function SliderButton({
+export default function SliderButton({
   imageLength,
   curImage,
   setCurImage,
@@ -29,19 +31,17 @@ function SliderButton({
   const buttonDefaultStyle =
     "w-3 h-3 rounded-full bg-stone-400 hover:bg-stone-300 transition-all duration-300 origin-center";
   const buttonActiveStyle = (idx: number) =>
-    idx === curImage % imageLength ? "cs:bg-stone-200 scale-150" : "";
+    idx === curImage % imageLength && "cs:bg-stone-200 scale-150";
 
   return (
-    <div className={`flex justify-center gap-3 p-4 ${className}`} {...props}>
+    <div className={cn("flex justify-center gap-3 p-4", className)} {...props}>
       {Array.from({ length: imageLength }, (_, i) => i).map((key, idx) => (
         <button
           key={key}
-          className={`${buttonDefaultStyle} ${buttonActiveStyle(idx)}`}
+          className={cn(buttonDefaultStyle, buttonActiveStyle(idx))}
           onClick={handleClick(idx)}
         />
       ))}
     </div>
   );
 }
-
-export default SliderButton;

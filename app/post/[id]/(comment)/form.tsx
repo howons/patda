@@ -24,6 +24,7 @@ import {
 } from "#ui/formItems/index.jsx";
 import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 import ImageForm from "#ui/ImageForm/ImageForm.jsx";
+import { cn } from "#utils/utils.js";
 
 const defaultValues: CommentFormValues = {
   content: "",
@@ -94,24 +95,30 @@ export default function CommentForm({
         <Fieldset>
           <Field className="flex items-center">
             <Legend
-              color={color}
+              colorStyle={color}
               className="ml-1 mr-4 text-xl transition-colors">
               <b
-                className={`transition-all ${isDebate ? "text-sm font-normal text-rose-400" : ""}`}>
+                className={cn(
+                  "transition-all",
+                  isDebate && "text-sm font-normal text-rose-400"
+                )}>
                 댓글
               </b>
               <Dot
-                color={isDebate ? "rose" : "lime"}
+                colorStyle={isDebate ? "rose" : "lime"}
                 className={`mx-3 inline-block transition-colors`}
               />
               <b
-                className={`mr-1 transition-all ${isDebate ? "" : "text-sm font-normal text-lime-400"}`}>
+                className={cn(
+                  "mr-1 transition-all",
+                  isDebate || "text-sm font-normal text-lime-400"
+                )}>
                 반박
               </b>{" "}
               작성
             </Legend>
             <Switch
-              color="lime"
+              defaultColor="lime"
               checkedColor="rose"
               name="status"
               value="debate"
@@ -122,7 +129,7 @@ export default function CommentForm({
           </Field>
           <Field className="my-3 max-sm:px-3">
             <Textarea
-              color={color}
+              colorStyle={color}
               className="w-full"
               required
               minLength={2}
@@ -134,11 +141,11 @@ export default function CommentForm({
           </Field>
           {isDebate && (
             <Field>
-              <Label color={color}>스크린샷</Label>
+              <Label colorStyle={color}>스크린샷</Label>
               <ImageFields
                 register={imageArrayRegister}
                 imagePath={imagePath}
-                color={color}
+                colorStyle={color}
               />
               <ErrorMessage
                 name="images"
@@ -152,7 +159,9 @@ export default function CommentForm({
               <ErrorText>{state.message}</ErrorText>
             ))}
           <div className="flex justify-end max-sm:px-3">
-            <SubmitButton color={color} className="ml-auto transition-colors">
+            <SubmitButton
+              colorStyle={color}
+              className="ml-auto transition-colors">
               작성
             </SubmitButton>
           </div>
