@@ -7,6 +7,7 @@ import type { Platform } from "#lib/types/property.js";
 import Dot from "#ui/Dot/Dot.jsx";
 import CategoryItem from "#ui/SearchBar/CategoryItem.jsx";
 import TagItem from "#ui/TagItem/TagItem.jsx";
+import { cn } from "#utils/utils.js";
 
 interface TitlebarProps {
   postId: number;
@@ -58,10 +59,11 @@ export default async function TitleBar({ postId }: TitlebarProps) {
         <section className="ml-24 flex h-14 items-center">
           <div>
             <Title
-              className={`max-2xs:text-base ${platformNameStyle[platform]}`}>
+              className={cn("max-2xs:text-base", platformNameStyle[platform])}>
               {platform === "etc" ? etcPlatformName : PLATFORM_NAME[platform]}
             </Title>
-            <Title className={`2xs:hidden ${platformNicknameStyle[platform]}`}>
+            <Title
+              className={cn("2xs:hidden", platformNicknameStyle[platform])}>
               {targetNickname}
             </Title>
           </div>
@@ -70,13 +72,16 @@ export default async function TitleBar({ postId }: TitlebarProps) {
             className="mx-5 max-2xs:hidden"
           />
           <Title
-            className={`max-2xs:hidden ${platformNicknameStyle[platform]}`}>
+            className={cn("max-2xs:hidden", platformNicknameStyle[platform])}>
             {targetNickname}
           </Title>
           <Dot colorStyle={PLATFORM_COLOR[platform]} className="mx-5" />
           <p className="text-sm text-neutral-500">{additionalInfo}</p>
           <div
-            className={`relative ml-8 h-0 grow border-b ${platformLineStyle[platform]}`}>
+            className={cn(
+              "relative ml-8 h-0 grow border-b",
+              platformLineStyle[platform]
+            )}>
             <Dot
               colorStyle={PLATFORM_COLOR[platform]}
               className="absolute -left-1 -top-1"

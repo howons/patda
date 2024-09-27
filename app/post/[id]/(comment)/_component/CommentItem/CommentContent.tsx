@@ -7,6 +7,7 @@ import MoreButton from "#app/post/[id]/(comment)/_component/CommentItem/MoreButt
 import UpdateForm from "#app/post/[id]/(comment)/_component/UpdateForm.jsx";
 import { useCommentContext } from "#lib/providers/CommentProvider.jsx";
 import { getImagePath } from "#lib/utils/supabase/imagePath.js";
+import { cn } from "#utils/utils.js";
 
 const CONTENT_HEIGHT_GAP = 40;
 const CONTENT_MAX_HEIGHT = 10 * CONTENT_HEIGHT_GAP;
@@ -68,15 +69,18 @@ export default function CommentContent({
 
   return (
     <section
-      className={`${updateTransitioning ? "overflow-hidden" : "overflow-auto"}`}>
+      className={cn(updateTransitioning ? "overflow-hidden" : "overflow-auto")}>
       <div
         ref={contentRef}
-        className={`${transitionEnabled ? "transtion duration-300 ease-out" : ""} ${contentHeightStyle}`}>
+        className={cn(
+          transitionEnabled && "transtion duration-300 ease-out",
+          contentHeightStyle
+        )}>
         {updateClicked ? (
           <UpdateForm
             isDebate={isDebate}
             onUpdateClick={onUpdateClick}
-            className={`${updateTransitioning ? "pb-[35rem]" : "pb-0"}`}
+            className={cn(updateTransitioning ? "pb-[35rem]" : "pb-0")}
           />
         ) : (
           <>
@@ -93,7 +97,7 @@ export default function CommentContent({
         <MoreButton
           isActive={moreClicked}
           onClick={onMoreClick}
-          className={`${moreEnabled ? "" : "hidden"}`}
+          className={cn(moreEnabled || "hidden")}
         />
       </div>
     </section>

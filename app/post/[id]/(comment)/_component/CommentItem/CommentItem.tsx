@@ -6,6 +6,7 @@ import CommentContent from "#app/post/[id]/(comment)/_component/CommentItem/Comm
 import CommentHeader from "#app/post/[id]/(comment)/_component/CommentItem/CommentHeader.jsx";
 import { useCommentContext } from "#lib/providers/CommentProvider.jsx";
 import SideLine from "#ui/SIdeLine/SideLine.jsx";
+import { cn } from "#utils/utils.js";
 
 const TRANSTION_DELAY = 300;
 
@@ -17,7 +18,7 @@ interface CommentItemProps extends ComponentProps<"li"> {
 export default function CommentItem({
   isMine,
   isLast,
-  className = "",
+  className,
   ...props
 }: CommentItemProps) {
   const [updateClicked, setUpdateClicked] = useState(false);
@@ -56,7 +57,7 @@ export default function CommentItem({
   const isDebate = status === "debate";
 
   return (
-    <li className={`flex min-h-20 ${className}`} {...props}>
+    <li className={cn("flex min-h-20", className)} {...props}>
       <SideLine
         colorStyle={isDebate ? "rose" : "lime"}
         topDotSize={isDebate ? "md" : "sm"}

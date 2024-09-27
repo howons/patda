@@ -24,6 +24,7 @@ import {
 } from "#ui/formItems/index.jsx";
 import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 import ImageForm from "#ui/ImageForm/ImageForm.jsx";
+import { cn } from "#utils/utils.js";
 
 const defaultValues: CommentFormValues = {
   content: "",
@@ -97,7 +98,10 @@ export default function CommentForm({
               colorStyle={color}
               className="ml-1 mr-4 text-xl transition-colors">
               <b
-                className={`transition-all ${isDebate ? "text-sm font-normal text-rose-400" : ""}`}>
+                className={cn(
+                  "transition-all",
+                  isDebate && "text-sm font-normal text-rose-400"
+                )}>
                 댓글
               </b>
               <Dot
@@ -105,7 +109,10 @@ export default function CommentForm({
                 className={`mx-3 inline-block transition-colors`}
               />
               <b
-                className={`mr-1 transition-all ${isDebate ? "" : "text-sm font-normal text-lime-400"}`}>
+                className={cn(
+                  "mr-1 transition-all",
+                  isDebate || "text-sm font-normal text-lime-400"
+                )}>
                 반박
               </b>{" "}
               작성

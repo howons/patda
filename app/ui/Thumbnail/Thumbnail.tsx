@@ -8,16 +8,17 @@ import type { Platform } from "#lib/types/property.js";
 import DaangnLogo from "#public/당근.svg";
 import BunjangLogo from "#public/번개장터.svg";
 import JoongnaLogo from "#public/중고나라.svg";
+import { cn } from "#utils/utils.js";
 
 interface ThumbnailProps extends ImageProps {
   platform: Platform;
 }
 
-function Thumbnail({
+export default function Thumbnail({
   platform,
   src,
   alt,
-  className = "",
+  className,
   ...props
 }: ThumbnailProps) {
   const [isError, setIsError] = useState(false);
@@ -31,18 +32,16 @@ function Thumbnail({
       onError={(e) => {
         setIsError(true);
       }}
-      className={`${defaultStyle} ${className}`}
+      className={cn(defaultStyle, className)}
       {...props}
     />
   ) : platform === "daangn" ? (
-    <DaangnLogo className={`${defaultStyle} ${className}`} />
+    <DaangnLogo className={cn(defaultStyle, className)} />
   ) : platform === "bunjang" ? (
-    <BunjangLogo className={`${defaultStyle} ${className}`} />
+    <BunjangLogo className={cn(defaultStyle, className)} />
   ) : platform === "joongna" ? (
-    <JoongnaLogo className={`${defaultStyle} ${className}`} />
+    <JoongnaLogo className={cn(defaultStyle, className)} />
   ) : (
-    <FiMoreHorizontal className={`${defaultStyle} ${className}`} />
+    <FiMoreHorizontal className={cn(defaultStyle, className)} />
   );
 }
-
-export default Thumbnail;
