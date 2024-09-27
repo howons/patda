@@ -5,14 +5,15 @@ import type { Platform } from "#lib/types/property.js";
 import DaangnLogo from "#public/당근.svg";
 import BunjangLogo from "#public/번개장터.svg";
 import JoongnaLogo from "#public/중고나라.svg";
+import { cn } from "#utils/utils.js";
 
 const svgDefaultStyle = "rotate-45 w-3/4 h-3/4 opacity-75";
 
 const platformSvg: { [key in Platform]: React.JSX.Element } = {
-  daangn: <DaangnLogo className={`${svgDefaultStyle}`} />,
-  bunjang: <BunjangLogo className={`${svgDefaultStyle}`} />,
-  joongna: <JoongnaLogo className={`${svgDefaultStyle}`} />,
-  etc: <FiMoreHorizontal className={`${svgDefaultStyle}`} />,
+  daangn: <DaangnLogo className={svgDefaultStyle} />,
+  bunjang: <BunjangLogo className={svgDefaultStyle} />,
+  joongna: <JoongnaLogo className={svgDefaultStyle} />,
+  etc: <FiMoreHorizontal className={svgDefaultStyle} />,
 };
 
 interface CategoryItemProps {
@@ -21,10 +22,10 @@ interface CategoryItemProps {
   className?: string;
 }
 
-function CategoryItem({
+export default function CategoryItem({
   platform,
   isActive,
-  className = "",
+  className,
 }: CategoryItemProps) {
   const platformStyle: { [key in Platform]: string } = {
     daangn: "bg-orange-100 text-orange-700",
@@ -41,14 +42,16 @@ function CategoryItem({
   const nameOpacityStyle = isActive ? "opacity-75" : "opacity-0";
 
   return (
-    <div className={`${defaultStyle} ${platformStyle[platform]} ${className}`}>
+    <div className={cn(defaultStyle, platformStyle[platform], className)}>
       {platformSvg[platform]}
       <div
-        className={`${nameDefaultStyle} ${nameOpacityStyle} ${platformStyle[platform]}`}>
+        className={cn(
+          nameDefaultStyle,
+          nameOpacityStyle,
+          platformStyle[platform]
+        )}>
         {PLATFORM_NAME[platform]}
       </div>
     </div>
   );
 }
-
-export default CategoryItem;

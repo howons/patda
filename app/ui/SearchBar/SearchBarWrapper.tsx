@@ -4,25 +4,22 @@ import { PropsWithChildren } from "react";
 
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import type { Platform } from "#lib/types/property.js";
+import { cn } from "#utils/utils.js";
 
-function SearchBarWrapper({ children }: PropsWithChildren) {
+export default function SearchBarWrapper({ children }: PropsWithChildren) {
   const platform = usePlatformStore((state) => state.platform);
 
   const platformStyle: { [key in Platform]: string } = {
-    daangn: "",
-    bunjang: "cs:border-red-500",
-    joongna: "cs:border-green-500",
-    etc: "cs:border-zinc-500",
+    daangn: "border-orange-500",
+    bunjang: "border-red-500",
+    joongna: "border-green-500",
+    etc: "border-zinc-500",
   };
 
   const defaultStyle =
-    "relative border h-8 border-orange-500 rounded-full flex items-center shadow-md transition-colors duration-300";
+    "relative border h-8 rounded-full flex items-center shadow-md transition-colors duration-300";
 
   return (
-    <div className={`${platformStyle[platform]} ${defaultStyle}`}>
-      {children}
-    </div>
+    <div className={cn(platformStyle[platform], defaultStyle)}>{children}</div>
   );
 }
-
-export default SearchBarWrapper;
