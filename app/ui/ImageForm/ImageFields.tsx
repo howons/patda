@@ -35,7 +35,7 @@ export default function ImageFields({
       <div className="mb-1 flex gap-2">
         <UploadButton
           imageCount={fields.length}
-          color={color}
+          colorStyle={color}
           loading={isPending}
           onClick={handleUploadClick}
         />

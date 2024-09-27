@@ -114,7 +114,7 @@ export default function UpdateForm({
               onClick={() => onUpdateClick(false)}>
               취소
             </Button>
-            <SubmitButton color={color} className="transition-colors">
+            <SubmitButton colorStyle={color} className="transition-colors">
               작성
             </SubmitButton>
           </div>

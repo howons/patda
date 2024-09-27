@@ -266,7 +266,9 @@ export default function PostForm({
             }}>
             임시 저장
           </Button>
-          <SubmitButton color={PLATFORM_COLOR[platform]}>작성</SubmitButton>
+          <SubmitButton colorStyle={PLATFORM_COLOR[platform]}>
+            작성
+          </SubmitButton>
         </div>
       </form>
       <ImageForm />

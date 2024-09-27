@@ -152,7 +152,9 @@ export default function CommentForm({
               <ErrorText>{state.message}</ErrorText>
             ))}
           <div className="flex justify-end max-sm:px-3">
-            <SubmitButton color={color} className="ml-auto transition-colors">
+            <SubmitButton
+              colorStyle={color}
+              className="ml-auto transition-colors">
               작성
             </SubmitButton>
           </div>
