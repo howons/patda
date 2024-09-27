@@ -13,6 +13,7 @@ import Loading from "#ui/SearchList/Loading.jsx";
 import MoreButton from "#ui/SearchList/MoreButton.jsx";
 import NoResults from "#ui/SearchList/NoResults.jsx";
 import SearchListItem from "#ui/SearchList/SearchListItem.jsx";
+import { cn } from "#utils/utils.js";
 
 interface SearchListProps extends HTMLAttributes<HTMLUListElement> {}
 
@@ -33,7 +34,7 @@ export default function SearchList({ className, ...props }: SearchListProps) {
   return (
     <ul
       ref={searchListRef}
-      className={`flex w-full max-w-3xl flex-col sm:w-4/5 ${className}`}
+      className={cn("flex w-full max-w-3xl flex-col sm:w-4/5", className)}
       aria-label="검색목록"
       {...props}>
       <Divider direction="horizon" />

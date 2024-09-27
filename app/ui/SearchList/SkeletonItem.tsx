@@ -1,14 +1,19 @@
 import type { ComponentProps } from "react";
 
+import { cn } from "#utils/utils.js";
+
 interface SkeletonItemProps extends ComponentProps<"div"> {}
 
 export default function SkeletonItem({
-  className = "",
+  className,
   ...props
 }: SkeletonItemProps) {
   return (
     <div
-      className={`h-[6.5rem] rounded-3xl border-2 border-white bg-zinc-100/70 xs:h-[7.5rem] ${className}`}
+      className={cn(
+        "h-[6.5rem] rounded-3xl border-2 border-white bg-zinc-100/70 xs:h-[7.5rem]",
+        className
+      )}
       {...props}>
       <div className="flex animate-pulse p-3">
         <div className="size-20 shrink-0 rounded-full bg-zinc-200 xs:size-24" />
