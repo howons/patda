@@ -111,7 +111,7 @@ export default function CommentForm({
               작성
             </Legend>
             <Switch
-              color="lime"
+              defaultColor="lime"
               checkedColor="rose"
               name="status"
               value="debate"
