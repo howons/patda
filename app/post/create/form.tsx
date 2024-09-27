@@ -217,7 +217,7 @@ export default function PostForm({
               name="tag"
               render={({ field }) => (
                 <RadioTabs<TagId>
-                  color={color}
+                  colorStyle={color}
                   name="tag"
                   defaultValue={isUpdate ? defaultValues.tag : "others"}
                   onChange={field.onChange}
