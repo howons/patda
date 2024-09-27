@@ -138,7 +138,7 @@ export default function PostForm({
         data-testid="post-form">
         <Fieldset className="space-y-6">
           <div className="mt-8 flex items-center justify-between">
-            <Legend color={color} className="group flex break-keep">
+            <Legend colorStyle={color} className="group flex break-keep">
               중고거래 진상 박제글 작성
               <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
             </Legend>

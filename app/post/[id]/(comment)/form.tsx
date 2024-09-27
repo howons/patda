@@ -94,7 +94,7 @@ export default function CommentForm({
         <Fieldset>
           <Field className="flex items-center">
             <Legend
-              color={color}
+              colorStyle={color}
               className="ml-1 mr-4 text-xl transition-colors">
               <b
                 className={`transition-all ${isDebate ? "text-sm font-normal text-rose-400" : ""}`}>
