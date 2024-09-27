@@ -78,7 +78,7 @@ export default function UpdateForm({
         <Fieldset>
           <Field className="my-3 max-sm:px-3">
             <Textarea
-              color={color}
+              colorStyle={color}
               className="w-full"
               required
               minLength={2}
