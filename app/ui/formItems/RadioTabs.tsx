@@ -76,7 +76,7 @@ function RadioTabs<ItemType extends string>({
               <div
                 className={`${itemDefaultStyle} ${colorStyles[color]} ${colorCheckedStyles(checked)[color]}`}>
                 <Label
-                  color={color}
+                  colorStyle={color}
                   size="md"
                   className={`${labelDefaultStyle} ${colorLabelStyles[color]}`}>
                   {name}

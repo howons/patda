@@ -89,7 +89,7 @@ export default function UpdateForm({
           </Field>
           {isDebate && (
             <Field>
-              <Label color={color}>스크린샷</Label>
+              <Label colorStyle={color}>스크린샷</Label>
               <ImageFields
                 register={imageArrayRegister}
                 imagePath={getImagePath({ commentId: id })}

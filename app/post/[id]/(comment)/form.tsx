@@ -134,7 +134,7 @@ export default function CommentForm({
           </Field>
           {isDebate && (
             <Field>
-              <Label color={color}>스크린샷</Label>
+              <Label colorStyle={color}>스크린샷</Label>
               <ImageFields
                 register={imageArrayRegister}
                 imagePath={imagePath}
