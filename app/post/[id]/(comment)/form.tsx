@@ -138,7 +138,7 @@ export default function CommentForm({
               <ImageFields
                 register={imageArrayRegister}
                 imagePath={imagePath}
-                color={color}
+                colorStyle={color}
               />
               <ErrorMessage
                 name="images"

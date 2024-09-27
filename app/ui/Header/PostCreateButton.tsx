@@ -7,6 +7,7 @@ import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import { useProfileRef } from "#lib/providers/ProfileRefProvider.jsx";
 import Button from "#ui/Button/Button.jsx";
+import { cn } from "#utils/utils.js";
 
 interface PostCreateButtonProps {
   isLoggedIn: boolean;
@@ -26,7 +27,7 @@ export default function PostCreateButton({
       <Button
         colorStyle={PLATFORM_COLOR[platform]}
         intent="primary"
-        className={`ml-4 hidden cs:h-10 ${mediaStyle}`}
+        className={cn("ml-4 hidden cs:h-10", mediaStyle)}
         onClick={() => {
           profileRef.current?.click();
         }}>
@@ -40,7 +41,7 @@ export default function PostCreateButton({
       <Button
         colorStyle={PLATFORM_COLOR[platform]}
         intent="primary"
-        className={`ml-4 hidden cs:h-10 ${mediaStyle}`}>
+        className={cn("ml-4 hidden cs:h-10", mediaStyle)}>
         글 작성
       </Button>
     </Link>

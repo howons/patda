@@ -231,7 +231,7 @@ export default function PostForm({
             <ImageFields
               register={imageArrayRegister}
               imagePath={imagePath}
-              color={color}
+              colorStyle={color}
             />
             <ErrorMessage
               name="images"

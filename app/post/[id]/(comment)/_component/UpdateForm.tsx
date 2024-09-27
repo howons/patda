@@ -93,7 +93,7 @@ export default function UpdateForm({
               <ImageFields
                 register={imageArrayRegister}
                 imagePath={getImagePath({ commentId: id })}
-                color={color}
+                colorStyle={color}
               />
               <ErrorMessage
                 name="images"

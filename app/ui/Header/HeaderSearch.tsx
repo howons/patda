@@ -17,7 +17,7 @@ import { cn } from "#utils/utils.js";
 
 interface HeaderSearchProps extends PopoverProps {}
 
-function HeaderSearch({ className = "", ...props }: HeaderSearchProps) {
+function HeaderSearch({ className, ...props }: HeaderSearchProps) {
   const pathname = usePathname();
   const isHome = pathname === "/";
   if (isHome) return null;
