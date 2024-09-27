@@ -150,7 +150,7 @@ export default function PostForm({
                 <Label colorStyle={color}>거래 사이트</Label>
                 <Select
                   options={platformOptions}
-                  color={color}
+                  colorStyle={color}
                   className="block"
                   {...register("platform", {
                     onChange: handleSelectChange,
