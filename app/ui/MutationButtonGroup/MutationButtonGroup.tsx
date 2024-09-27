@@ -1,5 +1,6 @@
 "use client";
 
+import { cva, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
 import {
   type ComponentProps,
@@ -10,6 +11,7 @@ import {
 import { useFormStatus } from "react-dom";
 
 import type { ActionState } from "#lib/types/action.js";
+import { cn } from "#utils/utils.js";
 
 interface CommonProps {
   deleteState: ActionState;
@@ -99,27 +101,34 @@ export default function MutationButtonGroup(props: MutationButtonGroupProps) {
   );
 }
 
-interface MutationButtonProps extends ComponentProps<"button"> {
-  theme?: "normal" | "alert" | "concern" | "disabled";
-}
+const mutationButtonVariants = cva("px-1.5 text-sm", {
+  variants: {
+    theme: {
+      normal: "text-neutral-400 hover:text-neutral-600",
+      concern: "text-indigo-400 hover:text-indigo-600",
+      alert: "text-pink-400 hover:text-pink-600",
+      disabled: "text-gray-400",
+    },
+  },
+  defaultVariants: {
+    theme: "normal",
+  },
+});
+
+interface MutationButtonProps
+  extends ComponentProps<"button">,
+    VariantProps<typeof mutationButtonVariants> {}
 
 function MutationButton({
-  theme = "normal",
+  theme,
   children,
-  className = "",
+  className,
   ...props
 }: PropsWithChildren<MutationButtonProps>) {
-  const themeStyles = {
-    normal: "text-neutral-400 hover:text-neutral-600",
-    concern: "text-indigo-400 hover:text-indigo-600",
-    alert: "text-pink-400 hover:text-pink-600",
-    disabled: "text-gray-400",
-  };
-
   return (
     <button
       type="button"
-      className={`px-1.5 text-sm ${themeStyles[theme]} ${className}`}
+      className={cn(mutationButtonVariants({ theme, className }))}
       {...props}>
       {children}
     </button>
