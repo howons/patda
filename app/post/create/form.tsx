@@ -162,7 +162,7 @@ export default function PostForm({
                 <Field className="mt-2 flex flex-col">
                   <Label color={color}>사이트 이름</Label>
                   <Input
-                    color={color}
+                    colorStyle={color}
                     type="text"
                     {...register("etcPlatformName")}
                   />
@@ -178,7 +178,7 @@ export default function PostForm({
               <Field className="flex flex-col">
                 <Label color={color}>상대 닉네임</Label>
                 <Input
-                  color={color}
+                  colorStyle={color}
                   type="text"
                   className="block w-full"
                   {...register("targetNickname")}
@@ -197,7 +197,7 @@ export default function PostForm({
                   </HelpCircle>
                 </Label>
                 <Input
-                  color={color}
+                  colorStyle={color}
                   type="text"
                   placeholder={PLATFORM_PLACEHOLDER[platform]}
                   {...register("additionalInfo")}
