@@ -28,7 +28,7 @@ export default async function ContentContainer({
           {isMine && <PostMutationForm postId={postId} />}
         </section>
         <ImageCarousel images={images} imagePath={getImagePath({ postId })} />
-        <Dot color={PLATFORM_COLOR[platform]} className="mx-auto" />
+        <Dot colorStyle={PLATFORM_COLOR[platform]} className="mx-auto" />
         <Content content={content} className="min-h-40 w-full break-words" />
       </div>
     </div>

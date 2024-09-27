@@ -61,7 +61,7 @@ export default function AuthorTag({
       {name !== undefined && (
         <>
           <p>{name}</p>
-          <Dot color={color} />
+          <Dot colorStyle={color} />
         </>
       )}
       <p>{formattedDate.current}</p>

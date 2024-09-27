@@ -66,23 +66,23 @@ export default async function TitleBar({ postId }: TitlebarProps) {
             </Title>
           </div>
           <Dot
-            color={PLATFORM_COLOR[platform]}
+            colorStyle={PLATFORM_COLOR[platform]}
             className="mx-5 max-2xs:hidden"
           />
           <Title
             className={`max-2xs:hidden ${platformNicknameStyle[platform]}`}>
             {targetNickname}
           </Title>
-          <Dot color={PLATFORM_COLOR[platform]} className="mx-5" />
+          <Dot colorStyle={PLATFORM_COLOR[platform]} className="mx-5" />
           <p className="text-sm text-neutral-500">{additionalInfo}</p>
           <div
             className={`relative ml-8 h-0 grow border-b ${platformLineStyle[platform]}`}>
             <Dot
-              color={PLATFORM_COLOR[platform]}
+              colorStyle={PLATFORM_COLOR[platform]}
               className="absolute -left-1 -top-1"
             />
             <Dot
-              color={PLATFORM_COLOR[platform]}
+              colorStyle={PLATFORM_COLOR[platform]}
               size="md"
               className="absolute -right-2 -top-2"
             />
@@ -90,7 +90,11 @@ export default async function TitleBar({ postId }: TitlebarProps) {
         </section>
         <section className="ml-28 mt-4 flex h-14 flex-col xs:flex-row">
           <Title className="shrink-0 text-neutral-800">{TAG_NAMES[tag]}</Title>
-          <Dot color="zinc" size="sm" className="mx-4 mt-2.5 max-xs:hidden" />
+          <Dot
+            colorStyle="zinc"
+            size="sm"
+            className="mx-4 mt-2.5 max-xs:hidden"
+          />
           <p className="mt-1 max-h-16 pr-2 text-sm text-neutral-500 xs:break-keep">
             {TAG_DESC[tag]}
           </p>

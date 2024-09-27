@@ -75,13 +75,13 @@ function SearchListItem({
         <div className="ml-4 flex grow flex-col justify-around">
           <div className="flex items-center gap-2">
             <label className="text-xl font-bold">{targetNickname}</label>
-            <Dot color={PLATFORM_COLOR[platform]} />
+            <Dot colorStyle={PLATFORM_COLOR[platform]} />
             <div className="flex shrink-0 text-sm max-xs:flex-col xs:items-center xs:gap-2 ">
               {platform !== "etc" ? PLATFORM_NAME[platform] : etcPlatformName}
               {additionalInfo && (
                 <>
                   <Dot
-                    color={PLATFORM_COLOR[platform]}
+                    colorStyle={PLATFORM_COLOR[platform]}
                     className="max-xs:hidden"
                   />
                   <p>{additionalInfo}</p>

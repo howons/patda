@@ -101,7 +101,7 @@ export default function CommentForm({
                 댓글
               </b>
               <Dot
-                color={isDebate ? "rose" : "lime"}
+                colorStyle={isDebate ? "rose" : "lime"}
                 className={`mx-3 inline-block transition-colors`}
               />
               <b

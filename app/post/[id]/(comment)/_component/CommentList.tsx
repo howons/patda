@@ -28,7 +28,7 @@ export default async function CommentList({
     <section className={`${className}`} {...props}>
       <div className="m-2 flex items-center gap-3">
         <p className="text-lg text-lime-700">{commentCount}개의 댓글</p>
-        <Dot color={debateCount > 0 ? "rose" : "lime"} />
+        <Dot colorStyle={debateCount > 0 ? "rose" : "lime"} />
         <p className="text-lg text-rose-700">{debateCount}개의 반박</p>
       </div>
       <ul className="my-3 mr-3">

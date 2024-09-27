@@ -25,13 +25,21 @@ export default function SideLine({
       className={`flex shrink-0 grow-0 basis-5 flex-col items-center justify-center xs:ml-2.5 ${className}`}
       {...props}>
       {topDotSize && (
-        <Dot color={color} size={topDotSize} className="transition-colors" />
+        <Dot
+          colorStyle={color}
+          size={topDotSize}
+          className="transition-colors"
+        />
       )}
       <div
         className={`grow border-l transition-colors ${lineColorStyles[color]}`}
       />
       {bottomDotSize && (
-        <Dot color={color} size={bottomDotSize} className="transition-colors" />
+        <Dot
+          colorStyle={color}
+          size={bottomDotSize}
+          className="transition-colors"
+        />
       )}
     </div>
   );

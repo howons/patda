@@ -42,7 +42,7 @@ export default function SearchList({ className, ...props }: SearchListProps) {
         status={troublemakersState.status}
         onClick={handleMoreClick()}
       />
-      <Dot color={PLATFORM_COLOR[platform]} className="mx-auto my-8" />
+      <Dot colorStyle={PLATFORM_COLOR[platform]} className="mx-auto my-8" />
       <Divider direction="horizon" />
       {Others}
       <MoreButton status={othersState.status} onClick={handleMoreClick(true)} />
