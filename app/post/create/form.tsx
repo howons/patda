@@ -97,6 +97,7 @@ export default function PostForm({
   const {
     register,
     control,
+    getValues,
     formState: { errors },
     formAction,
   } = useFormAction<FormValues>({
@@ -263,6 +264,7 @@ export default function PostForm({
             onClick={() => {
               setSaveLoading(true);
               setTimeout(() => setSaveLoading(false), 3000);
+              console.log(getValues());
             }}>
             임시 저장
           </Button>
