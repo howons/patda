@@ -3,7 +3,7 @@
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { Controller, useFieldArray, type UseFormProps } from "react-hook-form";
 
 import {
@@ -18,12 +18,12 @@ import {
 } from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import { type OnSuccess, useFormAction } from "#lib/hooks/useFormAction.js";
+import useSyncInitPlatform from "#lib/hooks/useSyncInitPlatform.js";
 import { ImageFormProvider } from "#lib/providers/ImageFormProvider.jsx";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import type { Platform, TagId } from "#lib/types/property.js";
 import type { PostInfo } from "#lib/types/response.js";
 import Logo from "#public/당근빳다.svg";
-import Button from "#ui/Button/Button.jsx";
 import CancelButton from "#ui/Button/CancelButton.jsx";
 import {
   ErrorText,
@@ -71,9 +71,10 @@ export default function PostForm({
 }: PostFormProps) {
   const isUpdate = defaultValues !== undefined && id !== undefined;
 
-  const [saveLoading, setSaveLoading] = useState(false);
   const { platform, updatePlatform } = usePlatformStore((store) => store);
   const router = useRouter();
+
+  useSyncInitPlatform({ initPlatform: defaultValues?.platform });
 
   const color = PLATFORM_COLOR[platform];
 
@@ -123,14 +124,6 @@ export default function PostForm({
     },
     [updatePlatform]
   );
-
-  const initPlatform = defaultValues?.platform;
-
-  useEffect(() => {
-    if (!initPlatform) return;
-
-    updatePlatform(initPlatform);
-  }, [updatePlatform, initPlatform]);
 
   return (
     <ImageFormProvider fields={fields} append={append} remove={remove} id={id}>
