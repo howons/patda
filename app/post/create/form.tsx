@@ -244,7 +244,7 @@ export default function PostForm({
           <Field>
             <Label colorStyle={color}>상세 설명</Label>
             <Textarea
-              colorStyle={PLATFORM_COLOR[platform]}
+              colorStyle={color}
               className="block w-full resize-y"
               required
               minLength={30}
@@ -264,9 +264,7 @@ export default function PostForm({
             containerId={imagePath}
             data={getValues()}
           />
-          <SubmitButton colorStyle={PLATFORM_COLOR[platform]}>
-            작성
-          </SubmitButton>
+          <SubmitButton colorStyle={color}>작성</SubmitButton>
         </div>
       </form>
       <ImageForm />
