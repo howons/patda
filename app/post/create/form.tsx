@@ -35,6 +35,7 @@ import {
   SubmitButton,
   Textarea,
 } from "#ui/formItems/index.jsx";
+import TempSaveButton from "#ui/formItems/TempSaveButton.jsx";
 import HelpCircle from "#ui/HelpCircle/HelpCircle.jsx";
 import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 import ImageForm from "#ui/ImageForm/ImageForm.jsx";
@@ -258,16 +259,11 @@ export default function PostForm({
           </Field>
         </Fieldset>
         <div className="mt-6 flex justify-end gap-6">
-          <Button
-            colorStyle={PLATFORM_COLOR[platform]}
-            loading={saveLoading}
-            onClick={() => {
-              setSaveLoading(true);
-              setTimeout(() => setSaveLoading(false), 3000);
-              console.log(getValues());
-            }}>
-            임시 저장
-          </Button>
+          <TempSaveButton
+            colorStyle={color}
+            containerId={imagePath}
+            data={getValues()}
+          />
           <SubmitButton colorStyle={PLATFORM_COLOR[platform]}>
             작성
           </SubmitButton>

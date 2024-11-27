@@ -11,7 +11,7 @@ interface UseTempSaveProps {
 export default function useTempSave({ containerId }: UseTempSaveProps) {
   const storageKey = PREFIX + containerId;
 
-  const saveData = (data: { [key: string]: string }) => {
+  const saveData = (data: { [key: string]: any }) => {
     return setStorageItem(storageKey, JSON.stringify(data));
   };
 
