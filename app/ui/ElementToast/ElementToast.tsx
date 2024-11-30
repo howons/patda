@@ -1,20 +1,53 @@
 import { FiAlertCircle } from "@react-icons/all-files/fi/FiAlertCircle";
 import { FiCheckCircle } from "@react-icons/all-files/fi/FiCheckCircle";
 import { FiXCircle } from "@react-icons/all-files/fi/FiXCircle";
+import { cva } from "class-variance-authority";
+import { useEffect, useRef, useState } from "react";
 
 import { cn } from "#utils/utils.js";
 
+const toastInvariants = cva(
+  "absolute left-[5%] top-[5%] flex size-[90%] flex-col items-center rounded p-2 text-sm text-white transition-transform",
+  {
+    variants: {
+      status: {
+        ERROR: "bg-red-500",
+        SUCCESS: "bg-green-500",
+        WARN: "bg-stone-500",
+        NONE: "",
+      },
+    },
+  }
+);
+
+export type ToastStatus = "ERROR" | "SUCCESS" | "WARN" | "NONE";
+
 interface ElementToastProps {
-  status: "ERROR" | "SUCCESS" | "WARN";
+  status: ToastStatus;
   text?: string;
 }
 
 export default function ElementToast({ status, text }: ElementToastProps) {
-  const defaultStyle =
-    "absolute left-[5%] top-[5%] size-[90%] p-2 rounded flex flex-col items-center text-sm";
+  const [prevStatus, setPrevStatus] = useState<ToastStatus>("NONE");
+  const [isActive, setIsActive] = useState(false);
+
+  if (prevStatus !== status) {
+    setIsActive(true);
+    setPrevStatus(status);
+  }
+
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>();
+  useEffect(() => {
+    if (isActive) {
+      timeoutRef.current = setTimeout(() => setIsActive(false), 3000);
+    }
+
+    return () => clearTimeout(timeoutRef.current);
+  }, [isActive]);
 
   return (
-    <div className={cn(defaultStyle)}>
+    <div
+      className={cn(toastInvariants({ status }), isActive && "translate-y-3")}>
       <StatusIcon status={status} />
       {text}
     </div>
