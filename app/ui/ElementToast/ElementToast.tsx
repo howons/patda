@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "#utils/utils.js";
 
 const toastInvariants = cva(
-  "absolute left-[5%] top-[5%] flex size-[90%] translate-y-0 flex-col items-center rounded p-2 text-sm text-white transition-transform duration-300",
+  "absolute left-[5%] top-[5%] size-[90%] translate-y-0 rounded p-2 text-xs text-white transition-transform duration-300",
   {
     variants: {
       status: {
@@ -52,15 +52,17 @@ export default function ElementToast({
 
   return (
     <div
-      className={cn(toastInvariants({ status }), isActive && "-translate-y-6")}>
-      <StatusIcon status={status} />
-      {text}
+      className={cn(toastInvariants({ status }), isActive && "-translate-y-8")}>
+      <p className="flex flex-row items-center">
+        <StatusIcon status={status} />
+        {text}
+      </p>
     </div>
   );
 }
 
 function StatusIcon({ status }: Pick<ElementToastProps, "status">) {
-  const defaultStyle = "size-3 stroke-white";
+  const defaultStyle = "size-3 stroke-white mr-1";
 
   if (status === "ERROR") {
     return <FiXCircle className={defaultStyle} />;
