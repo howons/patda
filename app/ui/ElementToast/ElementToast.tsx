@@ -2,8 +2,9 @@ import { FiAlertCircle } from "@react-icons/all-files/fi/FiAlertCircle";
 import { FiCheckCircle } from "@react-icons/all-files/fi/FiCheckCircle";
 import { FiXCircle } from "@react-icons/all-files/fi/FiXCircle";
 import { cva } from "class-variance-authority";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
+import useDuplTimeout from "#lib/hooks/useDuplActiveTimeout.js";
 import { cn } from "#utils/utils.js";
 
 const toastInvariants = cva(
@@ -11,9 +12,9 @@ const toastInvariants = cva(
   {
     variants: {
       status: {
-        ERROR: "bg-red-500",
+        ERROR: "bg-red-400",
         SUCCESS: "bg-green-500",
-        WARN: "bg-stone-500",
+        WARN: "bg-stone-400",
         NONE: "",
       },
     },
@@ -35,24 +36,27 @@ export default function ElementToast({
 }: ElementToastProps) {
   const [prevKey, setPrevKey] = useState<string | number>(0);
   const [isActive, setIsActive] = useState(false);
+  const [isDuplActive, setIsDuplActive] = useState(false);
 
   if (prevKey !== toastKey) {
+    if (isActive) {
+      setIsDuplActive(true);
+    }
+
     setIsActive(true);
+
     setPrevKey(toastKey);
   }
 
-  const timeoutRef = useRef<NodeJS.Timeout | undefined>();
-  useEffect(() => {
-    if (isActive) {
-      timeoutRef.current = setTimeout(() => setIsActive(false), 3000);
-    }
-
-    return () => clearTimeout(timeoutRef.current);
-  }, [isActive]);
+  useDuplTimeout(isActive, setIsActive, isDuplActive, setIsDuplActive);
 
   return (
     <div
-      className={cn(toastInvariants({ status }), isActive && "-translate-y-8")}>
+      className={cn(
+        toastInvariants({ status }),
+        isActive && "-translate-y-8",
+        isDuplActive && "-translate-y-3 duration-100"
+      )}>
       <p className="flex flex-row items-center">
         <StatusIcon status={status} />
         {text}
