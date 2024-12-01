@@ -33,7 +33,7 @@ export default function TempSaveButton({
 
   return (
     <ElementToastContainer>
-      <ElementToast status={saveStatus} key={toastKey} />
+      <ElementToast toastKey={toastKey} status={saveStatus} />
       <Button onClick={handleSaveClick}>임시 저장</Button>
     </ElementToastContainer>
   );

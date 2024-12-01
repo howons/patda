@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "#utils/utils.js";
 
 const toastInvariants = cva(
-  "absolute left-[5%] top-[5%] flex size-[90%] flex-col items-center rounded p-2 text-sm text-white transition-transform",
+  "absolute left-[5%] top-[5%] flex size-[90%] translate-y-0 flex-col items-center rounded p-2 text-sm text-white transition-transform duration-300",
   {
     variants: {
       status: {
@@ -23,17 +23,22 @@ const toastInvariants = cva(
 export type ToastStatus = "ERROR" | "SUCCESS" | "WARN" | "NONE";
 
 interface ElementToastProps {
+  toastKey: string | number;
   status: ToastStatus;
   text?: string;
 }
 
-export default function ElementToast({ status, text }: ElementToastProps) {
-  const [prevStatus, setPrevStatus] = useState<ToastStatus>("NONE");
+export default function ElementToast({
+  toastKey,
+  status,
+  text,
+}: ElementToastProps) {
+  const [prevKey, setPrevKey] = useState<string | number>(0);
   const [isActive, setIsActive] = useState(false);
 
-  if (prevStatus !== status) {
+  if (prevKey !== toastKey) {
     setIsActive(true);
-    setPrevStatus(status);
+    setPrevKey(toastKey);
   }
 
   const timeoutRef = useRef<NodeJS.Timeout | undefined>();
@@ -47,7 +52,7 @@ export default function ElementToast({ status, text }: ElementToastProps) {
 
   return (
     <div
-      className={cn(toastInvariants({ status }), isActive && "translate-y-3")}>
+      className={cn(toastInvariants({ status }), isActive && "-translate-y-6")}>
       <StatusIcon status={status} />
       {text}
     </div>
@@ -55,7 +60,7 @@ export default function ElementToast({ status, text }: ElementToastProps) {
 }
 
 function StatusIcon({ status }: Pick<ElementToastProps, "status">) {
-  const defaultStyle = "size-3 fill-white";
+  const defaultStyle = "size-3 stroke-white";
 
   if (status === "ERROR") {
     return <FiXCircle className={defaultStyle} />;
