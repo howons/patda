@@ -35,10 +35,10 @@ import {
   SubmitButton,
   Textarea,
 } from "#ui/formItems/index.jsx";
-import TempSaveButton from "#ui/formItems/TempSaveButton.jsx";
 import HelpCircle from "#ui/HelpCircle/HelpCircle.jsx";
 import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 import ImageForm from "#ui/ImageForm/ImageForm.jsx";
+import TempSaveButton from "#ui/TempSave/TempSaveButton.jsx";
 
 const platformOptions = Object.entries(PLATFORM_NAME).map(([id, name]) => ({
   name,
