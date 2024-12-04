@@ -26,6 +26,7 @@ import type { Platform, TagId } from "#lib/types/property.js";
 import type { PostInfo } from "#lib/types/response.js";
 import Logo from "#public/당근빳다.svg";
 import CancelButton from "#ui/Button/CancelButton.jsx";
+import Dot from "#ui/Dot/Dot.jsx";
 import {
   ErrorText,
   Input,
@@ -40,6 +41,7 @@ import HelpCircle from "#ui/HelpCircle/HelpCircle.jsx";
 import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 import ImageForm from "#ui/ImageForm/ImageForm.jsx";
 import TempSaveButton from "#ui/TempSave/TempSaveButton.jsx";
+import TempSaveList from "#ui/TempSave/TempSaveList.jsx";
 
 const platformOptions = Object.entries(PLATFORM_NAME).map(([id, name]) => ({
   name,
@@ -138,12 +140,22 @@ export default function PostForm({
         data-testid="post-form">
         <Fieldset className="space-y-6">
           <div className="mt-8 flex items-center justify-between">
-            <Legend colorStyle={color} className="group flex break-keep">
-              중고거래 진상 박제글 작성
-              <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
-            </Legend>
+            {tempSaveList.length <= 0 ? (
+              <Legend colorStyle={color} className="group flex break-keep">
+                중고거래 진상 박제글 작성
+                <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
+              </Legend>
+            ) : (
+              <TempSaveList
+                tempSaveIdx={tempSaveIdx}
+                tempSaveList={tempSaveList}
+                selectTempSave={selectTempSave}
+                className="mr-2 grow"
+              />
+            )}
             <CancelButton />
           </div>
+          <Dot colorStyle={color} className="mx-auto" />
           <div className="flex gap-6">
             <div className="flex-1">
               <Field className="flex flex-col">
