@@ -19,6 +19,7 @@ import {
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import { type OnSuccess, useFormAction } from "#lib/hooks/useFormAction.js";
 import useSyncInitPlatform from "#lib/hooks/useSyncInitPlatform.js";
+import useTempSave from "#lib/hooks/useTempSave.js";
 import { ImageFormProvider } from "#lib/providers/ImageFormProvider.jsx";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import type { Platform, TagId } from "#lib/types/property.js";
@@ -124,6 +125,10 @@ export default function PostForm({
     },
     [updatePlatform]
   );
+
+  const { curTempSave, tempSaveIdx, tempSaveList, saveData, selectTempSave } =
+    useTempSave({ containerId: imagePath, enableMultiSave: true });
+  const handleSaveClick = () => saveData(getValues());
 
   return (
     <ImageFormProvider fields={fields} append={append} remove={remove} id={id}>
@@ -252,11 +257,7 @@ export default function PostForm({
           </Field>
         </Fieldset>
         <div className="mt-6 flex justify-end gap-6">
-          <TempSaveButton
-            colorStyle={color}
-            containerId={imagePath}
-            data={getValues()}
-          />
+          <TempSaveButton colorStyle={color} onSaveClick={handleSaveClick} />
           <SubmitButton colorStyle={color}>작성</SubmitButton>
         </div>
       </form>

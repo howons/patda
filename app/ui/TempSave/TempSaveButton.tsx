@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-import useTempSave from "#lib/hooks/useTempSave.js";
 import type { ButtonProps } from "#ui/Button/Button.jsx";
 import Button from "#ui/Button/Button.jsx";
 import ElementToast, {
@@ -11,21 +10,15 @@ import ElementToast, {
 import ElementToastContainer from "#ui/ElementToast/ElementToastContainer.jsx";
 
 interface TempSaveButtonProps extends ButtonProps {
-  containerId: string;
-  data: { [key: string]: any };
+  onSaveClick: () => boolean | void;
 }
 
-export default function TempSaveButton({
-  containerId,
-  data,
-}: TempSaveButtonProps) {
+export default function TempSaveButton({ onSaveClick }: TempSaveButtonProps) {
   const [saveStatus, setSaveStatus] = useState<ToastStatus>("NONE");
   const [toastKey, setToastKey] = useState(0);
 
-  const { saveData } = useTempSave({ containerId });
-
   const handleSaveClick = () => {
-    const isSuccess = saveData(data);
+    const isSuccess = onSaveClick();
     setSaveStatus(isSuccess ? "SUCCESS" : "ERROR");
 
     setToastKey(Date.now());
