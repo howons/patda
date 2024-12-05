@@ -154,6 +154,7 @@ export default function PostForm({
             </Legend>
             {tempSaveEnable && tempSaveList.length > 0 && (
               <TempSaveList
+                colorStyle={color}
                 tempSaveIdx={tempSaveIdx}
                 tempSaveList={tempSaveList}
                 selectTempSave={selectTempSave}
