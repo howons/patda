@@ -147,7 +147,7 @@ export default function PostForm({
         className="flex w-full min-w-80 max-w-3xl flex-col justify-between px-3 md:w-5/6"
         data-testid="post-form">
         <Fieldset className="space-y-6">
-          <div className="relative mt-8 flex items-center justify-between overflow-hidden">
+          <div className="relative mt-8 flex items-center justify-between">
             <Legend colorStyle={color} className="group flex break-keep">
               중고거래 진상 박제글 작성
               <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
@@ -160,7 +160,7 @@ export default function PostForm({
                 selectTempSave={selectTempSave}
                 className={cn(
                   "absolute left-0 top-[10%] h-[90%] w-3/4 transition duration-500 -translate-y-8 opacity-0",
-                  tempSaveVisible && "translate-y-0 opacity-100"
+                  tempSaveVisible && "translate-y-0 opacity-100 z-10"
                 )}
               />
             )}

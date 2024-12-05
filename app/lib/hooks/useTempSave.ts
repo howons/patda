@@ -23,11 +23,11 @@ export default function useTempSave({
 
   const tempSaveList = useMemo(
     () =>
-      getStorageItemList(storageKey).map(({ data }) => {
-        if (!data) return null;
+      getStorageItemList(storageKey).map(({ key, data }) => {
+        if (!data) return { key, data };
 
         const parsedData = JSON.parse(data);
-        return parsedData;
+        return { key, data: parsedData };
       }),
     [storageKey]
   );
