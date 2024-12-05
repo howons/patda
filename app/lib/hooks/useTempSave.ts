@@ -37,10 +37,12 @@ export default function useTempSave({
 
   const curTempSave = tempSaveList[tempSaveIdx];
 
+  const [tempSaveEnable, setTempSaveEnable] = useState(false);
   const [tempSaveVisible, setTempSaveVisible] = useState(false);
   useEffect(() => {
     if (checkStorageUsable()) {
-      setTempSaveVisible(true);
+      setTempSaveEnable(true);
+      setTimeout(() => setTempSaveVisible(true), 1);
     }
   }, []);
 
@@ -65,6 +67,7 @@ export default function useTempSave({
     curTempSave,
     tempSaveIdx,
     tempSaveList,
+    tempSaveEnable,
     tempSaveVisible,
     saveData,
     selectTempSave,
