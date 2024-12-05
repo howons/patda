@@ -128,8 +128,14 @@ export default function PostForm({
     [updatePlatform]
   );
 
-  const { curTempSave, tempSaveIdx, tempSaveList, saveData, selectTempSave } =
-    useTempSave({ containerId: imagePath, enableMultiSave: true });
+  const {
+    curTempSave,
+    tempSaveIdx,
+    tempSaveList,
+    tempSaveVisible,
+    saveData,
+    selectTempSave,
+  } = useTempSave({ containerId: imagePath, enableMultiSave: true });
   const handleSaveClick = () => saveData(getValues());
 
   return (
@@ -139,18 +145,17 @@ export default function PostForm({
         className="flex w-full min-w-80 max-w-3xl flex-col justify-between px-3 md:w-5/6"
         data-testid="post-form">
         <Fieldset className="space-y-6">
-          <div className="mt-8 flex items-center justify-between">
-            {tempSaveList.length <= 0 ? (
-              <Legend colorStyle={color} className="group flex break-keep">
-                중고거래 진상 박제글 작성
-                <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
-              </Legend>
-            ) : (
+          <div className="relative mt-8 flex items-center justify-between">
+            <Legend colorStyle={color} className="group flex break-keep">
+              중고거래 진상 박제글 작성
+              <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
+            </Legend>
+            {tempSaveVisible && tempSaveList.length > 0 && (
               <TempSaveList
                 tempSaveIdx={tempSaveIdx}
                 tempSaveList={tempSaveList}
                 selectTempSave={selectTempSave}
-                className="mr-2 grow"
+                className="absolute left-0 top-[10%] h-[90%] w-3/4"
               />
             )}
             <CancelButton />

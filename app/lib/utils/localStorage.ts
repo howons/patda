@@ -1,5 +1,9 @@
+export function checkStorageUsable() {
+  return typeof localStorage !== "undefined";
+}
+
 export function getStorageItem(key: string) {
-  if (typeof localStorage !== "undefined") {
+  if (checkStorageUsable()) {
     return localStorage.getItem(key);
   }
 
@@ -7,7 +11,7 @@ export function getStorageItem(key: string) {
 }
 
 export function setStorageItem(key: string, value: any) {
-  if (typeof localStorage === "undefined") return;
+  if (!checkStorageUsable()) return;
 
   try {
     localStorage.setItem(key, value.toString());
@@ -18,13 +22,13 @@ export function setStorageItem(key: string, value: any) {
 }
 
 export function removeStorageItem(key: string) {
-  if (typeof localStorage !== "undefined") {
+  if (checkStorageUsable()) {
     localStorage.removeItem(key);
   }
 }
 
 export function getStorageItemList(prefix: string) {
-  if (typeof localStorage === "undefined") return [];
+  if (!checkStorageUsable()) return [];
 
   const itemList: { key: string; data: string | null }[] = [];
   for (let i = 0; i < localStorage.length; i++) {

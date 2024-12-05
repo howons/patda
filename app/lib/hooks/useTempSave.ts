@@ -1,8 +1,12 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { getStorageItemList, setStorageItem } from "#lib/utils/localStorage.js";
+import {
+  checkStorageUsable,
+  getStorageItemList,
+  setStorageItem,
+} from "#lib/utils/localStorage.js";
 
 const PREFIX = "patda";
 
@@ -33,6 +37,13 @@ export default function useTempSave({
 
   const curTempSave = tempSaveList[tempSaveIdx];
 
+  const [tempSaveVisible, setTempSaveVisible] = useState(false);
+  useEffect(() => {
+    if (checkStorageUsable()) {
+      setTempSaveVisible(true);
+    }
+  }, []);
+
   const saveData = useCallback(
     (data: { [key: string]: any }) => {
       const key = storageKey + tempSaveIdx;
@@ -54,6 +65,7 @@ export default function useTempSave({
     curTempSave,
     tempSaveIdx,
     tempSaveList,
+    tempSaveVisible,
     saveData,
     selectTempSave,
   };

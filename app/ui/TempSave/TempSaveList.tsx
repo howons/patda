@@ -6,16 +6,16 @@ import type { ComponentPropsWithRef } from "react";
 import { cn } from "#utils/utils.js";
 
 const tempSaveListVariants = cva(
-  "flex h-9 min-w-24 items-center justify-between rounded border px-2 py-1 transition-colors",
+  "flex h-9 min-w-24 items-center justify-between rounded px-2 py-1 transition-colors",
   {
     variants: {
       colorStyle: {
-        orange: "border-orange-500",
-        red: "border-red-500",
-        green: "border-green-500",
-        zinc: "border-zinc-500",
-        lime: "border-lime-500",
-        rose: "border-rose-500",
+        orange: "bg-orange-50",
+        red: "bg-red-50",
+        green: "bg-green-50",
+        zinc: "bg-zinc-50",
+        lime: "bg-lime-50",
+        rose: "bg-rose-50",
       },
     },
     defaultVariants: {
