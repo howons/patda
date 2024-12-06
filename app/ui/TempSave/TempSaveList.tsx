@@ -66,6 +66,7 @@ export default function TempSaveList({
             key={key}
             platform={data.platform}
             targetNickname={data.targetNickname}
+            updatedAt={data.updatedAt}
           />
         ))}
       </DisclosurePanel>

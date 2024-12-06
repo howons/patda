@@ -138,7 +138,12 @@ export default function PostForm({
     saveData,
     selectTempSave,
   } = useTempSave({ containerId: imagePath, enableMultiSave: true });
-  const handleSaveClick = () => saveData(getValues());
+
+  const handleSaveClick = () => {
+    const formValues = getValues();
+    const valuesWithDate = { updatedAt: new Date(), ...formValues };
+    return saveData(valuesWithDate);
+  };
 
   return (
     <ImageFormProvider fields={fields} append={append} remove={remove} id={id}>

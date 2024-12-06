@@ -1,6 +1,6 @@
 "use client";
 
-import { type ComponentProps, useEffect, useRef } from "react";
+import { type ComponentProps, useEffect, useState } from "react";
 
 import type { FormColor } from "#lib/types/property.js";
 import Dot from "#ui/Dot/Dot.jsx";
@@ -10,21 +10,21 @@ const HOUR_MILLISEC = 3600000;
 const DAY_MILLISEC = 86400000;
 
 interface AuthorTagProps extends ComponentProps<"section"> {
-  color: FormColor;
   date: Date;
+  color?: FormColor;
   name?: string;
   summary?: boolean;
 }
 
 export default function AuthorTag({
-  color,
   date,
+  color,
   name,
   summary,
   className,
   ...props
 }: AuthorTagProps) {
-  const formattedDate = useRef("");
+  const [formattedDate, setFormattedDate] = useState("");
 
   useEffect(() => {
     const thisDateTime = new Date(date).getTime();
@@ -35,19 +35,21 @@ export default function AuthorTag({
     const dayDiff = Math.floor(timeDiff / DAY_MILLISEC);
 
     if (hourDiff < 1) {
-      formattedDate.current = "방금 전";
+      setFormattedDate("방금 전");
     } else if (hourDiff < 24) {
-      formattedDate.current = `${hourDiff}시간 전`;
+      setFormattedDate(`${hourDiff}시간 전`);
     } else if (dayDiff < 8) {
-      formattedDate.current = `${dayDiff}일 전`;
+      setFormattedDate(`${dayDiff}일 전`);
     } else if (summary) {
-      formattedDate.current = `${Math.floor(timeDiff / (30 * DAY_MILLISEC))}달 전`;
+      setFormattedDate(`${Math.floor(timeDiff / (30 * DAY_MILLISEC))}달 전`);
     } else {
-      formattedDate.current = new Intl.DateTimeFormat("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }).format(new Date(date));
+      setFormattedDate(
+        new Intl.DateTimeFormat("ko-KR", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }).format(new Date(date))
+      );
     }
   }, [date, summary]);
 
@@ -64,7 +66,7 @@ export default function AuthorTag({
           <Dot colorStyle={color} />
         </>
       )}
-      <p>{formattedDate.current}</p>
+      <p>{formattedDate}</p>
     </section>
   );
 }

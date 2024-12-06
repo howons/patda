@@ -3,6 +3,7 @@ import type { ComponentProps } from "react";
 
 import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
 import type { Platform } from "#lib/types/property.js";
+import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
 import Label from "#ui/formItems/Label.jsx";
 import { cn } from "#utils/utils.js";
@@ -29,16 +30,18 @@ const tempSaveListItemVariants = cva(
 interface TempSaveListItemProps extends ComponentProps<"li"> {
   platform: Platform;
   targetNickname: string;
+  updatedAt: Date;
 }
 
 export default function TempSaveListItem({
   platform,
   targetNickname,
+  updatedAt,
   className,
   ...props
 }: TempSaveListItemProps) {
   const colorStyle = PLATFORM_COLOR[platform];
-
+  console.log(updatedAt);
   return (
     <li
       className={cn(tempSaveListItemVariants({ colorStyle, className }))}
@@ -50,7 +53,7 @@ export default function TempSaveListItem({
         <Dot />
         {targetNickname}
       </div>
-      <div>몇일전</div>
+      <AuthorTag date={updatedAt} summary />
     </li>
   );
 }
