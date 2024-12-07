@@ -33,13 +33,11 @@ const tempSaveListVariants = cva(
 interface TempSaveListProps
   extends ComponentPropsWithRef<"div">,
     VariantProps<typeof tempSaveListVariants> {
-  tempSaveIdx: number;
   tempSaveList: any[];
   selectTempSave: (idx: number) => void;
 }
 
 export default function TempSaveList({
-  tempSaveIdx,
   tempSaveList,
   selectTempSave,
   colorStyle,

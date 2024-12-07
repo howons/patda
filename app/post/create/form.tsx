@@ -131,7 +131,6 @@ export default function PostForm({
 
   const {
     curTempSave,
-    tempSaveIdx,
     tempSaveList,
     tempSaveEnable,
     tempSaveVisible,
@@ -160,7 +159,6 @@ export default function PostForm({
             {tempSaveEnable && tempSaveList.length > 0 && (
               <TempSaveList
                 colorStyle={color}
-                tempSaveIdx={tempSaveIdx}
                 tempSaveList={tempSaveList}
                 selectTempSave={selectTempSave}
                 className={cn(

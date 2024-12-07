@@ -10,6 +10,8 @@ import {
 
 const PREFIX = "patda";
 
+const EMPTY_SAVE = { key: "", data: null };
+
 interface UseTempSaveProps {
   containerId: string;
   enableMultiSave?: boolean;
@@ -21,21 +23,21 @@ export default function useTempSave({
 }: UseTempSaveProps) {
   const storageKey = PREFIX + containerId;
 
+  const [tempSaveIdx, setTempSaveIdx] = useState<number | undefined>();
+
   const tempSaveList = useMemo(
     () =>
-      getStorageItemList(storageKey).map(({ key, data }) => {
+      getStorageItemList(storageKey).map(({ key, data }, idx) => {
         if (!data) return { key, data };
 
         const parsedData = JSON.parse(data);
-        return { key, data: parsedData };
+        return { key, data: parsedData, isActive: idx === tempSaveIdx };
       }),
-    [storageKey]
+    [storageKey, tempSaveIdx]
   );
 
-  const initialIdx = enableMultiSave ? tempSaveList.length : 0;
-  const [tempSaveIdx, setTempSaveIdx] = useState(initialIdx);
-
-  const curTempSave = tempSaveList[tempSaveIdx];
+  const curTempSave =
+    tempSaveIdx !== undefined ? tempSaveList[tempSaveIdx] : EMPTY_SAVE;
 
   const [tempSaveEnable, setTempSaveEnable] = useState(false);
   const [tempSaveVisible, setTempSaveVisible] = useState(false);
@@ -48,10 +50,16 @@ export default function useTempSave({
 
   const saveData = useCallback(
     (data: { [key: string]: any }) => {
-      const key = storageKey + tempSaveIdx;
+      let nextIdx = tempSaveIdx;
+      if (tempSaveIdx === undefined) {
+        nextIdx = enableMultiSave ? tempSaveList.length : 0;
+        setTempSaveIdx(nextIdx);
+      }
+
+      const key = storageKey + nextIdx;
       return setStorageItem(key, JSON.stringify(data));
     },
-    [storageKey, tempSaveIdx]
+    [enableMultiSave, storageKey, tempSaveIdx, tempSaveList.length]
   );
 
   const selectTempSave = useCallback(
@@ -65,7 +73,6 @@ export default function useTempSave({
 
   return {
     curTempSave,
-    tempSaveIdx,
     tempSaveList,
     tempSaveEnable,
     tempSaveVisible,
