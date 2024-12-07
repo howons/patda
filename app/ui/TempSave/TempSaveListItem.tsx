@@ -31,17 +31,19 @@ interface TempSaveListItemProps extends ComponentProps<"li"> {
   platform: Platform;
   targetNickname: string;
   updatedAt: Date;
+  isActive?: boolean;
 }
 
 export default function TempSaveListItem({
   platform,
   targetNickname,
   updatedAt,
+  isActive,
   className,
   ...props
 }: TempSaveListItemProps) {
   const colorStyle = PLATFORM_COLOR[platform];
-  console.log(updatedAt);
+
   return (
     <li
       className={cn(tempSaveListItemVariants({ colorStyle, className }))}
@@ -50,7 +52,10 @@ export default function TempSaveListItem({
         <Label colorStyle={colorStyle} size="md">
           {PLATFORM_NAME[platform]}
         </Label>
-        <Dot />
+        <Dot
+          size={isActive ? "md" : "sm"}
+          className={cn("transition", isActive && "border-4")}
+        />
         {targetNickname}
       </div>
       <AuthorTag date={updatedAt} summary />

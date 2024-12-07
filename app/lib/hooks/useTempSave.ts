@@ -63,8 +63,11 @@ export default function useTempSave({
   );
 
   const selectTempSave = useCallback(
-    (idx: number) => {
-      if (!enableMultiSave) return;
+    (idx?: number) => {
+      if (!enableMultiSave) {
+        setTempSaveIdx(0);
+        return;
+      }
 
       setTempSaveIdx(idx);
     },

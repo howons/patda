@@ -59,12 +59,13 @@ export default function TempSaveList({
         as="ul"
         transition
         className="origin-top transition ease-out data-[closed]:-translate-y-6 data-[closed]:opacity-0">
-        {tempSaveList.map(({ key, data }, idx) => (
+        {tempSaveList.map(({ key, data, isActive }) => (
           <TempSaveListItem
             key={key}
             platform={data.platform}
             targetNickname={data.targetNickname}
             updatedAt={data.updatedAt}
+            isActive={isActive}
           />
         ))}
       </DisclosurePanel>
