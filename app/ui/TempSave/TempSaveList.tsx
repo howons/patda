@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Disclosure,
   DisclosureButton,
@@ -5,7 +7,7 @@ import {
 } from "@headlessui/react";
 import { FaChevronDown } from "@react-icons/all-files/fa/FaChevronDown";
 import { cva, type VariantProps } from "class-variance-authority";
-import type { ComponentPropsWithRef } from "react";
+import { type ComponentPropsWithRef, useState } from "react";
 
 import Label from "#ui/formItems/Label.jsx";
 import TempSaveListItem from "#ui/TempSave/TempSaveListItem.jsx";
@@ -44,9 +46,23 @@ export default function TempSaveList({
   className,
   ...props
 }: TempSaveListProps) {
+  const [targetItemIdx, setTargetItemIdx] = useState<number | null>(null);
+
+  const handleItemClick = (idx: number) => {
+    if (targetItemIdx === idx) return;
+
+    setTargetItemIdx(idx);
+  };
+
+  const handleButtonClick = () => {
+    setTargetItemIdx(null);
+  };
+
   return (
     <Disclosure as="div" className={className} {...props}>
-      <DisclosureButton className={cn(tempSaveListVariants({ colorStyle }))}>
+      <DisclosureButton
+        className={cn(tempSaveListVariants({ colorStyle }))}
+        onClick={handleButtonClick}>
         <Label
           colorStyle={colorStyle}
           size="md"
@@ -59,13 +75,16 @@ export default function TempSaveList({
         as="ul"
         transition
         className="origin-top transition ease-out data-[closed]:-translate-y-6 data-[closed]:opacity-0">
-        {tempSaveList.map(({ key, data, isActive }) => (
+        {tempSaveList.map(({ key, data, isActive }, idx) => (
           <TempSaveListItem
             key={key}
             platform={data.platform}
             targetNickname={data.targetNickname}
             updatedAt={data.updatedAt}
             isActive={isActive}
+            isTarget={targetItemIdx === idx}
+            handleSelect={() => selectTempSave(idx)}
+            onClick={() => handleItemClick(idx)}
           />
         ))}
       </DisclosurePanel>

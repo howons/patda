@@ -1,3 +1,6 @@
+"use client";
+
+import { FiAlertCircle } from "@react-icons/all-files/fi/FiAlertCircle";
 import { cva } from "class-variance-authority";
 import type { ComponentProps } from "react";
 
@@ -9,7 +12,7 @@ import Label from "#ui/formItems/Label.jsx";
 import { cn } from "#utils/utils.js";
 
 const tempSaveListItemVariants = cva(
-  "flex cursor-pointer items-center justify-between rounded border-t px-3 py-2 shadow",
+  "relative flex cursor-pointer items-center justify-between overflow-hidden rounded border-t px-3 py-2 shadow",
   {
     variants: {
       colorStyle: {
@@ -31,14 +34,18 @@ interface TempSaveListItemProps extends ComponentProps<"li"> {
   platform: Platform;
   targetNickname: string;
   updatedAt: Date;
+  handleSelect: () => void;
   isActive?: boolean;
+  isTarget?: boolean;
 }
 
 export default function TempSaveListItem({
   platform,
   targetNickname,
   updatedAt,
+  handleSelect,
   isActive,
+  isTarget,
   className,
   ...props
 }: TempSaveListItemProps) {
@@ -54,11 +61,24 @@ export default function TempSaveListItem({
         </Label>
         <Dot
           size={isActive ? "md" : "sm"}
-          className={cn("transition", isActive && "border-4")}
+          className={cn("transition-all", isActive && "border-4")}
         />
         {targetNickname}
       </div>
-      <AuthorTag date={updatedAt} summary />
+      {!isTarget ? (
+        <AuthorTag date={updatedAt} summary />
+      ) : (
+        <p className="flex items-center text-sm text-red-900">
+          임시 저장된 내용으로 변경?
+          <FiAlertCircle className="ml-2 size-5 stroke-orange-500" />
+        </p>
+      )}
+      <div
+        className={cn(
+          "absolute -right-[27.5rem] -top-[33.75rem] size-[70rem] rounded-full border border-neutral-400/10 transition-all duration-500",
+          isTarget && "border-[447px] border-neutral-400/50"
+        )}
+      />
     </li>
   );
 }
