@@ -10,16 +10,18 @@ import {
 
 const PREFIX = "patda";
 
-const EMPTY_SAVE = { key: "", data: null };
+const EMPTY_SAVE = { key: "", data: null, isActive: false };
 
 interface UseTempSaveProps {
   containerId: string;
   enableMultiSave?: boolean;
+  onSelect?: (data: { [key: string]: any }) => void;
 }
 
 export default function useTempSave({
   containerId,
   enableMultiSave,
+  onSelect,
 }: UseTempSaveProps) {
   const storageKey = PREFIX + containerId;
 
@@ -27,12 +29,19 @@ export default function useTempSave({
 
   const tempSaveList = useMemo(
     () =>
-      getStorageItemList(storageKey).map(({ key, data }, idx) => {
-        if (!data) return { key, data };
+      getStorageItemList(storageKey)
+        .map(({ key, data }, idx) => {
+          if (!data) return { key, data: null, isActive: false };
 
-        const parsedData = JSON.parse(data);
-        return { key, data: parsedData, isActive: idx === tempSaveIdx };
-      }),
+          const parsedData = JSON.parse(data);
+          return { key, data: parsedData, isActive: idx === tempSaveIdx };
+        })
+        .sort((a, b) => {
+          const aKeyIdx = Number(a.key.split("_")[1]);
+          const bKeyIdx = Number(b.key.split("_")[1]);
+
+          return aKeyIdx - bKeyIdx;
+        }),
     [storageKey, tempSaveIdx]
   );
 
@@ -56,7 +65,7 @@ export default function useTempSave({
         setTempSaveIdx(nextIdx);
       }
 
-      const key = storageKey + nextIdx;
+      const key = `${storageKey}_${nextIdx}`;
       return setStorageItem(key, JSON.stringify(data));
     },
     [enableMultiSave, storageKey, tempSaveIdx, tempSaveList.length]
@@ -64,14 +73,12 @@ export default function useTempSave({
 
   const selectTempSave = useCallback(
     (idx?: number) => {
-      if (!enableMultiSave) {
-        setTempSaveIdx(0);
-        return;
-      }
+      const nextIdx = enableMultiSave && idx !== undefined ? idx : 0;
+      setTempSaveIdx(nextIdx);
 
-      setTempSaveIdx(idx);
+      onSelect?.(tempSaveList[nextIdx].data);
     },
-    [enableMultiSave]
+    [enableMultiSave, onSelect, tempSaveList]
   );
 
   return {

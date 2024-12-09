@@ -106,6 +106,7 @@ export default function PostForm({
     getValues,
     formState: { errors },
     formAction,
+    reset,
   } = useFormAction<FormValues>({
     action: isUpdate ? updatePostAction.bind(null, id) : createPostAction,
     onSuccess,
@@ -129,14 +130,28 @@ export default function PostForm({
     [updatePlatform]
   );
 
+  const onTempSaveSelect = useCallback(
+    (data: any) => {
+      reset(data);
+
+      if (data.platform) {
+        updatePlatform(data.platform);
+      }
+    },
+    [reset, updatePlatform]
+  );
+
   const {
-    curTempSave,
     tempSaveList,
     tempSaveEnable,
     tempSaveVisible,
     saveData,
     selectTempSave,
-  } = useTempSave({ containerId: imagePath, enableMultiSave: true });
+  } = useTempSave({
+    containerId: imagePath,
+    enableMultiSave: true,
+    onSelect: onTempSaveSelect,
+  });
 
   const handleSaveClick = () => {
     const formValues = getValues();
@@ -246,6 +261,7 @@ export default function PostForm({
                   colorStyle={color}
                   name="tag"
                   defaultValue={isUpdate ? defaultValues.tag : "others"}
+                  value={field.value}
                   onChange={field.onChange}
                   items={tagOptions}
                 />
