@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-} from "@headlessui/react";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { FaChevronDown } from "@react-icons/all-files/fa/FaChevronDown";
 import { cva, type VariantProps } from "class-variance-authority";
 import { type ComponentPropsWithRef, useState } from "react";
@@ -55,8 +51,8 @@ export default function TempSaveList({
   };
 
   return (
-    <Disclosure as="div" className={className} {...props}>
-      <DisclosureButton
+    <Popover as="div" className={className} {...props}>
+      <PopoverButton
         className={cn(tempSaveListVariants({ colorStyle }))}
         onClick={handleButtonClick}>
         <Label
@@ -66,8 +62,8 @@ export default function TempSaveList({
           임시 저장 목록
         </Label>
         <FaChevronDown className="size-3 fill-neutral-400 transition-transform group-data-[open]:rotate-180" />
-      </DisclosureButton>
-      <DisclosurePanel
+      </PopoverButton>
+      <PopoverPanel
         as="ul"
         transition
         className="origin-top transition ease-out data-[closed]:-translate-y-6 data-[closed]:opacity-0">
@@ -97,7 +93,7 @@ export default function TempSaveList({
             />
           );
         })}
-      </DisclosurePanel>
-    </Disclosure>
+      </PopoverPanel>
+    </Popover>
   );
 }
