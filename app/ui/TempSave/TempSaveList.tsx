@@ -48,12 +48,6 @@ export default function TempSaveList({
 }: TempSaveListProps) {
   const [targetItemIdx, setTargetItemIdx] = useState<number | null>(null);
 
-  const handleItemClick = (idx: number) => {
-    if (targetItemIdx === idx) return;
-
-    setTargetItemIdx(idx);
-  };
-
   const handleButtonClick = () => {
     setTargetItemIdx(null);
   };
@@ -75,18 +69,31 @@ export default function TempSaveList({
         as="ul"
         transition
         className="origin-top transition ease-out data-[closed]:-translate-y-6 data-[closed]:opacity-0">
-        {tempSaveList.map(({ key, data, isActive }, idx) => (
-          <TempSaveListItem
-            key={key}
-            platform={data.platform}
-            targetNickname={data.targetNickname}
-            updatedAt={data.updatedAt}
-            isActive={isActive}
-            isTarget={targetItemIdx === idx}
-            handleSelect={() => selectTempSave(idx)}
-            onClick={() => handleItemClick(idx)}
-          />
-        ))}
+        {tempSaveList.map(({ key, data, isActive }, idx) => {
+          const isTarget = targetItemIdx === idx;
+
+          const handleClick = () => {
+            if (!isTarget) {
+              setTargetItemIdx(idx);
+              return;
+            }
+
+            selectTempSave(idx);
+            setTargetItemIdx(null);
+          };
+
+          return (
+            <TempSaveListItem
+              key={key}
+              platform={data.platform}
+              targetNickname={data.targetNickname}
+              updatedAt={data.updatedAt}
+              isActive={isActive}
+              isTarget={isTarget}
+              onClick={handleClick}
+            />
+          );
+        })}
       </DisclosurePanel>
     </Disclosure>
   );

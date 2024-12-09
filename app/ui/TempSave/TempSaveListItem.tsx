@@ -34,7 +34,6 @@ interface TempSaveListItemProps extends ComponentProps<"li"> {
   platform: Platform;
   targetNickname: string;
   updatedAt: Date;
-  handleSelect: () => void;
   isActive?: boolean;
   isTarget?: boolean;
 }
@@ -43,7 +42,6 @@ export default function TempSaveListItem({
   platform,
   targetNickname,
   updatedAt,
-  handleSelect,
   isActive,
   isTarget,
   className,
