@@ -10,7 +10,7 @@ import TempSaveListItem from "#ui/TempSave/TempSaveListItem.jsx";
 import { cn } from "#utils/utils.js";
 
 const tempSaveListVariants = cva(
-  "group flex size-full min-w-24 items-center justify-between rounded px-2 py-1 data-[open]:border-l-4",
+  "group flex size-full min-w-24 items-center justify-between rounded px-2 py-1 shadow data-[open]:border-l-4",
   {
     variants: {
       colorStyle: {

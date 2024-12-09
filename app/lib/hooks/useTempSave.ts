@@ -26,23 +26,13 @@ export default function useTempSave({
   const storageKey = PREFIX + containerId;
 
   const [tempSaveIdx, setTempSaveIdx] = useState<number | undefined>();
-
   const [shouldListUpdate, setShouldListUpdate] = useState(false);
+
   const tempSaveList = useMemo(() => {
     if (shouldListUpdate) setShouldListUpdate(false);
     return getStorageItemList(storageKey)
-      .map(({ key, data }) => {
-        if (!data) return { key, data: null };
-
-        const parsedData = JSON.parse(data);
-        return { key, data: parsedData };
-      })
-      .sort((a, b) => {
-        const aKeyIdx = Number(a.key.split("_")[1]);
-        const bKeyIdx = Number(b.key.split("_")[1]);
-
-        return aKeyIdx - bKeyIdx;
-      });
+      .map(parseStorageData)
+      .sort(sortDataByKeyIdx);
   }, [shouldListUpdate, storageKey]);
 
   const curTempSave =
@@ -50,6 +40,7 @@ export default function useTempSave({
 
   const [tempSaveEnable, setTempSaveEnable] = useState(false);
   const [tempSaveVisible, setTempSaveVisible] = useState(false);
+
   useEffect(() => {
     if (checkStorageUsable()) {
       setTempSaveEnable(true);
@@ -94,4 +85,21 @@ export default function useTempSave({
     saveData,
     selectTempSave,
   };
+}
+
+function parseStorageData({ key, data }: { key: string; data: string | null }) {
+  if (!data) return { key, data: null };
+
+  const parsedData = JSON.parse(data);
+  return { key, data: parsedData };
+}
+
+function sortDataByKeyIdx(
+  a: ReturnType<typeof parseStorageData>,
+  b: ReturnType<typeof parseStorageData>
+) {
+  const aKeyIdx = Number(a.key.split("_")[1]);
+  const bKeyIdx = Number(b.key.split("_")[1]);
+
+  return aKeyIdx - bKeyIdx;
 }
