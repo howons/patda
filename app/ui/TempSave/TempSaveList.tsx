@@ -35,11 +35,13 @@ const tempSaveListVariants = cva(
 interface TempSaveListProps
   extends ComponentPropsWithRef<"div">,
     VariantProps<typeof tempSaveListVariants> {
+  tempSaveIdx: number | undefined;
   tempSaveList: any[];
   selectTempSave: (idx: number) => void;
 }
 
 export default function TempSaveList({
+  tempSaveIdx,
   tempSaveList,
   selectTempSave,
   colorStyle,
@@ -69,7 +71,8 @@ export default function TempSaveList({
         as="ul"
         transition
         className="origin-top transition ease-out data-[closed]:-translate-y-6 data-[closed]:opacity-0">
-        {tempSaveList.map(({ key, data, isActive }, idx) => {
+        {tempSaveList.map(({ key, data }, idx) => {
+          const isActive = tempSaveIdx === idx;
           const isTarget = targetItemIdx === idx;
 
           const handleClick = () => {

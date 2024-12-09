@@ -58,6 +58,7 @@ export default function TempSaveListItem({
           {PLATFORM_NAME[platform]}
         </Label>
         <Dot
+          colorStyle={colorStyle}
           size={isActive ? "md" : "sm"}
           className={cn("transition-all", isActive && "border-4")}
         />

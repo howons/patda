@@ -27,23 +27,23 @@ export default function useTempSave({
 
   const [tempSaveIdx, setTempSaveIdx] = useState<number | undefined>();
 
-  const tempSaveList = useMemo(
-    () =>
-      getStorageItemList(storageKey)
-        .map(({ key, data }, idx) => {
-          if (!data) return { key, data: null, isActive: false };
+  const [shouldListUpdate, setShouldListUpdate] = useState(false);
+  const tempSaveList = useMemo(() => {
+    if (shouldListUpdate) setShouldListUpdate(false);
+    return getStorageItemList(storageKey)
+      .map(({ key, data }) => {
+        if (!data) return { key, data: null };
 
-          const parsedData = JSON.parse(data);
-          return { key, data: parsedData, isActive: idx === tempSaveIdx };
-        })
-        .sort((a, b) => {
-          const aKeyIdx = Number(a.key.split("_")[1]);
-          const bKeyIdx = Number(b.key.split("_")[1]);
+        const parsedData = JSON.parse(data);
+        return { key, data: parsedData };
+      })
+      .sort((a, b) => {
+        const aKeyIdx = Number(a.key.split("_")[1]);
+        const bKeyIdx = Number(b.key.split("_")[1]);
 
-          return aKeyIdx - bKeyIdx;
-        }),
-    [storageKey, tempSaveIdx]
-  );
+        return aKeyIdx - bKeyIdx;
+      });
+  }, [shouldListUpdate, storageKey]);
 
   const curTempSave =
     tempSaveIdx !== undefined ? tempSaveList[tempSaveIdx] : EMPTY_SAVE;
@@ -65,6 +65,8 @@ export default function useTempSave({
         setTempSaveIdx(nextIdx);
       }
 
+      setShouldListUpdate(true);
+
       const key = `${storageKey}_${nextIdx}`;
       return setStorageItem(key, JSON.stringify(data));
     },
@@ -76,6 +78,8 @@ export default function useTempSave({
       const nextIdx = enableMultiSave && idx !== undefined ? idx : 0;
       setTempSaveIdx(nextIdx);
 
+      setShouldListUpdate(true);
+
       onSelect?.(tempSaveList[nextIdx].data);
     },
     [enableMultiSave, onSelect, tempSaveList]
@@ -83,6 +87,7 @@ export default function useTempSave({
 
   return {
     curTempSave,
+    tempSaveIdx,
     tempSaveList,
     tempSaveEnable,
     tempSaveVisible,

@@ -13,7 +13,10 @@ interface TempSaveButtonProps extends ButtonProps {
   onSaveClick: () => boolean | void;
 }
 
-export default function TempSaveButton({ onSaveClick }: TempSaveButtonProps) {
+export default function TempSaveButton({
+  onSaveClick,
+  ...props
+}: TempSaveButtonProps) {
   const [saveStatus, setSaveStatus] = useState<ToastStatus>("NONE");
   const [toastKey, setToastKey] = useState(0);
 
@@ -31,7 +34,9 @@ export default function TempSaveButton({ onSaveClick }: TempSaveButtonProps) {
         status={saveStatus}
         text={TOAST_TEXT[saveStatus]}
       />
-      <Button onClick={handleSaveClick}>임시 저장</Button>
+      <Button onClick={handleSaveClick} {...props}>
+        임시 저장
+      </Button>
     </ElementToastContainer>
   );
 }
