@@ -148,6 +148,7 @@ export default function PostForm({
     tempSaveVisible,
     saveData,
     selectTempSave,
+    deleteTempSave,
   } = useTempSave({
     containerId: imagePath,
     enableMultiSave: true,
@@ -178,6 +179,7 @@ export default function PostForm({
                 tempSaveIdx={tempSaveIdx}
                 tempSaveList={tempSaveList}
                 selectTempSave={selectTempSave}
+                deleteTempSave={deleteTempSave}
                 className={cn(
                   "absolute left-0 top-[10%] h-[90%] w-3/4 transition duration-500 -translate-y-8 opacity-0",
                   tempSaveVisible && "translate-y-0 opacity-100 z-10"

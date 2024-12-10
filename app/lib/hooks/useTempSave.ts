@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   checkStorageUsable,
   getStorageItemList,
+  removeStorageItem,
   setStorageItem,
 } from "#lib/utils/localStorage.js";
 
@@ -51,14 +52,14 @@ export default function useTempSave({
   const saveData = useCallback(
     (data: { [key: string]: any }) => {
       let nextIdx = tempSaveIdx;
-      if (tempSaveIdx === undefined) {
+      if (nextIdx === undefined) {
         nextIdx = enableMultiSave ? tempSaveList.length : 0;
         setTempSaveIdx(nextIdx);
       }
 
       setShouldListUpdate(true);
 
-      const key = `${storageKey}_${nextIdx}`;
+      const key = getStorageKeyWithIdx(storageKey, nextIdx);
       return setStorageItem(key, JSON.stringify(data));
     },
     [enableMultiSave, storageKey, tempSaveIdx, tempSaveList.length]
@@ -76,6 +77,16 @@ export default function useTempSave({
     [enableMultiSave, onSelect, tempSaveList]
   );
 
+  const deleteTempSave = useCallback(
+    (idx: number) => {
+      if (idx >= tempSaveList.length) return;
+
+      removeStorageItem(getStorageKeyWithIdx(storageKey, idx));
+      setShouldListUpdate(true);
+    },
+    [storageKey, tempSaveList.length]
+  );
+
   return {
     curTempSave,
     tempSaveIdx,
@@ -84,6 +95,7 @@ export default function useTempSave({
     tempSaveVisible,
     saveData,
     selectTempSave,
+    deleteTempSave,
   };
 }
 
@@ -102,4 +114,8 @@ function sortDataByKeyIdx(
   const bKeyIdx = Number(b.key.split("_")[1]);
 
   return aKeyIdx - bKeyIdx;
+}
+
+function getStorageKeyWithIdx(storageKey: string, idx: number) {
+  return `${storageKey}_${idx}`;
 }

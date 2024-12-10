@@ -3,7 +3,7 @@
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { FaChevronDown } from "@react-icons/all-files/fa/FaChevronDown";
 import { cva, type VariantProps } from "class-variance-authority";
-import { type ComponentPropsWithRef, useState } from "react";
+import { type ComponentPropsWithRef, type MouseEvent, useState } from "react";
 
 import Label from "#ui/formItems/Label.jsx";
 import TempSaveListItem from "#ui/TempSave/TempSaveListItem.jsx";
@@ -34,12 +34,14 @@ interface TempSaveListProps
   tempSaveIdx: number | undefined;
   tempSaveList: any[];
   selectTempSave: (idx: number) => void;
+  deleteTempSave: (idx: number) => void;
 }
 
 export default function TempSaveList({
   tempSaveIdx,
   tempSaveList,
   selectTempSave,
+  deleteTempSave,
   colorStyle,
   className,
   ...props
@@ -49,6 +51,25 @@ export default function TempSaveList({
   const handleButtonClick = () => {
     setTargetItemIdx(null);
   };
+
+  const handleItemClick =
+    (idx: number, itemStatus?: "delete" | "select") =>
+    (e: MouseEvent<HTMLElement>) => {
+      e.stopPropagation();
+
+      if (targetItemIdx !== idx) {
+        setTargetItemIdx(idx);
+        return;
+      }
+
+      if (itemStatus === "select") {
+        selectTempSave(idx);
+      } else if (itemStatus === "delete") {
+        deleteTempSave(idx);
+      }
+
+      setTargetItemIdx(null);
+    };
 
   return (
     <Popover as="div" className={className} {...props}>
@@ -71,16 +92,6 @@ export default function TempSaveList({
           const isActive = tempSaveIdx === idx;
           const isTarget = targetItemIdx === idx;
 
-          const handleClick = () => {
-            if (!isTarget) {
-              setTargetItemIdx(idx);
-              return;
-            }
-
-            selectTempSave(idx);
-            setTargetItemIdx(null);
-          };
-
           return (
             <TempSaveListItem
               key={key}
@@ -89,7 +100,7 @@ export default function TempSaveList({
               updatedAt={data.updatedAt}
               isActive={isActive}
               isTarget={isTarget}
-              onClick={handleClick}
+              handleItemClick={handleItemClick.bind(null, idx)}
             />
           );
         })}
