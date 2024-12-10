@@ -2,13 +2,14 @@
 
 import { FiAlertCircle } from "@react-icons/all-files/fi/FiAlertCircle";
 import { cva } from "class-variance-authority";
-import type { ComponentProps, MouseEvent } from "react";
+import { type ComponentProps, type MouseEvent, useState } from "react";
 
 import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
-import type { Platform } from "#lib/types/property.js";
+import type { Platform, TempSaveItemStatus } from "#lib/types/property.js";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
 import Label from "#ui/formItems/Label.jsx";
+import Spotlight from "#ui/TempSave/Spotlight.jsx";
 import { cn } from "#utils/utils.js";
 
 const tempSaveListItemVariants = cva(
@@ -36,10 +37,10 @@ interface TempSaveListItemProps extends ComponentProps<"li"> {
   platform: Platform;
   targetNickname: string;
   updatedAt: Date;
-  isActive?: boolean;
-  isTarget?: boolean;
+  isActive: boolean;
+  isTarget: boolean;
   handleItemClick: (
-    itemStatus?: "select" | "delete"
+    itemStatus?: TempSaveItemStatus
   ) => (e: MouseEvent<HTMLElement>) => void;
 }
 
@@ -54,6 +55,8 @@ export default function TempSaveListItem({
   ...props
 }: TempSaveListItemProps) {
   const colorStyle = PLATFORM_COLOR[platform];
+
+  const [itemStatus, setItemStatus] = useState<TempSaveItemStatus>("select");
 
   return (
     <li
@@ -71,14 +74,16 @@ export default function TempSaveListItem({
         />
         {targetNickname}
       </div>
-      <AuthorTag
-        date={updatedAt}
-        summary
+      <div
         className={cn(
-          "transition-opacity duration-500",
+          "transition-opacity duration-500 flex items-center gap-2",
           isTarget && "opacity-0"
-        )}
-      />
+        )}>
+        <AuthorTag date={updatedAt} summary />
+        <div className="flex size-5 origin-center rotate-45 items-center justify-center text-xl text-neutral-400 hover:text-neutral-700">
+          +
+        </div>
+      </div>
       <p
         className={cn(
           "flex items-center text-sm text-red-900 absolute right-3 top-2.5 transition-transform duration-500 translate-x-56",
@@ -87,18 +92,10 @@ export default function TempSaveListItem({
         임시 저장된 내용으로 변경?
         <FiAlertCircle className="ml-2 size-5 stroke-orange-500" />
       </p>
-      <div
-        className={cn(
-          "absolute right-[-27.5rem] top-[-33.75rem] size-[70rem] rounded-full border border-neutral-400/10 transition-all duration-500",
-          isTarget &&
-            "border-[447px] border-neutral-400/50 hover:border-neutral-400/70",
-          "ambient-shadow"
-        )}
-        onClick={handleItemClick()}
-      />
-      <div
-        className="absolute right-2 top-[-5.75rem] size-56 rounded-full"
-        onClick={handleItemClick("select")}
+      <Spotlight
+        isTarget={isTarget}
+        itemStatus={itemStatus}
+        handleItemClick={handleItemClick}
       />
     </li>
   );

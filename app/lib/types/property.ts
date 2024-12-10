@@ -15,3 +15,5 @@ export type TagId =
   | "others";
 
 export type FormColor = "orange" | "red" | "green" | "zinc" | "lime" | "rose";
+
+export type TempSaveItemStatus = "select" | "delete";

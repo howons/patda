@@ -5,6 +5,7 @@ import { FaChevronDown } from "@react-icons/all-files/fa/FaChevronDown";
 import { cva, type VariantProps } from "class-variance-authority";
 import { type ComponentPropsWithRef, type MouseEvent, useState } from "react";
 
+import type { TempSaveItemStatus } from "#lib/types/property.js";
 import Label from "#ui/formItems/Label.jsx";
 import TempSaveListItem from "#ui/TempSave/TempSaveListItem.jsx";
 import { cn } from "#utils/utils.js";
@@ -53,7 +54,7 @@ export default function TempSaveList({
   };
 
   const handleItemClick =
-    (idx: number, itemStatus?: "delete" | "select") =>
+    (idx: number, itemStatus?: TempSaveItemStatus) =>
     (e: MouseEvent<HTMLElement>) => {
       e.stopPropagation();
 
