@@ -49,7 +49,7 @@ export function useFormAction<FormValues extends FieldValues>({
 
     if (state.status === "SUCCESS") {
       clearErrors();
-      console.log(defaultValuesRef.current, !!defaultValuesRef.current);
+
       if (defaultValuesRef.current) {
         reset((values) => ({
           ...values,
