@@ -58,10 +58,27 @@ export default function TempSaveListItem({
 
   const [itemStatus, setItemStatus] = useState<TempSaveItemStatus>("select");
 
+  const handleItemClickWithStatus = (itemStatus?: TempSaveItemStatus) => {
+    const statusEvent = () => setItemStatus("select");
+    const itemEvent = handleItemClick(itemStatus);
+
+    return (e: MouseEvent<HTMLElement>) => {
+      statusEvent();
+      itemEvent(e);
+    };
+  };
+
+  const handleDeleteClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    setItemStatus("delete");
+    handleItemClick()(e);
+  };
+
   return (
     <li
       className={cn(tempSaveListItemVariants({ colorStyle, className }))}
-      onClick={handleItemClick()}
+      onClick={handleItemClickWithStatus()}
       {...props}>
       <div className="flex items-center gap-2">
         <Label colorStyle={colorStyle} size="md">
@@ -80,22 +97,32 @@ export default function TempSaveListItem({
           isTarget && "opacity-0"
         )}>
         <AuthorTag date={updatedAt} summary />
-        <div className="flex size-5 origin-center rotate-45 items-center justify-center text-xl text-neutral-400 hover:text-neutral-700">
+        <button
+          type="button"
+          className="flex size-5 origin-center rotate-45 items-center justify-center text-xl text-neutral-400 hover:text-neutral-700"
+          onClick={handleDeleteClick}>
           +
-        </div>
+        </button>
       </div>
       <p
         className={cn(
           "flex items-center text-sm text-red-900 absolute right-3 top-2.5 transition-transform duration-500 translate-x-56",
           isTarget && "translate-x-0"
         )}>
-        임시 저장된 내용으로 변경?
-        <FiAlertCircle className="ml-2 size-5 stroke-orange-500" />
+        {itemStatus === "select"
+          ? "임시 저장된 내용으로 변경?"
+          : "임시 저장된 내용 삭제?"}
+        <FiAlertCircle
+          className={cn(
+            "ml-2 size-5",
+            itemStatus === "select" ? "stroke-orange-500" : "stroke-red-500"
+          )}
+        />
       </p>
       <Spotlight
         isTarget={isTarget}
         itemStatus={itemStatus}
-        handleItemClick={handleItemClick}
+        handleItemClick={handleItemClickWithStatus}
       />
     </li>
   );
