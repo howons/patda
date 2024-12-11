@@ -89,22 +89,17 @@ export default function TempSaveList({
         as="ul"
         transition
         className="origin-top transition ease-out data-[closed]:-translate-y-6 data-[closed]:opacity-0">
-        {tempSaveList.map(({ key, data }, idx) => {
-          const isActive = tempSaveIdx === idx;
-          const isTarget = targetItemIdx === idx;
-
-          return (
-            <TempSaveListItem
-              key={key}
-              platform={data.platform}
-              targetNickname={data.targetNickname}
-              updatedAt={data.updatedAt}
-              isActive={isActive}
-              isTarget={isTarget}
-              handleItemClick={handleItemClick.bind(null, idx)}
-            />
-          );
-        })}
+        {tempSaveList.map(({ key, data }, idx) => (
+          <TempSaveListItem
+            key={key}
+            platform={data.platform}
+            targetNickname={data.targetNickname}
+            updatedAt={data.updatedAt}
+            isActive={tempSaveIdx === idx}
+            isTarget={targetItemIdx == idx}
+            handleItemClick={handleItemClick.bind(null, idx)}
+          />
+        ))}
       </PopoverPanel>
     </Popover>
   );

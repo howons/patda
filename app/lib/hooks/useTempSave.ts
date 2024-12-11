@@ -15,13 +15,13 @@ const EMPTY_SAVE = { key: "", data: null, isActive: false };
 
 interface UseTempSaveProps {
   containerId: string;
-  enableMultiSave?: boolean;
+  multiSaveEnabled?: boolean;
   onSelect?: (data: { [key: string]: any }) => void;
 }
 
 export default function useTempSave({
   containerId,
-  enableMultiSave,
+  multiSaveEnabled,
   onSelect,
 }: UseTempSaveProps) {
   const storageKey = PREFIX + containerId;
@@ -39,12 +39,12 @@ export default function useTempSave({
   const curTempSave =
     tempSaveIdx !== undefined ? tempSaveList[tempSaveIdx] : EMPTY_SAVE;
 
-  const [tempSaveEnable, setTempSaveEnable] = useState(false);
+  const [tempSaveEnabled, setTempSaveEnabled] = useState(false);
   const [tempSaveVisible, setTempSaveVisible] = useState(false);
 
   useEffect(() => {
     if (checkStorageUsable()) {
-      setTempSaveEnable(true);
+      setTempSaveEnabled(true);
       setTimeout(() => setTempSaveVisible(true), 1);
     }
   }, []);
@@ -53,7 +53,7 @@ export default function useTempSave({
     (data: { [key: string]: any }) => {
       let nextIdx = tempSaveIdx;
       if (nextIdx === undefined) {
-        nextIdx = enableMultiSave ? tempSaveList.length : 0;
+        nextIdx = multiSaveEnabled ? tempSaveList.length : 0;
         setTempSaveIdx(nextIdx);
       }
 
@@ -62,19 +62,19 @@ export default function useTempSave({
       const key = getStorageKeyWithIdx(storageKey, nextIdx);
       return setStorageItem(key, JSON.stringify(data));
     },
-    [enableMultiSave, storageKey, tempSaveIdx, tempSaveList.length]
+    [multiSaveEnabled, storageKey, tempSaveIdx, tempSaveList.length]
   );
 
   const selectTempSave = useCallback(
     (idx?: number) => {
-      const nextIdx = enableMultiSave && idx !== undefined ? idx : 0;
+      const nextIdx = multiSaveEnabled && idx !== undefined ? idx : 0;
       setTempSaveIdx(nextIdx);
 
       setShouldListUpdate(true);
 
       onSelect?.(tempSaveList[nextIdx].data);
     },
-    [enableMultiSave, onSelect, tempSaveList]
+    [multiSaveEnabled, onSelect, tempSaveList]
   );
 
   const deleteTempSave = useCallback(
@@ -91,7 +91,7 @@ export default function useTempSave({
     curTempSave,
     tempSaveIdx,
     tempSaveList,
-    tempSaveEnable,
+    tempSaveEnabled,
     tempSaveVisible,
     saveData,
     selectTempSave,

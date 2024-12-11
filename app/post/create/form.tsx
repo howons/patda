@@ -144,14 +144,14 @@ export default function PostForm({
   const {
     tempSaveIdx,
     tempSaveList,
-    tempSaveEnable,
+    tempSaveEnabled,
     tempSaveVisible,
     saveData,
     selectTempSave,
     deleteTempSave,
   } = useTempSave({
     containerId: imagePath,
-    enableMultiSave: true,
+    multiSaveEnabled: true,
     onSelect: onTempSaveSelect,
   });
 
@@ -173,7 +173,7 @@ export default function PostForm({
               중고거래 진상 박제글 작성
               <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
             </Legend>
-            {tempSaveEnable && tempSaveList.length > 0 && (
+            {tempSaveEnabled && tempSaveList.length > 0 && (
               <TempSaveList
                 colorStyle={color}
                 tempSaveIdx={tempSaveIdx}
