@@ -265,7 +265,7 @@ export default function PostForm({
                   colorStyle={color}
                   name="tag"
                   defaultValue={isUpdate ? defaultValues.tag : "others"}
-                  value={field.value}
+                  value={field.value ?? "others"}
                   onChange={field.onChange}
                   items={tagOptions}
                 />
