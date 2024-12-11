@@ -64,7 +64,9 @@ export default function CommentForm({
   } = useFormAction<CommentFormValues>({
     action: createCommentAction.bind(null, postId),
     onSuccess,
-    defaultValues,
+    useFormProps: {
+      defaultValues,
+    },
   });
 
   const imageArrayRegister = useCallback(
