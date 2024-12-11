@@ -93,7 +93,7 @@ export default function TempSaveListItem({
           size={isActive ? "md" : "sm"}
           className={cn("transition-all", isActive && "border-4")}
         />
-        {titleText || ""}
+        <h1 className="min-w-0 max-w-[50%] truncate">{titleText || ""}</h1>
       </div>
       <div
         className={cn(

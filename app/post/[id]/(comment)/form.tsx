@@ -208,7 +208,7 @@ export default function CommentForm({
               titleKey="content"
               selectTempSave={selectTempSave}
               deleteTempSave={deleteTempSave}
-              className="mb-3 mt-6 h-11"
+              className="relative z-10 mb-5 mt-4 h-11"
             />
           )}
         </Fieldset>
