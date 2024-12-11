@@ -3,7 +3,7 @@
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { Controller, useFieldArray, type UseFormProps } from "react-hook-form";
 
 import {
@@ -18,13 +18,15 @@ import {
 } from "#lib/constants/platform.js";
 import { TAG_DESC, TAG_NAMES } from "#lib/constants/tag.js";
 import { type OnSuccess, useFormAction } from "#lib/hooks/useFormAction.js";
+import useSyncInitPlatform from "#lib/hooks/useSyncInitPlatform.js";
+import useTempSave from "#lib/hooks/useTempSave.js";
 import { ImageFormProvider } from "#lib/providers/ImageFormProvider.jsx";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
 import type { Platform, TagId } from "#lib/types/property.js";
 import type { PostInfo } from "#lib/types/response.js";
 import Logo from "#public/당근빳다.svg";
-import Button from "#ui/Button/Button.jsx";
 import CancelButton from "#ui/Button/CancelButton.jsx";
+import Dot from "#ui/Dot/Dot.jsx";
 import {
   ErrorText,
   Input,
@@ -38,6 +40,9 @@ import {
 import HelpCircle from "#ui/HelpCircle/HelpCircle.jsx";
 import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 import ImageForm from "#ui/ImageForm/ImageForm.jsx";
+import TempSaveButton from "#ui/TempSave/TempSaveButton.jsx";
+import TempSaveList from "#ui/TempSave/TempSaveList.jsx";
+import { cn } from "#utils/utils.js";
 
 const platformOptions = Object.entries(PLATFORM_NAME).map(([id, name]) => ({
   name,
@@ -70,9 +75,10 @@ export default function PostForm({
 }: PostFormProps) {
   const isUpdate = defaultValues !== undefined && id !== undefined;
 
-  const [saveLoading, setSaveLoading] = useState(false);
   const { platform, updatePlatform } = usePlatformStore((store) => store);
   const router = useRouter();
+
+  useSyncInitPlatform({ initPlatform: defaultValues?.platform });
 
   const color = PLATFORM_COLOR[platform];
 
@@ -97,8 +103,10 @@ export default function PostForm({
   const {
     register,
     control,
+    getValues,
     formState: { errors },
     formAction,
+    reset,
   } = useFormAction<FormValues>({
     action: isUpdate ? updatePostAction.bind(null, id) : createPostAction,
     onSuccess,
@@ -122,13 +130,36 @@ export default function PostForm({
     [updatePlatform]
   );
 
-  const initPlatform = defaultValues?.platform;
+  const onTempSaveSelect = useCallback(
+    (data: any) => {
+      reset(data);
 
-  useEffect(() => {
-    if (!initPlatform) return;
+      if (data.platform) {
+        updatePlatform(data.platform);
+      }
+    },
+    [reset, updatePlatform]
+  );
 
-    updatePlatform(initPlatform);
-  }, [updatePlatform, initPlatform]);
+  const {
+    tempSaveIdx,
+    tempSaveList,
+    tempSaveEnabled,
+    tempSaveVisible,
+    saveData,
+    selectTempSave,
+    deleteTempSave,
+  } = useTempSave({
+    containerId: imagePath,
+    multiSaveEnabled: true,
+    onSelect: onTempSaveSelect,
+  });
+
+  const handleSaveClick = () => {
+    const formValues = getValues();
+    const valuesWithDate = { updatedAt: new Date(), ...formValues };
+    return saveData(valuesWithDate);
+  };
 
   return (
     <ImageFormProvider fields={fields} append={append} remove={remove} id={id}>
@@ -137,13 +168,27 @@ export default function PostForm({
         className="flex w-full min-w-80 max-w-3xl flex-col justify-between px-3 md:w-5/6"
         data-testid="post-form">
         <Fieldset className="space-y-6">
-          <div className="mt-8 flex items-center justify-between">
-            <Legend colorStyle={color} className="group flex break-keep">
+          <div className="relative mt-8 flex items-center justify-between">
+            <Legend colorStyle={color} className="group flex h-12 break-keep">
               중고거래 진상 박제글 작성
               <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
             </Legend>
-            <CancelButton />
+            {tempSaveEnabled && tempSaveList.length > 0 && (
+              <TempSaveList
+                colorStyle={color}
+                tempSaveIdx={tempSaveIdx}
+                tempSaveList={tempSaveList}
+                selectTempSave={selectTempSave}
+                deleteTempSave={deleteTempSave}
+                className={cn(
+                  "absolute left-0 top-[5%] h-[90%] sm:w-3/4 w-full transition duration-500 -translate-y-8 opacity-0",
+                  tempSaveVisible && "translate-y-0 opacity-100 z-10"
+                )}
+              />
+            )}
+            <CancelButton className="max-sm:hidden" />
           </div>
+          <Dot colorStyle={color} className="mx-auto" />
           <div className="flex gap-6">
             <div className="flex-1">
               <Field className="flex flex-col">
@@ -220,6 +265,7 @@ export default function PostForm({
                   colorStyle={color}
                   name="tag"
                   defaultValue={isUpdate ? defaultValues.tag : "others"}
+                  value={field.value ?? "others"}
                   onChange={field.onChange}
                   items={tagOptions}
                 />
@@ -242,7 +288,7 @@ export default function PostForm({
           <Field>
             <Label colorStyle={color}>상세 설명</Label>
             <Textarea
-              colorStyle={PLATFORM_COLOR[platform]}
+              colorStyle={color}
               className="block w-full resize-y"
               required
               minLength={30}
@@ -257,18 +303,8 @@ export default function PostForm({
           </Field>
         </Fieldset>
         <div className="mt-6 flex justify-end gap-6">
-          <Button
-            colorStyle={PLATFORM_COLOR[platform]}
-            loading={saveLoading}
-            onClick={() => {
-              setSaveLoading(true);
-              setTimeout(() => setSaveLoading(false), 3000);
-            }}>
-            임시 저장
-          </Button>
-          <SubmitButton colorStyle={PLATFORM_COLOR[platform]}>
-            작성
-          </SubmitButton>
+          <TempSaveButton colorStyle={color} onSaveClick={handleSaveClick} />
+          <SubmitButton colorStyle={color}>작성</SubmitButton>
         </div>
       </form>
       <ImageForm />
