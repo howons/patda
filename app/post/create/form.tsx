@@ -178,6 +178,9 @@ export default function PostForm({
                 colorStyle={color}
                 tempSaveIdx={tempSaveIdx}
                 tempSaveList={tempSaveList}
+                categoryKey="platform"
+                categoryValues={PLATFORM_NAME}
+                titleKey="targetNickname"
                 selectTempSave={selectTempSave}
                 deleteTempSave={deleteTempSave}
                 className={cn(

@@ -5,7 +5,8 @@ import { FaChevronDown } from "@react-icons/all-files/fa/FaChevronDown";
 import { cva, type VariantProps } from "class-variance-authority";
 import { type ComponentPropsWithRef, type MouseEvent, useState } from "react";
 
-import type { TempSaveItemStatus } from "#lib/types/property.js";
+import { PLATFORM_COLOR } from "#lib/constants/platform.js";
+import type { Platform, TempSaveItemStatus } from "#lib/types/property.js";
 import Label from "#ui/formItems/Label.jsx";
 import TempSaveListItem from "#ui/TempSave/TempSaveListItem.jsx";
 import { cn } from "#utils/utils.js";
@@ -34,6 +35,9 @@ interface TempSaveListProps
     VariantProps<typeof tempSaveListVariants> {
   tempSaveIdx: number | undefined;
   tempSaveList: any[];
+  categoryKey?: string;
+  categoryValues?: { [key: string]: string };
+  titleKey?: string;
   selectTempSave: (idx: number) => void;
   deleteTempSave: (idx: number) => void;
 }
@@ -41,6 +45,9 @@ interface TempSaveListProps
 export default function TempSaveList({
   tempSaveIdx,
   tempSaveList,
+  categoryKey,
+  categoryValues,
+  titleKey,
   selectTempSave,
   deleteTempSave,
   colorStyle,
@@ -89,17 +96,30 @@ export default function TempSaveList({
         as="ul"
         transition
         className="origin-top transition ease-out data-[closed]:-translate-y-6 data-[closed]:opacity-0">
-        {tempSaveList.map(({ key, data }, idx) => (
-          <TempSaveListItem
-            key={key}
-            platform={data.platform}
-            targetNickname={data.targetNickname}
-            updatedAt={data.updatedAt}
-            isActive={tempSaveIdx === idx}
-            isTarget={targetItemIdx == idx}
-            handleItemClick={handleItemClick.bind(null, idx)}
-          />
-        ))}
+        {tempSaveList.map(({ key, data }, idx) => {
+          const category =
+            categoryKey &&
+            (categoryValues
+              ? categoryValues[data[categoryKey]]
+              : data[categoryKey]);
+          const titleText = titleKey && data[titleKey];
+          const itemColorStyle = data.platform
+            ? PLATFORM_COLOR[data.platform as Platform]
+            : colorStyle;
+
+          return (
+            <TempSaveListItem
+              key={key}
+              category={category}
+              titleText={titleText}
+              updatedAt={data.updatedAt}
+              isActive={tempSaveIdx === idx}
+              isTarget={targetItemIdx == idx}
+              colorStyle={itemColorStyle}
+              handleItemClick={handleItemClick.bind(null, idx)}
+            />
+          );
+        })}
       </PopoverPanel>
     </Popover>
   );
