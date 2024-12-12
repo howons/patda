@@ -3,7 +3,7 @@
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useFieldArray } from "react-hook-form";
 
 import {
@@ -50,9 +50,13 @@ export default function CommentForm({
   );
   const router = useRouter();
 
+  const deleteSuccessTempSave = useRef(() => {});
   const onSuccess = useCallback(() => {
+    deleteSuccessTempSave.current();
+
     router.refresh();
   }, [router]);
+
   const {
     register,
     control,
@@ -110,6 +114,12 @@ export default function CommentForm({
     containerId: imagePath,
     onSelect: onTempSaveSelect,
   });
+
+  deleteSuccessTempSave.current = useCallback(() => {
+    if (tempSaveKey) {
+      deleteTempSave(tempSaveKey);
+    }
+  }, [deleteTempSave, tempSaveKey]);
 
   const handleSaveClick = () => {
     const formValues = getValues();

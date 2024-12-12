@@ -3,7 +3,7 @@
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent, useCallback, useRef } from "react";
 import { Controller, useFieldArray, type UseFormProps } from "react-hook-form";
 
 import {
@@ -82,8 +82,11 @@ export default function PostForm({
 
   const color = PLATFORM_COLOR[platform];
 
+  const deleteSuccessTempSave = useRef(() => {});
   const onSuccess: OnSuccess = useCallback(
     (state) => {
+      deleteSuccessTempSave.current();
+
       const postId = isUpdate ? id : state.resultId;
       router.push(`/post/${postId}`);
     },
@@ -153,6 +156,12 @@ export default function PostForm({
     containerId: imagePath,
     onSelect: onTempSaveSelect,
   });
+
+  deleteSuccessTempSave.current = useCallback(() => {
+    if (tempSaveKey) {
+      deleteTempSave(tempSaveKey);
+    }
+  }, [deleteTempSave, tempSaveKey]);
 
   const handleSaveClick = () => {
     const formValues = getValues();
