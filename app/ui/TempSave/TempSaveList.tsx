@@ -33,17 +33,17 @@ const tempSaveListVariants = cva(
 interface TempSaveListProps
   extends ComponentPropsWithRef<"div">,
     VariantProps<typeof tempSaveListVariants> {
-  tempSaveIdx: number | undefined;
+  tempSaveKey: string | undefined;
   tempSaveList: any[];
   categoryKey?: string;
   categoryValues?: { [key: string]: string };
   titleKey?: string;
-  selectTempSave: (idx: number) => void;
-  deleteTempSave: (idx: number) => void;
+  selectTempSave: (key: string) => void;
+  deleteTempSave: (key: string) => void;
 }
 
 export default function TempSaveList({
-  tempSaveIdx,
+  tempSaveKey,
   tempSaveList,
   categoryKey,
   categoryValues,
@@ -54,29 +54,29 @@ export default function TempSaveList({
   className,
   ...props
 }: TempSaveListProps) {
-  const [targetItemIdx, setTargetItemIdx] = useState<number | null>(null);
+  const [targetItemKey, setTargetItemKey] = useState<string | null>(null);
 
   const handleButtonClick = () => {
-    setTargetItemIdx(null);
+    setTargetItemKey(null);
   };
 
   const handleItemClick =
-    (idx: number, itemStatus?: TempSaveItemStatus) =>
+    (key: string, itemStatus?: TempSaveItemStatus) =>
     (e: MouseEvent<HTMLElement>) => {
       e.stopPropagation();
 
-      if (targetItemIdx !== idx) {
-        setTargetItemIdx(idx);
+      if (targetItemKey !== key) {
+        setTargetItemKey(key);
         return;
       }
 
       if (itemStatus === "select") {
-        selectTempSave(idx);
+        selectTempSave(key);
       } else if (itemStatus === "delete") {
-        deleteTempSave(idx);
+        deleteTempSave(key);
       }
 
-      setTargetItemIdx(null);
+      setTargetItemKey(null);
     };
 
   return (
@@ -96,7 +96,7 @@ export default function TempSaveList({
         as="ul"
         transition
         className="origin-top transition ease-out data-[closed]:-translate-y-6 data-[closed]:opacity-0">
-        {tempSaveList.map(({ key, data }, idx) => {
+        {tempSaveList.map(({ key, data }) => {
           const category =
             categoryKey &&
             (categoryValues
@@ -113,10 +113,10 @@ export default function TempSaveList({
               category={category}
               titleText={titleText}
               updatedAt={data.updatedAt}
-              isActive={tempSaveIdx === idx}
-              isTarget={targetItemIdx == idx}
+              isActive={tempSaveKey === key}
+              isTarget={targetItemKey == key}
               colorStyle={itemColorStyle}
-              handleItemClick={handleItemClick.bind(null, idx)}
+              handleItemClick={handleItemClick.bind(null, key)}
             />
           );
         })}

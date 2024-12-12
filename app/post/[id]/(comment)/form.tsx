@@ -100,7 +100,7 @@ export default function CommentForm({
   );
 
   const {
-    tempSaveIdx,
+    tempSaveKey,
     tempSaveList,
     tempSaveEnabled,
     saveData,
@@ -108,7 +108,6 @@ export default function CommentForm({
     deleteTempSave,
   } = useTempSave({
     containerId: imagePath,
-    multiSaveEnabled: true,
     onSelect: onTempSaveSelect,
   });
 
@@ -205,7 +204,7 @@ export default function CommentForm({
           {isDebate && tempSaveEnabled && tempSaveList.length > 0 && (
             <TempSaveList
               colorStyle={color}
-              tempSaveIdx={tempSaveIdx}
+              tempSaveKey={tempSaveKey}
               tempSaveList={tempSaveList}
               titleKey="content"
               selectTempSave={selectTempSave}

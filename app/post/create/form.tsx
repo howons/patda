@@ -142,7 +142,7 @@ export default function PostForm({
   );
 
   const {
-    tempSaveIdx,
+    tempSaveKey,
     tempSaveList,
     tempSaveEnabled,
     tempSaveVisible,
@@ -151,7 +151,6 @@ export default function PostForm({
     deleteTempSave,
   } = useTempSave({
     containerId: imagePath,
-    multiSaveEnabled: true,
     onSelect: onTempSaveSelect,
   });
 
@@ -176,7 +175,7 @@ export default function PostForm({
             {tempSaveEnabled && tempSaveList.length > 0 && (
               <TempSaveList
                 colorStyle={color}
-                tempSaveIdx={tempSaveIdx}
+                tempSaveKey={tempSaveKey}
                 tempSaveList={tempSaveList}
                 categoryKey="platform"
                 categoryValues={PLATFORM_NAME}

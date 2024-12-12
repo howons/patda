@@ -11,22 +11,20 @@ import {
 
 const PREFIX = "patda";
 
-const EMPTY_SAVE = { key: "", data: null, isActive: false };
+const EMPTY_SAVE = { key: "", data: null };
 
 interface UseTempSaveProps {
   containerId: string;
-  multiSaveEnabled?: boolean;
   onSelect?: (data: { [key: string]: any }) => void;
 }
 
 export default function useTempSave({
   containerId,
-  multiSaveEnabled,
   onSelect,
 }: UseTempSaveProps) {
   const storageKey = PREFIX + containerId;
 
-  const [tempSaveIdx, setTempSaveIdx] = useState<number | undefined>();
+  const [tempSaveKey, setTempSaveKey] = useState<string | undefined>();
   const [shouldListUpdate, setShouldListUpdate] = useState(false);
 
   const tempSaveList = useMemo(() => {
@@ -37,7 +35,9 @@ export default function useTempSave({
   }, [shouldListUpdate, storageKey]);
 
   const curTempSave =
-    tempSaveIdx !== undefined ? tempSaveList[tempSaveIdx] : EMPTY_SAVE;
+    tempSaveKey !== undefined
+      ? getTempSaveByKey(tempSaveList, tempSaveKey)
+      : EMPTY_SAVE;
 
   const [tempSaveEnabled, setTempSaveEnabled] = useState(false);
   const [tempSaveVisible, setTempSaveVisible] = useState(false);
@@ -51,45 +51,36 @@ export default function useTempSave({
 
   const saveData = useCallback(
     (data: { [key: string]: any }) => {
-      let nextIdx = tempSaveIdx;
-      if (nextIdx === undefined) {
-        nextIdx = multiSaveEnabled ? tempSaveList.length : 0;
-        setTempSaveIdx(nextIdx);
+      let nextKey = tempSaveKey;
+      if (nextKey === undefined) {
+        nextKey = generateNewTempSaveKey(tempSaveList, storageKey);
+        setTempSaveKey(nextKey);
       }
 
       setShouldListUpdate(true);
 
-      const key = getStorageKeyWithIdx(storageKey, nextIdx);
-      return setStorageItem(key, JSON.stringify(data));
+      return setStorageItem(nextKey, JSON.stringify(data));
     },
-    [multiSaveEnabled, storageKey, tempSaveIdx, tempSaveList.length]
+    [storageKey, tempSaveKey, tempSaveList]
   );
 
   const selectTempSave = useCallback(
-    (idx?: number) => {
-      const nextIdx = multiSaveEnabled && idx !== undefined ? idx : 0;
-      setTempSaveIdx(nextIdx);
+    (key: string) => {
+      setTempSaveKey(key);
 
-      setShouldListUpdate(true);
-
-      onSelect?.(tempSaveList[nextIdx].data);
+      onSelect?.(getTempSaveByKey(tempSaveList, key).data);
     },
-    [multiSaveEnabled, onSelect, tempSaveList]
+    [onSelect, tempSaveList]
   );
 
-  const deleteTempSave = useCallback(
-    (idx: number) => {
-      if (idx >= tempSaveList.length) return;
-
-      removeStorageItem(getStorageKeyWithIdx(storageKey, idx));
-      setShouldListUpdate(true);
-    },
-    [storageKey, tempSaveList.length]
-  );
+  const deleteTempSave = useCallback((key: string) => {
+    removeStorageItem(key);
+    setShouldListUpdate(true);
+  }, []);
 
   return {
     curTempSave,
-    tempSaveIdx,
+    tempSaveKey,
     tempSaveList,
     tempSaveEnabled,
     tempSaveVisible,
@@ -116,6 +107,24 @@ function sortDataByKeyIdx(
   return aKeyIdx - bKeyIdx;
 }
 
-function getStorageKeyWithIdx(storageKey: string, idx: number) {
-  return `${storageKey}_${idx}`;
+function getTempSaveByKey(
+  tempSaveList: { key: string; data: any }[],
+  targetKey: string
+) {
+  return tempSaveList.find(({ key }) => key === targetKey) ?? EMPTY_SAVE;
+}
+
+function generateNewTempSaveKey(
+  tempSaveList: { key: string; data: any }[],
+  storageKey: string
+) {
+  const lastTempSave = tempSaveList.at(-1);
+  if (!lastTempSave) {
+    return `${storageKey}_0`;
+  }
+
+  const lastTempSaveIdx = Number(lastTempSave.key.split("_")[1]);
+  const nextIdx = Number.isNaN(lastTempSaveIdx) ? 0 : lastTempSaveIdx + 1;
+
+  return `${storageKey}_${nextIdx}`;
 }
