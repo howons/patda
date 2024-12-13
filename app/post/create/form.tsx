@@ -3,7 +3,7 @@
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent, useCallback, useRef } from "react";
 import { Controller, useFieldArray, type UseFormProps } from "react-hook-form";
 
 import {
@@ -82,8 +82,11 @@ export default function PostForm({
 
   const color = PLATFORM_COLOR[platform];
 
+  const deleteSuccessTempSave = useRef(() => {});
   const onSuccess: OnSuccess = useCallback(
     (state) => {
+      deleteSuccessTempSave.current();
+
       const postId = isUpdate ? id : state.resultId;
       router.push(`/post/${postId}`);
     },
@@ -142,7 +145,7 @@ export default function PostForm({
   );
 
   const {
-    tempSaveIdx,
+    tempSaveKey,
     tempSaveList,
     tempSaveEnabled,
     tempSaveVisible,
@@ -151,9 +154,14 @@ export default function PostForm({
     deleteTempSave,
   } = useTempSave({
     containerId: imagePath,
-    multiSaveEnabled: true,
     onSelect: onTempSaveSelect,
   });
+
+  deleteSuccessTempSave.current = useCallback(() => {
+    if (tempSaveKey) {
+      deleteTempSave(tempSaveKey);
+    }
+  }, [deleteTempSave, tempSaveKey]);
 
   const handleSaveClick = () => {
     const formValues = getValues();
@@ -176,8 +184,11 @@ export default function PostForm({
             {tempSaveEnabled && tempSaveList.length > 0 && (
               <TempSaveList
                 colorStyle={color}
-                tempSaveIdx={tempSaveIdx}
+                tempSaveKey={tempSaveKey}
                 tempSaveList={tempSaveList}
+                categoryKey="platform"
+                categoryValues={PLATFORM_NAME}
+                titleKey="targetNickname"
                 selectTempSave={selectTempSave}
                 deleteTempSave={deleteTempSave}
                 className={cn(

@@ -5,7 +5,11 @@ import { cva } from "class-variance-authority";
 import { type ComponentProps, type MouseEvent, useState } from "react";
 
 import { PLATFORM_COLOR, PLATFORM_NAME } from "#lib/constants/platform.js";
-import type { Platform, TempSaveItemStatus } from "#lib/types/property.js";
+import type {
+  FormColor,
+  Platform,
+  TempSaveItemStatus,
+} from "#lib/types/property.js";
 import AuthorTag from "#ui/AuthorTag/AuthorTag.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
 import Label from "#ui/formItems/Label.jsx";
@@ -13,7 +17,7 @@ import Spotlight from "#ui/TempSave/Spotlight.jsx";
 import { cn } from "#utils/utils.js";
 
 const tempSaveListItemVariants = cva(
-  "relative flex cursor-pointer items-center justify-between overflow-hidden rounded border-t px-3 py-2 shadow",
+  "relative flex min-h-11 cursor-pointer items-center justify-between overflow-hidden rounded border-t px-3 py-2 shadow",
   {
     variants: {
       colorStyle: {
@@ -34,28 +38,28 @@ const tempSaveListItemVariants = cva(
 );
 
 interface TempSaveListItemProps extends ComponentProps<"li"> {
-  platform: Platform;
-  targetNickname: string;
   updatedAt: Date;
   isActive: boolean;
   isTarget: boolean;
+  category?: string | false;
+  titleText?: string | false;
+  colorStyle?: FormColor | null;
   handleItemClick: (
     itemStatus?: TempSaveItemStatus
   ) => (e: MouseEvent<HTMLElement>) => void;
 }
 
 export default function TempSaveListItem({
-  platform,
-  targetNickname,
   updatedAt,
   isActive,
   isTarget,
+  category,
+  titleText,
+  colorStyle,
   handleItemClick,
   className,
   ...props
 }: TempSaveListItemProps) {
-  const colorStyle = PLATFORM_COLOR[platform];
-
   const [itemStatus, setItemStatus] = useState<TempSaveItemStatus>("select");
 
   const handleItemClickWithStatus = (itemStatus?: TempSaveItemStatus) => {
@@ -82,14 +86,14 @@ export default function TempSaveListItem({
       {...props}>
       <div className="flex items-center gap-2">
         <Label colorStyle={colorStyle} size="md">
-          {PLATFORM_NAME[platform]}
+          {category || ""}
         </Label>
         <Dot
           colorStyle={colorStyle}
           size={isActive ? "md" : "sm"}
           className={cn("transition-all", isActive && "border-4")}
         />
-        {targetNickname}
+        <h1 className="min-w-0 max-w-[50%] truncate">{titleText || ""}</h1>
       </div>
       <div
         className={cn(

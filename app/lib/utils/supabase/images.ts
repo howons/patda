@@ -1,7 +1,7 @@
-import type { Session } from "next-auth";
-
 import type { FormValues } from "#lib/actions/post/createPostAction.js";
 import { createClient } from "#lib/utils/supabase/server.js";
+
+const STORAGE_ID = "patda-images";
 
 export async function moveImages(
   images: FormValues["images"],
@@ -11,7 +11,7 @@ export async function moveImages(
   const supabase = createClient();
   const promises = images.map(async ({ name }) => {
     const { data, error } = await supabase.storage
-      .from("patda-images")
+      .from(STORAGE_ID)
       .move(`${from}/${name}`, `${to}/${name}`);
   });
 
@@ -22,7 +22,7 @@ export async function removeImages(folder: string, imagesToRemain?: string[]) {
   const supabase = createClient();
 
   const { data: listData, error: listError } = await supabase.storage
-    .from("patda-images")
+    .from(STORAGE_ID)
     .list(folder);
   if (!listData) return;
 
@@ -31,6 +31,6 @@ export async function removeImages(folder: string, imagesToRemain?: string[]) {
     .map(({ name }) => `${folder}/${name}`);
 
   const { data, error } = await supabase.storage
-    .from("patda-images")
+    .from(STORAGE_ID)
     .remove(imagePathesToDelete);
 }

@@ -3,7 +3,7 @@
 import { Field, Fieldset } from "@headlessui/react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useFieldArray } from "react-hook-form";
 
 import {
@@ -11,6 +11,7 @@ import {
   createCommentAction,
 } from "#lib/actions/comment/createCommentAction.js";
 import { useFormAction } from "#lib/hooks/useFormAction.js";
+import useTempSave from "#lib/hooks/useTempSave.js";
 import { useCommentStatusStore } from "#lib/providers/CommentStatusStoreProvider.jsx";
 import { ImageFormProvider } from "#lib/providers/ImageFormProvider.jsx";
 import Dot from "#ui/Dot/Dot.jsx";
@@ -24,6 +25,8 @@ import {
 } from "#ui/formItems/index.jsx";
 import ImageFields from "#ui/ImageForm/ImageFields.jsx";
 import ImageForm from "#ui/ImageForm/ImageForm.jsx";
+import TempSaveButton from "#ui/TempSave/TempSaveButton.jsx";
+import TempSaveList from "#ui/TempSave/TempSaveList.jsx";
 import { cn } from "#utils/utils.js";
 
 const defaultValues: CommentFormValues = {
@@ -47,19 +50,27 @@ export default function CommentForm({
   );
   const router = useRouter();
 
+  const deleteSuccessTempSave = useRef(() => {});
   const onSuccess = useCallback(() => {
+    deleteSuccessTempSave.current();
+
     router.refresh();
   }, [router]);
+
   const {
     register,
     control,
     formState: { errors },
     formAction,
     state,
+    reset,
+    getValues,
   } = useFormAction<CommentFormValues>({
     action: createCommentAction.bind(null, postId),
     onSuccess,
-    defaultValues,
+    useFormProps: {
+      defaultValues,
+    },
   });
 
   const imageArrayRegister = useCallback(
@@ -84,6 +95,37 @@ export default function CommentForm({
       ? "위 논란의 당사자로서 반박할 사항이 있다면 작성해주세요. 작성 시 게시글의 상태가 변경됩니다."
       : "반박 이외의 간단한 댓글을 작성해주세요."
     : `${isDebate ? "반박" : "댓글"}은 로그인 후 작성할 수 있습니다.`;
+
+  const onTempSaveSelect = useCallback(
+    (data: any) => {
+      reset(data);
+    },
+    [reset]
+  );
+
+  const {
+    tempSaveKey,
+    tempSaveList,
+    tempSaveEnabled,
+    saveData,
+    selectTempSave,
+    deleteTempSave,
+  } = useTempSave({
+    containerId: imagePath,
+    onSelect: onTempSaveSelect,
+  });
+
+  deleteSuccessTempSave.current = useCallback(() => {
+    if (tempSaveKey) {
+      deleteTempSave(tempSaveKey);
+    }
+  }, [deleteTempSave, tempSaveKey]);
+
+  const handleSaveClick = () => {
+    const formValues = getValues();
+    const valuesWithDate = { updatedAt: new Date(), ...formValues };
+    return saveData(valuesWithDate);
+  };
 
   return (
     <ImageFormProvider
@@ -158,13 +200,28 @@ export default function CommentForm({
             (state.status === "ERROR_DATABASE" && (
               <ErrorText>{state.message}</ErrorText>
             ))}
-          <div className="flex justify-end max-sm:px-3">
-            <SubmitButton
-              colorStyle={color}
-              className="ml-auto transition-colors">
+          <div className="flex justify-end gap-6 max-sm:px-3">
+            {isDebate && (
+              <TempSaveButton
+                colorStyle={color}
+                onSaveClick={handleSaveClick}
+              />
+            )}
+            <SubmitButton colorStyle={color} className="transition-colors">
               작성
             </SubmitButton>
           </div>
+          {isDebate && tempSaveEnabled && tempSaveList.length > 0 && (
+            <TempSaveList
+              colorStyle={color}
+              tempSaveKey={tempSaveKey}
+              tempSaveList={tempSaveList}
+              titleKey="content"
+              selectTempSave={selectTempSave}
+              deleteTempSave={deleteTempSave}
+              className="relative z-10 mb-5 mt-4 h-11"
+            />
+          )}
         </Fieldset>
       </form>
       <ImageForm />
