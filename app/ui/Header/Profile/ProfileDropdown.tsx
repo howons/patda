@@ -5,6 +5,7 @@ import { Session } from "next-auth";
 import { forwardRef } from "react";
 
 import { providerMap } from "#auth";
+import { getUserKey } from "#lib/utils/user.js";
 import MenuItemButton from "#ui/Header/Profile/MenuItemButton.jsx";
 import SignButton from "#ui/Header/Profile/SignButton.jsx";
 
@@ -25,7 +26,7 @@ const ProfileDropdown = forwardRef<HTMLDivElement, ProfileDropdownProps>(
             <MenuHeading className="mb-2 text-sm opacity-50">
               {session.user.name} 님
             </MenuHeading>
-            <Link href="/profile">
+            <Link href={`/profile/${getUserKey(session)}`}>
               <MenuItemButton>
                 <BiDoorOpen className={`mr-3 size-6 fill-gray-700`} />
                 <span>마이페이지</span>
