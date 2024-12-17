@@ -26,7 +26,7 @@ const ProfileDropdown = forwardRef<HTMLDivElement, ProfileDropdownProps>(
             <MenuHeading className="mb-2 text-sm opacity-50">
               {session.user.name} 님
             </MenuHeading>
-            <Link href={`/profile/${getUserKey(session)}`}>
+            <Link href="/profile">
               <MenuItemButton>
                 <BiDoorOpen className={`mr-3 size-6 fill-gray-700`} />
                 <span>마이페이지</span>
