@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 
+import PlatformUserInfo from "#app/profile/(platform)/PlatformUserInfo.jsx";
 import { PLATFORM_COLOR, PLATFORM_ID } from "#lib/constants/platform.js";
+import type { Database } from "#lib/database/db.js";
 import type { Platform } from "#lib/types/property.js";
 import Logo from "#public/당근빳다.svg";
 import { labelVariants } from "#ui/formItems/Label.jsx";
@@ -11,7 +13,11 @@ import { cn } from "#utils/utils.js";
 
 const PLATFORMS = [...Object.values(PLATFORM_ID)];
 
-export default function PlatformProfiles() {
+interface PlatformProfilesProp {
+  profile?: Omit<Database["Profile"], "userId">;
+}
+
+export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
   const [targetPlatform, setTargetPlatform] = useState<Platform | null>(null);
   const colorStyle = PLATFORM_COLOR[targetPlatform || "daangn"];
 
@@ -27,19 +33,67 @@ export default function PlatformProfiles() {
       </h1>
       {PLATFORMS.map((platform) => {
         const isTarget = targetPlatform === platform;
+
+        const [nickname, additionalInfo, etcPlatformName] = getUserInfo(
+          platform,
+          profile
+        );
+
         return (
-          <CategoryItem
-            key={platform}
-            platform={platform}
-            isActive={isTarget}
-            className={cn(
-              "transition-transform duration-300 ease-out cursor-pointer",
-              isTarget ? "-rotate-45 hover:-rotate-[39deg]" : "hover:-rotate-6"
-            )}
-            onClick={() => setTargetPlatform(!isTarget ? platform : null)}
-          />
+          <div key={platform} className="flex items-center gap-6">
+            <CategoryItem
+              platform={platform}
+              isActive={isTarget}
+              className={cn(
+                "transition-transform duration-300 ease-out cursor-pointer",
+                isTarget
+                  ? "-rotate-45 hover:-rotate-[39deg]"
+                  : "hover:-rotate-6"
+              )}
+              onClick={() => setTargetPlatform(!isTarget ? platform : null)}
+            />
+            <PlatformUserInfo
+              platform={platform}
+              nickname={nickname}
+              additionalInfo={additionalInfo}
+              etcPlatformName={etcPlatformName}
+            />
+          </div>
         );
       })}
     </>
   );
+}
+
+function getUserInfo(
+  platform: Platform,
+  profile: PlatformProfilesProp["profile"]
+): [string, string, string | undefined] {
+  let nickname = "";
+  let additionalInfo = "";
+  let etcPlatformName: string | undefined;
+
+  if (profile) {
+    switch (platform) {
+      case "daangn":
+        nickname = profile.daangnNickname ?? "";
+        additionalInfo = profile.daangnInfo ?? "";
+        break;
+      case "bunjang":
+        nickname = profile.bunjangNickname ?? "";
+        additionalInfo = profile.bunjangInfo ?? "";
+        break;
+      case "joongna":
+        nickname = profile.joongnaNickname ?? "";
+        additionalInfo = profile.joongnaInfo ?? "";
+        break;
+      default:
+        nickname = profile.etcNickname ?? "";
+        additionalInfo = profile.etcInfo ?? "";
+        etcPlatformName = profile.etcPlatformName ?? "";
+        break;
+    }
+  }
+
+  return [nickname, additionalInfo, etcPlatformName];
 }

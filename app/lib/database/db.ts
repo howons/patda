@@ -64,6 +64,18 @@ export interface Database {
     createdAt: GeneratedAlways<Date>;
     updatedAt: Generated<Date>;
   };
+  Profile: {
+    userId: string;
+    daangnNickname: string | null;
+    daangnInfo: string | null;
+    bunjangNickname: string | null;
+    bunjangInfo: string | null;
+    joongnaNickname: string | null;
+    joongnaInfo: string | null;
+    etcNickname: string | null;
+    etcInfo: string | null;
+    etcPlatformName: string | null;
+  };
 }
 
 export const db = createKysely<Database>();

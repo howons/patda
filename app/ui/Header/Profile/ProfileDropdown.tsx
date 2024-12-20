@@ -5,7 +5,6 @@ import { Session } from "next-auth";
 import { forwardRef } from "react";
 
 import { providerMap } from "#auth";
-import { getUserKey } from "#lib/utils/user.js";
 import MenuItemButton from "#ui/Header/Profile/MenuItemButton.jsx";
 import SignButton from "#ui/Header/Profile/SignButton.jsx";
 

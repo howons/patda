@@ -9,3 +9,21 @@ export const getUser = cache((userId: string) =>
     .where("id", "=", userId)
     .executeTakeFirstOrThrow()
 );
+
+export const getProfile = cache((userId: string) =>
+  db
+    .selectFrom("Profile")
+    .select([
+      "daangnInfo",
+      "daangnNickname",
+      "bunjangInfo",
+      "bunjangNickname",
+      "joongnaInfo",
+      "joongnaNickname",
+      "etcInfo",
+      "etcNickname",
+      "etcPlatformName",
+    ])
+    .where("userId", "=", userId)
+    .executeTakeFirst()
+);
