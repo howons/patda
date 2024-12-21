@@ -34,10 +34,8 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
       {PLATFORMS.map((platform) => {
         const isTarget = targetPlatform === platform;
 
-        const [nickname, additionalInfo, etcPlatformName] = getUserInfo(
-          platform,
-          profile
-        );
+        const [nickname, additionalInfo, etcPlatformName] =
+          parsePlatformUserInfo(platform, profile);
 
         return (
           <div key={platform} className="flex items-center gap-6">
@@ -65,7 +63,7 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
   );
 }
 
-function getUserInfo(
+function parsePlatformUserInfo(
   platform: Platform,
   profile: PlatformProfilesProp["profile"]
 ): [string, string, string | undefined] {
