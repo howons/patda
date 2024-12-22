@@ -1,5 +1,6 @@
 import type { ComponentProps } from "react";
 
+import InfoText from "#app/profile/(platform)/_component/InfoText.jsx";
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import type { Platform } from "#lib/types/property.js";
 import Dot from "#ui/Dot/Dot.jsx";
@@ -23,16 +24,16 @@ export default function PlatformUserInfo({
   const colorStyle = PLATFORM_COLOR[platform];
 
   return (
-    <div className={cn(className)} {...props}>
-      {etcPlatformName !== undefined && (
+    <div className={cn("flex items-center gap-4", className)} {...props}>
+      {platform === "etc" && (
         <>
-          <p>{etcPlatformName}</p>
-          <Dot colorStyle={colorStyle} />{" "}
+          <InfoText>{etcPlatformName}</InfoText>
+          <Dot colorStyle={colorStyle} />
         </>
       )}
-      <p>{nickname}</p>
+      <InfoText className="min-w-20">{nickname}</InfoText>
       <Dot colorStyle={colorStyle} />
-      <p>{additionalInfo}</p>
+      <InfoText className="grow">{additionalInfo}</InfoText>
     </div>
   );
 }

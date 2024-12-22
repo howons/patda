@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 
-import PlatformUserInfo from "#app/profile/(platform)/PlatformUserInfo.jsx";
+import PlatformUserInfo from "#app/profile/(platform)/_component/PlatformUserInfo.jsx";
 import { PLATFORM_COLOR, PLATFORM_ID } from "#lib/constants/platform.js";
 import type { Database } from "#lib/database/db.js";
 import type { Platform } from "#lib/types/property.js";
 import Logo from "#public/당근빳다.svg";
+import EditButton from "#ui/Button/EditButton.jsx";
 import { labelVariants } from "#ui/formItems/Label.jsx";
 import CategoryItem from "#ui/SearchBar/CategoryItem.jsx";
 import { cn } from "#utils/utils.js";
@@ -55,6 +56,11 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
               nickname={nickname}
               additionalInfo={additionalInfo}
               etcPlatformName={etcPlatformName}
+              className="grow"
+            />
+            <EditButton
+              isEdit={isTarget}
+              onClick={() => setTargetPlatform(!isTarget ? platform : null)}
             />
           </div>
         );
