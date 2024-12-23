@@ -1,10 +1,13 @@
+"use client";
+
 import { FiCheck } from "@react-icons/all-files/fi/FiCheck";
 import { FiEdit3 } from "@react-icons/all-files/fi/FiEdit3";
-import type { ComponentProps } from "react";
+import { type ComponentPropsWithRef, useDeferredValue } from "react";
 
+import Button from "#ui/Button/Button.jsx";
 import { cn } from "#utils/utils.js";
 
-interface EditButtonProp extends ComponentProps<"button"> {
+interface EditButtonProp extends ComponentPropsWithRef<"button"> {
   isEdit: boolean;
 }
 
@@ -13,12 +16,15 @@ export default function EditButton({
   className,
   ...props
 }: EditButtonProp) {
+  const deferredIsEdit = useDeferredValue(isEdit);
+
   return (
-    <button
-      type={isEdit ? "submit" : "button"}
+    <Button
+      type={deferredIsEdit ? "submit" : "button"}
+      title={isEdit ? "confirmEdit" : "edit"}
       className={cn(
-        "rounded-full bg-neutral-300/30 hover:bg-neutral-300/70 size-10 relative transition-all duration-300",
-        isEdit && "size-14 bg-green-300/30 hover:bg-green-300/70",
+        "rounded-full size-10 transition-all duration-300 min-w-0",
+        isEdit && "size-14",
         className
       )}
       {...props}>
@@ -34,6 +40,6 @@ export default function EditButton({
           isEdit && "-rotate-45 opacity-0"
         )}
       />
-    </button>
+    </Button>
   );
 }

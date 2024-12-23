@@ -4,6 +4,7 @@ import InfoText from "#app/profile/(platform)/_component/InfoText.jsx";
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import type { Platform } from "#lib/types/property.js";
 import Dot from "#ui/Dot/Dot.jsx";
+import Input from "#ui/formItems/Input.jsx";
 import { cn } from "#utils/utils.js";
 
 interface PlatformUserInfoProps extends ComponentProps<"div"> {
@@ -11,6 +12,7 @@ interface PlatformUserInfoProps extends ComponentProps<"div"> {
   nickname: string;
   additionalInfo: string;
   etcPlatformName?: string;
+  isEdit?: boolean;
 }
 
 export default function PlatformUserInfo({
@@ -18,6 +20,7 @@ export default function PlatformUserInfo({
   nickname,
   additionalInfo,
   etcPlatformName,
+  isEdit,
   className,
   ...props
 }: PlatformUserInfoProps) {
@@ -27,13 +30,27 @@ export default function PlatformUserInfo({
     <div className={cn("flex items-center gap-4", className)} {...props}>
       {platform === "etc" && (
         <>
-          <InfoText>{etcPlatformName}</InfoText>
+          <InfoText
+            text={etcPlatformName ?? ""}
+            colorStyle={colorStyle}
+            isEdit={isEdit}
+          />
           <Dot colorStyle={colorStyle} />
         </>
       )}
-      <InfoText className="min-w-20">{nickname}</InfoText>
+      <InfoText
+        text={nickname}
+        colorStyle={colorStyle}
+        isEdit={isEdit}
+        className="min-w-20"
+      />
       <Dot colorStyle={colorStyle} />
-      <InfoText className="grow">{additionalInfo}</InfoText>
+      <Input
+        defaultValue={additionalInfo}
+        colorStyle={colorStyle}
+        readOnly={!isEdit}
+        className="grow border-x-0 border-t-0"
+      />
     </div>
   );
 }

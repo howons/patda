@@ -39,7 +39,7 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
           parsePlatformUserInfo(platform, profile);
 
         return (
-          <div key={platform} className="flex items-center gap-6">
+          <form key={platform} className="flex items-center gap-6">
             <CategoryItem
               platform={platform}
               isActive={isTarget}
@@ -62,7 +62,7 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
               isEdit={isTarget}
               onClick={() => setTargetPlatform(!isTarget ? platform : null)}
             />
-          </div>
+          </form>
         );
       })}
     </>
