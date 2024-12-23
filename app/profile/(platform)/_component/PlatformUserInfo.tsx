@@ -1,7 +1,10 @@
 import type { ComponentProps } from "react";
 
 import InfoText from "#app/profile/(platform)/_component/InfoText.jsx";
-import { PLATFORM_COLOR } from "#lib/constants/platform.js";
+import {
+  PLATFORM_COLOR,
+  PLATFORM_PLACEHOLDER,
+} from "#lib/constants/platform.js";
 import type { Platform } from "#lib/types/property.js";
 import Dot from "#ui/Dot/Dot.jsx";
 import Input from "#ui/formItems/Input.jsx";
@@ -34,6 +37,7 @@ export default function PlatformUserInfo({
             defaultValue={etcPlatformName}
             colorStyle={colorStyle}
             readOnly={!isEdit}
+            placeholder="사이트명"
             className="w-16 flex-auto"
           />
           <Dot colorStyle={colorStyle} />
@@ -43,6 +47,7 @@ export default function PlatformUserInfo({
         defaultValue={nickname}
         colorStyle={colorStyle}
         readOnly={!isEdit}
+        placeholder="닉네임"
         className="w-20 flex-auto"
       />
       <Dot colorStyle={colorStyle} />
@@ -50,6 +55,7 @@ export default function PlatformUserInfo({
         defaultValue={additionalInfo}
         colorStyle={colorStyle}
         readOnly={!isEdit}
+        placeholder={`추가 정보 (${PLATFORM_PLACEHOLDER[platform]})`}
         className="w-48 flex-auto"
       />
     </div>

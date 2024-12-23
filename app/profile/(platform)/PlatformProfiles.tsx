@@ -1,14 +1,20 @@
 "use client";
 
+import { Button } from "@headlessui/react";
 import { useState } from "react";
 
 import PlatformUserInfo from "#app/profile/(platform)/_component/PlatformUserInfo.jsx";
-import { PLATFORM_COLOR, PLATFORM_ID } from "#lib/constants/platform.js";
+import {
+  PLATFORM_COLOR,
+  PLATFORM_ID,
+  PLATFORM_NAME,
+} from "#lib/constants/platform.js";
 import type { Database } from "#lib/database/db.js";
 import type { Platform } from "#lib/types/property.js";
 import Logo from "#public/당근빳다.svg";
 import EditButton from "#ui/Button/EditButton.jsx";
 import { labelVariants } from "#ui/formItems/Label.jsx";
+import HelpCircle from "#ui/HelpCircle/HelpCircle.jsx";
 import CategoryItem from "#ui/SearchBar/CategoryItem.jsx";
 import { cn } from "#utils/utils.js";
 
@@ -24,14 +30,19 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
 
   return (
     <>
-      <h1
-        className={cn(
-          labelVariants({ colorStyle, size: "2xl" }),
-          "group flex h-12 transition-colors duration-300"
-        )}>
-        프로필
-        <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
-      </h1>
+      <div className="flex justify-between">
+        <h1
+          className={cn(
+            labelVariants({ colorStyle, size: "2xl" }),
+            "group flex h-12 transition-colors duration-300"
+          )}>
+          프로필
+          <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
+        </h1>
+        <HelpCircle className="z-10 mx-2 mt-2">
+          작성한 정보는 본인이 저격당한 게시글을 찾는데 사용됩니다.
+        </HelpCircle>
+      </div>
       {PLATFORMS.map((platform) => {
         const isTarget = targetPlatform === platform;
 
@@ -40,22 +51,24 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
 
         return (
           <form key={platform} className="flex items-center gap-6">
-            <CategoryItem
-              platform={platform}
-              isActive={isTarget}
+            <Button
+              type="button"
+              title={PLATFORM_NAME[platform]}
+              onClick={() => setTargetPlatform(!isTarget ? platform : null)}
               className={cn(
-                "transition-transform duration-300 ease-out cursor-pointer",
+                "transition-transform duration-300 ease-out",
                 isTarget
                   ? "-rotate-45 hover:-rotate-[39deg]"
                   : "hover:-rotate-6"
-              )}
-              onClick={() => setTargetPlatform(!isTarget ? platform : null)}
-            />
+              )}>
+              <CategoryItem platform={platform} isActive={isTarget} />
+            </Button>
             <PlatformUserInfo
               platform={platform}
               nickname={nickname}
               additionalInfo={additionalInfo}
               etcPlatformName={etcPlatformName}
+              isEdit={isTarget}
               className="grow"
             />
             <EditButton
