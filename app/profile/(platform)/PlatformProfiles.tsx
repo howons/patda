@@ -60,6 +60,7 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
             />
             <EditButton
               isEdit={isTarget}
+              platform={platform}
               onClick={() => setTargetPlatform(!isTarget ? platform : null)}
             />
           </form>
