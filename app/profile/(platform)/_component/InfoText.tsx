@@ -1,49 +1,25 @@
-import { cva } from "class-variance-authority";
-import type { ComponentProps } from "react";
+import React from "react";
 
 import type { FormColor } from "#lib/types/property.js";
+import Input from "#ui/formItems/Input.jsx";
 import { cn } from "#utils/utils.js";
 
-const textVariants = cva("min-h-6 min-w-16 border-b-2 px-3 py-2", {
-  variants: {
-    colorStyle: {
-      orange: "border-orange-300",
-      red: "border-red-300",
-      green: "border-green-300",
-      zinc: "border-zinc-300",
-      lime: "border-lime-300",
-      rose: "border-rose-300",
-    },
-  },
-  defaultVariants: {
-    colorStyle: "orange",
-  },
-});
-
-interface InfoTextProps extends ComponentProps<"input"> {
-  text: string;
+interface InfoTextProps extends React.InputHTMLAttributes<HTMLInputElement> {
   colorStyle: FormColor;
-  isEdit?: boolean;
 }
 
-export default function InfoText({
-  text,
-  colorStyle,
-  isEdit,
-  className,
-  ...props
-}: InfoTextProps) {
-  if (isEdit) {
-    return <input></input>;
+const InfoText = React.forwardRef<HTMLInputElement, InfoTextProps>(
+  ({ colorStyle, className, ...props }, ref) => {
+    return (
+      <Input
+        ref={ref}
+        className={cn("min-h-6 min-w-16 border-x-0 border-t-0 py-1", className)}
+        {...props}
+      />
+    );
   }
+);
 
-  return (
-    <p
-      className={cn(
-        textVariants({ colorStyle, className }),
-        text.length <= 0 && "border-zinc-200"
-      )}>
-      {text}
-    </p>
-  );
-}
+InfoText.displayName = "InfoText";
+
+export default InfoText;

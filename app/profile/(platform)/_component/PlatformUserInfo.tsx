@@ -31,25 +31,26 @@ export default function PlatformUserInfo({
       {platform === "etc" && (
         <>
           <InfoText
-            text={etcPlatformName ?? ""}
+            defaultValue={etcPlatformName}
             colorStyle={colorStyle}
-            isEdit={isEdit}
+            readOnly={!isEdit}
+            className="w-16 flex-auto"
           />
           <Dot colorStyle={colorStyle} />
         </>
       )}
       <InfoText
-        text={nickname}
+        defaultValue={nickname}
         colorStyle={colorStyle}
-        isEdit={isEdit}
-        className="min-w-20"
+        readOnly={!isEdit}
+        className="w-20 flex-auto"
       />
       <Dot colorStyle={colorStyle} />
-      <Input
+      <InfoText
         defaultValue={additionalInfo}
         colorStyle={colorStyle}
         readOnly={!isEdit}
-        className="grow border-x-0 border-t-0"
+        className="w-48 flex-auto"
       />
     </div>
   );
