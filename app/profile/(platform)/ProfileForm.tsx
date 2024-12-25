@@ -41,8 +41,10 @@ export default function ProfileForm({
   const router = useRouter();
 
   const onSuccess = useCallback(() => {
+    setTargetPlatform(null);
+
     router.refresh();
-  }, [router]);
+  }, [router, setTargetPlatform]);
 
   const {
     register,
@@ -52,6 +54,12 @@ export default function ProfileForm({
     action: upsertProfileAction.bind(null, platform),
     onSuccess,
   });
+
+  const handleEditClick = () => {
+    if (isTarget) return;
+
+    setTargetPlatform(platform);
+  };
 
   return (
     <form action={formAction} className={className} {...props}>
@@ -68,7 +76,7 @@ export default function ProfileForm({
       <EditButton
         isEdit={isTarget}
         platform={platform}
-        onClick={() => setTargetPlatform(!isTarget ? platform : null)}
+        onClick={handleEditClick}
       />
     </form>
   );

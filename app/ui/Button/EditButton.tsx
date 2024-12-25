@@ -3,6 +3,7 @@
 import { FiCheck } from "@react-icons/all-files/fi/FiCheck";
 import { FiEdit3 } from "@react-icons/all-files/fi/FiEdit3";
 import { type ComponentPropsWithRef, useDeferredValue } from "react";
+import { useFormStatus } from "react-dom";
 
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import type { Platform } from "#lib/types/property.js";
@@ -24,10 +25,13 @@ export default function EditButton({
 
   const deferredIsEdit = useDeferredValue(isEdit);
 
+  const { pending } = useFormStatus();
+
   return (
     <Button
       type={deferredIsEdit ? "submit" : "button"}
       title={isEdit ? "제출" : "수정"}
+      loading={pending}
       colorStyle={isEdit ? colorStyle : "zinc"}
       intent={isEdit ? "primary" : "secondary"}
       className={cn(
