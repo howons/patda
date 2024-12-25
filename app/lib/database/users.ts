@@ -1,6 +1,8 @@
 import { cache } from "react";
 
-import { db } from "#lib/database/db.js";
+import { type Database, db } from "#lib/database/db.js";
+
+export type ProfileData = Database["Profile"];
 
 export const getUser = cache((userId: string) =>
   db
@@ -27,3 +29,11 @@ export const getProfile = cache((userId: string) =>
     .where("userId", "=", userId)
     .executeTakeFirst()
 );
+
+export function upsertProfile(profileData: ProfileData) {
+  return db
+    .insertInto("Profile")
+    .values(profileData)
+    .onConflict((oc) => oc.column("userId").doUpdateSet(profileData))
+    .executeTakeFirstOrThrow();
+}
