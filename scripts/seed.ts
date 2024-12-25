@@ -128,7 +128,7 @@ export async function create() {
     .createTable("Profile")
     .ifNotExists()
     .addColumn("userId", "uuid", (col) =>
-      col.references("User.id").onDelete("cascade").notNull()
+      col.references("User.id").onDelete("cascade").unique().notNull()
     )
     .addColumn("daangnNickname", "text")
     .addColumn("daangnInfo", "text")

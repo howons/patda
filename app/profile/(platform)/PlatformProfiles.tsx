@@ -4,6 +4,7 @@ import { Button } from "@headlessui/react";
 import { useState } from "react";
 
 import PlatformUserInfo from "#app/profile/(platform)/_component/PlatformUserInfo.jsx";
+import ProfileForm from "#app/profile/(platform)/ProfileForm.jsx";
 import {
   PLATFORM_COLOR,
   PLATFORM_ID,
@@ -50,7 +51,15 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
           parsePlatformUserInfo(platform, profile);
 
         return (
-          <form key={platform} className="flex items-center gap-6">
+          <ProfileForm
+            key={platform}
+            platform={platform}
+            isTarget={isTarget}
+            setTargetPlatform={setTargetPlatform}
+            nickname={nickname}
+            additionalInfo={additionalInfo}
+            etcPlatformName={etcPlatformName}
+            className="flex items-center gap-6">
             <Button
               type="button"
               title={PLATFORM_NAME[platform]}
@@ -63,20 +72,7 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
               )}>
               <CategoryItem platform={platform} isActive={isTarget} />
             </Button>
-            <PlatformUserInfo
-              platform={platform}
-              nickname={nickname}
-              additionalInfo={additionalInfo}
-              etcPlatformName={etcPlatformName}
-              isEdit={isTarget}
-              className="grow"
-            />
-            <EditButton
-              isEdit={isTarget}
-              platform={platform}
-              onClick={() => setTargetPlatform(!isTarget ? platform : null)}
-            />
-          </form>
+          </ProfileForm>
         );
       })}
     </>
