@@ -50,18 +50,24 @@ export async function upsertProfileAction(
 
   const { nickname, additionalInfo, etcPlatformName } = input.data;
 
-  const profileData: ProfileData = {
+  const profileData: Partial<ProfileData> = {
     userId,
-    daangnInfo: platform === "daangn" ? additionalInfo : null,
-    daangnNickname: platform === "daangn" ? nickname : null,
-    bunjangInfo: platform === "bunjang" ? additionalInfo : null,
-    bunjangNickname: platform === "bunjang" ? nickname : null,
-    joongnaInfo: platform === "joongna" ? additionalInfo : null,
-    joongnaNickname: platform === "joongna" ? nickname : null,
-    etcInfo: platform === "etc" ? additionalInfo : null,
-    etcNickname: platform === "etc" ? nickname : null,
-    etcPlatformName: platform === "etc" ? etcPlatformName ?? null : null,
   };
+
+  if (platform === "daangn") {
+    profileData.daangnInfo = additionalInfo;
+    profileData.daangnNickname = nickname;
+  } else if (platform === "bunjang") {
+    profileData.bunjangInfo = additionalInfo;
+    profileData.bunjangNickname = nickname;
+  } else if (platform === "joongna") {
+    profileData.joongnaInfo = additionalInfo;
+    profileData.joongnaNickname = nickname;
+  } else if (platform === "etc") {
+    profileData.etcInfo = additionalInfo;
+    profileData.etcNickname = nickname;
+    profileData.etcPlatformName = etcPlatformName;
+  }
 
   try {
     var result = await upsertProfile(profileData);

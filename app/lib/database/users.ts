@@ -30,10 +30,24 @@ export const getProfile = cache((userId: string) =>
     .executeTakeFirst()
 );
 
-export function upsertProfile(profileData: ProfileData) {
+export function upsertProfile(profileData: Partial<ProfileData>) {
+  const dataWithDefaultValues: ProfileData = {
+    userId: "",
+    daangnInfo: null,
+    daangnNickname: null,
+    bunjangInfo: null,
+    bunjangNickname: null,
+    joongnaInfo: null,
+    joongnaNickname: null,
+    etcInfo: null,
+    etcNickname: null,
+    etcPlatformName: null,
+    ...profileData,
+  };
+
   return db
     .insertInto("Profile")
-    .values(profileData)
+    .values(dataWithDefaultValues)
     .onConflict((oc) => oc.column("userId").doUpdateSet(profileData))
     .executeTakeFirstOrThrow();
 }
