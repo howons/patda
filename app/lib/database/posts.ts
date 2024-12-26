@@ -54,22 +54,14 @@ export const getPost = cache((postId: number) =>
     .executeTakeFirstOrThrow()
 );
 
-interface GetPostsByNicknamePlatformProps {
-  nickname: string;
-  platform: Platform;
-  cursor: number;
-  limit: number;
-  isExclude?: boolean;
-}
-
 export const getPostsByNicknamePlatform = cache(
-  ({
-    nickname,
-    platform,
-    cursor,
-    limit,
-    isExclude,
-  }: GetPostsByNicknamePlatformProps) =>
+  (
+    nickname: string,
+    platform: Platform,
+    cursor: number,
+    limit: number,
+    isExclude?: boolean
+  ) =>
     db
       .selectFrom("Post")
       .leftJoin(

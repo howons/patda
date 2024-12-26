@@ -3,7 +3,6 @@
 import { Button } from "@headlessui/react";
 import { useState } from "react";
 
-import PlatformUserInfo from "#app/profile/(platform)/_component/PlatformUserInfo.jsx";
 import ProfileForm from "#app/profile/(platform)/ProfileForm.jsx";
 import {
   PLATFORM_COLOR,
@@ -13,7 +12,6 @@ import {
 import type { Database } from "#lib/database/db.js";
 import type { Platform } from "#lib/types/property.js";
 import Logo from "#public/당근빳다.svg";
-import EditButton from "#ui/Button/EditButton.jsx";
 import { labelVariants } from "#ui/formItems/Label.jsx";
 import HelpCircle from "#ui/HelpCircle/HelpCircle.jsx";
 import CategoryItem from "#ui/SearchBar/CategoryItem.jsx";
@@ -30,7 +28,7 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
   const colorStyle = PLATFORM_COLOR[targetPlatform || "daangn"];
 
   return (
-    <>
+    <section>
       <div className="flex justify-between">
         <h1
           className={cn(
@@ -75,7 +73,7 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
           </ProfileForm>
         );
       })}
-    </>
+    </section>
   );
 }
 

@@ -32,13 +32,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const posts = await getPostsByNicknamePlatform({
-      nickname: nickname ?? "",
-      platform: platform as Platform,
+    const posts = await getPostsByNicknamePlatform(
+      nickname ?? "",
+      platform as Platform,
       cursor,
       limit,
-      isExclude: !(isExclude === null || isExclude === "false"),
-    });
+      !(isExclude === null || isExclude === "false")
+    );
 
     return NextResponse.json({
       data: posts,
