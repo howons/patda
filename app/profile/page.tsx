@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
+import MyPostList from "#app/profile/(myPosts)/MyPostList.jsx";
 import PlatformProfiles from "#app/profile/(platform)/PlatformProfiles.jsx";
 import SnipedPostListSection from "#app/profile/(sniped)/SnipedPostListSection.jsx";
 import { auth } from "#auth";
@@ -18,7 +19,8 @@ export default async function Profile() {
   return (
     <>
       <PlatformProfiles profile={profile} />
-      <SnipedPostListSection profile={profile} className="mt-6" />
+      <SnipedPostListSection profile={profile} className="mt-12" />
+      <MyPostList className="mt-12" />
     </>
   );
 }

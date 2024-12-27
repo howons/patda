@@ -148,6 +148,39 @@ export const getPostsByTargetInfo = cache(
       .execute()
 );
 
+export const getPostsByUserId = cache(
+  (userId: string, cursor: number, limit: number) =>
+    db
+      .selectFrom("Post")
+      .leftJoin(
+        (eb) =>
+          eb
+            .selectFrom("Comment")
+            .select(["postId", sql<number>`count(*)`.as("commentCount")])
+            .where("postId", "<", cursor)
+            .groupBy("postId")
+            .as("c"),
+        (join) => join.onRef("c.postId", "=", "Post.id")
+      )
+      .select([
+        "id",
+        "platform",
+        "targetNickname",
+        "tag",
+        "status",
+        "createdAt",
+        "updatedAt",
+        "etcPlatformName",
+        "additionalInfo",
+        "commentCount",
+      ])
+      .where("Post.id", "<", cursor)
+      .where("Post.userId", "=", userId)
+      .orderBy("Post.id desc")
+      .limit(limit)
+      .execute()
+);
+
 export function updatePost(id: number, updatePostData: UpdatePostData) {
   return db
     .updateTable("Post")
