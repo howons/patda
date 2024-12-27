@@ -16,20 +16,20 @@ const LIMIT = 10;
 
 const getKey: (
   url: string,
-  queryKeyValues: { [key: string]: string | null }
+  queryKeyValues?: { [key: string]: string | null }
 ) => SWRInfiniteKeyLoader<InfinitePostsInfo> =
   (url, queryKeyValues) => (pageIndex, previousPageData) => {
     if (previousPageData && !previousPageData.data) return null;
 
-    const searchQuery = Object.entries(queryKeyValues)
-      .filter(([key, value]) => value)
-      .map(([key, value]) => `${key}=${value}`)
-      .join("&");
+    const searchQuery = Object.entries(queryKeyValues ?? {}).reduce(
+      (acc, [key, value]) => (value ? `${acc}${key}=${value}&` : acc),
+      ""
+    );
 
     if (pageIndex === 0 || !previousPageData)
-      return `${url}?${searchQuery}&limit=${LIMIT}`;
+      return `${url}?${searchQuery}limit=${LIMIT}`;
 
-    return `${url}?${searchQuery}&cursor=${previousPageData.nextCursor}&limit=${LIMIT}`;
+    return `${url}?${searchQuery}cursor=${previousPageData.nextCursor}&limit=${LIMIT}`;
   };
 
 const fetcher: Fetcher<InfinitePostsInfo, string> = async (url) => {
@@ -52,7 +52,7 @@ const fetcher: Fetcher<InfinitePostsInfo, string> = async (url) => {
 
 interface UseInfiniteSearchProps {
   url: string;
-  queryKeyValues: { [key: string]: string | null };
+  queryKeyValues?: { [key: string]: string | null };
   onChange?: () => void;
 }
 
