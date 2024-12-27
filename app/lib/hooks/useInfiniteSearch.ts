@@ -5,9 +5,6 @@ import type { Fetcher } from "swr";
 import type { SWRInfiniteKeyLoader } from "swr/infinite";
 import useSWRInfinite from "swr/infinite";
 
-import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
-import { useSearchStore } from "#lib/providers/SearchStoreProvider.jsx";
-import type { Platform } from "#lib/types/property.js";
 import type {
   InfinitePostsInfo,
   TroublemakerInfo,
@@ -18,19 +15,20 @@ const DEBOUNCE_INTERVAL = 200;
 const LIMIT = 10;
 
 const getKey: (
-  nickname: string,
-  platform: Platform,
-  isExclude?: boolean
+  url: string,
+  queryKeyValues: { [key: string]: string }
 ) => SWRInfiniteKeyLoader<InfinitePostsInfo> =
-  (nickname, platform, isExclude) => (pageIndex, previousPageData) => {
+  (url, queryKeyValues) => (pageIndex, previousPageData) => {
     if (previousPageData && !previousPageData.data) return null;
 
-    const searchQuery = `nickname=${nickname}&platform=${platform}${isExclude ? "&exclude=1" : ""}`;
+    const searchQuery = Object.entries(queryKeyValues)
+      .map(([key, value]) => `${key}=${value}`)
+      .join("&");
 
     if (pageIndex === 0 || !previousPageData)
-      return `/api/v1/posts?${searchQuery}&limit=${LIMIT}`;
+      return `${url}?${searchQuery}&limit=${LIMIT}`;
 
-    return `/api/v1/posts?${searchQuery}&cursor=${previousPageData.nextCursor}&limit=${LIMIT}`;
+    return `${url}?${searchQuery}&cursor=${previousPageData.nextCursor}&limit=${LIMIT}`;
   };
 
 const fetcher: Fetcher<InfinitePostsInfo, string> = async (url) => {
@@ -52,26 +50,21 @@ const fetcher: Fetcher<InfinitePostsInfo, string> = async (url) => {
 };
 
 interface UseInfiniteSearchProps {
+  url: string;
+  queryKeyValues: { [key: string]: string };
   onChange?: () => void;
-  isExclude?: boolean;
 }
 
 export default function useInfiniteSearch({
+  url,
+  queryKeyValues,
   onChange,
-  isExclude,
 }: UseInfiniteSearchProps) {
-  const query = useSearchStore((state) => state.query);
-  const platform = usePlatformStore((state) => state.platform);
-
-  const [keyParams, setKeyParams] = useState<Parameters<typeof getKey>>([
-    "",
-    platform,
-    isExclude,
-  ]);
+  const [debouncedQuery, setDebouncedQuery] = useState(queryKeyValues);
   const { data, isLoading, error, size, setSize } = useSWRInfinite<
     InfinitePostsInfo,
     Error
-  >(getKey(...keyParams), fetcher);
+  >(getKey(url, debouncedQuery), fetcher);
 
   const state: SearchState = {
     status: getInfiniteStatus(isLoading, size, error, data),
@@ -82,7 +75,7 @@ export default function useInfiniteSearch({
 
   useEffect(() => {
     const timeoutId = setTimeout(async () => {
-      setKeyParams([query, platform, isExclude]);
+      setDebouncedQuery(queryKeyValues);
 
       onChange?.();
     }, DEBOUNCE_INTERVAL);
@@ -90,7 +83,7 @@ export default function useInfiniteSearch({
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [query, platform, onChange, isExclude]);
+  }, [onChange, queryKeyValues]);
 
   return {
     state,

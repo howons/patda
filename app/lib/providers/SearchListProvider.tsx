@@ -8,11 +8,14 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 
 import useInfiniteSearch from "#lib/hooks/useInfiniteSearch.js";
+import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";
+import { useSearchStore } from "#lib/providers/SearchStoreProvider.jsx";
 import type { SearchState } from "#lib/types/state.js";
 
 interface SearchListValue {
@@ -42,12 +45,32 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
     );
   }, [activeItemIdx]);
 
+  const query = useSearchStore((state) => state.query);
+  const platform = usePlatformStore((state) => state.platform);
+  const queryKeyValues = useMemo(
+    () => ({
+      query,
+      platform,
+    }),
+    [platform, query]
+  );
+  const queryKeyValuesWithExclude = useMemo(
+    () => ({
+      query,
+      platform,
+      exclude: "1",
+    }),
+    [platform, query]
+  );
+
   const handleQueryKeyChange = useCallback(() => setActiveItemIdx(-1), []);
   const {
     state: troublemakersState,
     size: troublemakersSize,
     setSize: setTroublemakersSize,
   } = useInfiniteSearch({
+    url: "/api/v1/posts",
+    queryKeyValues,
     onChange: handleQueryKeyChange,
   });
   const {
@@ -55,8 +78,9 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
     size: othersSize,
     setSize: setOthersSize,
   } = useInfiniteSearch({
+    url: "/api/v1/posts",
+    queryKeyValues: queryKeyValuesWithExclude,
     onChange: handleQueryKeyChange,
-    isExclude: true,
   });
 
   const handleInputKeyDown: KeyboardEventHandler<HTMLDivElement> = (e) => {
