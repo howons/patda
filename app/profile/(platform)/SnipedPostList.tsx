@@ -23,10 +23,10 @@ export default function SnipedPostList({ profile }: SnipedPostListProps) {
   const Posts = postDataToJSX(state);
 
   return (
-    <section>
+    <ul className="flex w-full max-w-3xl flex-col" aria-label="저격목록">
       <Divider direction="horizon" />
       {Posts}
       <MoreButton status={state.status} onClick={handleMoreClick} />
-    </section>
+    </ul>
   );
 }
