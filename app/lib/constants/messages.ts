@@ -20,4 +20,11 @@ export const ERROR = {
     NO_IMAGES: "채팅 스크린샷 등 증거가 될 수 있는 이미지를 업로드 해주세요.",
     MAX_IMAGE_SIZE: "너무 큰 용량의 이미지입니다.",
   },
+  PROFILE: {
+    NO_AUTH: "로그인 후 시도해주세요.",
+    NO_RESULT_DB: "프로필 생성 오류. 잠시 후 다시 시도해주세요.",
+    MAX_NICKNAME: "닉네임은 30자 이하 적어주세요.",
+    MAX_ADDITIONALINFO: "추가 정보는 30자 이하 적어주세요.",
+    MAX_ETC_PLATFORM_NAME: "사이트 이름은 30자 이하 적어주세요.",
+  },
 };

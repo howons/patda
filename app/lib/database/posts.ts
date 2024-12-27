@@ -2,6 +2,7 @@ import { sql } from "kysely";
 import { cache } from "react";
 
 import { type Database, db } from "#lib/database/db.js";
+import type { ProfileData } from "#lib/database/users.js";
 import type { Platform } from "#lib/types/property.js";
 
 export type NewPostData = Omit<
@@ -54,22 +55,14 @@ export const getPost = cache((postId: number) =>
     .executeTakeFirstOrThrow()
 );
 
-interface GetPostsByNicknamePlatformProps {
-  nickname: string;
-  platform: Platform;
-  cursor: number;
-  limit: number;
-  isExclude?: boolean;
-}
-
 export const getPostsByNicknamePlatform = cache(
-  ({
-    nickname,
-    platform,
-    cursor,
-    limit,
-    isExclude,
-  }: GetPostsByNicknamePlatformProps) =>
+  (
+    nickname: string,
+    platform: Platform,
+    cursor: number,
+    limit: number,
+    isExclude?: boolean
+  ) =>
     db
       .selectFrom("Post")
       .leftJoin(
@@ -97,6 +90,92 @@ export const getPostsByNicknamePlatform = cache(
       .where("Post.id", "<", cursor)
       .where("Post.platform", isExclude ? "!=" : "=", platform)
       .where("Post.targetNickname", "like", `${nickname}%`)
+      .orderBy("Post.id desc")
+      .limit(limit)
+      .execute()
+);
+
+export const getPostsByTargetInfo = cache(
+  (profileData: Omit<ProfileData, "userId">, cursor: number, limit: number) =>
+    db
+      .selectFrom("Post")
+      .leftJoin(
+        (eb) =>
+          eb
+            .selectFrom("Comment")
+            .select(["postId", sql<number>`count(*)`.as("commentCount")])
+            .where("postId", "<", cursor)
+            .groupBy("postId")
+            .as("c"),
+        (join) => join.onRef("c.postId", "=", "Post.id")
+      )
+      .select([
+        "id",
+        "platform",
+        "targetNickname",
+        "tag",
+        "status",
+        "createdAt",
+        "updatedAt",
+        "etcPlatformName",
+        "additionalInfo",
+        "commentCount",
+      ])
+      .where("Post.id", "<", cursor)
+      .where((eb) =>
+        eb.or([
+          eb.and({
+            "Post.targetNickname": profileData.daangnNickname ?? "",
+            "Post.additionalInfo": profileData.daangnInfo,
+          }),
+          eb.and({
+            "Post.targetNickname": profileData.bunjangNickname ?? "",
+            "Post.additionalInfo": profileData.bunjangInfo,
+          }),
+          eb.and({
+            "Post.targetNickname": profileData.joongnaNickname ?? "",
+            "Post.additionalInfo": profileData.joongnaInfo,
+          }),
+          eb.and({
+            "Post.targetNickname": profileData.etcNickname ?? "",
+            "Post.additionalInfo": profileData.etcInfo,
+            "Post.etcPlatformName": profileData.etcPlatformName,
+          }),
+        ])
+      )
+      .orderBy("Post.id desc")
+      .limit(limit)
+      .execute()
+);
+
+export const getPostsByUserId = cache(
+  (userId: string, cursor: number, limit: number) =>
+    db
+      .selectFrom("Post")
+      .leftJoin(
+        (eb) =>
+          eb
+            .selectFrom("Comment")
+            .select(["postId", sql<number>`count(*)`.as("commentCount")])
+            .where("postId", "<", cursor)
+            .groupBy("postId")
+            .as("c"),
+        (join) => join.onRef("c.postId", "=", "Post.id")
+      )
+      .select([
+        "id",
+        "platform",
+        "targetNickname",
+        "tag",
+        "status",
+        "createdAt",
+        "updatedAt",
+        "etcPlatformName",
+        "additionalInfo",
+        "commentCount",
+      ])
+      .where("Post.id", "<", cursor)
+      .where("Post.userId", "=", userId)
       .orderBy("Post.id desc")
       .limit(limit)
       .execute()

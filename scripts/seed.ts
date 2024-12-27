@@ -124,10 +124,28 @@ export async function create() {
     .column("postId")
     .execute();
 
+  await db.schema
+    .createTable("Profile")
+    .ifNotExists()
+    .addColumn("userId", "uuid", (col) =>
+      col.references("User.id").onDelete("cascade").unique().notNull()
+    )
+    .addColumn("daangnNickname", "text")
+    .addColumn("daangnInfo", "text")
+    .addColumn("bunjangNickname", "text")
+    .addColumn("bunjangInfo", "text")
+    .addColumn("joongnaNickname", "text")
+    .addColumn("joongnaInfo", "text")
+    .addColumn("etcNickname", "text")
+    .addColumn("etcInfo", "text")
+    .addColumn("etcPlatformName", "text")
+    .execute();
+
   console.log("Migration completed");
 }
 
 export async function drop() {
+  await db.schema.dropTable("Profile").ifExists().execute();
   await db.schema.dropTable("Comment").ifExists().execute();
   await db.schema.dropTable("Post").ifExists().execute();
   await db.schema.dropTable("Session").ifExists().execute();

@@ -1,5 +1,7 @@
 import type { Session } from "next-auth";
 
+import { getUserKey } from "#lib/utils/user.js";
+
 interface SupabaseLoader {
   src: string;
   width: number;
@@ -13,15 +15,11 @@ export function supabaseLoader({ src, width, quality }: SupabaseLoader) {
 }
 
 export function getTempFolderPath(session: Session, postId?: number) {
-  const userNameKey = encodeURIComponent(session.user?.name ?? "").replace(
-    /[^a-zA-Z0-9]/g,
-    ""
-  );
-  const userId = session.user?.id ?? "";
+  const userKey = getUserKey(session);
 
   const postKey = postId !== undefined ? `${postId}/` : "";
 
-  return `temp/${postKey}${userNameKey}${userId.slice(0, 3)}`;
+  return `temp/${postKey}${userKey}`;
 }
 
 interface GetImagePathProps {

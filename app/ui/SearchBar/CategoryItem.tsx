@@ -1,4 +1,5 @@
 import { FiMoreHorizontal } from "@react-icons/all-files/fi/FiMoreHorizontal";
+import type { ComponentProps } from "react";
 
 import { PLATFORM_NAME } from "#lib/constants/platform.js";
 import type { Platform } from "#lib/types/property.js";
@@ -16,16 +17,16 @@ const platformSvg: { [key in Platform]: React.JSX.Element } = {
   etc: <FiMoreHorizontal className={svgDefaultStyle} />,
 };
 
-interface CategoryItemProps {
+interface CategoryItemProps extends ComponentProps<"div"> {
   platform: Platform;
   isActive?: Boolean;
-  className?: string;
 }
 
 export default function CategoryItem({
   platform,
   isActive,
   className,
+  ...props
 }: CategoryItemProps) {
   const platformStyle: { [key in Platform]: string } = {
     daangn: "bg-orange-100 text-orange-700",
@@ -42,7 +43,9 @@ export default function CategoryItem({
   const nameOpacityStyle = isActive ? "opacity-75" : "opacity-0";
 
   return (
-    <div className={cn(defaultStyle, platformStyle[platform], className)}>
+    <div
+      className={cn(defaultStyle, platformStyle[platform], className)}
+      {...props}>
       {platformSvg[platform]}
       <div
         className={cn(

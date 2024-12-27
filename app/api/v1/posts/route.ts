@@ -1,23 +1,17 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 import { PLATFORM_SET } from "#lib/constants/platform.js";
-import { getPostsByNicknamePlatform } from "#lib/database/posts";
+import {
+  getPostsByNicknamePlatform,
+  getPostsByTargetInfo,
+} from "#lib/database/posts";
 import type { Platform } from "#lib/types/property.js";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const nickname = searchParams.get("nickname");
-  const platform = searchParams.get("platform");
+
   const cursorParam = searchParams.get("cursor");
   const limitParam = searchParams.get("limit");
-  const isExclude = searchParams.get("exclude");
-
-  if (!platform || !PLATFORM_SET.has(platform)) {
-    return NextResponse.json(
-      { error: "platform is incorrect." },
-      { status: 400 }
-    );
-  }
 
   const cursor = cursorParam ? Number(cursorParam) : 999999;
   if (Number.isNaN(cursor)) {
@@ -30,26 +24,67 @@ export async function GET(request: NextRequest) {
   if (Number.isNaN(limit)) {
     return NextResponse.json({ error: "limit is incorrect." }, { status: 400 });
   }
+  const platform = searchParams.get("platform");
 
-  try {
-    const posts = await getPostsByNicknamePlatform({
-      nickname: nickname ?? "",
-      platform: platform as Platform,
-      cursor,
-      limit,
-      isExclude: !(isExclude === null || isExclude === "false"),
-    });
+  if (platform) {
+    if (!PLATFORM_SET.has(platform)) {
+      return NextResponse.json(
+        { error: "platform is incorrect." },
+        { status: 400 }
+      );
+    }
 
-    return NextResponse.json({
-      data: posts,
-      nextCursor: posts.at(-1)?.id ?? 0,
-    });
-  } catch (err) {
-    console.error(err);
+    const nickname = searchParams.get("nickname");
+    const isExclude = searchParams.get("exclude");
 
-    return NextResponse.json(
-      { error: "Database error occurred" },
-      { status: 500 }
-    );
+    try {
+      const posts = await getPostsByNicknamePlatform(
+        nickname ?? "",
+        platform as Platform,
+        cursor,
+        limit,
+        !(isExclude === null || isExclude === "false")
+      );
+
+      return NextResponse.json({
+        data: posts,
+        nextCursor: posts.at(-1)?.id ?? 0,
+      });
+    } catch (err) {
+      console.error(err);
+
+      return NextResponse.json(
+        { error: "Database error occurred" },
+        { status: 500 }
+      );
+    }
+  } else {
+    const profileData = {
+      daangnNickname: searchParams.get("daangnNickname"),
+      daangnInfo: searchParams.get("daangnInfo"),
+      bunjangNickname: searchParams.get("bunjangNickname"),
+      bunjangInfo: searchParams.get("bunjangInfo"),
+      joongnaNickname: searchParams.get("joongnaNickname"),
+      joongnaInfo: searchParams.get("joongnaInfo"),
+      etcNickname: searchParams.get("etcNickname"),
+      etcInfo: searchParams.get("etcInfo"),
+      etcPlatformName: searchParams.get("etcPlatformName"),
+    };
+
+    try {
+      const posts = await getPostsByTargetInfo(profileData, cursor, limit);
+
+      return NextResponse.json({
+        data: posts,
+        nextCursor: posts.at(-1)?.id ?? 0,
+      });
+    } catch (err) {
+      console.error(err);
+
+      return NextResponse.json(
+        { error: "Database error occurred" },
+        { status: 500 }
+      );
+    }
   }
 }

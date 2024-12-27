@@ -4,7 +4,7 @@ import { LabelHTMLAttributes, PropsWithChildren } from "react";
 
 import { cn } from "#utils/utils.js";
 
-const labelVariants = cva("font-bold", {
+export const labelVariants = cva("font-bold", {
   variants: {
     colorStyle: {
       orange: "text-orange-500",
@@ -15,6 +15,7 @@ const labelVariants = cva("font-bold", {
       rose: "text-rose-500",
     },
     size: {
+      "2xl": "text-2xl",
       xl: "text-xl",
       lg: "text-lg",
       md: "text-md",
