@@ -2,7 +2,7 @@
 
 import type { ComponentProps } from "react";
 
-import SnipedPostList from "#app/profile/(platform)/SnipedPostList.jsx";
+import SnipedPostList from "#app/profile/(sniped)/SnipedPostList.jsx";
 import { PLATFORM_COLOR } from "#lib/constants/platform.js";
 import type { Database } from "#lib/database/db.js";
 import { usePlatformStore } from "#lib/providers/PlatformStoreProvider.jsx";

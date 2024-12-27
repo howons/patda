@@ -3,7 +3,7 @@
 import { Button } from "@headlessui/react";
 import { useState } from "react";
 
-import ProfileForm from "#app/profile/(platform)/ProfileForm.jsx";
+import ProfileForm from "#app/profile/(platform)/_component/ProfileForm.jsx";
 import {
   PLATFORM_COLOR,
   PLATFORM_ID,
