@@ -60,15 +60,15 @@ export async function GET(request: NextRequest) {
     }
   } else {
     const profileData = {
-      daangnNickname: searchParams.get("dNick"),
-      daangnInfo: searchParams.get("dInfo"),
-      bunjangNickname: searchParams.get("bNick"),
-      bunjangInfo: searchParams.get("bInfo"),
-      joongnaNickname: searchParams.get("jNick"),
-      joongnaInfo: searchParams.get("jInfo"),
-      etcNickname: searchParams.get("eNick"),
-      etcInfo: searchParams.get("eInfo"),
-      etcPlatformName: searchParams.get("eName"),
+      daangnNickname: searchParams.get("daangnNickname"),
+      daangnInfo: searchParams.get("daangnInfo"),
+      bunjangNickname: searchParams.get("bunjangNickname"),
+      bunjangInfo: searchParams.get("bunjangInfo"),
+      joongnaNickname: searchParams.get("joongnaNickname"),
+      joongnaInfo: searchParams.get("joongnaInfo"),
+      etcNickname: searchParams.get("etcNickname"),
+      etcInfo: searchParams.get("etcInfo"),
+      etcPlatformName: searchParams.get("etcPlatformName"),
     };
 
     try {
