@@ -96,7 +96,7 @@ export const getPostsByNicknamePlatform = cache(
 );
 
 export const getPostsByTargetInfo = cache(
-  (profileData: ProfileData, cursor: number, limit: number) =>
+  (profileData: Omit<ProfileData, "userId">, cursor: number, limit: number) =>
     db
       .selectFrom("Post")
       .leftJoin(

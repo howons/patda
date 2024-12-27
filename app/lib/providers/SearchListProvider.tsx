@@ -49,14 +49,14 @@ export const SearchListProvider = ({ children }: SearchListProviderProps) => {
   const platform = usePlatformStore((state) => state.platform);
   const queryKeyValues = useMemo(
     () => ({
-      query,
+      nickname: query,
       platform,
     }),
     [platform, query]
   );
   const queryKeyValuesWithExclude = useMemo(
     () => ({
-      query,
+      nickname: query,
       platform,
       exclude: "1",
     }),
