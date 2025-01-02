@@ -1,0 +1,7 @@
+User-Agent: *
+Disallow: /profile
+Disallow: /post/create
+Disallow: /post/update
+
+Sitemap: https://patda.store/sitemap.xml
+Sitemap: https://patda.store/post/sitemap.xml
