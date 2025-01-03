@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Nanum_Gothic } from "next/font/google";
 
 import Providers from "#lib/providers/Providers.jsx";
+import Footer from "#ui/Footer/Footer.jsx";
 import Header from "#ui/Header/Header.jsx";
 
 const nanumGoth = Nanum_Gothic({ weight: ["400", "700"], subsets: ["latin"] });
@@ -31,6 +32,7 @@ export default function RootLayout({
           <main className="flex min-h-screen w-screen max-w-full flex-col items-center pb-28 pt-14">
             {children}
           </main>
+          <Footer />
           <Header />
         </Providers>
       </body>
