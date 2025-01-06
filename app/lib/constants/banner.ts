@@ -1,5 +1,5 @@
 export const BANNER_IMAGES = [
-  { id: "daangn", url: "/당근.svg" },
-  { id: "bunjang", url: "/번개장터.svg" },
-  { id: "joongna", url: "/중고나라.svg" },
+  { id: "banner1", url: "/당근빳다_배너1.jpg" },
+  { id: "banner2", url: "/당근빳다_배너2.jpg" },
+  { id: "banner3", url: "/당근빳다_배너3.jpg" },
 ];
