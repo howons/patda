@@ -10,6 +10,7 @@ export default function Banner({ ...props }: ComponentProps<"div">) {
       width={360}
       height={256}
       auto
+      delay={5000}
       {...props}
     />
   );
