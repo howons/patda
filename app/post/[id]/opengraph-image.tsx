@@ -1,6 +1,3 @@
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
-
 import { sql } from "@vercel/postgres";
 import { ImageResponse } from "next/og";
 
@@ -18,16 +15,17 @@ export const contentType = "image/png";
 export default async function Image({ params }: { params: { id: string } }) {
   const postId = params.id;
 
-  const fontData = readFile(
-    join(process.cwd(), "./public/subset-SANGJUHaerye.woff")
-  );
+  const fontData = fetch(
+    new URL("subset-SANGJUHaerye.woff", process.env.PATDA_PROJECT_URL)
+  ).then((res) => res.arrayBuffer());
 
-  const [postData, bgData] = await Promise.all([
+  const [postData, bgSrc] = await Promise.all([
     sql`SELECT "targetNickname", platform, "etcPlatformName" FROM "Post" WHERE id = ${postId};`,
-    readFile(join(process.cwd(), "./public/patda_og.jpg")),
+    fetch(new URL("patda_og.jpg", process.env.PATDA_PROJECT_URL)).then((res) =>
+      res.arrayBuffer()
+    ),
   ]);
 
-  const bgSrc = Uint8Array.from(bgData).buffer;
   const { targetNickname, platform, etcPlatformName } = postData
     .rows[0] as Pick<
     Database["Post"],
