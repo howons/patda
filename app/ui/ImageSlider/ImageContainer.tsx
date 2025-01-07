@@ -25,7 +25,7 @@ export default function ImageContainer({
           alt="banner"
           width={width}
           height={height}
-          className="h-full w-screen bg-stone-300 object-contain"
+          className="h-full w-screen bg-stone-200 object-contain"
         />
       ))}
     </div>

@@ -12,6 +12,7 @@ interface ImageSliderProps extends ComponentProps<"div"> {
   width: number;
   height: number;
   auto?: boolean;
+  delay?: number;
 }
 
 export default function ImageSlider({
@@ -19,6 +20,7 @@ export default function ImageSlider({
   width,
   height,
   auto,
+  delay = 3000,
   className,
   ...props
 }: ImageSliderProps) {
@@ -31,10 +33,10 @@ export default function ImageSlider({
 
     intervalRef.current = setInterval(() => {
       setCurImage((prev) => prev + 1);
-    }, 3000);
+    }, delay);
 
     return () => clearInterval(intervalRef.current!);
-  }, [auto]);
+  }, [auto, delay]);
 
   useEffect(() => {
     if (curImage >= BANNER_IMAGES.length) {
