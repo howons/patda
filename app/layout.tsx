@@ -10,6 +10,7 @@ import Header from "#ui/Header/Header.jsx";
 const nanumGoth = Nanum_Gothic({ weight: ["400", "700"], subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.PATDA_PROJECT_URL ?? ""),
   title: {
     template: "%s | 당근빳다",
     default: "당근빳다",
