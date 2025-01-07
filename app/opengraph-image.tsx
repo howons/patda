@@ -17,7 +17,7 @@ export const contentType = "image/png";
 export default async function Image() {
   // Font
   const sangjuHaerye = fetch(
-    new URL("./SANGJU-Haerye.ttf", import.meta.url)
+    new URL("./subset-SANGJUHaerye.woff", import.meta.url)
   ).then((res) => res.arrayBuffer());
 
   const bgSrc = await fetch(new URL("./patda_og.jpg", import.meta.url)).then(

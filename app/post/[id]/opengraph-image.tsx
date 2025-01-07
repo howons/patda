@@ -18,7 +18,7 @@ export default async function Image({ params }: { params: { id: string } }) {
   const postId = params.id;
 
   const sangjuHaerye = fetch(
-    new URL("../../SANGJU-Haerye.ttf", import.meta.url)
+    new URL("../../subset-SANGJUHaerye.woff", import.meta.url)
   ).then((res) => res.arrayBuffer());
 
   const [sqlResults, bgSrc] = await Promise.all([
