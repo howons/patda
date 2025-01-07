@@ -86,7 +86,7 @@ export default function OgImage({
           position: "absolute",
           right: "40%",
           top: "37%",
-          minHeight: "13rem",
+          minHeight: frontName.length <= 0 ? "13rem" : 0,
           transform: "rotate(15deg)",
           transformOrigin: "top left",
           backgroundColor: "rgba(255, 255, 255, 0.6)",
