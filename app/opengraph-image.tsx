@@ -15,10 +15,10 @@ export const contentType = "image/png";
 
 export default async function Image() {
   const fontData = readFile(
-    join(process.cwd(), "public/subset-SANGJUHaerye.woff")
+    join(process.cwd(), "public", "subset-SANGJUHaerye.woff")
   );
 
-  const bgData = await readFile(join(process.cwd(), "public/patda_og.jpg"));
+  const bgData = await readFile(join(process.cwd(), "public", "patda_og.jpg"));
   const bgSrc = Uint8Array.from(bgData).buffer;
 
   return new ImageResponse(<OgImage src={bgSrc} />, {
