@@ -4,7 +4,6 @@ import OgImage from "#lib/utils/OgImage.jsx";
 
 export const runtime = "edge";
 
-// Image metadata
 export const alt = "patda";
 export const size = {
   width: 1200,
@@ -13,33 +12,24 @@ export const size = {
 
 export const contentType = "image/png";
 
-// Image generation
 export default async function Image() {
-  // Font
   const sangjuHaerye = fetch(
-    new URL("./subset-SANGJUHaerye.woff", import.meta.url)
+    new URL("/subset-SANGJUHaerye.woff", process.env.PATDA_PROJECT_URL)
   ).then((res) => res.arrayBuffer());
 
-  const bgSrc = await fetch(new URL("./patda_og.jpg", import.meta.url)).then(
-    (res) => res.arrayBuffer()
-  );
+  const bgSrc = await fetch(
+    new URL("/patda_og.jpg", process.env.PATDA_PROJECT_URL)
+  ).then((res) => res.arrayBuffer());
 
-  return new ImageResponse(
-    (
-      // ImageResponse JSX element
-      <OgImage src={bgSrc} />
-    ),
-    // ImageResponse options
-    {
-      ...size,
-      fonts: [
-        {
-          name: "Haerye",
-          data: await sangjuHaerye,
-          style: "normal",
-          weight: 400,
-        },
-      ],
-    }
-  );
+  return new ImageResponse(<OgImage src={bgSrc} />, {
+    ...size,
+    fonts: [
+      {
+        name: "Haerye",
+        data: await sangjuHaerye,
+        style: "normal",
+        weight: 400,
+      },
+    ],
+  });
 }

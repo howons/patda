@@ -1,4 +1,3 @@
-import { sql } from "@vercel/postgres";
 import { ImageResponse } from "next/og";
 
 import type { Database } from "#lib/database/db.js";
@@ -18,18 +17,19 @@ export default async function Image({ params }: { params: { id: string } }) {
   const postId = params.id;
 
   const sangjuHaerye = fetch(
-    new URL("../../subset-SANGJUHaerye.woff", import.meta.url)
+    new URL("/subset-SANGJUHaerye.woff", process.env.PATDA_PROJECT_URL)
   ).then((res) => res.arrayBuffer());
 
-  const [sqlResults, bgSrc] = await Promise.all([
-    sql`SELECT "targetNickname", platform, "etcPlatformName" FROM "Post" WHERE id = ${postId};`,
-    fetch(new URL("../../patda_og.jpg", import.meta.url)).then((res) =>
+  const [postData, bgSrc] = await Promise.all([
+    fetch(
+      new URL(`./api/v1/posts/${postId}`, process.env.PATDA_PROJECT_URL)
+    ).then((res) => res.json()),
+    fetch(new URL("/patda_og.jpg", process.env.PATDA_PROJECT_URL)).then((res) =>
       res.arrayBuffer()
     ),
   ]);
 
-  const { targetNickname, platform, etcPlatformName } = sqlResults
-    .rows[0] as Pick<
+  const { targetNickname, platform, etcPlatformName } = postData as Pick<
     Database["Post"],
     "targetNickname" | "platform" | "etcPlatformName"
   >;
