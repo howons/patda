@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@headlessui/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import ProfileForm from "#app/profile/(platform)/_component/ProfileForm.jsx";
 import {
@@ -9,8 +9,9 @@ import {
   PLATFORM_ID,
   PLATFORM_NAME,
 } from "#lib/constants/platform.js";
-import type { Database } from "#lib/database/db.js";
+import type { ProfileData } from "#lib/database/users.js";
 import type { Platform } from "#lib/types/property.js";
+import { parsePlatformUserInfo } from "#lib/utils/user.js";
 import Logo from "#public/당근빳다.svg";
 import { labelVariants } from "#ui/formItems/Label.jsx";
 import HelpCircle from "#ui/HelpCircle/HelpCircle.jsx";
@@ -20,12 +21,16 @@ import { cn } from "#utils/utils.js";
 const PLATFORMS = [...Object.values(PLATFORM_ID)];
 
 interface PlatformProfilesProp {
-  profile?: Omit<Database["Profile"], "userId">;
+  profile?: Omit<ProfileData, "userId">;
 }
 
 export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
   const [targetPlatform, setTargetPlatform] = useState<Platform | null>(null);
   const colorStyle = PLATFORM_COLOR[targetPlatform || "daangn"];
+
+  const onSuccess = useCallback(() => {
+    setTargetPlatform(null);
+  }, []);
 
   return (
     <section>
@@ -45,7 +50,7 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
       {PLATFORMS.map((platform) => {
         const isTarget = targetPlatform === platform;
 
-        const [nickname, additionalInfo, etcPlatformName] =
+        const { nickname, additionalInfo, etcPlatformName } =
           parsePlatformUserInfo(platform, profile);
 
         return (
@@ -53,10 +58,11 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
             key={platform}
             platform={platform}
             isTarget={isTarget}
-            setTargetPlatform={setTargetPlatform}
             nickname={nickname}
             additionalInfo={additionalInfo}
             etcPlatformName={etcPlatformName}
+            onSuccess={onSuccess}
+            onEdit={() => setTargetPlatform(platform)}
             className="flex items-center gap-6">
             <Button
               type="button"
@@ -75,37 +81,4 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
       })}
     </section>
   );
-}
-
-function parsePlatformUserInfo(
-  platform: Platform,
-  profile: PlatformProfilesProp["profile"]
-): [string, string, string | undefined] {
-  let nickname = "";
-  let additionalInfo = "";
-  let etcPlatformName: string | undefined;
-
-  if (profile) {
-    switch (platform) {
-      case "daangn":
-        nickname = profile.daangnNickname ?? "";
-        additionalInfo = profile.daangnInfo ?? "";
-        break;
-      case "bunjang":
-        nickname = profile.bunjangNickname ?? "";
-        additionalInfo = profile.bunjangInfo ?? "";
-        break;
-      case "joongna":
-        nickname = profile.joongnaNickname ?? "";
-        additionalInfo = profile.joongnaInfo ?? "";
-        break;
-      default:
-        nickname = profile.etcNickname ?? "";
-        additionalInfo = profile.etcInfo ?? "";
-        etcPlatformName = profile.etcPlatformName ?? "";
-        break;
-    }
-  }
-
-  return [nickname, additionalInfo, etcPlatformName];
 }
