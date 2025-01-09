@@ -18,7 +18,7 @@ export default function CommentHeader({
   updateClicked,
   onUpdateClick,
 }: CommentHeaderProps) {
-  const { id, userName, status, createdAt } = useCommentContext();
+  const { id, nickname, status, createdAt } = useCommentContext();
 
   const [deleteState, deleteFormAction] = useDeleteAction(
     deleteCommentAction.bind(null, id)
@@ -33,7 +33,7 @@ export default function CommentHeader({
           "ml-1 font-bold",
           isDebate ? "text-rose-600" : "text-lime-600"
         )}>
-        {userName}
+        {nickname || "익명의 유저"}
       </h3>
       <div className="flex max-2xs:flex-col-reverse max-2xs:gap-1">
         {isMine && (

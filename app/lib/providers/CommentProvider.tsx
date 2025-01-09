@@ -4,11 +4,31 @@ import { createContext, type PropsWithChildren, useContext } from "react";
 
 import type { CommentInfo } from "#lib/types/response.js";
 
-interface CommentValue extends Omit<CommentInfo, "userId"> {}
+interface CommentValue
+  extends Omit<
+    CommentInfo,
+    | "userId"
+    | "daangnNickname"
+    | "bunjangNickname"
+    | "joongnaNickname"
+    | "etcNickname"
+  > {
+  nickname: string | null;
+}
 
 const CommentContext = createContext<CommentValue | null>(null);
 
-interface CommentProviderProps extends Omit<CommentInfo, "userId"> {}
+interface CommentProviderProps
+  extends Omit<
+    CommentInfo,
+    | "userId"
+    | "daangnNickname"
+    | "bunjangNickname"
+    | "joongnaNickname"
+    | "etcNickname"
+  > {
+  nickname: string | null;
+}
 
 export const CommentProvider = ({
   children,
