@@ -1,11 +1,18 @@
 import { Menu, Transition } from "@headlessui/react";
 
 import { auth } from "#auth";
+import { getProfile, type ProfileData } from "#lib/database/users.js";
 import ProfileDropdown from "#ui/Header/Profile/ProfileDropdown.jsx";
 import ProfileMenuButton from "#ui/Header/Profile/ProfileMenuButton.jsx";
 
-async function ProfileMenu() {
+export default async function ProfileMenu() {
   const session = await auth();
+  const userId = session?.user?.id;
+
+  let profileData: Omit<ProfileData, "userId"> | undefined;
+  if (userId) {
+    profileData = await getProfile(userId);
+  }
 
   return (
     <Menu>
@@ -17,10 +24,8 @@ async function ProfileMenu() {
         leave="duration-300 ease-out"
         leaveFrom="scale-100 opacity-100"
         leaveTo="scale-95 opacity-0">
-        <ProfileDropdown session={session} />
+        <ProfileDropdown isLogin={!!session} profileData={profileData} />
       </Transition>
     </Menu>
   );
 }
-
-export default ProfileMenu;
