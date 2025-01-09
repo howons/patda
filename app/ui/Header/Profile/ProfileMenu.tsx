@@ -16,7 +16,7 @@ export default async function ProfileMenu() {
 
   return (
     <Menu>
-      <ProfileMenuButton isLogin={!!session} />
+      <ProfileMenuButton isLogin={!!session} profileData={profileData} />
       <Transition
         enter="duration-200 ease-out"
         enterFrom="scale-95 opacity-0"
