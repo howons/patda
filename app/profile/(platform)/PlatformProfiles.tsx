@@ -43,7 +43,7 @@ export default function PlatformProfiles({ profile }: PlatformProfilesProp) {
           프로필
           <Logo className="ml-1 size-8 origin-[25%_75%] group-hover:animate-swing" />
         </h1>
-        <HelpCircle className="z-10 mx-2 mt-2">
+        <HelpCircle className="mx-2 mt-2">
           작성한 정보는 나를 저격한 게시글을 찾는데 사용됩니다.
         </HelpCircle>
       </div>
