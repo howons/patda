@@ -82,7 +82,7 @@ const HelpCircle = ({
       <div
         ref={boxRef}
         className={cn(
-          "absolute w-48 break-words rounded-md bg-neutral-100 p-3 text-sm shadow",
+          "absolute w-48 break-words rounded-md bg-neutral-100 p-3 text-sm shadow z-10",
           boxPositionYStyle,
           boxPositionXStyle[xPosition],
           visibilityStyle

@@ -21,30 +21,32 @@ import EditButton from "#ui/Button/EditButton.jsx";
 interface ProfileFormProp extends ComponentProps<"form"> {
   platform: Platform;
   isTarget: boolean;
-  setTargetPlatform: Dispatch<SetStateAction<Platform | null>>;
   nickname: string;
   additionalInfo: string;
   etcPlatformName?: string;
+  onSuccess?: () => void;
+  onEdit?: () => void;
 }
 
 export default function ProfileForm({
   platform,
   isTarget,
-  setTargetPlatform,
   nickname,
   additionalInfo,
   etcPlatformName,
+  onSuccess,
+  onEdit,
   className,
   children,
   ...props
 }: PropsWithChildren<ProfileFormProp>) {
   const router = useRouter();
 
-  const onSuccess = useCallback(() => {
-    setTargetPlatform(null);
+  const handleSuccess = useCallback(() => {
+    onSuccess?.();
 
     router.refresh();
-  }, [router, setTargetPlatform]);
+  }, [router, onSuccess]);
 
   const {
     register,
@@ -52,13 +54,13 @@ export default function ProfileForm({
     formAction,
   } = useFormAction<ProfileFormValues>({
     action: upsertProfileAction.bind(null, platform),
-    onSuccess,
+    onSuccess: handleSuccess,
   });
 
   const handleEditClick = () => {
     if (isTarget) return;
 
-    setTargetPlatform(platform);
+    onEdit?.();
   };
 
   return (
