@@ -16,7 +16,10 @@ import type { CommentInfo } from "#lib/types/response.js";
 const dummyComment: CommentInfo = {
   id: "1",
   userId: "1",
-  userName: "user123",
+  daangnNickname: "dd",
+  bunjangNickname: "bb",
+  joongnaNickname: "jj",
+  etcNickname: "ee",
   /** content.length >= 3000  */
   content:
     "Amidst the azure twilight, a curious squirrel serenaded the moon with a harmonica made of stardust. The celestial melody echoed through the ancient forest, captivating the fireflies and enchanting the leaves. Each note carried a secret whispered by the constellations, and the squirrel’s tiny paws danced across the silvered branches as if conducting a cosmic symphony. The moon, a silent audience, bathed the scene in its silvery glow, casting elongated shadows that swayed to the rhythm. And so, under the watchful eyes of the night, the squirrel played on, bridging the realms of earth and sky with its celestial music.\
@@ -36,20 +39,30 @@ const meta = {
   },
   tags: ["autodocs"],
   decorators: [
-    (Story) => (
-      <CommentStatusStoreProvider>
-        <CommentProvider {...dummyComment}>
-          <div
-            style={{
-              width: "100%",
-              maxWidth: "48rem",
-              margin: "10% auto 10% auto",
-            }}>
-            {Story()}
-          </div>
-        </CommentProvider>
-      </CommentStatusStoreProvider>
-    ),
+    (Story) => {
+      const {
+        daangnNickname,
+        bunjangNickname,
+        joongnaNickname,
+        etcNickname,
+        ...rest
+      } = dummyComment;
+
+      return (
+        <CommentStatusStoreProvider>
+          <CommentProvider nickname={daangnNickname} {...rest}>
+            <div
+              style={{
+                width: "100%",
+                maxWidth: "48rem",
+                margin: "10% auto 10% auto",
+              }}>
+              {Story()}
+            </div>
+          </CommentProvider>
+        </CommentStatusStoreProvider>
+      );
+    },
   ],
   async beforeEach() {
     const mockAuth = new Promise<Session>((resolve) => {
