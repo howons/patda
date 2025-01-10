@@ -11,7 +11,7 @@ export interface Database {
   User: {
     id: GeneratedAlways<string>;
     name: string | null;
-    email: string;
+    email: string | null;
     emailVerified: Date | null;
     image: string | null;
   };
