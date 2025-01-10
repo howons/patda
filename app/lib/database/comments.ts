@@ -21,10 +21,14 @@ export const getComments = cache((postId: number) =>
   db
     .selectFrom("Comment")
     .innerJoin("User", "User.id", "Comment.userId")
+    .leftJoin("Profile", "Profile.userId", "Comment.userId")
     .select([
       "Comment.id as id",
       "User.id as userId",
-      "User.name as userName",
+      "Profile.daangnNickname as daangnNickname",
+      "Profile.bunjangNickname as bunjangNickname",
+      "Profile.joongnaNickname as joongnaNickname",
+      "Profile.etcNickname as etcNickname",
       "images",
       "content",
       "status",
@@ -42,7 +46,6 @@ export const getComment = cache((id: string) =>
     .select([
       "Comment.id as id",
       "User.id as userId",
-      "User.name as userName",
       "images",
       "content",
       "status",
