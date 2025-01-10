@@ -8,7 +8,7 @@ export async function create() {
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
     .addColumn("name", "text")
-    .addColumn("email", "text", (col) => col.unique().notNull())
+    .addColumn("email", "text", (col) => col.unique())
     .addColumn("emailVerified", "timestamptz")
     .addColumn("image", "text")
     .execute();
